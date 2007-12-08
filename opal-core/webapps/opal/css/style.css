@@ -1,0 +1,327 @@
+/* CSS Document */
+body {
+	font-family: Arial,Verdana,Helvetica,sans-serif;
+	font-size: 62.5%;  
+	color: #000;
+	padding:0; margin:0;
+	background-color:#FFF; 
+}
+a img {border: 0}
+form {margin:0px; border:0px}
+a:link, a:visited {
+	text-decoration: underline; 
+	color: #0000FF;
+	font-weight: bold;}
+a:hover, a:active, a:focus {
+	color: #FF9900; 
+	font-weight: bold;}
+
+/*
+** keep the whitespace in front of the ^=, hides rule from konqueror
+** this is css3, the validator doesn't like it when validating as css2
+*/
+.boxContainer .exlink {
+	background: url("../images/external.png") center right no-repeat;
+	padding-right: 13px;
+}
+.boxContainer a[href ^="http://"],
+.boxContainer a[href ^="gopher://"] {
+    background: url("../images/external.png") center right no-repeat;
+    padding-right: 13px;
+}
+.boxContainer a[href ^="https://"],
+.link-https {
+    background: url("../images/lock_icon.gif") center right no-repeat;
+    padding-right: 16px;
+}
+.boxContainer a[href ^="mailto:"],
+.link-mailto {
+    background: url("../images/mail_icon.gif") center right no-repeat;
+    padding-right: 18px;
+}
+
+br {line-height:.5em}
+ol,ul {margin: 0;padding: 0 0 0 30px}
+li {margin-top: 4px}
+hr {
+	border: 0 dotted;
+	color: #999;
+	background-color:#999;
+	height: 2px; 
+	margin:10px 0 10px 0
+}
+.centerDiv{ text-align:center}
+.clearBR{ clear: both;}
+.clearLeft{ clear: left;}
+.clearNOBR{ clear: both; padding:0; margin:0; line-height:0}
+h1,h2,h3,h4{font-weight:bold; text-transform:uppercase; margin:0 0 8px 0;}
+h1 {font-size:1.5em; line-height:1.25em}
+h2 {font-size:1.3em;}
+h3 {font-size:1.2em;}
+h4 {font-size:1em}
+.alignRight{float:right}
+.alignLeft{float:left}
+.medText{font-size:1em}
+.smText{font-size:.9em}	
+input, select {
+	font-size:1em;
+	background-color:#F2F0EE; 
+	border: #666 solid 1px;
+	color:#000}
+.textBox {
+	width: 331px;
+	height: 80px;
+        font-size:1em;
+        background-color:#F2F0EE;
+        border: #666 solid 1px;
+        color:#000}
+.goBtn{ background-color:#ECE9AA; border:#666 1px solid}
+.goBtn:hover{ background-color: #FF9900; border:#000 1px solid}
+/* orig CSS*/
+.header {
+	font-family: "Lucida Grande",arial,sans-serif;
+	background-image: url(../images/body_back.jpg);
+	color: #305D9E;
+	background-repeat: no-repeat;
+	padding: 50px 10px 10px 0px;
+	height: 86px; 
+	margin-bottom: 0px;
+	width: 950px;
+}
+.mainnav {
+	background-image: url(../images/Main_Nav_Background.jpg);
+	background-repeat: no-repeat;
+	margin: 2px 1px 0 0;
+	padding-bottom: 4px;
+	width: 950px;
+}
+.subnav-holder {
+	display: block; 
+	width: 950px;
+	height: 20px;
+	position: relative; 
+	vertical-align: top;
+	font-size: .9em; 
+	line-height: 14px; 
+	left: 50%;
+	margin-left: -475px;
+	text-decoration: none;
+}
+#about-subnav {
+	margin-left: 152px; 
+	display: none; 
+	position: relative; 
+	text-align: left; 
+	width:300px;
+	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat; 
+}
+#metagenomics-subnav {
+	margin-left:288px;
+	display: none; 
+	position: relative;
+	text-align: left; 
+	width:500px;
+	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
+}
+#research-subnav {
+	margin-left: 421px; 
+	display: none; 
+	position: relative; 
+	text-align: left;
+	width:380px;
+	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
+}
+#news-subnav {
+	margin-left: 552px; 
+	display: none; 
+	position: relative; 
+	text-align: left;
+	width:398px;
+	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
+}
+#events-subnav {
+	margin-left: 687px; 
+	display: none; 
+	position: relative; 
+	text-align: left;
+	width:263px;
+	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
+	
+}
+#forums-subnav { 
+	margin-left: 601px;
+	display: none;
+	position: relative; 
+	text-align: right;
+	width:349px;
+	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
+}
+.subnav-link {
+	display: inline;
+	color: #000; 
+	margin-right: 20px; 
+	margin-bottom: 6px; 
+	font-weight: bold; 
+	font-size: 1em;
+	text-decoration: none;
+}
+.subnav a:link, .subnav a:visited {color:#000;text-decoration: none; }
+.subnav-holder div a:hover, .subnav-holder div a:focus{color:#FF9900;text-decoration: none; } 
+/* end orig CSS*/
+/* main body CSS */
+#mainBody {
+	position:absolute;
+	left: 50%;
+	width:950px;
+	margin-left: -475px; /*set to a negative number 1/2 of your width*/
+}
+.boxContainer{padding:0}
+.boxBody{ background-color:#FFF; text-align:left; font-size:1.2em; line-height:1.5em; text-align:left}
+.boxTopLeft{background:#FFF url(../images/boxTopLeft.gif) top left; height:15px}
+.boxTop{background:#FFF url(../images/boxTop.gif) top left repeat-x; height:15px}
+.boxTopRight{background:#FFF url(../images/boxTopRight.gif) top right; height:15px}
+.boxBottomLeft{background:#FFF url(../images/boxBottomLeft.gif) bottom left; height:15px}
+.boxBottom{background:#FFF url(../images/boxBottom.gif) bottom left repeat-x; height:15px}
+.boxBottomRight{background:#FFF url(../images/boxBottomRight.gif) bottom right; height:15px}
+.boxLeft{background:#FFF url(../images/boxLeft.gif) top left repeat-y; width:15px}
+.boxRight{background:#FFF url(../images/boxRight.gif) top right repeat-y; width:15px}
+.colColor{background-color:#FCF2D7}
+.leftCol{
+	width:200px; padding-right:15px}	
+.leftGutter{ padding-left:15px}
+.rightCol{
+	width:200px; padding-left:15px;}
+.rightColVertBar{  border-left: #999 1px solid; padding-left:15px;}
+.centerColColor{padding:0 15px}
+.centerCol{padding-left:15px}	
+.padLeft{padding-left:15px} /* padding for aligning of photos*/
+.padRight{padding-right:15px}
+/* end main body CSS*/
+
+.moreInfo{
+	text-decoration:underline; 
+	font-weight:bold; 
+	font-size:10px;
+}
+#pageFooter {
+	padding:10px;
+	color:#CCC; 
+	font-size:.9em;
+}	
+.reqiredItem{
+	color: #FFCC00; 
+	font-size:12px; 
+	font-weight:bold; 
+	margin:0 4px 0 4px
+}
+.inlineStyle{display: inline}
+/*text and search in the initial header */
+#headerLeft{ font-size: 250%}
+#headerRight{width:220px; margin-top:15px; }
+#headerText{width:82px; margin-top:15px}
+#loginText{width:58px; margin-top:15px}
+#headerSearch{width:180px}
+#headerText a, #loginText a, #headerSearch a{color:#305D9E; text-decoration:none}
+/*level 3 navigation in main body*/
+#bodyNav,#bodyNav ul {
+	padding:0; 
+	margin:0 0 30px 0;
+	list-style: none;
+	font-size:.9em;
+}
+#bodyNav a {
+	display: block;
+	color:#666; 
+	text-decoration:none
+}
+#bodyNav a:hover {
+	color:#000; background: #FFF url('../images/bodynavBkgHiLite.jpg') top left no-repeat;
+}
+#bodyNav li {
+	float: left; margin-right:18px; padding:2px;
+}
+#bodyNavSelected{
+	background: #FFF url('../images/bodynavBkg.jpg') top left no-repeat; 
+	color:#000; 
+	font-weight:bold
+}
+/* level 4 and 5 menu */
+#sideNav{
+	text-decoration:none;
+	color:#000;
+	font-weight:bold;
+	padding:0; 
+	margin:0 0 10px 10px; text-align:left
+}
+#sideNav li ul{
+	list-style:none; 
+	margin:0 0 10px -30px; line-height:1.2em; font-size:.9em}
+#sideNav a {color:#000; text-decoration:none}
+#sideNav a:hover{ background-color:#FFF; text-decoration:none}
+/* header box */
+.headerTitle1 {
+	margin: 0 0 10px 0; 
+	padding:0; border:0; 
+	font-size:1.2em; 
+	font-weight:bold
+	}
+.headerTitle2 {
+	margin: 0 0 10px 0; 
+	padding:0; 
+	border:0; 
+	font-size:1em; 
+	font-weight:bold
+	}
+.headerTitleBkg{ 
+	background-color:#BCD6BC; 
+	vertical-align: middle
+}
+
+
+.standard-table {
+	border: solid black 1px;
+	border-collapse: collapse;
+}
+
+.standard-table td {
+	text-align: left;
+	vertical-align: top;
+	padding: 5px;
+	border: solid #BBB 1px;
+}
+
+.standard-table td.header, .standard-table th {
+	font-weight: bold;
+	background: #DDD;
+	border: solid #BBB 1px;
+	text-align: left;
+	padding: 0px 5px 0px 5px;
+}
+
+.fullwidth-table {
+	border: solid #666 1px;
+	border-collapse: collapse;
+	width: 100%;
+	margin-bottom: 10px;
+	background: #FFF;
+}
+
+.fullwidth-table td {
+	text-align: left;
+	vertical-align: top;
+	padding: 5px 15px 5px 15px;
+	border: solid #BBB 1px;
+}
+
+.fullwidth-table td.header, .fullwidth-table th {
+	background: #DDD;
+	border: solid #BBB 1px;
+	font-weight: bold;
+	font-size: 1.05em;
+	text-align: left;
+	padding: 0px 5px 0px 5px;
+}
+
+rect {
+   fill: #FCF2D7;
+}
