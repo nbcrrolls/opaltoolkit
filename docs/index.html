@@ -1,0 +1,425 @@
+<html>
+<head>
+<title>Opal: The Application Wrapper Web Service</title>
+<link href="./Styles.css" rel="stylesheet" type="text/css"/>
+</head>
+<!-- <body text="black" link="darkblue" vlink="black" link="black" -->
+<!-- bgcolor="white"> -->
+<body>
+<h1>Opal: The Application Wrapper Web Service (Version 1.9alpha)</h1>
+
+<h2>Overview</h2>
+
+<p>Opal, the Application Wrapper Web service, provides a way to wrap up
+existing scientific applications rapidly as Web services, and expose them
+to various clients. The implementation provides features such as scheduling
+(e.g. using Condor/SGE via Globus or DRMAA) and security (using GSI-based
+certificates), Furthermore, the service provides job and data management
+(by executing every job in a separate working directory), and state
+management (by storing the service state in a PostgreSQL database). The
+application developer specifies a configuration for a scientific
+application and deploys the application as a service following a small
+sequence of steps. End-users can now access this application remotely using
+the WSDL of the service.
+
+<p>The WSDL for the service is defined inside <i>wsdl/opal.wsdl</i>. Stub
+generators provided by Web service toolkits are then used to generate the
+client and server-side bindings for the services. In our case, the services
+are implemented in Java using the Apache Axis toolkit, while the clients
+can be in any language.
+
+<p>The WSDL defines operations to do the following:
+<ol>
+   <li>Get application metadata (<tt>getAppMetadata</tt>): This returns
+   metadata about the application. This includes usage information, along
+   with any number of arbitrary application-specific metadata specified as
+   an array of <tt>info</tt> elements, e.g. description of the various
+   options that are passed to the application binary. Ideally, these
+   elements should be arbitrary XML's (specified by <tt>xsd:any</tt> tags).
+   However, due to the limitations of certains toolkits in other languages
+   (e.g. ZSI in Python), we specify them as Strings for now. You may embed
+   XML tags inside them using CDATA sections.</li>
+
+   <li>Launch job (<tt>launchJob</tt>): This operation requires the list of
+   arguments as a string, and an array of structures representing the input
+   files. The structure contains the <i>name</i> of the input file and the
+   <i>contents</i> in Base64 encoded binary form. The operation returns a
+   Job ID that can be used to retrieve job status and outputs.</li>
+
+   <li>Query job status (<tt>queryStatus</tt>): This operation expects a
+   Job ID to query the status of a running job. A status code, message, and
+   URL of the working directory for the job are returned.</li>
+
+   <li>Get job outputs (<tt>getOutputs</tt>): This operation returns the
+   outputs from a job that is identified by a Job ID. The output consists
+   of the urls for the standard output and error, and an array of
+   structures representing the output files. The structure contains the
+   <i>name</i> of the output file and the <i>url</i> from where it can be
+   downloaded.</li>
+
+   <li>Get output file by name (<tt>getOutputAsBase64ByName</tt>): This
+   operation returns the contents of an output file as Base64 binary. The
+   input is a data structure that contains the Job ID for a particular job,
+   and the name of the file to be retrieved.</li>
+
+   <li>Destroy job (<tt>destroy</tt>): This operation destroys a running
+   job identified by a Job ID.</li>
+
+   <li>Launch blocking job (<tt>launchJobBlocking</tt>): This operation
+   requires the list of arguments as a string, and an array of structures
+   representing the input files. The structure contains the <i>name</i> of
+   the input file and the <i>contents</i> in Base64 encoded binary form.
+   The operation blocks until the remote execution is complete, and returns
+   job outputs (as described above) as the response. This operation may
+   only be appropriate for jobs that are not long running.</li>
+</ol>
+
+<h2>Prerequisites</h2>
+
+<p>The source distribution can be used to install both the server and the
+client sides on Unix and Windows platforms. The prerequisites for the
+client and server installations are as follows.
+
+<h3>Client</h3>
+
+<ul>
+   <li>Java 1.5.x or higher: Download and install J2SE from <a
+   href="http://java.sun.com/j2se/downloads">http://java.sun.com/j2se/downloads</a>,
+   if you don't have it installed already. Add the Java bin directory to
+   the environment variable PATH. Also set the environment variable
+   JAVA_HOME to point to the top level directory of the JDK
+   installation.</li>
+
+   <br>
+   <li>Ant 1.6.1 or higher: Ant is a make-like utility for compiling Java
+   programs. Install Ant from <a href="http://ant.apache.org/">
+   http://ant.apache.org</a>. Set the environment variable <i>ANT_HOME</i>
+   to point to your Ant installation.</li>
+
+</ul>
+
+<h3>Server</h3>
+
+<p>Apart from the above packages required for the client, the server also
+requires the following packages:
+
+<ul>
+   <li>Tomcat 5.0.30: Tomcat is a servlet container than can be used to
+   host our Web service implementation. Install the binary version of
+   Tomcat 5.0.30 from <a href= "http://jakarta.apache.org/tomcat/">
+   http://jakarta.apache.org/tomcat/</a>. A <a
+   href="http://nbcr.net/services/downloads/jakarta-tomcat-5.0.30.tar.gz">cached
+   version</a> may also be downloaded alternatively. Henceforth, we will
+   refer to the location of the Tomcat installation as
+   <i>CATALINA_HOME</i>.</li>
+</ul>
+
+<p>The following packages are optional:
+<ul>
+   <li>MPI: If you plan to run your application in parallel, you will need
+   a version of MPI. You will also need to make sure that your SSH keys are
+   set up to be able to run MPI jobs without prompting for a password.</li>
+
+   <br>
+   <li>Postgres 7.4.6 (or higher): If you plan to persist the state of the
+   service in a database, you will need to install Postgres from <a
+   href="http://www.postgresql.org/">http://www.postgresql.org/</a>.</li>
+
+   <br>
+   <li>Scheduler Tools: One way to enable access to schedulers is via the
+   <a href="http://www.globus.org">Globus Toolkit</a>. The primary
+   requirement is that clients must be able to launch jobs on your resource
+   using GRAM via the Globus gatekeeper. In addition, jobmanager plugins
+   must be available for the particular scheduler that you have installed.
+   In other words, GRAM clients must be able to submit jobs to your
+   scheduler via the Globus gatekeeper. We have used Globus version 3.2.1
+   for our development and testing, but you may use any other version as
+   long as the above requirements are met.
+
+   <p>We have used <a href="http://www.cs.wisc.edu/condor">Condor</a> for
+   serial jobs only, and <a href="http://gridengine.sunsource.net/">SGE</a>
+   for serial as well as parallel jobs. Globus jobmanager plugins are
+   available for both of the above, and must be installed if you plan to
+   use either of them.
+
+   <p>Another alternative to access schedulers is via the <a
+   href="http://drmaa.org/">DRMAA</a> API. The Web services can submit jobs
+   to schedulers as long as they support the DRMAA API. We have only tested
+   job submits to SGE via DRMAA.</li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>Download the source distribution for installation from <a
+href="http://nbcr.net/services/#Software">here</a>, if you don't have the
+appropriate version already.
+
+<p>Extract the downloaded tarball using the GNU tar utility (or other
+similar utilities for Windows), as follows:
+<font color="green">
+<pre>
+    tar zxvf opal-ws-1.9alpha.tar.gz
+</pre>
+</font>
+
+<p>This should create a new directory called opal-ws-1.9alpha/ where
+all the sources are expanded. Henceforth, we refer to this directory as
+<i>OPAL_HOME</i>.
+
+<h3>Server</h3>
+
+<p>1. Edit $OPAL_HOME/etc/opal.properties to configure the static container
+properties correctly. It should look something like the following:
+
+<font color="green">
+<pre>
+    # the base URL for the tomcat installation 
+    # this is required since Java can't figure out the IP 
+    # address if there are multiple network interfaces
+    tomcat.url=http://localhost:8080
+
+    # parallel parameters
+    num.procs=1
+    mpi.run=/Users/sriramkrishnan/Misc/mpich-1.2.7/bin/mpirun
+
+    # location of working directory relative to $CATALINA_HOME/webapps.
+    # this could be a symbolic link to another location (which should be
+    # NFS mounted if this is on a cluster). if this is a symlink, copy
+    # etc/opal.xml to $CATALINA_HOME/conf/Catalina/localhost/opal.xml. if
+    # the name of the symlink is changed to something other than "opal", 
+    # modify the opal.xml accordingly
+    # working.dir=opal
+
+    # database information
+    database.use=false
+    database.url=jdbc:postgresql://localhost/app_db
+    database.user=app_user
+    database.passwd=app_passwd
+
+    # drmma information
+    drmaa.use=false
+    drmaa.pe=mpich
+
+    # globus information
+    globus.use=false
+    globus.gatekeeper=localhost:2119/jobmanager-sge
+    globus.service_cert=/Users/sriramkrishnan/certs/app_service.cert.pem
+    globus.service_privkey=/Users/sriramkrishnan/certs/app_service.privkey
+</pre>
+</font>
+
+<p>Set the <tt>tomcat.url</tt> to the correct
+<tt>http://ip-address:port</tt> of the server. If the service will wrap a
+parallel application, set the <tt>num.procs</tt> to the number of
+processors available, and the <tt>mpi.run</tt> to the location of the
+mpirun on your host. 
+
+<p>By default, all new working directories for job executions are created
+inside the $CATALINA_HOME/webapps/ROOT directory. You may wish to change
+this to another location on your system (which should be NFS mounted, if
+you are installing on a cluster). If you would like to do so for any
+reason, uncomment the property <tt>working.dir</tt>. Then run the following
+commands:
+<font color="green">
+<pre>
+    cp $OPAL_HOME/etc/opal.xml $CATALINA_HOME/conf/Catalina/localhost/ 
+    cd $CATALINA_HOME/webapps 
+    ln -s /path/to/working_dir/on/nfs opal
+</pre>
+</font>
+
+<p>Note that the above use of symbolic links will only work on Unix
+systems. 
+
+<p>If you wish to install a database to persist service state, please refer
+to <a href="./database.html">database.html</a>. If you would like to set up
+scheduler support, refer to <a href="./scheduler.html">scheduler.html</a>.
+You can also optionally set up secure access to your services by consulting
+<a href="./security.html">security.html</a>.
+
+<p>2. Edit the $OPAL_HOME/build.properties file to ensure that the build
+properties are set correctly. Set <tt>catalina.home</tt> to point to the
+location of your Tomcat installation (i.e. $CATALINA_HOME), and
+<tt>tomcat.port</tt> to the port number that the Tomcat server is running
+on.
+
+<p>3. Install the Opal toolkit into the Tomcat installation, by executing
+the following command:
+<font color="green">
+<pre>
+    ant install
+</pre>
+</font>
+
+<p>4. Run the Tomcat server by changing to the $CATALINA_HOME/bin directory,
+and running the appropriate command (bat on Windows, sh on Unix):
+<font color="green">
+<pre>
+    ./startup.bat|sh
+</pre>
+</font>
+
+<p>5. Validate that Opal has been deployed correctly by clicking on <a
+href="http://localhost:8080/opal/happyaxis.jsp">
+http://localhost:8080/opal/happyaxis.jsp</a>. If you have deployed Tomcat
+on another port, you will have to change the port number above. If all the
+<b>Needed Components</b> are found, Axis has been deployed fine. You can
+ignore the warnings about the <b>Optional Components</b>.
+ 
+<p>6. Create a configuration file for your application. For example, you
+can download the <a href="http://openbabel.sourceforge.net/">Babel</a>
+program, which is designed to support molecular modeling, chemistry, and
+many related areas, including interconversion of file formats and data. A
+sample configuration file for the same, located in
+$OPAL_HOME/configs/babel_config.xml, is shown below.
+<font color="green">
+<pre>
+&lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;metadata&gt;
+    &lt;usage&gt;&lt;![CDATA[./babel [-i&lt;input-type&gt;] &lt;name&gt; [-o&lt;output-type&gt;] &lt;name&gt;]]&gt;&lt;/usage&gt;
+    &lt;info xsd:type="xsd:string"&gt;
+    &lt;![CDATA[
+    ...
+    Currently supported input types
+	alc -- Alchemy file
+	prep -- Amber PREP file
+	...
+    Currently supported output types
+    ...
+	caccrt -- Cacao Cartesian file
+	cacint -- Cacao Internal file
+    ...
+    Additional options : 
+    ...
+    ]]&gt;
+    &lt;/info&gt;
+  &lt;/metadata&gt;
+  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/babel&lt;/binaryLocation&gt;
+  &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
+  &lt;parallel&gt;false&lt;/parallel&gt;
+&lt;/appConfig&gt;
+</pre>
+</font>
+
+<p>The configuration consists of a top level element <i>appConfig</i>,
+which contains <i>metadata</i>, <i>binaryLocation</i>, <i>defaultArgs</i>,
+and <i>parallel</i> elements. The metadata consists of <i>usage</i>, which
+is a string specifying how the application is to be invoked, and an array
+of optional application information specified as <i>info</i> elements. In
+the above file, the various options that can be used with the application
+are specified within the metadata. The binaryLocation specifies the
+location of the application binary - note that this has to be the location
+of a <i>single</i> executable. No arguments may be specified here. However,
+default arguments that need to be used for every run can be specified
+inside the defaultArgs element. The parallel element specifies if an
+application is parallel or not. Use the babel_config.xml as a guideline to
+write configurations for your particular applications.
+
+<p>7. Deploy the services inside Tomcat, by changing to the $OPAL_HOME
+directory, and running the following command:
+<font color="green">
+<pre>
+    $ANT_HOME/bin/ant deploy -DserviceName=&lt;serviceName&gt; -DappConfig=&lt;appConfig&gt;
+</pre>
+</font>
+
+<p>For example, to deploy the Babel service, you would type the following
+command:
+<font color="green">
+<pre>
+    $ANT_HOME/bin/ant deploy -DserviceName=BabelServicePort -DappConfig=configs/babel_config.xml
+</pre>
+</font>
+
+<p>Note that you can undeploy your service at any time by running the 
+following command:
+<font color="green">
+<pre>
+    $ANT_HOME/bin/ant undeploy -DserviceName=&lt;serviceName&gt;
+</pre>
+</font>
+
+<p>If you plan on using the service with large inputs and outputs, it is a
+good idea to increase the heap size being used by the JVM. This can be done
+by setting the <i>JAVA_OPTS</i> environment variable to <i>-Xmx1024m</i>,
+and restarting Tomcat. This increases the heap size to 1GB. If all went
+well until this step, the services are running and ready to be used. Test
+them by running the client, described in the following section.
+
+<p>The service creates new working directories for every execution. These
+working directories are not deleted automatically, so they must be
+periodically cleaned up. You may use the script
+$OPAL_HOME/etc/cleanup.sh to do so - you will have to modify it to point
+to your Tomcat installation (and optionally modify the number of days to
+retain scratch directories).
+
+<h3>Client</h3>
+
+<p>A generic Java client is implemented by the class located in 
+$OPAL_HOME/src/edu/sdsc/nbcr/opal/GenericServiceClient.java. It lets you
+run any application exposed as an Opal service, and retrieve its
+status and outputs.
+
+<p>To compile the client, perform the following step from inside
+the $OPAL_HOME directory.
+<font color="green">
+<pre>
+    $ANT_HOME/bin/ant jar
+</pre>
+</font>
+
+<p>Before running the client, set your classpath using the
+etc/classpath.bat|(c)sh script depending on the OS/shell you use - e.g. if you
+use tcsh on Unix, set your classpath by typing the following command:
+<font color="green">
+<pre>
+    source etc/classpath.csh
+</pre>
+</font>
+
+<p>To launch a job using the Babel service which was described above, you could use the
+following command, which displays the resulting job id, along with the preliminary status.
+<font color="green">
+<pre>
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/BabelServicePort 
+	                                         -r launchJob 
+						 -a "-ipdb sample.pdb -h -opdb output.pdb" 
+						 -f samples/sample.pdb
+</pre>
+</font>
+
+<p>You can retrieve job status by running the following command:
+<font color="green">
+<pre>
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/BabelServicePort 
+	                                         -r queryStatus
+						 -j &lt;job_id&gt;
+</pre>
+</font>
+
+<p>Once the job has finished executing, you can also retrieve output metadata using:
+<font color="green">
+<pre>
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/BabelServicePort 
+	                                         -r getOutputs
+						 -j &lt;job_id&gt;
+</pre>
+</font>
+
+<p>You may need to change the above URL if you used a different port, or are
+running the client from another machine. Note that you can get the complete
+usage information for the client by using the following command:
+<font color="green">
+<pre>
+   java edu.sdsc.nbcr.opal.GenericServiceClient
+</pre>
+</font>
+
+<h2>Feedback</h2>
+
+<p>To report bugs and feature requests, please use the NBCR Web Services
+User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>).
+
+</body>
+</html>
