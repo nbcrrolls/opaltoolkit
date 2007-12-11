@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<document>
+<!--  <properties>
+    <title>Welcome to Apache Logging Services</title>
+    <author email="carnold@apache.org">Curt Arnold</author>
+  </properties>  -->
+  <body>
+    <section name="About Opal Toolkit">
+      <p>
+      Automatic Web service wrappers for scientific applications on Grid resources.
+      </p>
+      <p>
+ The Grid-based infrastructure enables large-scale scientific applications
+ to be run on distributed resources and coupled in innovative ways. However,
+ in practice, Grid resources are not very easy to use for the end-users who
+ have to learn how to generate security credentials, stage inputs and
+ outputs, access Grid-based schedulers, and install complex client software.
+ There is an imminent need to provide transparent access to these resources
+ so that the end-users are shielded from the complicated details, and free
+ to concentrate on their domain science. Scientific applications wrapped as
+ Web services alleviate some of these problems by hiding the complexities of
+ the back-end security and computational infrastructure, only exposing a
+ simple SOAP API that can be accessed programmatically by
+ application-specific user interfaces. However, writing the application
+ services that access Grid resources can be quite complicated, especially if
+ it has to be replicated for every application. Towards that end, we have
+ implemented Opal, which is a toolkit for wrapping scientific applications
+ as Web services in a matter of hours, providing features such as
+ scheduling, standards-based Grid security and data management in an
+ easy-to-use and configurable manner.
+      </p>
+      <!-- 
+    <p>The products of the Apache Logging Services Project included three logging frameworks: <a href="/log4j">log4j</a>
+    for Java, <a href="/log4cxx">log4cxx</a> for C++ and <a href="/log4net">log4net</a> for the Microsoft .NET framework
+    and a log viewer and analysis tool: <a href="/chainsaw">Chainsaw</a>.</p> -->
+    </section>
+    <section name="News">
+
+        <iframe src="http://sourceforge.net/export/projnews.php?group_id=211778&amp;limit=20&amp;flat=1&amp;show_summaries=1"
+                 width="100%" frameborder="0"/>
+<!--          style="margin-left: -10px; padding: 0" frameborder="0" scrolling="no"
+          width="244" height="136"></iframe>-->
+    </section>
+  </body>
+</document>
