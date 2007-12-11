@@ -1,0 +1,31 @@
+<project name="Opal Toolkit">
+  <body>
+
+    <menu name="Main Menu">
+      <item name="Introduction" href="index.html"/>
+      <item name="News" href="http://sourceforge.net/news/?group_id=211778"/>
+      <item name="Downloads" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
+<!--      <item name="Features" href="features.html"/>
+      <item name="Installation" href="installation.html"/>
+      <item name="Configuration" href="configuration.html"/>
+      <item name="FAQ" href="faq.html"/> -->
+    </menu>
+    <menu ref="reports" collapse="true"/>
+
+    <links>
+      <item name="NBCR" href="http://nbcr.net"/>
+      <item name="SDSC" href="http://SDSC.net"/>
+      <item name="AXIS" href="http://ws.apache.org/axis/"/>
+    </links>
+  </body>
+
+  <poweredBy>
+    <logo name="Source Forge" href="http://sourceforge.net/" 
+          img="http://sourceforge.net/sflogo.php?group_id=211778&amp;type=1"/>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>
+
+  <publishDate position="bottom" format="MM-dd-yy"/>
+
+</project>

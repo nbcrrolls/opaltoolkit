@@ -1,0 +1,219 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>edu.sdsc.nbcr</groupId>
+  <artifactId>opal</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Opal Toolkit</name>
+  <description>Automatic Web service wrappers for scientific applications on Grid resources</description>
+  <inceptionYear>2007</inceptionYear>
+  <url>http://opaltoolkit.sourgeforge.net/</url>
+
+  <licenses>
+    <license>
+      <name>BSD License</name>
+      <url>http://opaltoolkit.sourceforge.net/LICENSE.txt</url>
+      <distribution>manual</distribution>
+      <comments>Opal Toolkit is realeased under the BSD License</comments>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>San Diego Supercomputing Center</name>
+    <url>http://sdsc.edu</url>
+  </organization>
+
+
+  <!-- developers and contributors  -->
+
+  <developers>
+    <developer>
+      <id>srikrish</id>
+      <name>Sriram Krishnan</name>
+      <email>sriram@sdsc.edu</email>
+      <url></url>
+      <organization>San Diego Supercomputing Center</organization>
+      <organizationUrl>http://sdsc.edu/</organizationUrl>
+    </developer>
+    <developer>
+      <id>clementl</id>
+      <name>Luca Clementi</name>
+      <email>clem@sdsc.edu</email>
+      <url></url>
+      <organization>University of California, San Diego</organization>
+      <organizationUrl>http://ucsd.edu/</organizationUrl>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Some Contributors</name>
+      <email>some.name@gmail.com</email>
+      <url>http://noellemarie.com</url>
+      <organization>Noelle Marie</organization>
+      <organizationUrl>http://noellemarie.com</organizationUrl>
+      <roles>
+        <role>tester</role>
+      </roles>
+      <timezone>-5</timezone>
+    </contributor>
+  </contributors>
+
+  <!-- -END-  developers and contributors  -->
+
+  <!-- environment setting -->
+  <issueManagement>
+    <system>Source Forge Tracker</system>
+    <url>http://sourceforge.net/tracker/?group_id=211778</url>
+  </issueManagement>
+
+  <!-- for notification with continuum
+  <ciManagement>
+    <system>continuum</system>
+    <url>http://www.a-ware-project.eu/continuum</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>true</sendOnSuccess>
+        <sendOnWarning>true</sendOnWarning>
+        <configuration>
+          <address>a-ware-cvs@cineca.it</address>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>  --> 
+
+  <mailingLists>
+    <mailingList>
+      <name>User List</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=211778</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=211778</unsubscribe>
+      <post>opaltoolkit-users@lists.sourceforge.net</post>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=opaltoolkit-users</archive>
+    </mailingList>
+  </mailingLists>
+
+  <scm>
+    <connection>scm:svn:https://opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit</connection>
+    <tag>HEAD</tag>
+    <url>http://opaltoolkit.svn.sourceforge.net/viewvc/opaltoolkit/</url>
+  </scm>
+
+<!-- no local repository
+  <repositories>
+    <repository>
+      <id></id>
+      <url></url>
+    </repository>
+  </repositories> 
+  <pluginRepositories>
+    <pluginRepository>
+      <id></id>
+      <url></url>
+    </pluginRepository>
+  </pluginRepositories>  -->
+
+  <distributionManagement>
+ <!--   <repository>
+      <id>a-ware.org</id>
+      <name>A-WARE Maven Repository</name>
+      <url>scpexe://devel.fec.cineca.it:/devel/aware/maven2-repo/</url>
+    </repository> -->
+    <site>
+      <id>opal.sf.web</id>
+      <name>Opal Sourceforge Website</name>
+      <url>scp://opaltoolkit.sourceforge.net/home/groups/o/op/opaltoolkit/htdocs/</url>
+<!--  
+you have to create a ~/.m2/settings.xml file with the follwing content
+<settings> <servers> 
+.....
+    <server>
+      <id>opal.sf.web</id>
+      <username>lclement</username>
+      <password></password>
+      <directoryPermissions>0775</directoryPermissions>
+      <filePermissions>0664</filePermissions>  
+    </server> 
+</servers> </settings>
+-->
+    </site>
+  </distributionManagement>   
+
+
+
+
+
+
+
+  <!-- other builing parameters that we don't use currently  -->
+
+  <properties>
+<!--    <servicemix-version>3.1.2</servicemix-version>  -->
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+      </plugin>
+    </plugins>
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-alpha-6</version>
+      </extension>
+    </extensions>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+<!--      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>${xalan-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.thoughtworks.qdox</groupId>
+        <artifactId>qdox</artifactId>
+        <version>${qdox-version}</version>
+      </dependency>  -->
+    </dependencies>
+  </dependencyManagement>
+  
+  <dependencies>
+<!--    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>  -->
+  </dependencies>
+
+</project>
