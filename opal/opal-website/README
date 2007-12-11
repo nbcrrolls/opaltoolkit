@@ -1,0 +1,29 @@
+To generate the web site:
+- install maven 2 from the apache web site (maven.apache.org)
+- to generate the site from this direcotry issue:
+  mvn site
+  then you'll find the site in 
+  ./target/site/index.html
+- to have the authomatic deployment feature working you have 
+  to add an entry in the ~/.m2/settings.xml 
+  in the servers section 
+  <servers>
+    <server>
+      <id>opal.sf.web</id>
+      <username>lclement</username>
+      <password></password>
+      <!-- <privateKey>/home/clem/ssh/id_rsa</privateKey>
+      <passphrase></passphrase> -->
+      <directoryPermissions>0775</directoryPermissions>
+      <filePermissions>0664</filePermissions>
+    </server>
+  </servers>
+  with the right username and password or privateKey and 
+  passphrase.
+  Then if you issue a 
+  mvn site-deploy
+  maven will also copy the file to source forge using scp
+
+
+Clem
+
