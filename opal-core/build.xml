@@ -67,6 +67,9 @@ Author:
     <fileset dir="${opal.WEB-INF}/lib">
       <include name="*.jar" />
     </fileset>
+    <fileset dir="${lib}/struts">
+      <include name="*.jar" />
+    </fileset>
     <pathelement path="${build.classes}" />
   </path>
 
@@ -190,10 +193,19 @@ Author:
 	<!-- jFreeChart libraries -->
         <include name="jfreechart-1.0.8.jar" />
         <include name="jcommon-1.0.12.jar" />
-
-
+       
       </fileset>
     </copy>
+
+    <!-- copy over the struts jar files -->
+    <copy todir="${tomcat.WEB-INF}/lib">
+      <fileset dir="${lib}/struts">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    <!-- copy over the struts jar files -->
+
+
   
     <!-- copy over the jar files required into common/lib -->
     <copy todir="${catalina.home}/common/lib">
