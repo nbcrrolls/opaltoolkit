@@ -1,0 +1,103 @@
+/*
+Part of the Gridsphere default css theme
+Author: Luca De Marco (demarco@dimi.uniud.it) and Roberto Ranon (ranon@dimi.uniud.it)
+Version: $Id: window.css,v 1.1 2007/10/02 23:16:43 clem Exp $
+*/
+
+/* **************************************************************************
+    This file contains css rules for the padding, border and sizes of portlet
+    windows. 
+    To change fonts and colors of the portlet windows, you should edit the 
+    appropriate parts of --> general.css 
+    To change the portlet windows images change the "window_*" images
+    in ../images
+ ************************************************************************** */
+
+.window-main {
+    padding: 4px 4px 0px 4px;
+}
+
+.window-title-inactive {
+    border-top: 1px solid #0053e2;
+    border-right: 1px solid #0053e2;
+    border-left: 1px solid #0053e2;
+    height: 1.5em;
+    text-align: center;
+}
+
+.window-title-active {
+    border-top: 1px solid #0053e2;
+    border-right: 1px solid #0053e2;
+    border-left: 1px solid #0053e2;
+    height: 1.5em;
+    text-align: center;
+}
+
+.window-title-name {
+    border: 0px;
+    float: left; 
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    white-space: nowrap;
+    width: 59%;
+}
+
+.window-icon-right {
+    background-color: inherit;
+    float: right;  
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+    width: 20%;
+}
+
+.window-icon-left {
+    background-color: inherit;
+    float: left;  
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    width: 20%;
+}
+
+.window-content-minimize {
+}
+
+.window-content {
+    border-right: 1px solid #0053e2;
+    border-bottom: 1px solid #0053e2;
+    border-left: 1px solid #0053e2;
+    clear: both;
+    padding: 5px;
+}
+
+.window-maximized {
+    clear: both;
+    padding-left: 8px;
+}
+
+* html .window-main {
+    width: 100%; /* for IE5 and IE6 in quirks mode */
+    w\idth: 100%; /* for IE6 in standards mode */
+}
+* html .window-title-inactive {
+    width: 100%; /* for IE5 and IE6 in quirks mode */
+    w\idth: 100%; /* for IE6 in standards mode */
+}
+* html .window-title-active {
+    width: 100%; /* for IE5 and IE6 in quirks mode */
+    w\idth: 100%; /* for IE6 in standards mode */
+}
+* html .window-content {
+    width: 100%; /* for IE5 and IE6 in quirks mode */
+    w\idth: 100%; /* for IE6 in standards mode */
+}
+
+* html .window-maximized {
+    width: 100%; /* for IE5 and IE6 in quirks mode */
+    w\idth: 100%; /* for IE6 in standards mode */
+}

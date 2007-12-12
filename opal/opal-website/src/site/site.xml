@@ -3,7 +3,7 @@
 
     <menu name="Main Menu">
       <item name="Introduction" href="index.html"/>
-      <item name="News" href="http://sourceforge.net/news/?group_id=211778"/>
+      <item name="SF Main page" href="http://sourceforge.net/projects/opaltoolkit/"/>
       <item name="Downloads" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
 <!--      <item name="Features" href="features.html"/>
       <item name="Installation" href="installation.html"/>
@@ -14,7 +14,7 @@
 
     <links>
       <item name="NBCR" href="http://nbcr.net"/>
-      <item name="SDSC" href="http://SDSC.net"/>
+      <item name="SDSC" href="http://www.sdsc.edu"/>
       <item name="AXIS" href="http://ws.apache.org/axis/"/>
     </links>
   </body>

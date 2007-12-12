@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<document>
+<!--  <properties>
+    <title>Welcome to Apache Logging Services</title>
+    <author email="carnold@apache.org">Curt Arnold</author>
+  </properties>  -->
+  <body>
+    <section name="About Opal Toolkit">
+      <p>
+      Automatic Web service wrappers for scientific applications on Grid resources.
+      </p>
+      <p>
+
+      </p>
+    </section>
+    <section name="News">
+
+    </section>
+  </body>
+</document>
