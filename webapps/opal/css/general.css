@@ -1,0 +1,519 @@
+/* Stylesheet */
+/*
+Part of the Gridsphere default css theme
+Author: Luca De Marco (demarco@dimi.uniud.it) and Roberto Ranon (ranon@dimi.uniud.it)
+Version: $Id: general.css,v 1.1 2007/10/02 23:16:43 clem Exp $
+*/
+
+/* ****************************************************************************
+    This file contains general css rules for the whole portal.
+    In particular, you can edit the colors and fonts of the following elements:
+    - PAGE BODY
+    - TITLES
+    - HYPERLINKS    
+    - LIST ELEMENTS
+    - PARAGRAPHS AND TEXT
+    - SORTABLE TABLES
+    - FORMS
+    - 1st LEVEL TAB MENU
+    - 2nd LEVEL TAB MENU
+    - PORTLET WINDOWS
+    - PORTLET ELEMENTS
+    - PAGE HEADER AND LOGO 
+ **************************************************************************** */
+
+/*-------------------------------------------------
+PAGE BODY
+-------------------------------------------------*/
+
+/* global settings for background color, text style, size and color, and 
+   page minimum width */
+
+body {
+    background-color: #fff;     
+    color: #000;
+    font-family: lucida, verdana, "Lucida Grande", helvetica, arial, sans-serif;
+    font-size: small;
+    font-weight: normal;
+    margin: 0 auto;
+    min-width: 900px;
+    padding: 0;
+    text-align: left;
+}
+
+* html body {
+    font-size: x-small; /* for IE5/Win */
+    f\ont-size: small; /* for other IE versions */
+}
+/*-------------------------------------------------
+TITLES
+-------------------------------------------------*/
+
+h1 {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 130%;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+/*-------------------------------------------------
+HYPERLINKS
+-------------------------------------------------*/
+
+/* global settings for hyperlinks */
+
+a {font-weight: normal; padding: 1px; text-decoration: none; }
+a:link { color: #0D70C6; }
+a:visited { color: #0D70C6; }
+a:hover, a:active { color: blue; }
+
+a.image, a img, a.image:hover {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0;
+    text-decoration: none;
+}
+
+/*-------------------------------------------------
+LIST ELEMENTS
+-------------------------------------------------*/
+
+li {
+    margin: 3px 0px;
+}
+
+/*-------------------------------------------------
+PARAGRAPHS AND TEXT
+-------------------------------------------------*/
+
+p {
+    font-size: 12px;
+    padding-top: 0px;
+}
+
+/* class for bigger text */
+.bigger {
+    font-size: 13px;
+}
+
+/* class for highlighting text */
+.highlight {
+    background-color: #ffc;
+}
+
+/* settings for the heading internal to a framed section of a portlet */
+fieldset { 
+    color: #000;
+    font-size: 13px;
+}
+/* settings for the heading of a framed section of a portlet */
+fieldset legend { 
+    color: #000;
+    font-size: 13px;
+}
+
+/*-------------------------------------------------
+FORMS
+-------------------------------------------------*/
+
+input, select, textarea {
+  font-size: inherit;
+}
+
+/*-------------------------------------------------
+1st LEVEL TAB MENU
+-------------------------------------------------*/
+
+/* settings for the WHOLE 1st level tab menu */
+.tab-pane {
+    /* image for the background behind 1st level tabs*/
+    background: url(../images/spacer.gif) repeat-x bottom;
+    font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+/* sets the left space of the 1st tab of 1st level tab menu */
+.tab-pane ul {
+    padding-left: 2px;
+}
+/* sets the space between 1st level tabs */
+.tab-pane ul li {
+    padding-right: 2px;
+}
+/* settings for the ACTIVE tab in 1st level tab menu */
+.tab-pane ul li .tab-active {
+    /* left border image for the active 1st level tab */
+    background: url(../images/tab-active-left.gif) left top no-repeat;
+    font-weight: bold;
+    color: black;
+}
+.tab-pane ul li .tab-active span {
+    /* right border image for the active 1st level tab */
+    background: url(../images/tab-active-right.gif) right top no-repeat;
+}
+
+/* settings for INACTIVE tabs in 1st level tab menu */
+.tab-pane ul a {
+    /* left border image for inactive 1st level tabs */
+    background: url(../images/tab-inactive-left.gif) left top no-repeat;
+    text-decoration: none;
+    color: #000;
+}
+.tab-pane ul a:hover {
+    /* hover color for inactive 1st level tabs */
+    color: #000;
+}
+.tab-pane ul a span {
+    /* right border image for inactive 1st level tabs */
+    background: url(../images/tab-inactive-right.gif) right top no-repeat;
+    color: #000;
+}
+
+/*-------------------------------------------------
+2nd LEVEL TAB MENU
+-------------------------------------------------*/
+
+/* settings for the WHOLE 2nd level tab menu */
+.tab-sub-pane {
+    /* image for the background of the 2nd level tabs */
+    background: url(../images/sub-tab.gif) repeat-x;
+    font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/* settings for the links of 2nd level tab menu */
+.tab-sub-pane a {
+    color: black;
+    text-decoration: none;
+}
+
+/* settings for the ACTIVE tab in 2nd level tab menu */
+.tab-sub-active {
+    color: black;
+    font-weight: bold;
+}
+
+/* settings for INACTIVE tabs in 2nd level tab menu */
+a.tab-sub-inactive {
+    text-decoration: none;
+}
+a.tab-sub-inactive:hover {
+    color: blue;
+}
+
+/*-------------------------------------------------
+PORTLET WINDOWS
+-------------------------------------------------*/
+
+/* settings for the WHOLE portlet window */
+.window-main {
+    font-size: inherit;
+}
+
+/* settings for the INACTIVE portlet window TITLE colors */
+.window-title-inactive {
+    background-color: #6699CC; 
+    border-color: #0053e2;
+}
+
+/* settings for the ACTIVE portlet window TITLE colors */
+.window-title-active {
+    background-color: #6699CC; 
+    border-color: #0053e2;
+}
+
+/* settings for the portlet window TITLE NAME font and colors */
+.window-title-name {
+    background-color: inherit;
+    color: white;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+/* settings for the portlet window CONTENT colors*/
+.window-content {
+    background-color: #eeeeee;
+    border-color: #0053e2;
+}
+
+/*-------------------------------------------------
+PORTLET ELEMENTS
+-------------------------------------------------*/
+
+.portlet-frame-actions {
+  border-color: #CCCCFF;
+  color: #000000;
+}
+
+.portlet-frame-info {
+  border-color: #CCCCFF;
+  color: #000000;
+}
+
+.portlet-frame-alert {
+  border-color: #CCCCFF;
+  color: darkorange;
+}
+
+.portlet-frame-error {
+  border-color: #CCCCFF;
+  color: darkred;
+}
+
+.portlet-frame-title {
+  background-color: #CCCCFF;
+  color: #000000;
+}
+
+.portlet-frame-header {
+  background-color: #CCCCFF;
+  color: #000000;
+}
+
+.portlet-frame-header-checkbox {
+  background-color: #CCCCFF;
+  color: #FFFFFF;
+}
+
+.portlet-frame-label {
+  background-color: #CCCCFF;
+  color: #000000;
+}
+
+.portlet-frame-label-alert {
+  background-color: #CCCCFF;
+  color: darkred;
+}
+
+.portlet-frame-text {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.portlet-frame-text-alert {
+  background-color: #FFFFFF;
+  color: darkred;
+}
+
+.portlet-frame-input {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.portlet-frame-input-alert {
+  background-color: #FFFFFF;
+  color: darkred;
+}
+
+.portlet-frame-number {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.portlet-frame-number-alert {
+  background-color: #FFFFFF;
+  color: darkred;
+}
+
+.portlet-frame-entry-checkbox {
+  background-color: #CCCCFF;
+  color: #000000;
+}
+
+/*^^^^^^^^^^
+   MESSAGES
+  ^^^^^^^^^^*/
+
+/* *********************************************
+  Status of the current operation
+********************************************* */
+.portlet-msg-status {
+   color: darkblue;
+}
+
+
+/* *********************************************
+  Help messages, general additional
+  information, etc.
+********************************************* */
+.portlet-msg-info {
+   color: black;
+}
+
+/* *********************************************
+  Error messages
+********************************************* */
+.portlet-msg-error {
+   color: darkred;
+}
+
+/* *********************************************
+  Warning messages
+********************************************* */
+.portlet-msg-alert {
+   color: darkorange;
+}
+
+/* *********************************************
+  Verification of the successful completion
+  of a task
+********************************************* */
+.portlet-msg-success {
+   color: black;
+}
+
+/*^^^^^^^^^^^^
+  SECTIONS
+  ^^^^^^^^^^*/
+
+/* *********************************************
+  Table or section header
+********************************************* */
+.portlet-section-header {
+  background-color: #69a8e7;
+  border-color: #0053e2;
+  color: #000000;
+}
+.portlet-section-header td {
+  background: #69a8e7;
+  border-color: #0053e2;
+} 
+
+/* *********************************************
+  Normal text in a table cell
+********************************************* */
+.portlet-section-body td {
+  background-color: #eee;
+  color: inherit;
+}
+
+/* *********************************************
+  Text in every other row in the table
+********************************************* */
+.portlet-section-alternate td {
+   background-color: #ddd;
+   color: inherit;
+}
+
+/*^^^^^^^^^^^
+   MENUS
+   ^^^^^^^^*/
+
+/* *********************************************
+  General menu settings such as background
+  color, margins, etc.
+********************************************* */
+.portlet-menu{
+    border-color: #0053e2;
+}
+
+/* *********************************************
+  Menu caption
+********************************************* */
+.portlet-menu-caption{
+    background-color: #4064ad;
+    color: #FFFFFF;
+}
+
+/* *********************************************
+  Action Tab Pane
+********************************************* */
+
+#actiontabpane {
+  background-color: #eeeeee;
+  border-color: #0035e2;
+  color: #000000;
+}
+
+/* *********************************************
+  Action Tab Menu
+********************************************* */
+
+#actiontabmenu li {
+  background-color: #69a8e7;
+  border-color: #0053e2;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+#actiontabmenu a:link,
+#actiontabmenu a:visited {
+  background-color: #69a8e7;
+  color: #ffffff;
+}
+
+#actiontabmenu a:hover {
+  background-color: #cecbc6;
+  color: #000066;
+}
+
+/* *********************************************
+  Action Tab Selected
+********************************************* */
+
+#actiontabselected li {
+  background-color: #eeeeee;
+  border-color: #0053e2;
+  color: #000000;
+  font-weight: bold;
+}
+
+#actiontabselected a:link,
+#actiontabselected a:visited {
+  background-color: #eeeeee;
+  color: #000000;
+  text-decoration: none;
+}
+
+/* *********************************************
+  Action Tab Clear
+********************************************* */
+
+#actiontabclear {
+  display: none;
+}
+
+html>body #actiontabclear {
+  display: block;
+  clear: both;
+}
+
+/* *********************************************
+  Action Body
+********************************************* */
+
+#actionbody {
+  background-color: #eeeeee;
+  color: #000000;
+}
+
+
+/*-------------------------------------------------
+PAGE HEADER AND LOGO
+-------------------------------------------------*/
+.header {
+    background-color: #D6D6D6;
+}
+
+#page-logo {
+    background: #d6d6d6;
+    color: #0079b8;
+    font-size: 36px;
+    font-weight: normal;
+    padding-top: 3px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    padding-left: 8px;
+}
+
+

@@ -1,0 +1,633 @@
+/* Stylesheet */
+/*
+Part of the Gridsphere modern theme
+Author: Oliver Wehrens (wehrens@aei.mpg.de), Luca De Marco (demarco@dimi.uniud.it) 
+and Roberto Ranon (ranon@dimi.uniud.it) 
+Version: $Id: portlet.css,v 1.1 2007/10/02 23:16:43 clem Exp $
+*/
+
+/* **************************************************************************
+ * Portlet Pane and Frame Tags
+ *
+ * Portlet panes contain one or more portlet frames, where portlet frames
+ * contain elements of presentation organized for some particular reason.
+ * Portlet frames are seperated by "borders" where the color and width of
+ * each border is determined by the bgcolor and cellspacing properties of
+ * table respresenting each portlet frame. Note, however, the separation
+ * between portlet frames is determined by the cellspacing and cellpadding
+ * properties of the table representing the portlet pane.
+ ************************************************************************** */
+
+.portlet-pane {
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  width: 100%;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame {
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  width: 100%;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-actions {
+  background-color: inherit;
+  border: 1px solid #CCCCFF;
+  padding: 0;
+  font-family: inherit;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-info {
+  background-color: inherit;
+  border: 1px solid #CCCCFF;
+  padding: 0;
+  font-family: inherit;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-alert {
+  background-color: inherit;
+  border: 1px solid #CCCCFF;
+  padding: 0;
+  font-family: inherit;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-error {
+  border: 1px solid #CCCCFF;
+  padding: 0;
+  font-family: inherit;
+}
+
+.portlet-frame-title {
+  border: none;
+  font-family: inherit;
+  font-weight: bold;
+  text-align: center;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-header {
+  border: none;
+  font-family: inherit;
+  text-align: center;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-header-checkbox {
+  border: none;
+  font-family: inherit;
+  text-align: center;
+  vertical-align: middle;
+  width: 12px;
+}
+
+.portlet-frame-label {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-label-alert {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-text {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-text-alert {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-input {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-input-alert {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-number {
+  border: none;
+  font-family: inherit;
+  text-align: right;
+  /*font-size: 12px;*/
+}
+
+.portlet-frame-number-alert {
+  border: none;
+  font-family: inherit;
+  text-align: right;
+}
+
+.portlet-frame-entry-checkbox {
+  border: none;
+  font-family: inherit;
+  text-align: center;
+  vertical-align: middle;
+  width: 12px;
+}
+
+
+/* *********************************************
+Font attributes for the "normal" fragment font;
+used to display non-accentuated information
+********************************************* */
+.portlet-font {
+   color:black;
+   background-color:white;
+   font-weight:normal;
+   font-style:normal;
+   font-family:inherit;
+   line-height:normal;
+   text-align:left;
+   text-decoration:none;
+   /*font-size: 12px;*/
+}
+
+/* *********************************************
+Font attributes for the "normal" fragment font
+in lighter color
+********************************************* */
+.portlet-font-dim {
+   color:gray;
+   background-color:white;
+   font-weight:normal;
+   font-style:normal;
+   font-family:inherit;
+   line-height:normal;
+   text-align:left;
+   text-decoration:none;
+}
+
+
+/*^^^^^^^^^^
+   MESSAGES
+  ^^^^^^^^^^*/
+
+/* *********************************************
+  Status of the current operation
+********************************************* */
+.portlet-msg-status {
+   font-family: inherit;
+   font-style: italic;
+   background-color: inherit;
+   font-weight: normal;
+   text-align: left;
+   text-decoration: none;
+   border: none;
+   /*font-size: 12px;*/
+}
+
+
+/* *********************************************
+  Help messages, general additional
+  information, etc.
+********************************************* */
+.portlet-msg-info {
+   font-family: inherit;
+   background-color: inherit;
+   font-style: normal;
+   font-weight: normal;
+   text-align: left;
+   text-decoration: none;
+   /*font-size: 12px;*/
+}
+
+/* *********************************************
+  Error messages
+********************************************* */
+.portlet-msg-error {
+   font-family: inherit;
+   font-variant: small-caps;
+   background-color: inherit;
+   font-style: normal;
+   font-weight: bold;
+   text-align: left;
+   text-decoration: none;
+   border: none;
+}
+
+/* *********************************************
+  Warning messages
+********************************************* */
+.portlet-msg-alert {
+   font-family: inherit;
+   font-variant: small-caps;
+   background-color: inherit;
+   font-style: italic;
+   font-weight: bold;
+   text-align: left;
+   text-decoration: none;
+   border: none;
+}
+
+/* *********************************************
+  Verification of the successful completion
+  of a task
+********************************************* */
+.portlet-msg-success {
+   font-family: inherit;
+   font-variant: small-caps;
+   letter-spacing: 2px;
+   background-color: inherit;
+   font-style: normal;
+   font-weight: bold;
+   text-align: left;
+   text-decoration: none;
+   border: none;
+}
+
+/*^^^^^^^^^^^^
+  SECTIONS
+  ^^^^^^^^^^*/
+
+/* *********************************************
+  Table or section header
+********************************************* */
+.portlet-section-header {
+  border: 1px solid #0053e2;
+  font-family: inherit;
+  text-align: center;
+  /*font-size: 12px;*/
+}
+
+/* *********************************************
+  Normal text in a table cell
+********************************************* */
+.portlet-section-body {
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  /*font-size: 12px;*/
+}
+
+/* *********************************************
+  Text in every other row in the table
+********************************************* */
+.portlet-section-alternate {
+   text-align: left;
+   text-decoration: none;
+   /*font-size: 12px;*/
+}
+
+/* *********************************************
+  Text in a selected cell range
+********************************************* */
+.portlet-section-selected {
+   color: gray;
+   background-color: white;
+   font-weight: normal;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+   border-left: thin  solid black;
+   border-right: thin  solid black;
+   border-bottom: thin  solid black;
+}
+
+/* *********************************************
+  Text of a subheading
+********************************************* */
+.portlet-section-subheader{
+   color: black;
+   background-color: white;
+   font-weight: bold;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: center;
+   text-decoration: none;
+   border-left: thin  solid black;
+   border-right: thin  solid black;
+   border-bottom: double black;
+}
+
+/* *********************************************
+  Table or section footnote
+********************************************* */
+.portlet-section-footer{
+   color: black;
+   background-color: white;
+   font-weight: normal;
+   font-style: italic;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+   border: none;
+}
+
+/* *********************************************
+  Text that belongs to the table but does not
+  fall in any of the previous categories
+  e.g. explanatory or help text that is
+       associated with the section
+********************************************* */
+.portlet-section-text{
+   color: black;
+   background-color: white;
+   font-weight: lighter;
+   font-style: italic;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+   /*border:thin dashed grey;*/
+   border: none;
+}
+
+
+/*^^^^^^^^^^
+  FORMS
+  ^^^^^^^^*/
+
+/* *********************************************
+  Text used for the descriptive label of the
+  whole form (not the labels for fields)
+********************************************* */
+.portlet-form-label{
+   color: black;
+   /* background-color:white;  */
+   font-weight: bold;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+}
+
+/* *********************************************
+  Text of the user-input in an input field
+********************************************* */
+.portlet-form-input-field{
+   color: black;
+   background-color: #FFFFFF;
+   font-weight: normal;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+}
+
+/* *********************************************
+  Text on a button
+********************************************* */
+.portlet-form-button{
+   color: black;
+   /*background-color: inherit;*/
+   font-weight: normal;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: center;
+   text-decoration: none;
+}
+
+/* *********************************************
+  Text that appears beside a context dependent
+  action icon
+********************************************* */
+.portlet-icon-label{
+   color: #B0C4DE;
+   background-color: white;
+   font-weight: normal;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: center;
+   text-decoration: none;
+}
+
+/* *********************************************
+  Text that appears beside a "standard" icon
+  e.g. Ok, Cancel
+********************************************* */
+.portlet-dlg-icon-label{
+   color: #00008B;
+   background-color: white;
+   font-weight: normal;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: center;
+   text-decoration: none;
+}
+
+/* *********************************************
+  Text for a separator of fields
+  e.g. checkboxes
+********************************************* */
+.portlet-form-field-label{
+   color: black;
+   background-color: white;
+   font-weight: normal;
+   font-style: normal;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+}
+
+/* *********************************************
+  Text for a field
+  (not input field, checkboxes)
+********************************************* */
+.portlet-form-field{
+   color: black;
+   background-color: white;
+   font-family: inherit;
+   line-height: normal;
+   text-align: left;
+   text-decoration: none;
+}
+
+/*^^^^^^^^^^^
+   MENUS
+   ^^^^^^^^*/
+
+/* *********************************************
+  General menu settings such as background
+  color, margins, etc.
+
+********************************************* */
+.portlet-menu{
+    width: 100%;
+    border: 1px solid #0053e2;
+    padding: 5px;
+}
+
+/* *********************************************
+  Normal, unselected menu item
+********************************************* */
+.portlet-menu-item{
+
+}
+
+/* *********************************************
+  Selected menu item
+********************************************* */
+.portlet-menu-item-selected{
+}
+
+/* *********************************************
+  Normal, unselected menu item when the
+  mouse hovers over it
+********************************************* */
+.portlet-menu-item-hover{
+}
+
+/* *********************************************
+  Selected menu item when the mouse hovers
+  over it
+********************************************* */
+.portlet-menu-item-hover-selected{
+}
+
+/* *********************************************
+  Normal, unselected menu item that has
+  submenus
+********************************************* */
+.portlet-menu-cascade-item{
+}
+
+/* *********************************************
+  Selected submenu item that has submenus
+********************************************* */
+.porlet-menu-cascade-item-selected{
+}
+
+/* *********************************************
+  Descriptive text for the menu
+  e.g. in a help context below the menu
+********************************************* */
+.portlet-menu-description{
+}
+
+/* *********************************************
+  Menu caption
+********************************************* */
+.portlet-menu-caption{
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* *********************************************
+  Action Tab Pane
+********************************************* */
+
+#actiontabpane {
+  padding: 0;
+  border: 1px solid #0053e2;
+  font-family: inherit;
+  text-align: left;
+}
+
+/* *********************************************
+  Action Tab Menu
+********************************************* */
+
+#actiontabmenu ul {
+  display: block;
+  list-style: none outside;
+  padding: 0;
+  margin: 0 0 0 10px;
+  font-family: Verdana, sans-serif;
+  font-size: x-small;
+}
+
+#actiontabmenu li {
+  padding: 0;
+  margin: 0 4px 0 0;
+  border-top: 1px solid #0053e2;
+  border-right: 1px solid #0053e2;
+  border-left: 1px solid #0053e2;
+  border-bottom: none;
+  font-weight: bold;
+  /* the next 4 lines are magic */
+  display: block;
+  float: left;
+  position: relative;
+  top: -1.32em;
+}
+
+#actiontabmenu a:link,
+#actiontabmenu a:visited {
+  text-decoration: none;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+/* *********************************************
+  Action Tab Selected
+********************************************* */
+
+#actiontabselected li {
+  padding: 0;
+  margin: 0 4px 0 0;
+  border-top: 1px solid #0053e2;
+  border-right: 1px solid #0053e2;
+  border-left: 1px solid #0053e2;
+  border-bottom: none;
+  /* the next 4 lines are magic */
+  display: block;
+  float: left;
+  position: relative;
+  top: -1.32em;
+}
+
+#actiontabselected a:link,
+#actiontabselected a:visited {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+/* *********************************************
+  Action Tab Clear
+********************************************* */
+
+#actiontabclear {
+  display: none;
+}
+
+html>body #actiontabclear {
+  display: block;
+  clear: both;
+}
+
+/* *********************************************
+  Action Body
+********************************************* */
+
+#actionbody {
+  padding: 2px;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+}
