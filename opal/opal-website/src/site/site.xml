@@ -3,6 +3,10 @@
 
     <menu name="Main Menu">
       <item name="Introduction" href="index.html"/>
+      <item name="Contributors" href="contributors.html"/>
+      <item name="Publications" href="publications.html"/>
+      <item name="Opal deployments" href="deployments.html"/>
+      <item name="Documentations" href="documentations.html"/>
       <item name="SF Main page" href="http://sourceforge.net/projects/opaltoolkit/"/>
       <item name="Downloads" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
 <!--      <item name="Features" href="features.html"/>
@@ -10,7 +14,7 @@
       <item name="Configuration" href="configuration.html"/>
       <item name="FAQ" href="faq.html"/> -->
     </menu>
-    <menu ref="reports" collapse="true"/>
+    <menu ref="reports" collapse="false"/>
 
     <links>
       <item name="NBCR" href="http://nbcr.net"/>
@@ -26,6 +30,6 @@
           img="http://maven.apache.org/images/logos/maven-feather.png"/>
   </poweredBy>
 
-  <publishDate position="bottom" format="MM-dd-yy"/>
+  <publishDate position="left" format="MM-dd-yy"/>
 
 </project>

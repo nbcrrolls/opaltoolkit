@@ -24,8 +24,8 @@
   </licenses>
 
   <organization>
-    <name>San Diego Supercomputing Center</name>
-    <url>http://sdsc.edu</url>
+    <name>University of California, San Diego</name>
+    <url>http://ucsd.edu</url>
   </organization>
 
 
@@ -35,7 +35,7 @@
     <developer>
       <id>srikrish</id>
       <name>Sriram Krishnan</name>
-      <email>sriram@sdsc.edu</email>
+      <email>sriram  A T  sdsc.edu</email>
       <url></url>
       <organization>San Diego Supercomputing Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
@@ -43,7 +43,7 @@
     <developer>
       <id>clementl</id>
       <name>Luca Clementi</name>
-      <email>clem@sdsc.edu</email>
+      <email>clem A T sdsc.edu</email>
       <url></url>
       <organization>University of California, San Diego</organization>
       <organizationUrl>http://ucsd.edu/</organizationUrl>
@@ -97,6 +97,13 @@
       <unsubscribe>http://sourceforge.net/mail/?group_id=211778</unsubscribe>
       <post>opaltoolkit-users@lists.sourceforge.net</post>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=opaltoolkit-users</archive>
+    </mailingList>
+    <mailingList>
+      <name>SVN notifications</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=211778</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=211778</unsubscribe>
+      <post>opaltoolkit-opaltoolkit-svnnotification@lists.sourceforge.net</post>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=opaltoolkit-svnnotification</archive>
     </mailingList>
   </mailingLists>
 
