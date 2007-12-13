@@ -5,15 +5,31 @@
     <author email="carnold@apache.org">Curt Arnold</author>
   </properties>  -->
   <body>
-    <section name="About Opal Toolkit">
+    <section name="Organizations">
       <p>
-      Automatic Web service wrappers for scientific applications on Grid resources.
+      The organizations that made possible the development of Opal:
       </p>
-      <p>
-
+      <ul>
+        <li><a href="http://nbcr.net/">National Biomedical Computation Resourcei</a></li>
+        <li><a href="http://www.sdsc.edu/">San Diego Supercompter Center</a></li>
+         <li><a href="http://camera.calit2.net/">CAMERA</a></li>
+        <li><a href="http://www.calit2.net/">CALIT2</a></li>
+      </ul>
+      <p align="center">
+        <img src="images/nbcr_logo.png" alt="NBCR Logo" syle="vertical-align: middle" />
+        <img alt="SDSC Logo" src="images/sdsc_logo.png" syle="vertical-align: middle" />
+        <img alt="CAMERA Logo" src="images/Camera-Logo.jpg" syle="vertical-align: middle" />
+        <img alt="CallIT2 Logo" src="images/logo_calit.gif" syle="vertical-align: middle" />
       </p>
     </section>
-    <section name="News">
+    <section name="Funding Agencies">
+      <p>Funding agencies behind Opal:</p>
+
+      <ul>
+        <li>National Institutes of Health</li>
+        <li>National Science Foundation</li>
+        <li>Gordon and Betty Moore Foundation</li>
+      </ul>
 
     </section>
   </body>

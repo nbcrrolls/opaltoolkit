@@ -37,7 +37,7 @@
     <section name="News">
 
         <iframe src="http://sourceforge.net/export/projnews.php?group_id=211778&amp;limit=20&amp;flat=1&amp;show_summaries=1"
-                 width="100%" frameborder="0"/>
+                 width="100%" frameborder="0" height="400" />
 <!--          style="margin-left: -10px; padding: 0" frameborder="0" scrolling="no"
           width="244" height="136"></iframe>-->
     </section>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Opal deployments</title>
+  </properties>  
+  <body>
+    <section name="Opal deployments">
+      <p>The Opal toolkit has been used to deploy several scientific applications as Web services, 
+      such as Babel, PDB2PQR, QMview, PSize, MEME, LigPrep, etc.  </p>
+      <p>Below a list of deployed serivces running Opal (to be added to this list e-mail clem a t sdsc.edu):</p>
+      <ul>
+        <li><a href="http://rocks-106.sdsc.edu:8080/axis/services">rocks-106.sdsc.edu</a></li>
+        <li><a href="http://ws.nbcr.net:8080/axis-1.2.1/services">ws.nbcr.net</a></li>
+      </ul>
+    </section>
+    <section name="Client applications that use Opal">
+      <p>This is a list of applications that use the Opal Toolkit for the invocation of remote serivces:</p>
+      <ul>
+        <li><a href="http://gemstone.mozdev.org/"><b>Gemstone:</b></a> Many of the web servcies developed using the Opal toolkit is available in the Gemstone application. The installation is simple, and it's a lightweight plugin to the Mozilla Firefox browser.</li>
+        <li><a href="http://www.scripps.edu/~sanner/python/pmv/index.html"><b>PMV:</b></a> The Python Molecular Viewer uses the Opal toolkit to access Viper database and APBS web services hosted by NBCR.</li>
+        <li><a href="http://kepler-project.org/"><b>Kepler:</b></a> The Kepler workflow management software distributes Opal web servcie based workflow examples which couple MEME and MAST based web services.</li>
+        <li><a href="https://nbcr.net:8443/worksphere/start/"><b>My WorkSphere:</b></a> The NBCR portal uses Opal toolkit to expose applications such as MEME as portlets quickly.</li>
+      </ul>
+    </section>
+  </body>
+</document>
+
