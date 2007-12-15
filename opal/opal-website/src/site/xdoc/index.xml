@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <document>
-<!--  <properties>
-    <title>Welcome to Apache Logging Services</title>
-    <author email="carnold@apache.org">Curt Arnold</author>
-  </properties>  -->
   <body>
     <section name="About Opal Toolkit">
       <p>
@@ -29,17 +25,18 @@
  scheduling, standards-based Grid security and data management in an
  easy-to-use and configurable manner.
       </p>
-      <!-- 
-    <p>The products of the Apache Logging Services Project included three logging frameworks: <a href="/log4j">log4j</a>
-    for Java, <a href="/log4cxx">log4cxx</a> for C++ and <a href="/log4net">log4net</a> for the Microsoft .NET framework
-    and a log viewer and analysis tool: <a href="/chainsaw">Chainsaw</a>.</p> -->
+      <h1>Opal in five points:</h1>
+      <ul>
+        <li>Opal hides all the complexity involved in the submission of a computational job to grid </li>
+        <li>Opal exposes serivces with a generic (un-typed) interface</li>
+        <li>Opal serivces share the same WSDL, they all have the same interface</li>
+        <li>Opal supports hot deployment of new services</li>
+        <li>Opal creates working directory and takes care of staging data in and out</li>
+      </ul>
     </section>
     <section name="News">
-
         <iframe src="http://sourceforge.net/export/projnews.php?group_id=211778&amp;limit=20&amp;flat=1&amp;show_summaries=1"
                  width="100%" frameborder="0" height="400" />
-<!--          style="margin-left: -10px; padding: 0" frameborder="0" scrolling="no"
-          width="244" height="136"></iframe>-->
     </section>
   </body>
 </document>
