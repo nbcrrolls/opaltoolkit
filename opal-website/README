@@ -24,7 +24,7 @@ To generate the web site:
   mvn site-deploy
   maven will also copy the file to source forge using scp
 
-
+PS: a good tutorial can be found at: http://www.sonatype.com/book/site-generation.html
 
 
 Clem

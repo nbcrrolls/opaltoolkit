@@ -36,7 +36,6 @@
       <id>srikrish</id>
       <name>Sriram Krishnan</name>
       <email>sriram  A T  sdsc.edu</email>
-      <url></url>
       <organization>San Diego Supercomputing Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
     </developer>
@@ -44,7 +43,20 @@
       <id>clementl</id>
       <name>Luca Clementi</name>
       <email>clem A T sdsc.edu</email>
-      <url></url>
+      <organization>University of California, San Diego</organization>
+      <organizationUrl>http://ucsd.edu/</organizationUrl>
+    </developer>
+    <developer>
+      <id>wgoodman</id>
+      <name>Wes Goodman</name>
+      <email>wgoodman A T ucsd.edu</email>
+      <organization>University of California, San Diego</organization>
+      <organizationUrl>http://ucsd.edu/</organizationUrl>
+    </developer>
+    <developer>
+      <id>j2ren</id>
+      <name>Jane Ren</name>
+      <email>j2ren A T ucsd.edu</email>
       <organization>University of California, San Diego</organization>
       <organizationUrl>http://ucsd.edu/</organizationUrl>
     </developer>
@@ -52,15 +64,22 @@
 
   <contributors>
     <contributor>
-      <name>Some Contributors</name>
-      <email>some.name@gmail.com</email>
-      <url>http://noellemarie.com</url>
-      <organization>Noelle Marie</organization>
-      <organizationUrl>http://noellemarie.com</organizationUrl>
-      <roles>
-        <role>tester</role>
-      </roles>
-      <timezone>-5</timezone>
+      <name>Wilfred Li</name>
+      <email>wilfred A T sdsc.edu</email>
+      <organization>San Diego Supercomputing Center</organization>
+      <organizationUrl>http://sdsc.edu/</organizationUrl>
+    </contributor>
+    <contributor>
+      <name>Peter Arzberger</name>
+      <email>parzberg A T sdsc.edu</email>
+      <organization>San Diego Supercomputing Center</organization>
+      <organizationUrl>http://sdsc.edu/</organizationUrl>
+    </contributor>
+    <contributor>
+      <name>Karan Batia</name>
+      <email>karan A T sdsc.edu</email>
+      <organization>San Diego Supercomputing Center</organization>
+      <organizationUrl>http://sdsc.edu/</organizationUrl>
     </contributor>
   </contributors>
 
