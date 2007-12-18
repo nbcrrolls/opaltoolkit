@@ -72,6 +72,8 @@ public class OpalInfoServlet extends HttpServlet {
             return;
         }
         
+        
+        
         //-------     initializing the DB connection    -----
         java.util.Properties props = new java.util.Properties();
         String propsFileName = "opal.properties";
@@ -89,11 +91,32 @@ public class OpalInfoServlet extends HttpServlet {
             //pointless to go on!!
             return;
         }
+        
+        
+        //getting some more informations
+        if ( props.getProperty("drmaa.use") != null ) {
+            if ( props.getProperty("drmaa.use").equals("true") ) 
+                drmaa = true;
+        }
+        if ( props.getProperty("globus.use") != null ) {
+            if ( props.getProperty("globus.use").equals("true") ) 
+                globus = true;
+        }
+        if ( globus == true ) {
+            globusGatekeeper = props.getProperty("globus.gatekeeper");
+        }
+        
+        
         if (props.getProperty("database.use") != null) {
             if ( props.getProperty("database.use").equals("true") ) {
                 dbUsed = true;
                 initialized = true;
-            }//if
+            } else {
+                //no DB connection, useless to go on 
+                dbManager = new DBManager();
+                initialized = false; 
+                return ;
+            }
         }
         if (props.getProperty("database.url") != null) {
             databaseUrl = props.getProperty("database.url");
@@ -115,18 +138,7 @@ public class OpalInfoServlet extends HttpServlet {
             else initialized = false;
         }//if
         
-        //getting some more informations
-        if ( props.getProperty("drmaa.use") != null ) {
-            if ( props.getProperty("drmaa.use").equals("true") ) 
-                drmaa = true;
-        }
-        if ( props.getProperty("globus.use") != null ) {
-            if ( props.getProperty("globus.use").equals("true") ) 
-                globus = true;
-        }
-        if ( globus == true ) {
-            globusGatekeeper = props.getProperty("globus.gatekeeper");
-        }
+
     }
 
     /**
@@ -154,22 +166,22 @@ public class OpalInfoServlet extends HttpServlet {
         String command = req.getParameter("command");
         RequestDispatcher dispatcher;
         
-        //TODO add a check to the DB
-        if ( (dbManager == null ) || ( !dbManager.isConnected()) ) {
-            String errorMsg = "The connection to the Data Base is not present.</br> " +
-            		"Either you are not using a DB or there are some problem in your configuration file. </br>" +
-            		"Please have a look at the opal WEB_INF/web.xml and WEB-INF/classes/opal.properties. </br>";
-            log.error("We had an error: " + errorMsg);
-            req.setAttribute("error", errorMsg);
-            dispatcher = getServletContext().getRequestDispatcher(ERROR_JSP);
-            try { dispatcher.forward(req, res); }
-            catch (Exception e ) {
-               log.error("Impossible to forward to the error page...Don't know what else I can do....", e);
-            }
-            return;
-        }
 
         if ("statistics".equals(command)) {
+            //let's check if the DB connection is OK
+            if ( (dbManager == null ) || ( !dbManager.isConnected()) ) {
+                String errorMsg = "The connection to the Data Base is not present.</br> " +
+                        "Either you are not using a DB or there are some problem in your configuration file. </br>" +
+                        "Please have a look at the opal WEB_INF/web.xml and WEB-INF/classes/opal.properties. </br>";
+                log.error("We had an error: " + errorMsg);
+                req.setAttribute("error", errorMsg);
+                dispatcher = getServletContext().getRequestDispatcher(ERROR_JSP);
+                try { dispatcher.forward(req, res); }
+                catch (Exception e ) {
+                   log.error("Impossible to forward to the error page...Don't know what else I can do....", e);
+                }
+                return;
+            }
             //Begin and end date
             String startDateStr = req.getParameter("startDate");
             String endDateStr = req.getParameter("endDate");
@@ -194,6 +206,7 @@ public class OpalInfoServlet extends HttpServlet {
             dispatcher = getServletContext().getRequestDispatcher(STATISTICS_JSP);
             dispatcher.forward(req, res);
         } else if ("sysinfo".equals(command)) {
+            //this doesn't exist anymore... Now there is the opal GUI
             dispatcher = getServletContext().getRequestDispatcher(SYSINFO_JSP);
             dispatcher.forward(req, res);
         } else if ("doc".equals(command)) {

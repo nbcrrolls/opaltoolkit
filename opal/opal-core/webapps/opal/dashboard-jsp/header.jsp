@@ -29,7 +29,7 @@
 	onmouseover="FP_swapImg(1,1,/*id*/'img2',/*url*/'images/MainNav/userinfo_on.jpg'); ShowMenu('about');" 
 	onmouseout="FP_swapImgRestore(); ReturnSelected(currentMenu);" /></a></td>
 	<td width="190">
-	<a href="dashboard?command=sysinfo"><img src="images/MainNav/sysinfo_off.jpg" alt="metagenomics" name="img3" width="190" height="13" border="0" id="img3" 
+	<a href="GetServicesList.do"><img src="images/MainNav/sysinfo_off.jpg" alt="metagenomics" name="img3" width="190" height="13" border="0" id="img3" 
 	onmouseover="FP_swapImg(1,1,/*id*/'img3',/*url*/'images/MainNav/sysinfo_on.jpg'); ShowMenu('metagenomics');" 
 	onmouseout="FP_swapImgRestore(); ReturnSelected(currentMenu);" /></a></td>
 	<td width="190">

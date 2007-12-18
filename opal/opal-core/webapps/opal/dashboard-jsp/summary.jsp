@@ -51,8 +51,8 @@
 <table border="0" cellpadding="0" cellspacing="0" width="950" class="boxContainer" align="center">
 <tr>
 <td width="15" height="15" class="boxTopLeft colColor"></td>
-<td class="leftCol boxTop colColor">&nbsp;</td>
-<td class="boxTop colColor">&nbsp;</td><td class="rightCol boxTop colColor">&nbsp;</td>
+<td class="leftCol boxTop colColor"></td>
+<td class="boxTop colColor"></td><td class="rightCol boxTop colColor"></td>
 <td width="15" class="boxTopRight colColor"></td>
 </tr>
 <tr>
@@ -167,7 +167,7 @@
 <li>Feedback</li>
 
 	<ul>
-	<li><!-- <a href="http://grid-devel.sdsc.edu/gd/node/225">Mailing List</a> --></li>
+	<li><a href="http://sourceforge.net/projects/opaltoolkit/">Mailing List</a></li>
 	</ul>
 
 </ul>

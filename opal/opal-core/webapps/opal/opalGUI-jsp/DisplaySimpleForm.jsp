@@ -12,9 +12,11 @@
 <%@page import="java.util.Enumeration"%>
 <html>
 <head>
-<title>Submission form for <bean:write name="appMetadata" property="serviceName" /></title>
-<link rel="stylesheet" type="text/css" href="css/default.css" /> 
-<link rel="stylesheet" type="text/css" href="css/base.css" />
+    <title>Submission form for <bean:write name="appMetadata" property="serviceName" /></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
+    <script language="javascript" type="text/javascript" ></script>
+    <script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
 
 <script language="javascript">
 <!--
@@ -88,5 +90,3 @@ function showHide(layer_ref) {
 
 <br/>
 <jsp:include page="footer.jsp"/>
-</body>
-</html>
