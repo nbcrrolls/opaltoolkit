@@ -15,9 +15,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Refresh" CONTENT="30">
-<title>Job submission result</title>
-<link rel="stylesheet" type="text/css" href="css/default.css" /> 
-<link rel="stylesheet" type="text/css" href="css/base.css" />
+    <title>Job submission result</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
+    <script language="javascript" type="text/javascript" ></script>
+    <script src="js/scripts.js" language="javascript" type="text/javascript" ></script>
 
 <%
 StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
@@ -45,5 +47,4 @@ StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
 
 <br/>
 <jsp:include page="footer.jsp"/>
-</body>
-</html>
+

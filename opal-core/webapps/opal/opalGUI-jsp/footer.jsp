@@ -16,12 +16,46 @@
 --%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<hr/>
+
+
+
 
 <p><html:link action="/GetServicesList">Service List Page.
 </html:link></p>
 
-<p align="center">
-<img alt="SDSC Logo" src="images/sdsc_logo.png" />
-<img alt="UCSD Logo" src="images/ucsd_logo.png" />
-</p>
+
+
+
+
+
+</td>
+
+<td class="colColor boxRight" ></td>
+
+
+<tr>
+<td width="15" height="15" class="boxBottomLeft colColor"></td>
+
+
+<td height="15" class="boxBottom colColor"><br /></td>
+
+<td width="15" height="15" class="boxBottomRight colColor"></td>
+</tr>
+
+</table>
+<!-- END Body -->
+
+<br />
+
+<!-- BEGIN Footer -->
+
+<!-- END Footer -->
+</div>
+</body>
+
+</html>
+
+
+
+
+
