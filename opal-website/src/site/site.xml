@@ -30,7 +30,7 @@ pageTracker._trackPageview();
       <item name="Contributors" href="contributors.html"/>
       <item name="Publications" href="publications.html"/>
       <item name="Opal deployments" href="deployments.html"/>
-      <item name="Documentations" href="documentations.html"/>
+      <item name="Documentation" href="documentation.html"/>
       <item name="SF Main page" href="http://sourceforge.net/projects/opaltoolkit/"/>
       <item name="Downloads" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
 <!--      <item name="Features" href="features.html"/>
