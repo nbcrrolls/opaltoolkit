@@ -24,8 +24,10 @@
 <html>
 <head>
     <title>Opal Based Web Services Available</title>
-    <link rel="stylesheet" type="text/css" href="css/default.css" />
-    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
+    <script language="javascript" type="text/javascript" ></script>
+    <script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
@@ -50,5 +52,4 @@
 </ul>
 
 <jsp:include page="footer.jsp"></jsp:include>
-</body>
-</html>
+
