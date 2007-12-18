@@ -16,7 +16,7 @@
 	currentMenu='home';
 	-->
 	</script>
-	<script src="scripts.js" language="javascript" type="text/javascript" ></script> 
+	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
 <style>
 #title h1 {
 	margin: 30px 0 10px 0;
