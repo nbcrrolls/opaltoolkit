@@ -15,7 +15,7 @@
     <title>Submission form for <bean:write name="appMetadata" property="serviceName" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
-    <script language="javascript" type="text/javascript" ></script>
+    
     <script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
 
 <script language="javascript">

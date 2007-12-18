@@ -30,6 +30,7 @@
   <tr>
     <td>
       <div id="headerLeft" class="alignLeft">Opal Dashboard</div>
+      <div id="headerRight" class="alignRight">  &nbsp; </div>
     </td>
   </tr>
 </table>
