@@ -83,6 +83,7 @@
 <p>Organizations: <a href="http://www.nbcr.net">National Biomedical Computation Resource</a>, 
 <a href="http://www.sdsc.edu">San Diego Supercompter Center</a>,
 <a href="http://www.calit2.net">CALIT2</a></p>
+<a href="http://camera.calit2.net/">CAMERA</a></p>
 <p>Funding Agencies: National Institutes of Health, National Science Foundation, Gordon and Betty Moore Foundation</p>
 </center>
 
