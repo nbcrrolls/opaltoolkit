@@ -137,40 +137,9 @@
 
 <td class="colColor rightColVertBar">
 <div>
-<ul>
-<li>Documentation</li>
-
-	<ul>
-	<li><a href="<%= opalWebsite %>">Opal home</a></li>
-	<li><a href="<%= opalDocumentation %>">Installation instructions</a></li>
-	</ul>
-
-<li>Collaborators</li>
+<a href="http://nbcr.net" ><img src="images/nbcr_logo.png" alt="NBCR logo"/></a>
 
 
-	<ul>
-	<li><a href="http://nbcr.net/">NBCR</a></li>
-	</ul>
-
-	<ul>
-	<li><a href="http://camera.calit2.net/">CAMERA</a></li>
-	</ul>
-
-	<ul>
-	<li><a href="http://geongrid.org/">GEON</a></li>
-	</ul>
-
-	<ul>
-	<li><a href="http://grid-devel.sdsc.edu/">Grid-Devel@SDSC</a></li>
-	</ul>
-
-<li>Feedback</li>
-
-	<ul>
-	<li><a href="http://sourceforge.net/projects/opaltoolkit/">Mailing List</a></li>
-	</ul>
-
-</ul>
 </div>
 </td>
 
