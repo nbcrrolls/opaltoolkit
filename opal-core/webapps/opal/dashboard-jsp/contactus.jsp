@@ -68,8 +68,8 @@
 
 <!-- add content here... -->
 
-<div id="title">
-<p><img src="images/nbcr_logo.gif" width="300"></p>
+<p align="right"><img src="images/nbcr_logo.png" width="300"></p>
+<div id="title" >
 
 <h1>Opal Toolkit</h1>
 </div>
@@ -79,23 +79,29 @@
 <center>
 <p>Opal Contributors: Sriram Krishnan, Luca Clementi, Wes Goodman, Karan Bhatia, </p>
 <p>Wilfred Li, and Peter Arzberger</p>
-<p>Website: <a href="<%= opalWebsite %>"><%= opalWebsite %></a></p>
+<p>Website: <a href="<%= opalWebsite %>">Opal Web Site</a>, <a href="http://sourceforge.net/projects/opaltoolkit/">Opal on SourceForge</a> </p>
 <p>Organizations: <a href="http://www.nbcr.net">National Biomedical Computation Resource</a>, 
 <a href="http://www.sdsc.edu">San Diego Supercompter Center</a>,
 <a href="http://www.calit2.net">CALIT2</a></p>
 <a href="http://camera.calit2.net/">CAMERA</a></p>
-<p>Funding Agencies: National Institutes of Health, National Science Foundation, Gordon and Betty Moore Foundation</p>
+<p>Funding Agencies: National Institutes of Health, National Center for Research Resources , National Science Foundation, Gordon and Betty Moore Foundation</p>
 </center>
 
 </div>
 
-<hr>
+<hr/>
 <center>
-<img src="images/nsf-logo.jpg" align="middle"> <img align="middle" height="35" src="images/moore-logo.gif"><img align="middle" height="50" src="images/nih-logo.jpg" >
+<a href="http://www.nsf.gov/" ><img src="images/nsf-logo.jpg" align="middle"></img></a>
+<a href="http://www.moore.org/" ><img align="middle" height="35" src="images/moore-logo.gif"></img></a>
+<a href="http://www.nih.gov/" ><img align="middle" height="50" src="images/nih-logo.jpg" ></img></a>
+<a href="http://www.ncrr.nih.gov/"> <img align="middle" src="images/ncrr_logo.gif"></img></a>
+<a href="http://camera.calit2.net/"> <img align="middle" src="images/Camera-Logo.jpg"></img></a>
+<a href="http://www.calit2.net"> <img align="middle" src="images/calit_logo.jpg"></img></a>
+<a href="http://www.sdsc.edu"> <img align="middle" src="images/sdsc_logo.png"></img></a>
+
 </center>
 
 </div>
-
 </td>
 
 <td class="boxRight colColor"><br /></td>

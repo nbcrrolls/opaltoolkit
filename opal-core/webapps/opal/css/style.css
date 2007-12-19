@@ -54,7 +54,12 @@ hr {
 .clearBR{ clear: both;}
 .clearLeft{ clear: left;}
 .clearNOBR{ clear: both; padding:0; margin:0; line-height:0}
-h1,h2,h3,h4{font-weight:bold; text-transform:uppercase; margin:0 0 8px 0;}
+h1,h2,h3,h4{
+    font-weight:bold; 
+/*    text-transform:uppercase; */
+    margin:0 0 8px 0;
+}
+
 h1 {font-size:1.5em; line-height:1.25em}
 h2 {font-size:1.3em;}
 h3 {font-size:1.2em;}
@@ -81,6 +86,7 @@ input, select {
 .header {
 	font-family: "Lucida Grande",arial,sans-serif;
 	background-image: url(../images/body_back.jpg);
+        background-position: top center;
 	color: #305D9E;
 	background-repeat: no-repeat;
 	padding: 50px 10px 10px 0px;
