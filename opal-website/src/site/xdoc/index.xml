@@ -3,9 +3,6 @@
   <body>
     <section name="About Opal Toolkit">
       <p>
-      Automatic Web service wrappers for scientific applications on Grid resources.
-      </p>
-      <p>
  The Grid-based infrastructure enables large-scale scientific applications
  to be run on distributed resources and coupled in innovative ways. However,
  in practice, Grid resources are not very easy to use for the end-users who
@@ -25,13 +22,22 @@
  scheduling, standards-based Grid security and data management in an
  easy-to-use and configurable manner.
       </p>
-      <h1>Opal in five points:</h1>
+      <h1>Opal in brief:</h1>
       <ul>
-        <li>Opal hides all the complexity involved in the submission of a computational job to grid </li>
-        <li>Opal exposes serivces with a generic (un-typed) interface</li>
-        <li>Opal serivces share the same WSDL, they all have the same interface</li>
-        <li>Opal supports hot deployment of new services</li>
-        <li>Opal creates working directory and takes care of staging data in and out</li>
+	<li>Opal enables deployment of scientific applications as Web
+        services without having to write a single line of Web services code</li>
+        <li>Opal exposes the scientific functionality through a generic Web
+        services API (via a standard WSDL)</li>
+        <li>Opal hides the complexity involved in the submission of
+        computational jobs to Grid resources</li>
+        <li>Opal manages user data, which includes creation of working
+        directories, input and output data staging, and persistent storage
+        for job information and metadata</li>
+	<li>Opal services can be configured with GSI-based security for
+        authentication and authorization purposes</li>
+	<li>Opal services can be accessed from a multitude of languages
+        (Java, Python, Perl, JavaScript) and plaforms (Windows, various
+        Unix flavors)</li>
       </ul>
     </section>
     <section name="News">
