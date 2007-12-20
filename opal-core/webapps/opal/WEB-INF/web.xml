@@ -47,7 +47,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     </context-param>
     <context-param>
        <param-name>OPAL_WEB_SITE</param-name>
-       <param-value>http://opaltoolkit.sourceforge.net/</param-value>
+       <param-value>http://nbcr.net/software/opal/</param-value>
     </context-param>
     <context-param>
        <param-name>OPAL_DOC</param-name>
