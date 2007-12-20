@@ -29,9 +29,9 @@ pageTracker._trackPageview();
       <item name="Introduction" href="index.html"/>
       <item name="Contributors" href="contributors.html"/>
       <item name="Publications" href="publications.html"/>
-      <item name="Opal deployments" href="deployments.html"/>
+      <item name="Opal deployment" href="deployment.html"/>
       <item name="Documentation" href="documentation.html"/>
-      <item name="SF Main page" href="http://sourceforge.net/projects/opaltoolkit/"/>
+      <item name="Opal @ Sourceforge" href="http://sourceforge.net/projects/opaltoolkit/"/>
       <item name="Downloads" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
 <!--      <item name="Features" href="features.html"/>
       <item name="Installation" href="installation.html"/>
@@ -43,7 +43,7 @@ pageTracker._trackPageview();
     <links>
       <item name="NBCR" href="http://nbcr.net"/>
       <item name="SDSC" href="http://www.sdsc.edu"/>
-      <item name="AXIS" href="http://ws.apache.org/axis/"/>
+      <item name="Camera" href="http://camera.calit2.net/"/>
     </links>
   </body>
 
