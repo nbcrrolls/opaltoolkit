@@ -23,16 +23,21 @@
 
 <html>
 <head>
-    <title>Opal Based Web Services Available</title>
+    <title>Available Applications</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
     
     <script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
+    <script language="javascript" type="text/javascript" >
+    <!--
+    currentMenu='home';
+    -->
+    </script>
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
-<h1>Opal Based Web Services Available</h1>
-<p>Click on one of the available services to get a submission form</p>
+<h2>List of applications:</h2>
+<p>Click on one of the applications to get a submission form</p>
 
 <ul>
 <nested:iterate id="service" name="servicesList" indexId="indexService">
@@ -41,15 +46,18 @@
     OPALService opalService =  (OPALService) service;
     String url = opalService.getURL();
 %>
-<li style="font-size: large"> <a href="CreateSubmissionForm.do?serviceURL=<%= java.net.URLEncoder.encode(url)  %>"> <bean:write name="service" property="serviceName" /></a></li>
-<!-- <html:form action="CreateSubmissionForm" method="GET">
-    <p>Service <bean:write name="service" property="serviceName" /> <br/><html:submit value="Invoke it"></html:submit>
-    </p>
-    <html:hidden property="serviceURL" value="<%= url %>"></html:hidden>
-</html:form>  -->
+<li style="font-size: large"> <a href="CreateSubmissionForm.do?serviceURL=<%= java.net.URLEncoder.encode(url)  %>"> <bean:write name="service" property="serviceName" /></a> 
+<% 
+if (opalService.getComplexForm()){%>
+*
+<%}
+if (opalService.getDescription() != null ) {  %>
+- <bean:write name="service" property="description" />
+<% } %>
+</li>
 
 </nested:iterate>
 </ul>
-
+<p style="font-size: smaller">*: a customized submission form is avaiable for this application</p>
 <jsp:include page="footer.jsp"></jsp:include>
 

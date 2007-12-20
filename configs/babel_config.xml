@@ -1,7 +1,7 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
 	   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata>
-    <usage><![CDATA[./babel [-i<input-type>] <name> [-o<output-type>] <name>]]></usage>
+    <usage><![CDATA[Open Babel is a command line utility designed to interconvert between many file formats used in molecular modeling, computational chemistry, and many related areas]]></usage>
     <info xsd:type="xsd:string">
       <![CDATA[
 	       Open Babel 1.100.2 -- Mar 18 2005 -- 01:20:56

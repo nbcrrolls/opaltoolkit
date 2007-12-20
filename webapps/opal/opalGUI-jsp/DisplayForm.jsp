@@ -69,7 +69,7 @@ function selectElement(element, groupId){
 <jsp:include page="header.jsp"/>
 
 <br/>
-    <h1>Submission form for <bean:write name="appMetadata" property="serviceName" /></h1>
+    <h2>Submission form for <bean:write name="appMetadata" property="serviceName" /></h2>
 <br/>
 
 <html:form action="LaunchJob.do" enctype="multipart/form-data" >
@@ -181,7 +181,7 @@ function selectElement(element, groupId){
 <span style="text-decoration: underline; " onclick="showHide('help')">Show/Hide help</span>
 
 <div id="help" style="display: none;">
-    <p class="manual" >Command line:</br><pre> <bean:write name="appMetadata" property="usage"/> </pre> </p>
+    <p class="manual" >Application Description: <bean:write name="appMetadata" property="usage"/></p>
     <logic:notEmpty name="appMetadata" property="info">
     <p class="manual" >Usage Info:</br>
         <logic:iterate id="infoString" name="appMetadata" property="info"> 

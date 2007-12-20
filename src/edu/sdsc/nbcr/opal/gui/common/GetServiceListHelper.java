@@ -26,6 +26,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import sun.util.logging.resources.logging;
+
 import edu.sdsc.nbcr.opal.AppMetadataInputType;
 import edu.sdsc.nbcr.opal.AppMetadataType;
 import edu.sdsc.nbcr.opal.AppServiceLocator;
@@ -47,7 +49,7 @@ import edu.sdsc.nbcr.opal.AppServicePortType;
  */
 public class GetServiceListHelper {
 
-    protected static Log log = LogFactory.getLog(AdminClient.class.getName());
+    protected static Log log = LogFactory.getLog(GetServiceListHelper.class.getName());
     protected Call call;
     private String baseURL;
 	
@@ -149,8 +151,8 @@ public class GetServiceListHelper {
     
     
     /** 
-     * I  check the the service node is a valid Opal service, to do this I just look that between the operations 
-     * there is a getAppConfing operation
+     * I  check the the service node is a valid Opal service, to do this I 
+     * just look that between the operations there is a getAppConfing operation
      * 
      * @param service
      * @return true if it is a valid Opal Serivce node
@@ -191,12 +193,21 @@ public class GetServiceListHelper {
             }
             //setting general info
             String serviceName = amt.getAppName();
+            String description = amt.getUsage();
+            serviceList[i].setDescription(description);
             if ( serviceName != null ) {
                 serviceList[i].setServiceName(serviceName);
+                
             }else {
                 // if the service name is not specified let's use the service ID
                 serviceList[i].setServiceName(serviceList[i].getServiceID());
             }
+            
+            if ( (amt.getTypes() == null) || ((amt.getTypes().getTaggedParams() == null) && (amt.getTypes().getUntaggedParams() == null)) ) 
+                serviceList[i].setComplexForm(false);
+            else 
+                serviceList[i].setComplexForm(true);
+            
             
         }//for
         return true;

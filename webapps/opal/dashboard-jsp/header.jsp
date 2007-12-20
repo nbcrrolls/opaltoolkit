@@ -5,12 +5,7 @@
 <table border="0" class="header" cellpadding="0" cellspacing="0"  align="center">
   <tr>
     <td>
-	<div id="headerLeft" class="alignLeft">
-	Opal Dashboard
-	</div>
-	<div id="headerRight" class="alignRight">
-		Opal server host: <%= systemServerHostname %>
-    	</div>
+	  <div id="headerLeft" class="alignLeft">Opal Dashboard</div>
     </td>
   </tr>
 </table>

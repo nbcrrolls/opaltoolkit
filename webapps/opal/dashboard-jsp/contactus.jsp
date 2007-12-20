@@ -68,7 +68,7 @@
 
 <!-- add content here... -->
 
-<p align="right"><img src="images/nbcr_logo.png" width="300"></p>
+<p align="right"><img src="images/nbcr_logo.png" /></p>
 <div id="title" >
 
 <h1>Opal Toolkit</h1>
@@ -80,11 +80,13 @@
 <p>Opal Contributors: Sriram Krishnan, Luca Clementi, Wes Goodman, Karan Bhatia, </p>
 <p>Wilfred Li, and Peter Arzberger</p>
 <p>Website: <a href="<%= opalWebsite %>">Opal Web Site</a>, <a href="http://sourceforge.net/projects/opaltoolkit/">Opal on SourceForge</a> </p>
+<!-- 
 <p>Organizations: <a href="http://www.nbcr.net">National Biomedical Computation Resource</a>, 
 <a href="http://www.sdsc.edu">San Diego Supercompter Center</a>,
 <a href="http://www.calit2.net">CALIT2</a></p>
-<a href="http://camera.calit2.net/">CAMERA</a></p>
+<a href="http://camera.calit2.net/">CAMERA</a></p>  
 <p>Funding Agencies: National Institutes of Health, National Center for Research Resources , National Science Foundation, Gordon and Betty Moore Foundation</p>
+ -->
 </center>
 
 </div>

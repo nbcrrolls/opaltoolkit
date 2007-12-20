@@ -1,9 +1,11 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata appName="Tomtom">
-    <usage><![CDATA[tomtom [options] -query <query file> -target <target file> ]]></usage>
+    <usage><![CDATA[The tom-tom program searches one or more query motifs against a database of target motifs, and reports for each query a list of target motifs, ranked by E-value]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
+   tomtom [options] -query <query file> -target <target file> 
+
    Options:
      -ethresh <float>           E-value cutoff for alignments; default: 10
      -dist allr|pearson|rms|kullback|sandelin

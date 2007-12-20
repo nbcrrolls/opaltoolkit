@@ -1,9 +1,11 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata appName="PDB2PQR">
-    <usage><![CDATA[python pdb2pqr.py [options] --ff={forcefield} {path} {output-path} ]]></usage>
+    <usage><![CDATA[PDB2PQR is a Python software package that automates many of the common tasks of preparing structures for continuum electrostatics calculations, providing a platform-independent utility for converting protein files in PDB format to PQR format]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
+         python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
+ 
          The required arguments are as follows:
          
          <forcefield>
