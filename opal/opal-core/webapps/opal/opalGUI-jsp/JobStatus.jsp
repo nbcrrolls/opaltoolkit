@@ -30,7 +30,7 @@ StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
 <body>
 <jsp:include page="header.jsp"/>
 <br/>
-    <h1>Submission results for <bean:write name="appMetadata" property="serviceName" /></h1>
+    <h2>Submission results for <bean:write name="appMetadata" property="serviceName" /></h2>
 <br/>
 
 <table cellspacing="10">

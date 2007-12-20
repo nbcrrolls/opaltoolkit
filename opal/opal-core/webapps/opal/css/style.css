@@ -86,7 +86,7 @@ input, select {
 .header {
 	font-family: "Lucida Grande",arial,sans-serif;
 	background-image: url(../images/body_back.jpg);
-        background-position: top center;
+        background-position: top right;
 	color: #305D9E;
 	background-repeat: no-repeat;
 	padding: 50px 10px 10px 0px;

@@ -23,8 +23,7 @@
 <html:html>
     <head>
         <title>Unexpected Error</title>
-        <link rel="stylesheet" type="text/css" href="css/default.css" /> 
-        <link rel="stylesheet" type="text/css" href="css/base.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" /> 
         <html:base/>
     </head>
     <body>

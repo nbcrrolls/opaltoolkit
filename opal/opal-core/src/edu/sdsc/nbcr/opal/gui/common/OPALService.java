@@ -4,8 +4,11 @@ public class OPALService {
     private String serviceName;
     private String serviceID;
     private String URL;
-    
-    
+    //textual description of the service 
+    private String description;
+    //true if this serivce support the complex submission form
+    private Boolean complexForm;
+
     public OPALService(){
     	URL = null;
     	serviceName = null;
@@ -42,6 +45,14 @@ public class OPALService {
 		this.serviceID = serviceID;
 	}
 	
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+	
 	
 	/** return a string containing a debugging of the OPALSerivce
 	 *  array.
@@ -54,4 +65,12 @@ public class OPALService {
 	    }
 	    return ret;
 	}//arrayToString
+
+    public Boolean getComplexForm() {
+        return complexForm;
+    }
+
+    public void setComplexForm(Boolean complexForm) {
+        this.complexForm = complexForm;
+    }
 }

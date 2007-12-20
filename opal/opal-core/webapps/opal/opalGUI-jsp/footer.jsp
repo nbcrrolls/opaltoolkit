@@ -17,17 +17,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-
-
-
-<p><html:link action="/GetServicesList">Service List Page.
-</html:link></p>
-
-
-
-
-
-
 </td>
 
 <td class="colColor boxRight" ></td>
