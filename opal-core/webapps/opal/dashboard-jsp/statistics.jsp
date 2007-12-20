@@ -13,9 +13,24 @@
 
  	<link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
 	<script language="javascript" type="text/javascript" >
-	<!--
-	currentMenu='home';
-	-->
+
+function uncheckAll(){
+
+    var selectedElem = document.getElementsByName("servicesName");
+    for (i in selectedElem){
+        selectedElem[i].checked=false;
+    }//for
+    
+}
+
+function checkAll(){
+
+    var selectedElem = document.getElementsByName("servicesName");
+    for (i in selectedElem){
+        selectedElem[i].checked=true;
+    }//for  
+}	
+
 	</script>
 	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
 </head>
@@ -76,6 +91,9 @@
         <td colspan="2" class="leftCol boxBody colColor" align="right">
         Select the service you want to display:</td>
     </tr>
+    <tr>
+        <td colspan="2" class="leftCol boxBody colColor" align="right"><input type=button name="CheckAll" value="Check All" onClick="checkAll()"/> <input type=button name="UnCheckAll" value="Uncheck All" onClick="uncheckAll()"> </td>
+    </tr>
 <%
    for ( int i = 0; i < servicesName.length; i++ ) {
 %>
@@ -94,8 +112,9 @@
    }
 %>
     <tr>
-        <td colspan="2" class="leftCol boxBody colColor" align="right"><input type="submit" value="Upade charts"/></td>
+        <td colspan="2" class="leftCol boxBody colColor" align="right"><br/><input type="submit" value="Upade charts"/></td>
     </tr>
+    
 </table>
 </form>
 </td>
