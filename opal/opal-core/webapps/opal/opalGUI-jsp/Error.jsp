@@ -21,12 +21,14 @@
 <%@ page import="org.apache.struts.Globals" %>
 <%@ page import="edu.sdsc.nbcr.opal.gui.common.Constants;" %>
 <html:html>
-    <head>
-        <title>Unexpected Error</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css" /> 
-        <html:base/>
-    </head>
-    <body>
+  <head>
+    <title>Unexpected Error</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="js/scripts.js" language="javascript" type="text/javascript" ></script>
+
+  </head>
+  <body>
     <jsp:include page="header.jsp"/>
     
     <h3>An unexpected error has occured</h3>
@@ -44,5 +46,5 @@
 
     <jsp:include page="footer.jsp"/>
 
-    </body>
+  </body>
 </html:html>
