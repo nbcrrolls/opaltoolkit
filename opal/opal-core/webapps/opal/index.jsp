@@ -47,6 +47,10 @@
 <ul>
 
   <li>
+     <a href="dashboard">Dashboard</a> - Check out the new Opal Dashboard (since version 1.9)
+  </li>
+
+  <li>
     <%
       out.print("<a href=\""+ getMessage("validationURL") +"\">");
       out.print(getMessage("validation") +"</a> - ");
@@ -71,12 +75,6 @@
     %>
   </li>
 
-  <li>
-     <a href="dashboard">Dashboard</a> - If you are using an external data base check out the new Opal Dashboard
-  </li>
-  <li>
-     <a href="GetServicesList.do">Opal GUI</a> - Web-based GUI to invoke Opal serivces
-  </li>
 
 </ul>
 
