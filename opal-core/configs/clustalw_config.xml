@@ -1,9 +1,11 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata>
-    <usage><![CDATA[./clustalw [opts]]]></usage>
+    <usage><![CDATA[]]></usage>
     <info xsd:type="xsd:string">
 <![CDATA[
+     ./clustalw [opts]
+
                 DATA (sequences)
 
 -INFILE=file.ext                             :input sequences.
