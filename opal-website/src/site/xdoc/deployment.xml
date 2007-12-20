@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <document>
   <properties>
-    <title>Opal deployments</title>
+    <title>Opal deployment</title>
   </properties>  
   <body>
-    <section name="Opal deployments">
+    <section name="Opal deployment">
       <p>The Opal toolkit has been used to deploy several scientific applications as Web services, 
       such as Babel, PDB2PQR, QMview, PSize, MEME, LigPrep, etc.  </p>
       <p>Below a list of deployed serivces running Opal (to be added to this list e-mail clem a t sdsc.edu):</p>
