@@ -1,8 +1,4 @@
-<%--
- copy the license here
 
- 
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -104,7 +100,7 @@ function selectElement(element, groupId){
                         <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>', 'group<%=indexGroup%>')"/>
                         </logic:equal>
                         <!-- END radio box -->
-	                <nested:checkbox name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" /><nested:write name="param" property="textDesc"/>
+	                <nested:checkbox name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" /><nested:write  filter="false" name="param" property="textDesc"/>
                     <nested:equal value="true" name="param" property="required">*</nested:equal>
 	                </td>
 	            </nested:equal>
@@ -117,7 +113,7 @@ function selectElement(element, groupId){
     	                <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].file"%>', 'group<%=indexGroup%>')" /> 
     	                </logic:equal>
     	                <!-- END radio box -->
-	                <nested:write name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td>
+	                <nested:write  filter="false" name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td>
 	                <td><nested:file name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].file"%>" size="30"/></td>
 	            </nested:equal></nested:equal>
 	            <nested:equal value="STRING" name="param" property="type"> <nested:notEmpty name="param" property="values">
@@ -129,7 +125,7 @@ function selectElement(element, groupId){
 	                   <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>', 'group<%=indexGroup%>')"/> 
 	                   </logic:equal>
 	                   <!-- END radio box -->
-	               <nested:write name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td><td>
+	               <nested:write  filter="false" name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td><td>
 	               <nested:iterate id="valueRadio" name="param" property="values" >
 	                   <br/>
 	                   <html:radio name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" value="<%= valueRadio.toString() %>"/>
@@ -146,7 +142,7 @@ function selectElement(element, groupId){
 	                   <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>', 'group<%=indexGroup%>')"/> 
 	                   </logic:equal>
 	                   <!-- END radio box -->
-	               <nested:write name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td>
+	               <nested:write  filter="false" name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td>
 	               <td><nested:text name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" size="40"/></td> 
 	            <% } %>            
 	            <% testCond = false; %>
@@ -164,7 +160,7 @@ function selectElement(element, groupId){
 	               <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argFlags[" + indexFlag + "].selected"%>', 'group<%=indexGroup%>')"/>
 	               </logic:equal>
 	               <!-- END radio box -->
-	            <nested:checkbox styleClass="<%="group" + indexGroup%>" name="appMetadata" property="<%="groups[" + indexGroup + "].argFlags[" + indexFlag + "].selected"%>" /> <nested:write name="flag" property="textDesc"/></td>
+	            <nested:checkbox styleClass="<%="group" + indexGroup%>" name="appMetadata" property="<%="groups[" + indexGroup + "].argFlags[" + indexFlag + "].selected"%>" /> <nested:write filter="false" name="flag" property="textDesc"/></td>
 	        </tr>
 	    </nested:iterate></logic:notEmpty>
 	    <!-- END flag -->
