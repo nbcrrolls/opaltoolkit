@@ -46,7 +46,7 @@
     OPALService opalService =  (OPALService) service;
     String url = opalService.getURL();
 %>
-<li style="font-size: large"> <a href="CreateSubmissionForm.do?serviceURL=<%= java.net.URLEncoder.encode(url)  %>"> <bean:write name="service" property="serviceName" /></a> 
+<li> <a style="font-size: large" href="CreateSubmissionForm.do?serviceURL=<%= java.net.URLEncoder.encode(url)  %>"> <bean:write name="service" property="serviceName" /></a> 
 <% 
 if (opalService.getComplexForm()){%>
 *
