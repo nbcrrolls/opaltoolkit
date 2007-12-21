@@ -177,14 +177,14 @@
                 <paramType>FILE</paramType>
                 <ioType>INPUT</ioType>
                 <!--  <required>true</required>   -->
-                <textDesc>The PDB input file.</textDesc>
+                <textDesc><![CDATA[ The PDB input file (for testing you can download <a href="http://www.rcsb.org/pdb/files/1a1p.pdb">http://www.rcsb.org/pdb/files/1a1p.pdb</a>)]]></textDesc>
             </param>
             <param>
                 <id>inId</id>
                 <paramType>STRING</paramType>
                 <ioType>INPUT</ioType>
                 <!--  <required>true</required>   -->
-                <textDesc>The ID to use to retrive the input file from the PDB archive</textDesc>
+                <textDesc>The ID to use to retrive the input file from the PDB archive (for testing use '1a1p')</textDesc>
             </param>
             <param>
                 <id>output-file</id>
