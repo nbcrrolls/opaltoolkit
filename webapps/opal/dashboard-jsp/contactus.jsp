@@ -77,29 +77,48 @@
 <div id="page">
 
 <center>
-<p>Opal Contributors: Sriram Krishnan, Luca Clementi, Wes Goodman, Karan Bhatia, </p>
-<p>Wilfred Li, and Peter Arzberger</p>
-<p>Website: <a href="<%= opalWebsite %>">Opal Web Site</a>, <a href="http://sourceforge.net/projects/opaltoolkit/">Opal on SourceForge</a> </p>
-<!-- 
-<p>Organizations: <a href="http://www.nbcr.net">National Biomedical Computation Resource</a>, 
-<a href="http://www.sdsc.edu">San Diego Supercompter Center</a>,
-<a href="http://www.calit2.net">CALIT2</a></p>
-<a href="http://camera.calit2.net/">CAMERA</a></p>  
-<p>Funding Agencies: National Institutes of Health, National Center for Research Resources , National Science Foundation, Gordon and Betty Moore Foundation</p>
- -->
-</center>
+<p>Opal Contributors: Sriram Krishnan, Luca Clementi, Wes Goodman, 
+Jane Ren, Karan Bhatia, Wilfred Li, and Peter Arzberger</p>
 
+<p>Website: <a href="<%= opalWebsite %>">Opal Web Site</a>, 
+<a href="http://sourceforge.net/projects/opaltoolkit/">Opal at SourceForge</a>,
+<a href="<%= opalWebsite %>/documentation.html">Opal Documentation</a> </p>
+
+<p>Support: <a href="mailto:support@nbcr.net">NBCR Support mailing list</a>, 
+<a href="http://sourceforge.net/mail/?group_id=211778">Opal mailing list</a>, 
+<a href="https://www.nbcr.net/forum/">NBCR Forum</a></p>
+
+<p>Opal use cases:
+<a href="http://meme.nbcr.net/">MEME Website</a>,
+<a href="http://nbcr.net/pdb2pqr">NBCR PDB2PQR Website</a>,
+<a href="http://camera.calit2.net/">Camera</a></p>
+
+<p>Pubblications:<br/> 
+ <b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b>
+ Luca Clementi, Zhaohui Ding, Sriram Krishnan, Xiaohui Wei, Peter W. Arzberger, and Wilfred Li. GCE07, Grid Computing Environments Workshop (Supercomputing 2007), November 2007 
+ <a class="externalLink" href="http://www.collab-ogce.org/gce07/index.php/Main_Page">Conference Website</a>
+ <br/>
+ <b>Opal: Simple Web Services Wrappers for Scientific Applications.</b>
+ Sriram Krishnan, Brent Stearn, Karan Bhatia, Kim K. Baldridge, Wilfred Li, and Peter Arzberger. In proceedings of ICWS 2006, IEEE International Conference on Web Services, September 2006 
+ <a href="http://nbcr.net/software/opal/publications/SDSC-TR-2006-5-opal.pdf">pdf</a>
+ <br/>
+ <b>An End-to-end Web Services-based Infrastructure for Biomedical Applications.</b>
+ Sriram Krishnan, Kim Baldridge, Jerry Greenberg, Brent Stearn, and Karan Bhatia. In proceedings of Grid 2005, 6th IEEE/ACM International Workshop on Grid Computing, November 2005 
+ <a href="http://nbcr.net/software/opal/publications/grid2005.pdf">pdf</a>
+</p>
+
+</center>
 </div>
 
 <hr/>
 <center>
 <a href="http://www.nsf.gov/" ><img src="images/nsf-logo.jpg" align="middle"></img></a>
-<a href="http://www.moore.org/" ><img align="middle" height="35" src="images/moore-logo.gif"></img></a>
+<a href="http://www.moore.org/" ><img align="middle" src="images/moore-logo.gif"></img></a>
 <a href="http://www.nih.gov/" ><img align="middle" height="50" src="images/nih-logo.jpg" ></img></a>
-<a href="http://www.ncrr.nih.gov/"> <img align="middle" src="images/ncrr_logo.gif"></img></a>
-<a href="http://camera.calit2.net/"> <img align="middle" src="images/Camera-Logo.jpg"></img></a>
+<a href="http://www.ncrr.nih.gov/"> <img align="middle" src="images/ncrr_logo.jpg"></img></a>
+<a href="http://camera.calit2.net/"> <img align="middle" height="50" src="images/Camera-Logo.jpg"></img></a>
 <a href="http://www.calit2.net"> <img align="middle" src="images/calit_logo.jpg"></img></a>
-<a href="http://www.sdsc.edu"> <img align="middle" src="images/sdsc_logo.png"></img></a>
+<a href="http://www.sdsc.edu"> <img align="middle" src="images/SDSC-logo-red.gif"></img></a>
 
 </center>
 
