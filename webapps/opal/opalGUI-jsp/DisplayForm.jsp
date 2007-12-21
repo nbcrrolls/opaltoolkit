@@ -77,7 +77,7 @@ function selectElement(element, groupId){
     <!-- BEGIN iteration over groups -->
     <logic:notEmpty name="appMetadata" property="groups"> <nested:iterate id="group" name="appMetadata" property="groups" indexId="indexGroup">
 	    <tr>
-	        <td colspan="2"><br/><span class="groupTitle"><nested:write property="textDesc"/></span></td>
+	        <td colspan="2"><br/><span class="groupTitle"><nested:write filter="false" property="textDesc"/></span></td>
 	    </tr>
 	    <nested:equal value="true" name="group" property="exclusive" > <% exclusiveGroup = true; %> </nested:equal>
 	    

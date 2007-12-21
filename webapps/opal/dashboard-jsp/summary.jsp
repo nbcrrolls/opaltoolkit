@@ -136,15 +136,30 @@
 </td>
 
 <td class="colColor rightColVertBar">
+
+<table>
+<tr><td valign="top">
 <div>
-<a href="http://nbcr.net" ><img src="images/nbcr_logo.png" alt="NBCR logo"/></a>
-
-
+<p><b>Opal:</b> an automatic Web service wrappers for scientific applications on Grid resources.</p><br/>
+<p style="font-size: smaller">BSD License</p>
 </div>
+</td></tr>
+<tr><td valign="bottom">
+<div>
+<a href="http://nbcr.net" ><img src="images/nbcr_logo.png" alt="NBCR logo"/></a><br/>
+&#169; UC Regents 2005-2007
+</div>
+</td></tr>
+</table>
+
+
 </td>
+
+
 
 <td class="boxRight colColor"><br /></td>
 </tr>
+
 <tr>
 <td width="15" height="15" class="boxBottomLeft colColor"></td>
 <td class="leftCol boxBottom colColor"><br /></td>
