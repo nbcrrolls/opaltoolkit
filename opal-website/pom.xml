@@ -12,12 +12,12 @@
   <name>Opal Toolkit</name>
   <description>Automatic Web service wrappers for scientific applications on Grid resources</description>
   <inceptionYear>2007</inceptionYear>
-  <url>http://opaltoolkit.sourgeforge.net/</url>
+  <url>http://nbcr.net/software/opal/</url>
 
   <licenses>
     <license>
       <name>BSD License</name>
-      <url>http://opaltoolkit.sourceforge.net/LICENSE.txt</url>
+      <url>http://nbcr.net/software/opal/LICENSE.txt</url>
       <distribution>manual</distribution>
       <comments>Opal Toolkit is realeased under the BSD License</comments>
     </license>
@@ -219,9 +219,9 @@ you have to create a ~/.m2/settings.xml file with the follwing content
     </extensions>
   </build>
 
-  <dependencyManagement>
+ <!--  <dependencyManagement>
     <dependencies>
-<!--      <dependency>
+     <dependency>
         <groupId>xalan</groupId>
         <artifactId>xalan</artifactId>
         <version>${xalan-version}</version>
@@ -230,16 +230,16 @@ you have to create a ~/.m2/settings.xml file with the follwing content
         <groupId>com.thoughtworks.qdox</groupId>
         <artifactId>qdox</artifactId>
         <version>${qdox-version}</version>
-      </dependency>  -->
+      </dependency> 
     </dependencies>
-  </dependencyManagement>
+  </dependencyManagement> -->
   
-  <dependencies>
-<!--    <dependency>
+ <!--  <dependencies>
+   <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-    </dependency>  -->
-  </dependencies>
+    </dependency> 
+  </dependencies> -->
 
 </project>
