@@ -14,19 +14,30 @@
         <li><a href="docs/index.html">Installation Guide</a>: This is the main 
           documentation and also the one you should use if you are trying to 
           started with Opal</li>
-        <li><a href="docs/database.html">Opal State Database</a>: this document explains 
+        <li><a href="docs/database.html">Opal Service Monitor Database</a>: this document explains 
           how to set up an external Data Base to store Opal invocation logs</li>
-        <li><a href="docs/security.html">Opal GSI</a>: this document explains 
+        <li><a href="docs/security.html">Security for Opal Based Services</a>: this document explains 
           how to configure Opal so that it supports GSI authentication</li>
         <li><a href="docs/scheduler.html">Opal Scheduler</a>: this document explains 
           how to configure Opal in order to submit job using either a local scheduler 
           with DRMAA or using Globus to access remote schedulers</li>
-        <li><a href="docs/autointerface.html">Opal GUI</a>: this document explains the 
-          usage and set up of this new feature just released in Opal 1.9. The Opal GUI 
+        <li><a href="docs/autointerface.html">Dinamic Interface Generation for Opal</a>: this document explains the 
+          usage and set up of this new feature just released in Opal 1.9. The DIG Opal  
           supports the authomatic generation of submission form customized on the input 
           arguments of the underlining service</li>
-        <li><a href="docs/faq.txt">FAQ</a>: the usual FAQ</li>
+<!--        <li><a href="docs/faq.txt">FAQ</a>: the usual FAQ</li>-->
       </ul>
+    </section>
+    <section name="Support">
+      <p>
+        To get support with Opal:
+      </p>
+      <ul>
+        <li><a href="mail-lists.html">Opal mailing lists</a></li>
+        <li><a href="mailto:support@nbcr.net">NBCR mailing list</a></li>
+        <li><a href="https://www.nbcr.net/forum/">NBCR Forum</a></li>
+      </ul>
+
     </section>
   </body>
 </document>

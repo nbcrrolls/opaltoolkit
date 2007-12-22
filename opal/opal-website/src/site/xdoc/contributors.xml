@@ -24,14 +24,21 @@
     </section>
     <section name="Funding Agencies">
       <p>Funding agencies behind Opal:</p>
-
       <ul>
         <li>National Institutes of Health</li>
+        <li>National Center for Research Resources</li>
         <li>National Science Foundation</li>
         <li>Gordon and Betty Moore Foundation</li>
         <li>National Center for Research Resources</li>
       </ul>
-
+    </section>
+    <section name="Developers and Affiliations">
+      <ul>
+        <li>Sriram Krishnan: sriram A T sdsc.edu, lead developer</li>
+        <li>Luca Clementi: clem A T sdsc.edu, Opal GUI</li>
+        <li>Wes Goodman: wgoodman A T ucsd.edu, Perl and Python clients</li>
+        <li>Jane Ren: j2ren A T ucsd.edu, Opal Rocks Roll</li>
+      </ul>
     </section>
   </body>
 </document>

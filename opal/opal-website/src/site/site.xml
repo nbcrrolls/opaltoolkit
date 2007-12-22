@@ -29,10 +29,11 @@ pageTracker._trackPageview();
       <item name="Introduction" href="index.html"/>
       <item name="Contributors" href="contributors.html"/>
       <item name="Publications" href="publications.html"/>
-      <item name="Opal deployment" href="deployment.html"/>
+      <item name="Opal Use Cases" href="deployment.html"/>
       <item name="Documentation" href="documentation.html"/>
+<!--      <item name="Support" href="support.html"/>  -->
       <item name="Opal @ Sourceforge" href="http://sourceforge.net/projects/opaltoolkit/"/>
-      <item name="Downloads" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
+      <item name="Download" href="https://sourceforge.net/project/showfiles.php?group_id=211778"/>
 <!--      <item name="Features" href="features.html"/>
       <item name="Installation" href="installation.html"/>
       <item name="Configuration" href="configuration.html"/>
