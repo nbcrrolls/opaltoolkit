@@ -229,13 +229,13 @@ public class PloterServlet extends HttpServlet
         
         if ( type.equals(hits) ) {
             yAxisTitle = "Numbers of hits";
-            title = "Job executed per day";
+            title = "Jobs executed per day";
         }else if ( type.equals(exectime) ) {
             yAxisTitle = "Execution time";
-            title = "Daly average execution time for a job submission";
+            title = "Daily average execution time for a job submission";
         }else if ( type.equals(error) ) {
             yAxisTitle = "Number of error";
-            title = "Number of failed execution per day";
+            title = "Number of failed executions per day";
         }
         
         //drawing the image and returning
