@@ -10,10 +10,10 @@ bgcolor="white"> -->
 
 <p>Install a Condor or SGE pool on your compute cluster. Consult the
 appropriate documentation for the same. Note that we don't currently stage
-and input and output files; hence, the machines should support a shared
-file system, such as NFS. Also note that Condor doesn't support parallel
-execution using any recent version of MPI. If you plan to configure
-parallel execution, use SGE instead.
+and input and output files from the Opal server to the submit host; hence,
+the machines should be on a shared file system, such as NFS. Also note
+that Condor doesn't support parallel execution using any recent version of
+MPI. If you plan to configure parallel execution, use SGE instead.
 
 <p>Access to the schedulers is provided in one of two ways - using the
 DRMAA API, or the Globus Toolkit. Depending upon your setup, follow one of
