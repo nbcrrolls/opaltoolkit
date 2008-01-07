@@ -31,6 +31,8 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.encoders.EncoderUtil;
 import org.jfree.chart.encoders.ImageFormat;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
@@ -234,7 +236,7 @@ public class PloterServlet extends HttpServlet
             yAxisTitle = "Execution time";
             title = "Daily average execution time for a job submission";
         }else if ( type.equals(error) ) {
-            yAxisTitle = "Number of error";
+            yAxisTitle = "Number of errors";
             title = "Number of failed executions per day";
         }
         
@@ -244,6 +246,12 @@ public class PloterServlet extends HttpServlet
         XYPlot plot = chart.getXYPlot();
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setDateFormatOverride(new SimpleDateFormat("MMM-dd-yyyy"));
+
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        //BasicStroke stroke = (BasicStroke) renderer.getBaseStroke();
+        BasicStroke stroke = new BasicStroke(3.0f);
+        renderer.setBaseStroke(stroke);
+        
         BufferedImage bufferedImage = chart.createBufferedImage(width, height);
         if (bufferedImage == null) {
             log.error("The buffered immage is null maybe you are headless!!");
