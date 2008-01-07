@@ -91,7 +91,7 @@ Jane Ren, Karan Bhatia, Wilfred Li, and Peter Arzberger</p>
 <p>Opal use cases:
 <a href="http://meme.nbcr.net/">MEME Website</a>,
 <a href="http://nbcr.net/pdb2pqr">NBCR PDB2PQR Website</a>,
-<a href="http://camera.calit2.net/">Camera</a></p>
+<a href="http://camera.calit2.net/">CAMERA</a></p>
 
 <p>Pubblications:<br/> 
  <b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b>
