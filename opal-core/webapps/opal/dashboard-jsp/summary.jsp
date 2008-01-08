@@ -30,9 +30,9 @@
    String globusGatekeeper = (String) request.getAttribute("globusGatekeeper");
 
    String submissionSystem = null;
-   if (drmaa == true) {
+   if (drmaa.booleanValue() == true) {
        submissionSystem = "DRMAA on localscheduler";
-   }else if (globus == true ) {
+   }else if (globus.booleanValue() == true ) {
        submissionSystem = "Globus Gatekeeper";
    } else {
        submissionSystem = "Fork on local system";
@@ -126,7 +126,7 @@
         <td class="boxBody colColor">Submission system:</td>
         <td class="boxBody colColor"><%= submissionSystem %></td>
     </tr>
-    <% if ( globus == true) { %>
+    <% if ( globus.booleanValue() == true) { %>
     <tr>
         <td class="boxBody colColor">Gatekeeper address:</td>
         <td class="boxBody colColor"><%= globusGatekeeper %></td>

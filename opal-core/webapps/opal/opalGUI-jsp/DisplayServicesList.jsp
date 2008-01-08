@@ -48,7 +48,7 @@
 %>
 <li> <a style="font-size: large" href="CreateSubmissionForm.do?serviceURL=<%= java.net.URLEncoder.encode(url)  %>"> <bean:write name="service" property="serviceName" /></a> 
 <% 
-if (opalService.getComplexForm()){%>
+if (opalService.getComplexForm().booleanValue()){%>
 *
 <%}
 if (opalService.getDescription() != null ) {  %>
