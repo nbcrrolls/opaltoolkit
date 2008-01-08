@@ -37,6 +37,9 @@
    } else {
        submissionSystem = "Fork on local system";
    }
+   
+   String opalDataLifetime = (String) request.getAttribute("opalDataLifetime");
+   
 %>
 
 <body> 
@@ -127,10 +130,16 @@
     <tr>
         <td class="boxBody colColor">Gatekeeper address:</td>
         <td class="boxBody colColor"><%= globusGatekeeper %></td>
-    </tr>
-    
-    
+    </tr>    
     <% } %>
+
+    <%// if ( (opalDataLifetime != null) && (opalDataLifetime.length() > 1) ) { %>
+    <tr>
+        <td class="boxBody colColor">User data lifetime:</td>
+        <td class="boxBody colColor"><%= opalDataLifetime %></td>
+    </tr>
+    <% //} %>
+
 
 </table>
 </td>

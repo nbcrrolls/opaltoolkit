@@ -44,6 +44,7 @@ public class OpalInfoServlet extends HttpServlet {
     private static final String ERROR_JSP = "/dashboard-jsp/error.jsp";
 
     private String opalVersion = null;
+    private String opalDataLifetime = null;
     private String opalUptimeCommand = "uptime";
     private String opalBuildDateCommand = "uname -a";
     private String opalWebsite = null;
@@ -105,6 +106,9 @@ public class OpalInfoServlet extends HttpServlet {
         if ( globus == true ) {
             globusGatekeeper = props.getProperty("globus.gatekeeper");
         }
+        if (props.getProperty("opal.datalifetime") != null) {
+            opalDataLifetime = props.getProperty("opal.datalifetime");
+        } else opalDataLifetime = null;
         
         
         if (props.getProperty("database.use") != null) {
@@ -138,7 +142,6 @@ public class OpalInfoServlet extends HttpServlet {
             else initialized = false;
         }//if
         
-
     }
 
     /**
@@ -210,6 +213,7 @@ public class OpalInfoServlet extends HttpServlet {
             dispatcher = getServletContext().getRequestDispatcher(SYSINFO_JSP);
             dispatcher.forward(req, res);
         } else if ("doc".equals(command)) {
+            //this doesn't exist anymore... Now there is the opal GUI
             res.sendRedirect(opalDocumentation);
         } else if ("contactus".equals(command)) {
             req.setAttribute("opalWebsite", opalWebsite);
@@ -230,6 +234,7 @@ public class OpalInfoServlet extends HttpServlet {
             req.setAttribute("drmaa", drmaa);
             req.setAttribute("globus", globus);
             req.setAttribute("globusGatekeeper", globusGatekeeper);
+            req.setAttribute("opalDataLifetime", opalDataLifetime);
             
             dispatcher = getServletContext().getRequestDispatcher(SUMMARY_JSP);
             dispatcher.forward(req, res);
