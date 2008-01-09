@@ -23,12 +23,12 @@ pageTracker._trackPageview();
 
 <p>1. Install a PostgreSQL database (version 7.4.6 or higher).
 
-<p>2. Create a database called <i>app_db</i>, and a user called
-<i>app_user</i> with a password. Grant all permissions on app_db to the
-app_user. Configure the database to accept remote JDBC connections (consult
+<p>2. Create a database called <i>opal_db</i>, and a user called
+<i>opal_user</i> with a password. Grant all permissions on opal_db to the
+opal_user. Configure the database to accept remote JDBC connections (consult
 the database documentation for this).
 
-<p>3. Create the job status table inside the <i>app_db</i> database using
+<p>3. Create the job status table inside the <i>opal_db</i> database using
 the following:
 <font color="green">
 <pre>
@@ -45,7 +45,7 @@ the following:
 </pre>
 </font>
 
-<p>4. Create the output table inside the <i>app_db</i> database using the
+<p>4. Create the output table inside the <i>opal_db</i> database using the
 following:
 <font color="green">
 <pre>
@@ -57,7 +57,7 @@ following:
 </pre>
 </font>
 
-<p>5. Create the output file table inside the <i>app_db</i> database using
+<p>5. Create the output file table inside the <i>opal_db</i> database using
 the following:
 <font color="green">
 <pre>
@@ -70,7 +70,7 @@ the following:
 </font>
 
 <p>6. Set the following properties in the opal.properties file:
-database.url (a jdbc url), database.user (app_user), database.passwd, and
+database.url (a jdbc url), database.user (opal_user), database.passwd, and
 database.use (true, if database is to be used - default is false). 
 
 <p>7. Reinstall Opal by running the following command:
