@@ -9,6 +9,29 @@
       <p>
       The organizations that made possible the development of Opal:
       </p>
+
+      <table> 
+        <tr>  
+          <td><a href="http://nbcr.net/"><img src="images/nbcr_logo.png" alt="NBCR Logo" /></a></td> 
+          <td><a href="http://nbcr.net/">National Biomedical Computation Resource (NBCR)</a></td> 
+        </tr> 
+        <tr>  
+          <td><a href="http://www.sdsc.edu/"><img alt="SDSC Logo" src="images/sdsc_logo.png" /></a> </td>    
+          <td><a href="http://www.sdsc.edu/">San Diego Supercomputer Center (SDSC)</a></td> 
+        </tr> 
+        <tr>  
+          <td><a href="http://camera.calit2.net/"><img alt="CAMERA Logo" src="images/Camera-Logo.jpg" /></a> </td>    
+          <td><a href="http://camera.calit2.net/">Community Cyberinfrastructure for Advanced Marine Microbial Ecology Research and Analysis (CAMERA)</a></td> 
+        </tr> 
+        <tr>  
+          <td><a href="http://www.calit2.net/"> <img alt="CallIT2 Logo" src="images/logo_calit.gif" /></a> </td>    
+          <td><a href="http://www.calit2.net/">California Institute for Telecommunications and Information Technology (CALIT2)</a></td> 
+        </tr> 
+
+      </table>
+
+
+<!-- 
       <ul>
         <li><a href="http://nbcr.net/">NBCR</a></li>
         <li><a href="http://www.sdsc.edu/">SDSC</a></li>
@@ -21,6 +44,7 @@
         <img alt="CAMERA Logo" src="images/Camera-Logo.jpg" syle="vertical-align: middle" />
         <img alt="CallIT2 Logo" src="images/logo_calit.gif" syle="vertical-align: middle" />
       </p>
+-->
     </section>
     <section name="Funding Agencies">
       <p>Funding agencies behind Opal:</p>
