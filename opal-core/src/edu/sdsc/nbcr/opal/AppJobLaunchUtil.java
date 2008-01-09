@@ -38,6 +38,7 @@ import java.util.Vector;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
@@ -46,6 +47,9 @@ import org.ggf.drmaa.SessionFactory;
 import org.ggf.drmaa.JobTemplate;
 import org.ggf.drmaa.JobInfo;
 import org.ggf.drmaa.DrmaaException;
+
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class AppJobLaunchUtil implements GramJobListener {
 
@@ -521,6 +525,50 @@ public class AppJobLaunchUtil implements GramJobListener {
 		    File stdErrFile = new File(workingDir + File.separator + "stderr.txt");
 		    if (!stdErrFile.exists()) {
 			throw new IOException("Standard error missing for execution");
+		    }
+
+		    // archive the outputs, if need be
+		    if (AppServiceImpl.archiveData) {
+			logger.debug("Archiving output files");
+
+			// get a list of files
+			File f = new File(workingDir);
+			File[] outputFiles = f.listFiles();
+
+			ZipOutputStream out = 
+			    new ZipOutputStream(new FileOutputStream(workingDir + 
+								     File.separator + 
+								     jobID + 
+								     ".zip"));
+			// Create a buffer for reading the files
+			byte[] buf = new byte[1024];
+    
+			try {
+    
+			    // Compress the files
+			    for (int i = 0; i < outputFiles.length; i++) {
+				FileInputStream in = new FileInputStream(outputFiles[i]);
+				
+				// Add ZIP entry to output stream.
+				out.putNextEntry(new ZipEntry(outputFiles[i].getName()));
+				
+				// Transfer bytes from the file to the ZIP file
+				int len;
+				while ((len = in.read(buf)) > 0) {
+				    out.write(buf, 0, len);
+				}
+				
+				// Complete the entry
+				out.closeEntry();
+				in.close();
+			    }
+			    
+			    // Complete the ZIP file
+			    out.close();
+			} catch (IOException e) {
+			    logger.error(e);
+			    logger.error("Error not fatal - moving on");
+			}
 		    }
 
 		    // go ahead if they do - at least 2 files exist now
