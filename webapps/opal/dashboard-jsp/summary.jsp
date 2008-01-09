@@ -150,7 +150,7 @@
 <tr><td valign="top">
 <div>
 <p><b>Opal:</b> an automatic Web service wrappers for scientific applications on Grid resources.</p>
-<p style="font-size: smaller">BSD License</p>
+<p style="font-size: smaller"><a href="http://nbcr.net/software/opal/LICENSE.txt">BSD License</a></p>
 <br/><br/><br/><br/><br/>
 </div>
 </td></tr>
