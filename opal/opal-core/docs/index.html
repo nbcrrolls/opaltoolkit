@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Opal: The Application Wrapper Web Service</title>
+<title>The Opal Toolkit for Wrapping Scientific Applications as Web Services</title>
 <link href="./Styles.css" rel="stylesheet" type="text/css"/>
 </head>
 <!-- <body text="black" link="darkblue" vlink="black" link="black" -->
@@ -20,14 +20,16 @@ pageTracker._trackPageview();
 
 
 
-<h1>Opal: The Application Wrapper Web Service (Version 1.9alpha)</h1>
+<h1>The Opal Toolkit for Wrapping Scientific Applications as Web Services</h1>
+<h2>Version: 1.9alpha</h2>
+<hr/>
 
 <h2>Overview</h2>
 
-<p>Opal, the Application Wrapper Web service, provides a way to wrap up
-existing scientific applications rapidly as Web services, and expose them
-to various clients. The implementation provides features such as scheduling
-(e.g. using Condor/SGE via Globus or DRMAA) and security (using GSI-based
+<p>The Opal toolkit provides a mechanism to wrap up existing scientific
+applications rapidly as Web services, and expose them to various clients.
+The implementation provides features such as scheduling (e.g. using
+Condor/SGE via Globus or DRMAA) and security (using GSI-based
 certificates), Furthermore, the service provides job and data management
 (by executing every job in a separate working directory), and state
 management (by storing the service state in a PostgreSQL database). The
@@ -281,35 +283,43 @@ on another port, you will have to change the port number above. If all the
 ignore the warnings about the <b>Optional Components</b>.
  
 <p>6. Create a configuration file for your application. For example, you
-can download the <a href="http://openbabel.sourceforge.net/">Babel</a>
-program, which is designed to support molecular modeling, chemistry, and
-many related areas, including interconversion of file formats and data. A
-sample configuration file for the same, located in
-$OPAL_HOME/configs/babel_config.xml, is shown below.
+can download the <a href="http://pdb2pqr.sourceforge.net/">PDB2PQR</a>
+program, which is designed to automate many of the common tasks of
+preparing structures for continuum electrostatics calculations, by
+providing a platform-independent utility for converting protein files in
+PDB format to PQR format. A sample configuration file for the same, located
+in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
+
 <font color="green">
 <pre>
 &lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;metadata&gt;
-    &lt;usage&gt;&lt;![CDATA[./babel [-i&lt;input-type&gt;] &lt;name&gt; [-o&lt;output-type&gt;] &lt;name&gt;]]&gt;&lt;/usage&gt;
+  &lt;metadata appName="PDB2PQR"&gt;
+    &lt;usage&gt;
+    PDB2PQR is a Python software package that automates many of the common
+    tasks of preparing structures for continuum electrostatics
+    calculations, providing a platform-independent utility for converting
+    protein files in PDB format to PQR format
+    &lt;/usage&gt;
+
     &lt;info xsd:type="xsd:string"&gt;
-    &lt;![CDATA[
-    ...
-    Currently supported input types
-	alc -- Alchemy file
-	prep -- Amber PREP file
-	...
-    Currently supported output types
-    ...
-	caccrt -- Cacao Cartesian file
-	cacint -- Cacao Internal file
-    ...
-    Additional options : 
-    ...
-    ]]&gt;
-    &lt;/info&gt;
+         python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
+ 
+         The required arguments are as follows:
+	 ...         
+         &lt;path&gt;
+             The path to the PDB file or an ID to obtain from the PDB archive
+         &lt;output-path&gt;
+             The desired output name of the PQR file to be generated
+         
+         Optional command-line arguments are:
+         
+         --nodebump
+             Do not perform the debumping operation
+	 ...
+     &lt;/info&gt;
   &lt;/metadata&gt;
-  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/babel&lt;/binaryLocation&gt;
+  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/pdb2pqr.py&lt;/binaryLocation&gt;
   &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
   &lt;parallel&gt;false&lt;/parallel&gt;
 &lt;/appConfig&gt;
@@ -320,15 +330,17 @@ $OPAL_HOME/configs/babel_config.xml, is shown below.
 which contains <i>metadata</i>, <i>binaryLocation</i>, <i>defaultArgs</i>,
 and <i>parallel</i> elements. The metadata consists of <i>usage</i>, which
 is a string specifying how the application is to be invoked, and an array
-of optional application information specified as <i>info</i> elements. In
-the above file, the various options that can be used with the application
-are specified within the metadata. The binaryLocation specifies the
-location of the application binary - note that this has to be the location
-of a <i>single</i> executable. No arguments may be specified here. However,
-default arguments that need to be used for every run can be specified
-inside the defaultArgs element. The parallel element specifies if an
-application is parallel or not. Use the babel_config.xml as a guideline to
-write configurations for your particular applications.
+of optional application information specified as <i>info</i> elements.
+It also contains an optional <i>types</i> element, which can ignore
+for now. In the above file, the various options that can be used with
+the application are specified within the metadata. The binaryLocation
+specifies the location of the application binary - note that this has
+to be the location of a <i>single</i> executable. No arguments may be
+specified here. However, default arguments that need to be used for
+every run can be specified inside the defaultArgs element. The
+parallel element specifies if an application is parallel or not. Use
+the pdb2pqr_config.xml as a guideline to write configurations for your
+particular applications.
 
 <p>7. Deploy the services inside Tomcat, by changing to the $OPAL_HOME
 directory, and running the following command:
@@ -338,11 +350,11 @@ directory, and running the following command:
 </pre>
 </font>
 
-<p>For example, to deploy the Babel service, you would type the following
+<p>For example, to deploy the PDB2PQR service, you would type the following
 command:
 <font color="green">
 <pre>
-    $ANT_HOME/bin/ant deploy -DserviceName=BabelServicePort -DappConfig=configs/babel_config.xml
+    $ANT_HOME/bin/ant deploy -DserviceName=Pdb2pqrServicePort -DappConfig=$PWD/configs/pdb2pqr_config.xml
 </pre>
 </font>
 
@@ -392,13 +404,13 @@ use tcsh on Unix, set your classpath by typing the following command:
 </pre>
 </font>
 
-<p>To launch a job using the Babel service which was described above, you could use the
+<p>To launch a job using the PDB2PQR service which was described above, you could use the
 following command, which displays the resulting job id, along with the preliminary status.
 <font color="green">
 <pre>
-    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/BabelServicePort 
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/Pdb2pqrServicePort 
 	                                         -r launchJob 
-						 -a "-ipdb sample.pdb -h -opdb output.pdb" 
+						 -a "--ff=amber sample.pdb output.pqr" 
 						 -f samples/sample.pdb
 </pre>
 </font>
@@ -406,7 +418,7 @@ following command, which displays the resulting job id, along with the prelimina
 <p>You can retrieve job status by running the following command:
 <font color="green">
 <pre>
-    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/BabelServicePort 
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/Pdb2pqrServicePort 
 	                                         -r queryStatus
 						 -j &lt;job_id&gt;
 </pre>
@@ -415,7 +427,7 @@ following command, which displays the resulting job id, along with the prelimina
 <p>Once the job has finished executing, you can also retrieve output metadata using:
 <font color="green">
 <pre>
-    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/BabelServicePort 
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/Pdb2pqrServicePort 
 	                                         -r getOutputs
 						 -j &lt;job_id&gt;
 </pre>
@@ -432,8 +444,11 @@ usage information for the client by using the following command:
 
 <h2>Feedback</h2>
 
-<p>To report bugs and feature requests, please use the NBCR Web Services
-User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>).
+<p>Please use the Opal Toolkit <a
+href="http://sourceforge.net/tracker/?group_id=211778">Tracker</a> on
+Sourceforge to report bugs and feature requests, and the NBCR Web Services
+User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>)
+for general comments and feedback.
 
 </body>
 </html>
