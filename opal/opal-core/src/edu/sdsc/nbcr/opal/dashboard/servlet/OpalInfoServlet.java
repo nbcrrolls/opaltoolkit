@@ -41,7 +41,10 @@ public class OpalInfoServlet extends HttpServlet {
     private static final String SYSINFO_JSP = "/dashboard-jsp/sysinfo.jsp";
     private static final String DOC_JSP = "/dashboard-jsp/documentation.jsp";
     private static final String CONTACTUS_JSP = "/dashboard-jsp/contactus.jsp";
-    private static final String ERROR_JSP = "/dashboard-jsp/error.jsp";
+    
+    //private static final String ERROR_JSP = "/dashboard-jsp/error.jsp";
+    //this is used only when the DB is not available
+    private static final String ERROR_JSP = "/dashboard-jsp/statistics_noDB.jsp";
 
     private String opalVersion = null;
     private String opalDataLifetime = null;
@@ -173,9 +176,9 @@ public class OpalInfoServlet extends HttpServlet {
         if ("statistics".equals(command)) {
             //let's check if the DB connection is OK
             if ( (dbManager == null ) || ( !dbManager.isConnected()) ) {
-                String errorMsg = "The connection to the Data Base is not present.</br> " +
-                        "Either you are not using a DB or there are some problem in your configuration file. </br>" +
-                        "Please have a look at the opal WEB_INF/web.xml and WEB-INF/classes/opal.properties. </br>";
+                String errorMsg = "The connection to the Data Base is not present.<br/> " +
+                        "Either you are not using a DB or there are some problem in your configuration file. <br/>" +
+                        "Please have a look at the opal WEB_INF/web.xml and WEB-INF/classes/opal.properties. <br/>";
                 log.error("We had an error: " + errorMsg);
                 req.setAttribute("error", errorMsg);
                 dispatcher = getServletContext().getRequestDispatcher(ERROR_JSP);

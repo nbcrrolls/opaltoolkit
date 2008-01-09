@@ -22,7 +22,7 @@
           how to configure Opal in order to submit job using either a local scheduler 
           with DRMAA or using Globus to access remote schedulers</li>
         <li><a href="docs/autointerface.html">Dynamic Interface Generation for Opal</a>: this document explains the 
-          usage and set up of this new feature just released in Opal 1.9. The DIG Opal  
+          usage and set up of this new feature just released in Opal 1.9. The Opal DIG 
           supports the authomatic generation of submission form customized on the input 
           arguments of the underlining service</li>
 <!--        <li><a href="docs/faq.txt">FAQ</a>: the usual FAQ</li>-->
