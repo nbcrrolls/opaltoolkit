@@ -45,6 +45,7 @@ public class AppServiceImpl
     public static String mpiRun; // path to the mpirun executable
     public static int numProcs; // number of available processors
     public static String tomcatURL; // URL for tomcat installation
+    public static boolean archiveData; // whether to zip up data after completion
 
     // the hash table that stores the job status
     // this is static so that it can be shared across multiple instances
@@ -107,6 +108,13 @@ public class AppServiceImpl
 	    }
 	} else {
 	    outputPrefix += "ROOT";
+	}
+
+	// whether to archive data
+	archiveData =
+	    Boolean.valueOf(props.getProperty("data.archive")).booleanValue();
+	if (archiveData) {
+	    logger.info("Data will be available as archive after job completion");
 	}
 
 	// database setup
