@@ -133,12 +133,12 @@
     </tr>    
     <% } %>
 
-    <%// if ( (opalDataLifetime != null) && (opalDataLifetime.length() > 1) ) { %>
+    <% if ( (opalDataLifetime != null) && (opalDataLifetime.length() > 1) ) { %>
     <tr>
         <td class="boxBody colColor">User data lifetime:</td>
         <td class="boxBody colColor"><%= opalDataLifetime %></td>
     </tr>
-    <% //} %>
+    <% } %>
 
 
 </table>
@@ -157,7 +157,7 @@
 <tr><td valign="bottom">
 <div>
 <a href="http://nbcr.net" ><img src="images/nbcr_logo.png" alt="NBCR logo"/></a><br/>
-&#169; UC Regents 2005-2007
+&#169; UC Regents 2005-2008
 </div>
 </td></tr>
 </table>

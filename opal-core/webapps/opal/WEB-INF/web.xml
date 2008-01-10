@@ -13,18 +13,22 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 
   <!-- Dashboard configuaration parameters...  -->
     <servlet>
-        <servlet-name>dashboard</servlet-name>
-        <servlet-class>edu.sdsc.nbcr.opal.dashboard.servlet.OpalInfoServlet</servlet-class>
+      <servlet-name>dashboard</servlet-name>
+      <servlet-class>edu.sdsc.nbcr.opal.dashboard.servlet.OpalInfoServlet</servlet-class>
+      <!-- this servlet must be loaded before the plotchart servlet!!! -->
+      <load-on-startup>5</load-on-startup>
     </servlet>
 
     <servlet-mapping>
        <servlet-name>dashboard</servlet-name>
        <url-pattern>/dashboard</url-pattern>
+      <load-on-startup>1</load-on-startup>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>plotchart</servlet-name>
         <servlet-class>edu.sdsc.nbcr.opal.dashboard.servlet.PloterServlet</servlet-class>
+      <load-on-startup>6</load-on-startup>
     </servlet>
 
     <servlet-mapping>

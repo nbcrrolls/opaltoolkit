@@ -17,24 +17,6 @@
 	-->
 	</script>
 	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
-<style>
-#title h1 {
-	margin: 30px 0 10px 0;
-	padding: 3px; 
-	border-bottom: solid #CCC 1px;
-	margin-top: 0;
-	font-size: 1.7em;
-	border-bottom: solid #BBB 1px;
-	text-align: center;
-	font-weight: normal;
-	color: #036;
-}
-
-#title p {
-   text-align: center
-}
-
-</style>
 
 </head>
 
@@ -81,8 +63,9 @@
 Jane Ren, Karan Bhatia, Wilfred Li, and Peter Arzberger</p>
 
 <p>Website: <a href="<%= opalWebsite %>">Opal Web Site</a>, 
-<a href="http://sourceforge.net/projects/opaltoolkit/">Opal at SourceForge</a>,
-<a href="<%= opalWebsite %>/documentation.html">Opal Documentation</a> </p>
+<a href="http://sourceforge.net/projects/opaltoolkit/">Opal at SourceForge</a></p>
+
+<p>Documentation: <a href="<%= opalWebsite %>/documentation.html">Opal Documentation</a></p> 
 
 <p>Support: <a href="mailto:support@nbcr.net">NBCR Support mailing list</a>, 
 <a href="http://sourceforge.net/mail/?group_id=211778">Opal mailing list</a>, 

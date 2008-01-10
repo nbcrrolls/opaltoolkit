@@ -14,13 +14,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 --%>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 </td>
 
 <td class="colColor boxRight" ></td>
-
+</tr>
 
 <tr>
 <td width="15" height="15" class="boxBottomLeft colColor"></td>
