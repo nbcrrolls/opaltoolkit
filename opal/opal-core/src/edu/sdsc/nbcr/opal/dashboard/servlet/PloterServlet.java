@@ -30,9 +30,12 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.encoders.EncoderUtil;
 import org.jfree.chart.encoders.ImageFormat;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
@@ -76,6 +79,7 @@ public class PloterServlet extends HttpServlet
     private static final String exectime = "exectime";
     private static final String hits = "hits";
     private static final String error = "error";
+    private static final String runningjobs = "runningjobs";
 
     /**
      * returns basic information as to what the servlet does
@@ -135,18 +139,23 @@ public class PloterServlet extends HttpServlet
      * <li>servicesName: it specifies the services you want to plot 
      * (for multiple services it sould be repeated multiple times)</li>
      * <li>type: it specifies the type of chart that you what to display 
-     * (hits for display the number of hits, exectime to display the average execution time)</li>
+     * (hits for display the number of hits, 
+     * exectime to display the average execution time, 
+     * error to display the number of failed job per day,
+     * runningjobs display a bar chart with the number of running job for every service end/startDate are ignored)</li>
+     * 
      * </ul>  
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Color bg = calculateColor(request.getParameter("bgcolor"));
 
-        //
+        //size of the chart
         int width = 300;
         int height = 200;
+        //startDate and endDate for chart
         Date startDate = null, endDate = null;
-        // this can be hits or exectime, defaults is hits
+        // this can be hits, exectime, error, runningjob defaults is hits
         String type = "hits"; // default;
         String tmp;
         String [] servicesName = null;
@@ -157,27 +166,29 @@ public class PloterServlet extends HttpServlet
             return;
         }
         
-        // set up the parameters 
-        //
+        //       -----------------      parsing input parameters      -----------
+        //TODO handle errors
+        // width and heigh
         try {
             width = Integer.parseInt(request.getParameter("width"));
             height = Integer.parseInt(request.getParameter("height"));
         } catch (Exception ex) {
-            //TODO 
+            doError("Error parsing width and height parameters: " + ex.getMessage(), request, response);
             return;
         }
-
-        
-        //TODO handle errors
+        //the type of chart
         tmp = request.getParameter("type");
-        if (tmp.equals(hits) || tmp.equals(exectime) || tmp.equals(error) )
+        if (tmp.equals(hits) || tmp.equals(exectime) || tmp.equals(error) || tmp.equals(runningjobs))
             type = tmp;
-
+        else {
+            doError("Error parsing type parameter not an accepted type", request, response);
+            return;
+        }
+        //serviceName
         servicesName = request.getParameterValues("servicesName");
         if ( servicesName == null ) {
             servicesName = dbManager.getServicesList();
         }
-
         //begin and end date
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
@@ -185,7 +196,6 @@ public class PloterServlet extends HttpServlet
             startDate = DateHelper.parseDate(startDateStr);
         if ( endDateStr != null )
             endDate = DateHelper.parseDate(endDateStr);
-        
         if ( (startDate == null) || (endDate == null)) {
             //no date provided let's put the default
             log.error("No start and end date provided.");
@@ -194,41 +204,55 @@ public class PloterServlet extends HttpServlet
         }
         
         // ok, so all the parameters are now parsed...
+        //                 -----------------      getting data from DB          ---------------
         //let's get the data out of the DB 
         log.info("Going to generate a chart (" + type + ") " + width + "x"
                 + height + " with beginning date " + startDate + " and end date " + endDate);
         String xAxisTitle = "";
         String yAxisTitle = "";
         String title = "";
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
-        TimeSeries series = null;
-        double [] temp = null;
-        for ( int i = 0; i < servicesName.length; i++ ) {
-            temp = dbManager.getResults(startDate, endDate, servicesName[i], type);
-            
-            
-            if ( (temp != null) ){ //&& (temp.length != duration) ) { 
-                //we have the data from the DB let's create a time series  
-                series = new TimeSeries(servicesName[i], Day.class);
-                Date iterator = (Date) startDate.clone();
-                for (int k = 0; k < temp.length; k++){
-                    series.add(new Day(iterator), temp[k]);
-                    iterator = DateHelper.addDays(iterator, 1);
+        TimeSeriesCollection dataset = null;
+        DefaultCategoryDataset barDataset = null;
+        if (type.equals(runningjobs)) {
+            //running job case 
+            barDataset = new DefaultCategoryDataset();
+            int running;
+            for ( int i = 0; i < servicesName.length; i++ ) {
+                running = dbManager.getRunningJobs( servicesName[i]);
+                if (running == -1 ){
+                    doError("impossible to retrive the data from the Data Base", request, response);
                 }
-            }//if
-            else {//something went wrong
-                if (temp == null) {
-                    log.error("The query to the data base for service: " + servicesName[i] + " returned a null set of values");
-                }else {//temp.length != duration something wrong
-                    log.error("The data returned from the DB for the service: " + servicesName[i] + " was invalid.");
-                }
+                barDataset.addValue(running, "Running jobs", servicesName[i]);                
             }
-            dataset.addSeries(series);
-        }//for
+        } else {
+            //all the other chart are created here
+            dataset = new TimeSeriesCollection();
+            TimeSeries series = null;
+            double [] temp = null;
+            for ( int i = 0; i < servicesName.length; i++ ) {
+                temp = dbManager.getResultsTimeseries(startDate, endDate, servicesName[i], type);
+                if ( (temp != null) ){ //&& (temp.length != duration) ) { 
+                    //we have the data from the DB let's create a time series  
+                    series = new TimeSeries(servicesName[i], Day.class);
+                    Date iterator = (Date) startDate.clone();
+                    for (int k = 0; k < temp.length; k++){
+                        series.add(new Day(iterator), temp[k]);
+                        iterator = DateHelper.addDays(iterator, 1);
+                    }
+                }//if
+                else {//something went wrong
+                    if (temp == null) {
+                        log.error("The query to the data base for service: " + servicesName[i] + " returned a null set of values");
+                    }else {//temp.length != duration something wrong
+                        log.error("The data returned from the DB for the service: " + servicesName[i] + " was invalid.");
+                    }
+                }
+                dataset.addSeries(series);
+            }//for
+        }
         
-        //built the graph
+        //               ------------------   finally creating the chart     --------------------
         xAxisTitle = "Date";
-        
         if ( type.equals(hits) ) {
             yAxisTitle = "Numbers of hits";
             title = "Jobs executed per day";
@@ -238,20 +262,31 @@ public class PloterServlet extends HttpServlet
         }else if ( type.equals(error) ) {
             yAxisTitle = "Number of errors";
             title = "Number of failed executions per day";
+        }else if ( type.equals(runningjobs) ) {
+            yAxisTitle = "Number of jobs";
+            title = "Number of jobs currently in execution";
+            xAxisTitle = "Service name";
         }
-        
         //drawing the image and returning
-        JFreeChart chart = ChartFactory.createTimeSeriesChart( title, xAxisTitle, yAxisTitle, dataset,
+        JFreeChart chart = null;
+        if (type.equals(runningjobs)){
+            chart = ChartFactory.createBarChart3D(title, xAxisTitle, yAxisTitle, barDataset, PlotOrientation.VERTICAL,
+                 // include legend, tooltips, urls
+                    false, true, true);
+            //http://www.google.com/codesearch?hl=en&q=+BarChart3DDemo4.java+show:P7RwiKyu_fE:jBqt4P62SWA:MPRcQZS7yqc&sa=N&cd=1&ct=rc&cs_p=http://feathers.dlib.vt.edu/~etana/VisualViews/JFreechart/jfreechart-1.0.1-demo.zip&cs_f=jfreechart-1.0.1-demo/source/demo/BarChart3DDemo4.java#first
+            
+        }else{
+            chart = ChartFactory.createTimeSeriesChart( title, xAxisTitle, yAxisTitle, dataset,
                 true, true, false);
-        XYPlot plot = chart.getXYPlot();
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("MMM-dd-yyyy"));
-
-        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        //BasicStroke stroke = (BasicStroke) renderer.getBaseStroke();
-        BasicStroke stroke = new BasicStroke(3.0f);
-        renderer.setBaseStroke(stroke);
-        
+            XYPlot plot = chart.getXYPlot();
+            DateAxis axis = (DateAxis) plot.getDomainAxis();
+            axis.setDateFormatOverride(new SimpleDateFormat("MMM-dd-yyyy"));
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+            //BasicStroke stroke = (BasicStroke) renderer.getBaseStroke();
+            BasicStroke stroke = new BasicStroke(3.0f);
+            renderer.setBaseStroke(stroke);
+        }
+        //                     -------------         getting a gif out of the chart     ------------------
         BufferedImage bufferedImage = chart.createBufferedImage(width, height);
         if (bufferedImage == null) {
             log.error("The buffered immage is null maybe you are headless!!");
@@ -271,7 +306,7 @@ public class PloterServlet extends HttpServlet
         //TODO set a properties with an error 
         log.error("We had an error: " + errorMsg);
         req.setAttribute("error", errorMsg);
-        dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+        dispatcher = getServletContext().getRequestDispatcher("/dashboard-jsp/error.jsp");
         try { dispatcher.forward(req, res); }
         catch (Exception e ) { 
             log.error("Impossible to forward to the error page...Don't know what else I can do....", e);

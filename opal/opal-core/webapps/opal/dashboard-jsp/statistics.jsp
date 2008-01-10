@@ -44,7 +44,7 @@ function checkAll(){
    
    String [] servicesName = (String []) request.getAttribute("servicesName");
    String [] servicesNameSelected = (String []) request.getAttribute("servicesNameSelected");
-   String serviceNameURL = null;
+   String serviceNameURL = "";
    //let create the URL for the selected services...
    for ( int i = 0; i < servicesNameSelected.length; i++ ) {
        serviceNameURL += "&servicesName=" + servicesNameSelected[i];
@@ -165,6 +165,20 @@ function checkAll(){
 <td class="boxRight colColor"><br /></td>
 </tr>
 
+
+<!-- running jobs  -->
+<tr>
+<td class="boxLeft colColor"><br /></td>
+<td colspan="3" class="colColor">
+<h2>Number of jobs currently in execution:</h2>
+<% href = "plotchart?type=runningjobs&width=800&height=400" + serviceNameURL; %>
+<a href="<%= href %>"> 
+  <img src="<%= href %>"/>
+</a>
+<br/>
+</td>
+<td class="boxRight colColor"><br /></td>
+</tr>
 
 <tr>
 <td width="15" height="15" class="boxBottomLeft colColor"></td>

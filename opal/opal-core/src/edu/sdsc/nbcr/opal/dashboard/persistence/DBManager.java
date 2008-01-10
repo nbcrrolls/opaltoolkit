@@ -15,6 +15,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.gram.GramJob;
 import org.postgresql.util.PGInterval;
 
 import edu.sdsc.nbcr.opal.dashboard.util.DateHelper;
@@ -131,7 +132,7 @@ public class DBManager {
      */
     public double [] getHits(Date startDate, Date endDate, String service){
         
-        return getResults(startDate, endDate, service, "hits");
+        return getResultsTimeseries(startDate, endDate, service, "hits");
     }
     
     /**
@@ -143,7 +144,7 @@ public class DBManager {
      * @return
      */
     public double [] getError(Date startDate, Date endDate, String service){
-        return getResults(startDate, endDate, service, "error");
+        return getResultsTimeseries(startDate, endDate, service, "error");
     }
     
     /**
@@ -155,7 +156,7 @@ public class DBManager {
      * @return
      */
     public double [] getExectime(Date startDate, Date endDate, String service){
-        return getResults(startDate, endDate, service, "exectime");
+        return getResultsTimeseries(startDate, endDate, service, "exectime");
     }//getExectime
     
 
@@ -177,7 +178,7 @@ public class DBManager {
      * 
      * @return an array of values 
      */
-    public double [] getResults(Date startDate, Date endDate, String service, String type){
+    public double [] getResultsTimeseries(Date startDate, Date endDate, String service, String type){
 
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
@@ -263,5 +264,39 @@ public class DBManager {
             return null;
         }
     }
+    
+    
+    /**
+     * this function returns the number of running jobs for the specified service
+     * 
+     * @param service
+     * @return the number of running job of the service 
+     */
+    public int getRunningJobs(String service){
+        
+        //a job is running if its status is 
+        //STATUS_PENDING STATUS_ACTIVE STATUS_STAGE_IN STATUS_STAGE_OUT
+        //1 2 64 128
+        int number = -1;
+        String query = " select count(job_id) from job_status where " +
+        		"(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
+        		"code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
+        		"service_name='" + service + "' ;";
+        if ( ! isConnected() ) return -1;
+        try {
+            Statement sql = conn.createStatement();
+            ResultSet rs = sql.executeQuery(query);
+            
+            if ( rs.next() ){ //something wrong happen
+                number = rs.getInt("count");
+            }
+        }catch ( Exception e) {
+            log.error("Nasty error happen while query the Data Base: " + e.getMessage(), e);
+            return -1;
+        }
+     
+        return number;
+    }
+    
 
 }
