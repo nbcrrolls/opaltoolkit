@@ -1,15 +1,17 @@
 
 
 1.9 release
-- now the charts use a thicker line LC
-- patched some Boolean comparison in the jsp which caused errors with older jsp compiler SK
-- improved the statistics page when a Data Based connection is not present LC
+- updated the way opal handles symlinked working directories - now we do
+  not need Tomcat to be on NFS (SK)
+- now the charts use a thicker line (LC)
+- patched some Boolean comparison in the jsp which caused errors with older jsp compiler (SK)
+- improved the statistics page when a Data Based connection is not present (LC)
 - the output files can now be retrieved as zip file if a parameter
-  (data.archive) is set in the opal.properties SK
-- in the summary page now displays the data lifetime which can be set in the opal.properties LC
-- in the statistics page now there is a chart with the running jobs LC
-- corrected the load-on-startup order of the various servlets which was causing a missing DB connection LC
-- removed an error in the statistics page in the generation of the img URL of the various charts LC
+  (data.archive) is set in the opal.properties (SK)
+- in the summary page now displays the data lifetime which can be set in the opal.properties (LC)
+- in the statistics page now there is a chart with the running jobs (LC)
+- corrected the load-on-startup order of the various servlets which was causing a missing DB connection (LC)
+- removed an error in the statistics page in the generation of the img URL of the various charts (LC)
 
 1.9 alpha
 - Opal Dashboard: it is a web based interface that provide an easy way to check the 
