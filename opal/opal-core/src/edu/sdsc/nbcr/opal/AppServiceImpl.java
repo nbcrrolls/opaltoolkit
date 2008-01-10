@@ -110,6 +110,14 @@ public class AppServiceImpl
 	    outputPrefix += "ROOT";
 	}
 
+	// traverse symbolic links, if need be
+	try {
+	    File prefixDir = new File(outputPrefix);
+	    outputPrefix = prefixDir.getCanonicalPath();
+	} catch (IOException e) {
+	    logger.fatal(e);
+	}
+
 	// whether to archive data
 	archiveData =
 	    Boolean.valueOf(props.getProperty("data.archive")).booleanValue();

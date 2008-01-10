@@ -266,7 +266,8 @@ public class AppJobLaunchUtil implements GramJobListener {
 		} else {
 		    args = newArgs;
 		}
-		
+		logger.debug("CMD: " + args);
+
 		// construct the args array
 		argsArray = new String[] {"-c", args};
 	    } else {
@@ -274,6 +275,7 @@ public class AppJobLaunchUtil implements GramJobListener {
 		cmd = appConfig.getBinaryLocation();
 		if (args == null)
 		    args = "";
+		logger.debug("CMD: " + cmd + " " + args);
 
 		// construct the args array
 		argsArray = args.split(" ");
@@ -281,6 +283,8 @@ public class AppJobLaunchUtil implements GramJobListener {
 
 	    // run executable in the working directory
 	    try {
+		logger.debug("Working directory: " + workingDir);
+
 		JobTemplate jt = session.createJobTemplate();
 		if (appConfig.isParallel()) 
 		    jt.setNativeSpecification("-pe " + AppServiceImpl.drmaaPE + " " +
@@ -415,6 +419,7 @@ public class AppJobLaunchUtil implements GramJobListener {
 
 	    // run executable in the working directory
 	    try {
+		logger.debug("Working directory: " + workingDir);
 		proc = Runtime.getRuntime().exec(cmd, null, new File(workingDir));
 
 		// spawn new threads to write out stdout, and stderr
