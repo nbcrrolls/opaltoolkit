@@ -11,11 +11,6 @@
 	<meta name="keywords" content="enter, keywords, here" />
 	<meta name="description" content="enter keywords here" />
  	<link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
-	<script language="js/javascript" type="text/javascript" >
-	<!--
-	currentMenu='home';
-	-->
-	</script>
 	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
 
 </head>
