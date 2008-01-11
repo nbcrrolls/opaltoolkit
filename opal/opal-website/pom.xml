@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -36,7 +35,7 @@
       <id>srikrish</id>
       <name>Sriram Krishnan</name>
       <email>sriram  A T  sdsc.edu</email>
-      <organization>San Diego Supercomputing Center</organization>
+      <organization>San Diego Supercomputer Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
     </developer>
     <developer>
@@ -66,19 +65,19 @@
     <contributor>
       <name>Wilfred Li</name>
       <email>wilfred A T sdsc.edu</email>
-      <organization>San Diego Supercomputing Center</organization>
+      <organization>San Diego Supercomputer Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
     </contributor>
     <contributor>
       <name>Peter Arzberger</name>
       <email>parzberg A T sdsc.edu</email>
-      <organization>San Diego Supercomputing Center</organization>
+      <organization>San Diego Supercomputer Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
     </contributor>
     <contributor>
       <name>Karan Batia</name>
       <email>karan A T sdsc.edu</email>
-      <organization>San Diego Supercomputing Center</organization>
+      <organization>San Diego Supercomputer Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
     </contributor>
   </contributors>
