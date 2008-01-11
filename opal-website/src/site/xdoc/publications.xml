@@ -8,19 +8,19 @@
       <p> Publications &amp; Reports: </p>
       <ul>
         <li><b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b> Luca Clementi, Zhaohui Ding, Sriram Krishnan, Xiaohui Wei, Peter W. Arzberger, and Wilfred Li. GCE07, Grid Computing Environments Workshop (Supercomputing 2007), November 2007. <a href="http://www.collab-ogce.org/gce07/index.php/Main_Page">Conference Website</a></li>
-        <li><b>Opal: Simple Web Services Wrappers for Scientific Applications.</b> Sriram Krishnan, Brent Stearn, Karan Bhatia, Kim K. Baldridge, Wilfred Li, and Peter Arzberger. In proceedings of ICWS 2006, IEEE International Conference on Web Services, September 2006 <a href="publications/SDSC-TR-2006-5-opal.pdf">pdf</a></li>
-        <li><b>An End-to-end Web Services-based Infrastructure for Biomedical Applications.</b> Sriram Krishnan, Kim Baldridge, Jerry Greenberg, Brent Stearn, and Karan Bhatia. In proceedings of Grid 2005, 6th IEEE/ACM International Workshop on Grid Computing, November 2005 <a href="publications/grid2005.pdf">pdf</a></li>
-        <li><b>Web Services-based Data Integration for Life Science Computations.</b> Sriram Krishnan, Brent Stearn, Karan Bhatia, Jerry Greenberg, Wilfred Li, Peter Arzberger, and Kim Baldridge. SDSC Technical Report TR-2005-2, 2005<a href="publications/SDSC-TR-2005-2-nbcr-soa.pdf">pdf</a> </li>
+        <li><b>Opal: Simple Web Services Wrappers for Scientific Applications.</b> Sriram Krishnan, Brent Stearn, Karan Bhatia, Kim K. Baldridge, Wilfred Li, and Peter Arzberger. In proceedings of ICWS 2006, IEEE International Conference on Web Services, September 2006 (<a href="publications/SDSC-TR-2006-5-opal.pdf">pdf</a>)</li>
+        <li><b>An End-to-end Web Services-based Infrastructure for Biomedical Applications.</b> Sriram Krishnan, Kim Baldridge, Jerry Greenberg, Brent Stearn, and Karan Bhatia. In proceedings of Grid 2005, 6th IEEE/ACM International Workshop on Grid Computing, November 2005 (<a href="publications/grid2005.pdf">pdf</a>)</li>
+        <li><b>Web Services-based Data Integration for Life Science Computations.</b> Sriram Krishnan, Brent Stearn, Karan Bhatia, Jerry Greenberg, Wilfred Li, Peter Arzberger, and Kim Baldridge. SDSC Technical Report TR-2005-2, 2005 (<a href="publications/SDSC-TR-2005-2-nbcr-soa.pdf">pdf</a>)</li>
       </ul>
     </section>
     <section name="Presentations">
       <p>Presentations:</p>
       <ul>
-        <li><b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b> Luca Clementi, et al. GCE07, Grid Computing Environments Workshop (Supercomputing 2007), November 2007. <a href="talks/OpalGUI-GCE.pdf">PDF</a></li>
-        <li><b>Opal: Wrapping Scientific Applications as Web Services</b> Sriram Krishnan, et al. NBCR Special Seminar, SDSC, February 2006: <a href="talks/opal-sdsc.pdf">pdf</a>.</li>
-        <li><b>An End-to-End Web Services-based Infrastructure for Biomedical Applications</b> Sriram Krishnan, et al. Grid2005, 6th IEEE/ACM International Workshop on Grid Computing, November 2005: <a href="talks/nbcrsoa-grid2005.pdf">pdf</a>.</li>
-        <li><b>GSI-based Security for Web Services.</b> Sriram Krishnan. GEON Meeting, June 2005: <a href="talks/geon-gsi.pdf">pdf</a>.</li>
-        <li><b>A Web Service Based Architecture for Biomedical Applications.</b> Sriram Krishnan, et al. International Symposium on Web Services for Computational Biology and Bioinformatics, Blacksburg, VA. May 2005: <a href="talks/nbcr-krishnan.pdf">pdf</a>.</li>
+        <li><b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b> Luca Clementi, et al. GCE07, Grid Computing Environments Workshop (Supercomputing 2007), November 2007 (<a href="talks/OpalGUI-GCE.pdf">pdf</a>)</li>
+        <li><b>Opal: Wrapping Scientific Applications as Web Services</b> Sriram Krishnan, et al. NBCR Special Seminar, SDSC, February 2006 (<a href="talks/opal-sdsc.pdf">pdf</a>)</li>
+        <li><b>An End-to-End Web Services-based Infrastructure for Biomedical Applications</b> Sriram Krishnan, et al. Grid2005, 6th IEEE/ACM International Workshop on Grid Computing, November 2005 (<a href="talks/nbcrsoa-grid2005.pdf">pdf</a>)</li>
+        <li><b>GSI-based Security for Web Services.</b> Sriram Krishnan. GEON Meeting, June 2005 (<a href="talks/geon-gsi.pdf">pdf</a>)</li>
+        <li><b>A Web Service Based Architecture for Biomedical Applications.</b> Sriram Krishnan, et al. International Symposium on Web Services for Computational Biology and Bioinformatics, Blacksburg, VA. May 2005 (<a href="talks/nbcr-krishnan.pdf">pdf</a>)</li>
       </ul>
     </section>
   </body>

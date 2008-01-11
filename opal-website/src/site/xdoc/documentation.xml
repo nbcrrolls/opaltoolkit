@@ -14,17 +14,19 @@
         <li><a href="docs/index.html">Installation Guide</a>: This is the main 
           documentation and also the one you should use if you are trying to 
           started with Opal</li>
-        <li><a href="docs/database.html">Opal Service Monitor Database</a>: this document explains 
+        <li><a href="docs/database.html">Opal State Database</a>: This document explains 
           how to set up an external Data Base to store Opal invocation logs</li>
-        <li><a href="docs/security.html">Security for Opal Based Services</a>: this document explains 
+        <li><a href="docs/security.html">Opal Security</a>: This document explains 
           how to configure Opal so that it supports GSI authentication</li>
-        <li><a href="docs/scheduler.html">Opal Scheduler</a>: this document explains 
-          how to configure Opal in order to submit job using either a local scheduler 
-          with DRMAA or using Globus to access remote schedulers</li>
-        <li><a href="docs/autointerface.html">Dynamic Interface Generation for Opal</a>: this document explains the 
+        <li><a href="docs/scheduler.html">Opal Scheduler</a>: This document explains 
+          how to configure Opal in order to submit jobs to clusters via
+          schedulers such as Condor or SGE, using middleware tools like
+          DRMAA or Globus.</li>
+        <li><a href="docs/autointerface.html">Dynamic Interface Generation
+          for Opal</a>: This document explains the 
           usage and set up of this new feature just released in Opal 1.9. The Opal DIG 
-          supports the authomatic generation of submission form customized on the input 
-          arguments of the underlining service</li>
+          supports the automatic generation of submission form customized
+          for the input arguments of the underlining service</li>
 <!--        <li><a href="docs/faq.txt">FAQ</a>: the usual FAQ</li>-->
       </ul>
     </section>
