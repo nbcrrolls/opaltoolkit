@@ -204,9 +204,9 @@ public class GetServiceListHelper {
             }
             
             if ( (amt.getTypes() == null) || ((amt.getTypes().getTaggedParams() == null) && (amt.getTypes().getUntaggedParams() == null)) ) 
-                serviceList[i].setComplexForm(false);
+                serviceList[i].setComplexForm(Boolean.FALSE);
             else 
-                serviceList[i].setComplexForm(true);
+                serviceList[i].setComplexForm(Boolean.TRUE);
             
             
         }//for
