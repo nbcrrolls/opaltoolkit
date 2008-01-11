@@ -213,7 +213,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
         flag.setTag(flagType.getTag());
         flag.setTextDesc(flagType.getTextDesc());
         Boolean defaultValue = flagType.get_default();
-        if (defaultValue != null) flag.setSelected(defaultValue);
+        if (defaultValue != null) flag.setSelected(defaultValue.booleanValue());
         return flag;
     }
 
@@ -238,7 +238,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
         arg.setValues(paramType.getValue());
         if ( paramType.getRequired() != null ) {
         	System.out.println("the param " + arg.getId() + " is required " + paramType.getRequired());
-        	arg.setRequired(paramType.getRequired());
+        	arg.setRequired(paramType.getRequired().booleanValue());
         }
         arg.setPosition(position);
         return arg;
@@ -254,9 +254,9 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     	boolean required = false;
     	Group group = new Group();
     	group.setName(groupType.getName());
-    	if ( groupType.getExclusive() != null ) group.setExclusive(groupType.getExclusive());
+    	if ( groupType.getExclusive() != null ) group.setExclusive(groupType.getExclusive().booleanValue());
     	if ( groupType.getRequired() != null ) {
-    		required = groupType.getRequired();
+    		required = groupType.getRequired().booleanValue();
     		group.setRequired(required);
     	}
     	group.setTextDesc(groupType.getTextDesc());
