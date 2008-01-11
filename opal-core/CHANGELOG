@@ -1,6 +1,7 @@
 
 
-1.9 release
+Current trunk
+- Made the code compatible with java 1.4 (LC)
 - updated the way opal handles symlinked working directories - now we do
   not need Tomcat to be on NFS (SK)
 - now the charts use a thicker line (LC)

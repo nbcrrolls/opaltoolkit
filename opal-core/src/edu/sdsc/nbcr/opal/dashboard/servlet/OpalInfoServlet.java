@@ -52,10 +52,10 @@ public class OpalInfoServlet extends HttpServlet {
     private String opalBuildDateCommand = "uname -a";
     private String opalWebsite = null;
     private String opalDocumentation = null;
-    private Boolean drmaa = false; 
+    private Boolean drmaa = Boolean.FALSE; 
     //TODO improve handling of unconnected DB
-    private Boolean dbUsed = false;
-    private Boolean globus = false;
+    private Boolean dbUsed = Boolean.FALSE;
+    private Boolean globus = Boolean.FALSE;
     private String globusGatekeeper = null;
     private DBManager dbManager = null;
     
@@ -100,13 +100,13 @@ public class OpalInfoServlet extends HttpServlet {
         //getting some more informations
         if ( props.getProperty("drmaa.use") != null ) {
             if ( props.getProperty("drmaa.use").equals("true") ) 
-                drmaa = true;
+                drmaa = Boolean.TRUE;
         }
         if ( props.getProperty("globus.use") != null ) {
             if ( props.getProperty("globus.use").equals("true") ) 
-                globus = true;
+                globus = Boolean.TRUE;
         }
-        if ( globus == true ) {
+        if ( globus.booleanValue() == true ) {
             globusGatekeeper = props.getProperty("globus.gatekeeper");
         }
         if (props.getProperty("opal.datalifetime") != null) {
@@ -116,7 +116,7 @@ public class OpalInfoServlet extends HttpServlet {
         
         if (props.getProperty("database.use") != null) {
             if ( props.getProperty("database.use").equals("true") ) {
-                dbUsed = true;
+                dbUsed = Boolean.TRUE;
                 initialized = true;
             } else {
                 //no DB connection, useless to go on 
