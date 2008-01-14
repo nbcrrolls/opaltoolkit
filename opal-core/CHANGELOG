@@ -1,6 +1,8 @@
 
 
 Current trunk
+- Made the NBCR logo transparent (LC)
+- Now the "Number of jobs currently running" chart is colored with different colors (LC) 
 - Made the code compatible with java 1.4 (LC)
 - updated the way opal handles symlinked working directories - now we do
   not need Tomcat to be on NFS (SK)
