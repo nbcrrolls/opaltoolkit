@@ -222,7 +222,7 @@ public class PloterServlet extends HttpServlet
                 if (running == -1 ){
                     doError("impossible to retrive the data from the Data Base", request, response);
                 }
-                barDataset.addValue(running, "Running jobs", servicesName[i]);                
+                barDataset.addValue(running, servicesName[i], "");                
             }
         } else {
             //all the other chart are created here
@@ -272,7 +272,7 @@ public class PloterServlet extends HttpServlet
         if (type.equals(runningjobs)){
             chart = ChartFactory.createBarChart3D(title, xAxisTitle, yAxisTitle, barDataset, PlotOrientation.VERTICAL,
                  // include legend, tooltips, urls
-                    false, true, true);
+                    true, true, true);
             //http://www.google.com/codesearch?hl=en&q=+BarChart3DDemo4.java+show:P7RwiKyu_fE:jBqt4P62SWA:MPRcQZS7yqc&sa=N&cd=1&ct=rc&cs_p=http://feathers.dlib.vt.edu/~etana/VisualViews/JFreechart/jfreechart-1.0.1-demo.zip&cs_f=jfreechart-1.0.1-demo/source/demo/BarChart3DDemo4.java#first
             
         }else{
