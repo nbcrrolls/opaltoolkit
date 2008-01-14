@@ -45,7 +45,7 @@
 
 <!-- add content here... -->
 
-<p align="right"><img src="images/nbcr_logo.png" /></p>
+<p align="right"><img src="images/nbcr_logo_trans.gif" /></p>
 <div id="title" >
 
 <h1>Opal Toolkit</h1>
