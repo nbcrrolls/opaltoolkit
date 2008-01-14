@@ -154,7 +154,7 @@
 </td></tr>
 <tr><td valign="bottom">
 <div>
-<a href="http://nbcr.net" ><img src="images/nbcr_logo.png" alt="NBCR logo"/></a><br/>
+<a href="http://nbcr.net" ><img src="images/nbcr_logo_trans.gif" alt="NBCR logo"/></a><br/>
 &#169; UC Regents 2005-2008
 </div>
 </td></tr>
