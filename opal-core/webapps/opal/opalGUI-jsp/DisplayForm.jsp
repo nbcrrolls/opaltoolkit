@@ -184,7 +184,7 @@ function selectElement(element, groupId){
     <logic:notEmpty name="appMetadata" property="info">
     <p class="manual" >Usage Info:</br>
         <logic:iterate id="infoString" name="appMetadata" property="info"> 
-            <pre> <%= infoString %></pre> 
+            <pre><c:out value="<%= infoString %>"/> </pre> 
         </logic:iterate>
     </p>
     </logic:notEmpty>

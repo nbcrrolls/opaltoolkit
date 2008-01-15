@@ -1,6 +1,8 @@
 
 
-Current trunk
+Current trun
+- now the Simple Submission Form support multiple input file (LC)
+- the help section of the applications what not displaying properly html symbol like <>, now it does (LC)
 - build.properties and etc/opal.properties are move in .template file (LC)
 - Open the output page in a new browser page (LC)
 - Made the NBCR logo transparent (LC)

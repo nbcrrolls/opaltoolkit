@@ -35,7 +35,7 @@
 
 <body bgcolor="#FFFFFF">
 
-<h1 align="center">The Opal Toolkit (Powered by Apache-AXIS)</h1>
+<h1 align="center">The Opal Toolkit</h1>
 
 <%= getLocaleChoice() %>
 
