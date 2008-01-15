@@ -78,8 +78,8 @@
         <action path="/LaunchJob"
                 type="edu.sdsc.nbcr.opal.gui.actions.LaunchJobAction"
                 name="appMetadata" scope="session">
-                <forward name="JobStatus"
-                    path="/GetJobStatus.do" redirect="true"/>
+                <forward name="JobStatus" path="/GetJobStatus.do" redirect="true"/>
+                <forward name="DisplaySimpleForm" path="/opalGUI-jsp/DisplaySimpleForm.jsp" redirect="false"/>
         </action>
 
         <action path="/GetJobStatus"
