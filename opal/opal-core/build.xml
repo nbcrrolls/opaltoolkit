@@ -390,6 +390,11 @@ Author:
       </fileset>
     </copy>
 
+    <!-- Moving the template file  -->
+    <move file="${build.dist.base}/etc/opal.properties.template" tofile="${build.dist.base}/etc/opal.properties"/>
+    <move file="${build.dist.base}/build.properties.template" tofile="${build.dist.base}/build.properties"/>
+
+
     <!-- adjusting text files to local conventions -->
     <fixcrlf srcdir="${build.dist.base}"
        eol="lf" eof="remove"

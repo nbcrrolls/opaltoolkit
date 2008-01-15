@@ -1,5 +1,5 @@
 # location of the tomcat installation
-catalina.home = /home/clem/projects/opal/apache-tomcat-5.5.25
+catalina.home = /path/to/catalina_home
 
 # port number used by the tomcat server
 tomcat.port = 8080
