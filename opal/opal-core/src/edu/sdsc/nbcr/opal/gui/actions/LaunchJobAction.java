@@ -46,6 +46,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
         log.info("Action: LaunchJob");
+        
         AppMetadata app = (AppMetadata) form;
         ArrayList errors = new ArrayList();
         if (app == null){
@@ -57,7 +58,17 @@ public class LaunchJobAction extends MappingDispatchAction{
         }
         //let's print some debug informations
         String debug = "";
-        if ( app.isArgMetadataEnable()) {
+        if ( app.isAddFile() ) {
+            log.info("Adding one more input file to the simple submission form");
+            //let's add an element to the files array
+            FormFile [] formFiles = app.getFiles();
+            FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
+            for (int i = 0; i < formFiles.length; i++ ){
+                newFormFiles[i] = formFiles[i];
+            }
+            app.setFiles(newFormFiles);
+            return mapping.findForward("DisplaySimpleForm");
+        }else if ( app.isArgMetadataEnable()) {
             ArgFlag [] flags = app.getArgFlags();
             if (flags != null ) { 
                 for (int i = 0; i < flags.length; i++ ) {
@@ -72,8 +83,12 @@ public class LaunchJobAction extends MappingDispatchAction{
             } else { debug += "no parameters found\n"; }
         } else {
             debug += "the command line is: " + app.getCmdLine() + "\n";
-            if ( app.getFile() != null) 
-                debug += "the uploaded file is: " + app.getFile().getFileName() + "\n";
+            if ( (app.getFiles() != null) && (app.getFiles().length > 0) ) { 
+                debug += "we have " + app.getFiles().length + " file(s)";
+                debug += "the uploaded file are: "; 
+                for (int i = 0; i < app.getFiles().length; i++ )
+                debug += "" + app.getFiles()[i].getFileName() + " ";
+            }
         }
         log.info("the following parameters has been posted:\n" + debug);
         //let's build the command line
@@ -222,14 +237,24 @@ public class LaunchJobAction extends MappingDispatchAction{
                         return null;
                     }
                 }//for
-            } else if ( (app.getFile() != null) && (app.getFile().getFileName().length() > 0 ) ){
-                //simple form, we have some generic input files
-                log.info("We have a file in from the simple form");
-                //TODO add support for multiple files
-                files = new InputFileType[1];
-                files[0] = new InputFileType();
-                files[0].setName( app.getFile().getFileName() );
-                files[0].setContents( app.getFile().getFileData() );
+            } else if ( (app.getFiles() != null) && ( app.getFiles()[0] != null) && (app.getFiles()[0].getFileName().length() > 0 ) ){
+                //simple form, we have at least one input file
+                log.info("We have at least a file in the simple form");
+                FormFile [] filesForm =  app.getFiles();
+                ArrayList filesArrayReturn = new ArrayList();
+                
+                //get the number of files  --- not nice! make a function!
+                for (int i = 0; i < filesForm.length; i++) {
+                    if ((filesForm[i] != null) && (filesForm[i].getFileName().length() > 0)){
+                        //let's an input file
+                        InputFileType file = new InputFileType();
+                        file.setName( app.getFiles()[i].getFileName() );
+                        file.setContents( app.getFiles()[i].getFileData() );
+                        filesArrayReturn.add( file );
+                    }//if
+                }//for
+                
+                files = (InputFileType[]) filesArrayReturn.toArray(new InputFileType[filesArrayReturn.size()]);
             }
         } catch (Exception e){
             log.error("There was an error reading uploaded files!");

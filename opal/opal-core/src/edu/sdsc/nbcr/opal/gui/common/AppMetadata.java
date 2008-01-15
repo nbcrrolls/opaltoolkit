@@ -6,8 +6,17 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+
 public class AppMetadata extends ActionForm{
 	
+    
+    protected Log log = LogFactory.getLog(Constants.PACKAGE);
+    
+    
 	private String serviceName;
 	private String usage;
 	private String [] info;
@@ -18,9 +27,10 @@ public class AppMetadata extends ActionForm{
 	private String separator;
 	//these are to hold the values from the form 
 	private String cmdLine;
-	private FormFile file;
+	private FormFile [] files;
 	private int numFile;
 	private String jobId;
+	private boolean addFile;
 	
 
 
@@ -33,8 +43,10 @@ public class AppMetadata extends ActionForm{
         argParams = null;
         separator = null;
         cmdLine = null;
-        file = null;
+        files = new FormFile[1];
+        addFile = false;
         numFile = 0;
+        log.error("called the constructor of AppMetadata");
 	}
     
     public boolean isArgMetadataEnable() {
@@ -213,18 +225,16 @@ public class AppMetadata extends ActionForm{
     public void setCmdLine(String cmdLine) {
         this.cmdLine = cmdLine;
     }
-    public FormFile getFile() {
-        return file;
-    }
-    public void setFile(FormFile file) {
-        this.file = file;
-    }
-    public int getNumFile() {
+    
+
+    
+    
+    /*public int getNumFile() {
         return numFile;
     }
     public void setNumFile(int numFile) {
         this.numFile = numFile;
-    }
+    }*/
     public String getJobId() {
 		return jobId;
 	}
@@ -239,5 +249,21 @@ public class AppMetadata extends ActionForm{
 	public void setGroups(Group[] groups) {
 		this.groups = groups;
 	}
+
+    public FormFile[] getFiles() {
+        return files;
+    }
+
+    public void setFiles(FormFile[] files) {
+        this.files = files;
+    }
+
+    public boolean isAddFile() {
+        return addFile;
+    }
+
+    public void setAddFile(boolean addFile) {
+        this.addFile = addFile;
+    }
 
 }
