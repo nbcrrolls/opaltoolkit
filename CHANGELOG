@@ -1,6 +1,8 @@
 
 
 Current trunk
+- build.properties and etc/opal.properties are move in .template file (LC)
+- Open the output page in a new browser page (LC)
 - Made the NBCR logo transparent (LC)
 - Now the "Number of jobs currently running" chart is colored with different colors (LC) 
 - Made the code compatible with java 1.4 (LC)
