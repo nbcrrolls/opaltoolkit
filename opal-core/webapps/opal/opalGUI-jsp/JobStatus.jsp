@@ -44,7 +44,7 @@ StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
     
     <tr><td>Message:</td><td><%= status.getMessage() %></td>
     
-    <tr><td>Output Base URL:</td><td><a href="<%= status.getBaseURL() %>"><%= status.getBaseURL() %></a></td>
+    <tr><td>Output Base URL:</td><td><a href="<%= status.getBaseURL() %>"  target="_blank" ><%= status.getBaseURL() %></a></td>
     
 </table>
 

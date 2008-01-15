@@ -5,7 +5,7 @@ tomcat.url=http://localhost:8080
 
 # parallel parameters
 num.procs=1
-mpi.run=/Users/sriramkrishnan/Misc/mpich-1.2.7/bin/mpirun
+mpi.run=/path/to/your/mpi
 
 # zip up input/output files, if set to true
 # data.archive=true
@@ -20,9 +20,11 @@ mpi.run=/Users/sriramkrishnan/Misc/mpich-1.2.7/bin/mpirun
 
 # database information
 database.use=false
-database.url=jdbc:postgresql://localhost/opal_db
-database.user=opal_user
-database.passwd=opal_passwd
+database.url=jdbc:postgresql://localhost/app_db
+database.user=app_user
+database.passwd=app_user
+
+
 
 # drmma information
 drmaa.use=false
