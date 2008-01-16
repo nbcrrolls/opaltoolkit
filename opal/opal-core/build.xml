@@ -33,6 +33,8 @@ Build Instructions:
 	ant deploy -DserviceName=serviceName -DappConfig=appConfig
    To undeploy a service (locally)
 	ant undeploy -DserviceName=serviceName
+   To create javadocs
+        ant api-docs
 
 Author:
    Sriram Krishnan [sriram@sdsc.edu]
@@ -50,6 +52,7 @@ Author:
   <property name="opal.WEB-INF" location="${project.home}/webapps/${opal.webapp}/WEB-INF" />  
   <property name="build" location="${project.home}/build" />
   <property name="build.classes" location="${build}/classes" />
+  <property name="build.docs" location="${build}/docs" />
   <property name="build.generated" location="${build}/gen" />
   <property name="build.jar" location="${build}/jar" />
   <property name="build.dist" location="${build}/dist" />
@@ -81,6 +84,7 @@ Author:
   <target name="setenv">
     <mkdir dir="${build}" />
     <mkdir dir="${build.classes}" />
+    <mkdir dir="${build.docs}" />
     <available file="${build.generated}"
                type="dir" 
                property="stubs.present" />
@@ -258,9 +262,9 @@ Author:
     <!-- make sure that the tomcat.WEB-INF property exists -->
     <available file="${tomcat.WEB-INF}"
                type="dir" 
-               property="axis.present" />
-    <fail message="Make sure that opal.webapp points to a valid Axis webapp" 
-          unless="axis.present"/>
+               property="opal.present" />
+    <fail message="Make sure that opal webapp is actually installed inside Tomcat" 
+          unless="opal.present"/>
 
     <!-- delete all opal specific stuff -->
     <delete verbose="true">
@@ -316,6 +320,21 @@ Author:
   <target name="upgrade">
     <antcall target="uninstall-minimal"/>
     <antcall target="install"/>
+  </target>
+
+  <!-- Build the javadocs for the Opal classes -->
+  <target name="api-docs" depends="setenv">
+    <javadoc packagenames="edu.sdsc.nbcr.*"
+	     sourcepath="src"
+	     defaultexcludes="yes"
+	     destdir="${build.docs}"
+	     author="true"
+	     version="true"
+	     use="true"
+	     windowtitle="Opal API">
+      <classpath refid="classpath" />
+      <doctitle><![CDATA[<h1>The Opal Toolkit</h1>]]></doctitle>
+    </javadoc>
   </target>
 
   <!-- Deploy an opal service -->
