@@ -64,10 +64,8 @@ public class GetServiceListHelper {
     }
 	
     /**
-     * process the options then run a list call
-     * @param opts
-     * @return
-     * @throws Exception
+     * process the options then invoke the service
+
      */
     public SOAPBodyElement getServiceList()  {
     	if (call == null ){
@@ -106,6 +104,7 @@ public class GetServiceListHelper {
 
     }
 
+    
     public OPALService[] parseServiceList(String body) {
         try {
             ArrayList list = new ArrayList();
@@ -175,7 +174,12 @@ public class GetServiceListHelper {
     	return false;
     }
 
-    
+    /**
+     * given the service list it check the metadata and if present it set change the service name 
+     * with value contained appName attribute of the metadata tag
+     * 
+     * @param serviceList
+     */
     public boolean setServiceName(OPALService [] serviceList){
         AppServiceLocator asl = new AppServiceLocator();
         AppServicePortType appServicePort;
@@ -214,7 +218,7 @@ public class GetServiceListHelper {
     }
     
     /**
-     * just for testing purpouse 
+     * Just for testing purpouse. not used
      * @param argv
      */
     public static void main(String [] argv){

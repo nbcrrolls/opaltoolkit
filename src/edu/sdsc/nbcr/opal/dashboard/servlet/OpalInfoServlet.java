@@ -28,9 +28,9 @@ import java.lang.Character;
 /**
  * OpalInfoServlet 
  *
- * class that implements most of the business logic of the Opal dashboard
+ * class that implements all the business logic behind the Opal dashboard
  * 
- * Luca Clementi
+ * @author clem
  *
  */
 public class OpalInfoServlet extends HttpServlet {
@@ -167,6 +167,12 @@ public class OpalInfoServlet extends HttpServlet {
         doGet(req, res);
     }
 
+    /**
+     * Both doGet and goPort call this function that actually does the processing
+     * 
+     * @throws IOException
+     * @throws ServletException
+     */
     public void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException {
         String command = req.getParameter("command");
@@ -244,6 +250,12 @@ public class OpalInfoServlet extends HttpServlet {
         }
     }
 
+    /**
+     * exec the command on the local system
+     * @param command the command to be executed 
+     * @param error the log string to be printed in case of error
+     * @return the output of the command
+     */
     public String exec(String command, String error) {
         String r = new String();
         try {

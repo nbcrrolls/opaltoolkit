@@ -7,6 +7,12 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * this class provides some functionalities that are helpful when dealing with dates
+ * 
+ * @author clem
+ *
+ */
 public class DateHelper {
 
     static final int MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -32,9 +38,10 @@ public class DateHelper {
     }
     
     /**
-     * this functions subctract a month form the date
-     * @param date
-     * @return
+     * this functions subtract a month form the date
+     * @param date the input date
+     * @return the input date minus one month
+     * 
      */
     public static Date subtractMonth(Date date){
         Calendar cal1 = Calendar.getInstance();
@@ -47,8 +54,9 @@ public class DateHelper {
     /**
      * it tries to parse the string date following the format MM/dd/yy
      * it return null if it can not parse the date
-     * @param date
-     * @return
+     * 
+     * @param date the string to be parsed
+     * @return the date parsed
      */
     public static Date parseDate(String date){
         if ( date == null) return null;
@@ -74,7 +82,7 @@ public class DateHelper {
      * 
      * @param d1
      * @param d2
-     * @return
+     * @return true if d1 d2 are on the same day
      */
     public static boolean  compareDates(Date d1, Date d2) {
         Calendar cal1 = Calendar.getInstance();
@@ -94,10 +102,11 @@ public class DateHelper {
     
     
     /**
-     * this function return the number of days between date1 and date2
+     * this function returns the number of days between date1 and date2
      * @param date1
      * @param date2
-     * @return
+     * @return the number of days between date1 and date2
+     * 
      */
     public static int getOffsetDays(Date date1, Date date2){
         long diff = date1.getTime() - date2.getTime();
@@ -107,10 +116,10 @@ public class DateHelper {
     }
 
     /**
-     * return true if (d1 + 1day) == d2
+     * Return true if (d1 + 1day) == d2
      * @param d1
      * @param d2
-     * @return
+     * 
      */
     public static boolean isOneDayOffset(Date d1, Date d2){
         Calendar cal1 = Calendar.getInstance();
@@ -120,8 +129,8 @@ public class DateHelper {
     }//isOneDayOffset
     
     /**
-     * return the default start date that is (today - 31)
-     * @return
+     * Return the default start date that is (today - 31)
+     * 
      */
     public static Date getStartDate(){
         Date toDay = new Date();
@@ -130,16 +139,17 @@ public class DateHelper {
     }
     
     /**
-     * return the default end date that is yesterday
-     * @return
+     * Return the default end date that is yesterday
+     * 
      */
     public static Date getEndDate(){
         return DateHelper.subtractDay(new Date());
     }
     
     /**
+     * 
+     * Return true if the value is contained in str.
      * this should not be here... but I just didn't know where to put it
-     * return true if the value is contained in str
      */
     public static boolean containsString(String [] str, String value){
         for ( int i = 0; i < str.length; i++ ) {

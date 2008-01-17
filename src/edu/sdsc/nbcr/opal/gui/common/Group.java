@@ -1,5 +1,12 @@
 package edu.sdsc.nbcr.opal.gui.common;
 
+
+/**
+ * This class is used to group more ArgFlag or ArgParam together.
+ * 
+ * @author clem
+ *
+ */
 public class Group {
 	
 	private ArgFlag [] argFlags;

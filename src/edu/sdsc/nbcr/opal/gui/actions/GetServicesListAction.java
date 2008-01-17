@@ -23,7 +23,7 @@ import edu.sdsc.nbcr.opal.gui.common.GetServiceListHelper;
 import edu.sdsc.nbcr.opal.gui.common.OPALService;
 
 /**
- * this class fetches the list of available opal services from an AXIS server and then 
+ * This class fetches the list of available opal services from an AXIS server and then 
  * forwards to a view that displays them.
  * 
  * @author clem
