@@ -1,5 +1,11 @@
 package edu.sdsc.nbcr.opal.gui.common;
 
+
+/**
+ * some constants used in the opalgui or opal dig
+ * @author clem
+ *
+ */
 public class Constants {
 	
 	/**

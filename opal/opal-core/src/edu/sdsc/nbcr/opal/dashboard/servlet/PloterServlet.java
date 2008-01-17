@@ -62,8 +62,11 @@ import java.util.regex.*;
 
 
 /** 
+ * This servlet is in charge of plotting the chart.</br>
  * 
- *  See the doPost function documentation
+ * See the doPost function documentation for more info
+ * 
+ * @see #doPost(HttpServletRequest, HttpServletResponse)
  *  
  */
 
@@ -322,7 +325,7 @@ public class PloterServlet extends HttpServlet
     
     /**
      * return a new color from a color hex string "#000000" eg is black and
-     * "#ffffff" is white
+     * "#ffffff" is white. Not used!
      * 
      * @param bgcolor
      *            string representation of a hex color (as typically found in

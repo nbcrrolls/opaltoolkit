@@ -29,8 +29,9 @@ import edu.sdsc.nbcr.opal.gui.common.Constants;
 import edu.sdsc.nbcr.opal.gui.common.OPALService;
 
 /**
- * This action is used to get the job status, it requires a jobId parameters in the request
- * holding the ID of the job you want to get the status
+ * This action is used to get the job status, it requires a jobId parameters in the request.
+ * Have the ID of the job you want to get the status
+ * 
  * @author clem
  *
  */

@@ -59,14 +59,18 @@ public class ArgParam extends ActionForm{
         this.textDesc = textDesc;
     }
     
+    /**
+     * Reset the value inputed by the user
+     *  
+     */
     public void reset(){
     	file = null;
     	selectedValue = null;
     }
     
     /**
-     * return true if a file has been uploaded
-     * @return
+     * Return true if a file has been uploaded
+     * @return true if a file has been uploaded
      */
     public boolean isFileUploaded(){
     	return (file != null) && (file.getFileName().length() > 0);
@@ -139,6 +143,10 @@ public class ArgParam extends ActionForm{
         this.position = position;
     }
 	
+    /**
+     * it returns a textual representation of this instance
+     * 
+     */
 	public String toString(){
 	    String str = "Param " + id + " is tagged with " + tag + ", type is: " + type + "/" + ioType + ", ";
 	    if (required) str += "is required, ";
