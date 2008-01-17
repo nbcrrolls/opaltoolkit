@@ -1,8 +1,3 @@
-/**
- * Axis Handler for NBCR services that uses a GridMap for authorization of clients
- *
- * @author Sriram Krishnan [mailto:sriram@sdsc.edu]
- */
 package edu.sdsc.nbcr.common;
 
 import org.apache.log4j.Logger;
@@ -23,15 +18,35 @@ import java.io.IOException;
 
 import java.util.Enumeration;
 
+/**
+ * Axis Handler for NBCR services that uses a GridMap for authorization of clients
+ * based on a grid-mapfile
+ *
+ * <p>To configure a service with GSI security, and enable authorization based
+ * on grid-maps, please consult the 
+ * <a href="http://nbcr.net/software/opal/docs/security.html">security docs</a>
+ *
+ * @author Sriram Krishnan
+ */
 public class GridMapAuthHandler extends BasicHandler {
 
     // location of gridmap file
-    String gridmapLoc = null;
+    private String gridmapLoc = null;
 
     // get an instance of the log4j logger
     private static Logger logger = 
 	Logger.getLogger(GridMapAuthHandler.class.getName());
 
+    /**
+     * Sole constructor
+     */
+    public GridMapAuthHandler() {
+	super();
+    }
+
+    /**
+     * Initialization method that is automatically invoked on startup
+     */
     public void init() {
 	super.init();
 	gridmapLoc = (String)getOption("gridmap");
@@ -40,6 +55,15 @@ public class GridMapAuthHandler extends BasicHandler {
 	logger.info("Location of gridmap: " + gridmapLoc);
     }
 
+    /**
+     * The main method which is invoked on every Web services call. For a GSI
+     * https connection, it checks whether the client's DN is on the grid-map 
+     *
+     * @param msgContext the Axis message context from which the method retrieves
+     * the client's DN
+     * @throws AxisFault if the client's DN is not on the grid-map, or
+     * if there is any error
+     */
     public void invoke(MessageContext msgContext) 
 	throws AxisFault {
         logger.info("entering");
