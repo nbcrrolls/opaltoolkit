@@ -20,13 +20,28 @@ import org.postgresql.util.PGInterval;
 
 import edu.sdsc.nbcr.opal.dashboard.util.DateHelper;
 
-
+/**
+ * This class is used to manage the connection with the persistency layer.
+ * 
+ * The following attributes are part of this class:
+ * <ul>
+ * <li>databaseUrl is the url used to connect to the DB
+ * <li>dirver is the name of the java driver to be used to connect to the db
+ * <li>dbUserName the user name to use to connect to the db
+ * <li>dpPassword the password to use for connecting to the db
+ * </ul>
+ * 
+ * @author clem
+ *
+ */
 public class DBManager {
     
 
     protected static Log log = LogFactory.getLog(DBManager.class.getName());
 
-    
+    /**
+
+     */
     private Connection conn = null;
     private String databaseUrl = null;
     private String driver = null;
@@ -47,6 +62,14 @@ public class DBManager {
         return dbUserName;
     }
 
+    /**
+     * constructor 
+     * 
+     * @param databaseUrl
+     * @param driver
+     * @param dbUserName
+     * @param dbPassword
+     */
     public DBManager( String databaseUrl, String driver, String dbUserName, String dbPassword) {
         super();
 
@@ -61,6 +84,10 @@ public class DBManager {
         conn = null;
     }
     
+    /**
+     * this function has to be called to initialized the connection to the DB
+     * @return true if everything went OK
+     */
     public boolean init() {
         try {
             Class.forName(driver).newInstance();
@@ -75,12 +102,19 @@ public class DBManager {
         }
     }
     
-    
+    /**
+     * 
+     * @return true if the connection to the DB is valid
+     */
     public boolean isConnected(){
         if ( conn != null ) return true;
         else return false;
     }
 
+    /**
+     * close the connection with the db
+     * @throws java.sql.SQLException
+     */
     public void close() throws java.sql.SQLException{
         if (isConnected()) {
             conn.close();
@@ -90,11 +124,12 @@ public class DBManager {
 
 
     /**
-     * returns the list of services available on the Opal server
-     * The service has to be called at least once in order to be retrieved 
-     * by the client 
+     * Returns the list of services available on the Opal server.
      * 
-     * @return an Array of strings
+     * The service has to be called at least once in order to be retrieved 
+     * by the client.
+     * 
+     * @return an Array of strings containing the list of services
      * 
      */
     public String [] getServicesList(){
@@ -115,20 +150,10 @@ public class DBManager {
     
 
     /**
-     * legacy function it is here only for backward compatibility
+     * legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
      * 
-     * @see getResult()
+     * @see #getResultsTimeseries(Date, Date, String, String)
      * 
-     * getHits return an array of double where every elements represent the number of 
-     * hits received for the service from the startDate to the endDate
-     * 
-     * the returned array will have length equal to the number of days included between endDate
-     * startDate
-     * 
-     * @param startDate
-     * @param endDate
-     * @param service
-     * @return
      */
     public double [] getHits(Date startDate, Date endDate, String service){
         
@@ -136,24 +161,20 @@ public class DBManager {
     }
     
     /**
-     * @see getResults
+     * legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
      * 
-     * @param startDate
-     * @param endDate
-     * @param service
-     * @return
+     * @see #getResultsTimeseries(Date, Date, String, String)
+     * 
      */
     public double [] getError(Date startDate, Date endDate, String service){
         return getResultsTimeseries(startDate, endDate, service, "error");
     }
     
     /**
-     * @see getResults
-     *  
-     * @param startDate
-     * @param endDate
-     * @param service
-     * @return
+     * legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
+     * 
+     * @see #getResultsTimeseries(Date, Date, String, String)
+     * 
      */
     public double [] getExectime(Date startDate, Date endDate, String service){
         return getResultsTimeseries(startDate, endDate, service, "exectime");
@@ -269,7 +290,7 @@ public class DBManager {
     /**
      * this function returns the number of running jobs for the specified service
      * 
-     * @param service
+     * @param service the service name
      * @return the number of running job of the service 
      */
     public int getRunningJobs(String service){

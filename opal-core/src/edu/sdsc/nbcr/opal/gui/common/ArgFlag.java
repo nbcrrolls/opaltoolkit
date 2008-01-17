@@ -3,7 +3,8 @@ package edu.sdsc.nbcr.opal.gui.common;
 import org.apache.struts.action.ActionForm;
 
 /**
- * this class is suppsed to keep the data necessary to represet a flag
+ * This class is supposed to keep the data necessary to represent a flag
+ * 
  * @author clem
  *
  */

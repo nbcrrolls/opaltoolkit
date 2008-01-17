@@ -37,7 +37,13 @@ import edu.sdsc.nbcr.opal.gui.common.Constants;
 import edu.sdsc.nbcr.opal.gui.common.Group;
 import edu.sdsc.nbcr.opal.gui.common.OPALService;
 
-
+/**
+ * This struts action is called to prepare the data necessary 
+ * to create the submission form.
+ * 
+ * @author clem
+ *
+ */
 public class CreateSubmissionFormAction extends MappingDispatchAction{
     
     private static Log log = LogFactory.getLog(Constants.PACKAGE);
@@ -83,6 +89,13 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
         }
     }//execute
 
+    /**
+     * give a service URL it fetches the metadata, and it parses it 
+     * @param serviceURL
+     * 
+     * @return the AppMetadata object containing information fetched from serviceURL
+     * 
+     */
     public AppMetadata parseAppMetadata(String serviceURL){
         //query the service and obtain the config file
         AppMetadata app = new AppMetadata();
@@ -203,9 +216,12 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }//if types
     
     /**
-     * parse a flagType and return the corresponding ArgFlag
+     * Parse a FlagsType and return the corresponding ArgFlag
+     * 
      * @param flagType
-     * @return
+     * @return the corresponding ArgFlag
+     * 
+     * @see import edu.sdsc.nbcr.opal.gui.common.ArgFlag
      */
     private ArgFlag parseFlag(FlagsType flagType){
         ArgFlag flag = new ArgFlag();
@@ -220,7 +236,9 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     /**
      * parse a paramType and returns a ArgParam
      * @param paramType
-     * @return
+     * @return the corresponding ArgParam
+     * 
+     * @see import edu.sdsc.nbcr.opal.gui.common.ArgParam
      */
     private ArgParam parseParam(ParamsType paramType, int position){
         log.debug("parsing the paramType: " + paramType.getTag());
@@ -245,7 +263,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }
     
     /**
-     * it parses the groupType and it returns a corresponding Group instance 
+     * It parses the groupType and it returns a corresponding Group instance 
      * @param groupType
      * @param app
      * @return the corresponding Group instance 
@@ -285,13 +303,13 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }
     
     /**
-     * this function creates another group which contains all the 
+     * This function creates another group which contains all the 
      * flags and parameters that have not already been included in 
-     * another group
+     * all the other groups
      *  
      * @param groups
      * @param app
-     * @return
+     * @return always true
      */
     private boolean setDefaultGroup(ArrayList groups, AppMetadata app){
     	ArgParam [] ungroupedParams = getUngroupedParams( groups, app.getArgParams());
@@ -317,7 +335,8 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }
     
     /**
-     * returns an array of ArgParam containing all the param that have not already been included in another group
+     * Returns an array of ArgParam containing all the params that have not already 
+     * been included in another group
      * 
      */
     private ArgParam []  getUngroupedParams(ArrayList groups, ArgParam [] params){
@@ -337,7 +356,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
      * returns an array of ArgFlags containing all the flags that have not been already used in another goup 
      * @param groups
      * @param flags
-     * @return
+     * 
      */
     private ArgFlag [] getUngroupedFlags(ArrayList groups, ArgFlag [] flags){
     	ArrayList flagsList = new ArrayList(Arrays.asList(flags));
@@ -355,9 +374,9 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     
 
     /**
-     * use this function if you want to create an AppMetadata data 
-     * structure without having to parse the XML file
-     * @return
+     * Use this function if you want to create an AppMetadata data 
+     * structure without having to parse the XML file. For development only.
+     * @return a static AppMetadata
      */
     private AppMetadata createStaticAppMetadata(){
         AppMetadata app = new AppMetadata();

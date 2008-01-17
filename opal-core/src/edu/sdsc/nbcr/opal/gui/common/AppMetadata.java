@@ -10,7 +10,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-
+/**
+ * this class holds all the data necessary to create the submission 
+ * form and to keep the input inserted by the user.
+ * 
+ * @author clem
+ *
+ */
 public class AppMetadata extends ActionForm{
 	
     
@@ -49,6 +55,13 @@ public class AppMetadata extends ActionForm{
         log.error("called the constructor of AppMetadata");
 	}
     
+	/**
+	 * it tells you if the current instance of the AppMetadata supports 
+	 * the complex submission form
+	 * 
+	 * @return true is we have a complex submission form
+	 * 
+	 */
     public boolean isArgMetadataEnable() {
         if ( (argFlags == null) && (argParams == null) ) {
             return false;
@@ -56,6 +69,10 @@ public class AppMetadata extends ActionForm{
         else return true;
     }
     
+    /**
+     * a string representation of the current AppMetadata
+     * 
+     */
     public String toString(){
         String str = "URL: " + URL + "\n";
         str += "Usage: " + usage + "\n";
@@ -91,9 +108,9 @@ public class AppMetadata extends ActionForm{
     }
     
     /**
-     * it returns the number of files submitted by the user in the ArgParam array
+     * It returns the number of files submitted by the user in the ArgParam array
      * 
-     * @return
+     * @return the number of files submitted by the user, -1 if no complex form is enable 
      */
     public int getNumArgFileSubmitted(){
         if (isArgMetadataEnable() ) {
@@ -108,10 +125,10 @@ public class AppMetadata extends ActionForm{
     }
     
     /**
-     * it returns the i-th ArgParam value containing a file submitted by the user
+     * It returns the i-th ArgParam value containing a file submitted by the user
      * 
-     * @param i
-     * @return
+     * @param position the index of the element that will be returned
+     * @return the i-th ArgParam that contains a input file submitted by the user
      */
     public ArgParam getArgFileSubmitted(int position){
         int currentPosition = 0;
@@ -128,8 +145,8 @@ public class AppMetadata extends ActionForm{
     }
     
     /**
-     * returns the number of untagged parameters present in the data structure
-     * @return
+     * It returns the number of untagged parameters present in the data structure
+     * 
      */
     public int getNumUnttagedParams(){
         int counter = 0;
@@ -141,8 +158,8 @@ public class AppMetadata extends ActionForm{
     }
 
     /**
-     * resets the place holder of the submitted values in the entire data structure
-     * Currently resets only the check box values
+     * It resets the place holder for the submitted values in the entire data structure.
+     * 
      */
     public void reset(ActionMapping mapping, HttpServletRequest  request){
         if ( argFlags != null ) 
@@ -156,8 +173,8 @@ public class AppMetadata extends ActionForm{
     }
     
     /**
-     * returns the ArgFlag with has the id equals to id
-     * if it does not find a ArgFlag with an id equals to id it returns null
+     * It returns the ArgFlag that has the id equals to id.
+     * If it does not find an ArgFlag with an id equals to id it returns null
      * 
      */
     public ArgFlag getArgFlagId(String id){    	
@@ -168,6 +185,11 @@ public class AppMetadata extends ActionForm{
     	return null;
     }
     
+    
+    /**
+     * It returns the ArgParam that has the id equals to id.
+     * If it does not find an ArgParam with an id equals to id it returns null
+     */    
     public ArgParam getArgParamId(String id){
     	for (int i = 0; i < argParams.length; i++ ) {
     		if ( argParams[i].getId().equals(id) )
@@ -176,7 +198,7 @@ public class AppMetadata extends ActionForm{
     	return null;
     }
     
-    /** -----    below only getter and setter methods   -------    */
+    /* -----    below only getter and setter methods   -------    */
     public String getSeparator() {
         return separator;
     }
@@ -225,16 +247,6 @@ public class AppMetadata extends ActionForm{
     public void setCmdLine(String cmdLine) {
         this.cmdLine = cmdLine;
     }
-    
-
-    
-    
-    /*public int getNumFile() {
-        return numFile;
-    }
-    public void setNumFile(int numFile) {
-        this.numFile = numFile;
-    }*/
     public String getJobId() {
 		return jobId;
 	}

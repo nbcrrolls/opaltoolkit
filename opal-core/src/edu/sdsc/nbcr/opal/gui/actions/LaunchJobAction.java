@@ -29,9 +29,9 @@ import edu.sdsc.nbcr.opal.gui.common.Constants;
 import edu.sdsc.nbcr.opal.gui.common.OPALService;
 
 /**
- * this action is invoked to launch a job
- * it expect the appMetadata in the ActionForm with the values 
- * inserted by the user
+ * This action is invoked to launch a job.
+ * It expects the appMetadata in the ActionForm with the values 
+ * inserted by the user in the submission form.
  * 
  * @author clem
  *
