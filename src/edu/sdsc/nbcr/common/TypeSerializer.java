@@ -1,9 +1,3 @@
-/*
- * TypeSerializer.java
- *
- * Created on December 1, 2004, 2:57 PM
- */
-
 package edu.sdsc.nbcr.common;
 
 import java.io.FileWriter;
@@ -17,8 +11,9 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 
 /**
+ * A utility class that serializes an Axis generated object into XML
  *
- * @author  Brent
+ * @author Brent Stearn
  */
 public class TypeSerializer {
 
@@ -26,17 +21,20 @@ public class TypeSerializer {
     private static Logger logger =
 	Logger.getLogger(TypeSerializer.class.getName());
     
-    /** Creates a new instance of TypeSerializer */
+    /**
+     * Sole constructor
+     */
     public TypeSerializer() {
     }
     
     /**
+     * Method to serialize an Axis generated object into XML
      * 
      * @param path fully qualified path for the file to be written to.
      * Will overwrite if file already exists
      * 
      * @param qname the qualified name for the top level element
-     * @param ret Instance of type to be written
+     * @param ret instance of type to be written
      */
     public static void writeValue( String path, QName qname, Object ret ) 
 	throws NoSuchMethodException, 
