@@ -43,6 +43,7 @@
 	  <tag>-x[1|2|a|p|n|c|d|g|v]+</tag>
 	  <textDesc> 
 	    <![CDATA[
+		     <pre>
 		     -x[flags] XML.CML options (e.g. -x1ac)  
 		     1 output CML V1.0 (default)
 		     2 output CML V2.0 (Schema)
@@ -53,6 +54,7 @@
 		     d output DOCTYPE (default none)
 		     g debug output
 		     v add XML version (declaration)
+		     </pre>
 	    ]]>
 	  </textDesc>
 	</flag>
@@ -68,7 +70,9 @@
 	  <required>true</required>
 	  <textDesc>
 	    <![CDATA[
-		     It specifies input file name and format.
+		     <pre>
+		     Input file name and format.
+
 		     Currently supported input types
 		     alc -- Alchemy file
 		     prep -- Amber PREP file
@@ -117,6 +121,7 @@
 		     unixyz -- UniChem XYZ file
 		     vmol -- ViewMol file
 		     xyz -- XYZ file
+		     </pre>
 	    ]]>
 	  </textDesc>
 	</param>
@@ -129,9 +134,11 @@
 	  <required>true</required>
 	  <textDesc>
 	    <![CDATA[
-		     It specifies output file name and format.
+		     <pre>
+		     Output file name and format.
+
 		     Currently supported output types
-		     alc -- Alchemy file
+		     alc -- Alchemy file<br/>
 		     bs -- Ball & Stick file
 		     caccrt -- Cacao Cartesian file
 		     cacint -- Cacao Internal file
@@ -187,6 +194,7 @@
 		     xed -- XED file
 		     xyz -- XYZ file
 		     zin -- ZINDO Input file
+		     </pre>
 	    ]]>
 	  </textDesc>
 	</param>
