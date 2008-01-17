@@ -1,10 +1,3 @@
-/**
- *
- * Utility class for deployment of Opal services
- *
- * @author: Sriram Krishnan [mailto:sriram@sdsc.edu]
- */
-
 package edu.sdsc.nbcr.opal.util;
 
 import org.apache.log4j.Logger;
@@ -13,9 +6,32 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+/**
+ *
+ * Utility class for deployment of Opal services
+ *
+ * @author Sriram Krishnan
+ */
 public class Deploy {
     private static Logger logger = Logger.getLogger(Deploy.class.getName());
 
+    /**
+     * Default constructor
+     */
+    public Deploy() {
+    }
+
+    /**
+     * The main method which uses a WSDD template for Opal services, and replaces
+     * the dummy variables with application specific parameters, which is 
+     * then used by the Ant target to deploy a new Opal service.
+     *
+     * <p>The following system properties are required -
+     * <br><i>appConfig</i>: the location of the application configuration file
+     * <br><i>serviceName</i>: the name of the target service to deploy
+     * <br><i>wsddTemplate</i>: the location of the WSDD template 
+     * <br><i>wsddFinal</i>: the target location for the generated WSDD
+     */
     public static void main(String[] args) throws Exception {
 	String appConfig = System.getProperty("appConfig");
 	if (appConfig == null) {
