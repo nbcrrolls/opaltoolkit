@@ -53,7 +53,9 @@ public class GetServiceListHelper {
     protected Call call;
     private String baseURL;
 	
-    
+    /**
+     * default constructor
+     */
     public GetServiceListHelper(){
     	org.apache.axis.client.Service service = new org.apache.axis.client.Service();
     	try { call = (Call) service.createCall(); }
@@ -65,7 +67,6 @@ public class GetServiceListHelper {
 	
     /**
      * process the options then invoke the service
-
      */
     public SOAPBodyElement getServiceList()  {
     	if (call == null ){
@@ -104,7 +105,11 @@ public class GetServiceListHelper {
 
     }
 
-    
+    /**
+     * given the return value of the axis admin service it parses it and 
+     * returns an array of OPALSerivce 
+     * 
+     */
     public OPALService[] parseServiceList(String body) {
         try {
             ArrayList list = new ArrayList();
