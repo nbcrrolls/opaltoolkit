@@ -306,7 +306,7 @@ Author:
       </fileset>
     </delete>
 
-    <!-- delete jars required from server/lib -->
+    <!-- delete jars required from server/lconfigurationib -->
     <delete verbose="true">
       <fileset dir="${catalina.home}/server/lib">
         <!-- cog-tomcat jar -->
@@ -323,9 +323,13 @@ Author:
   </target>
 
   <!-- Build the javadocs for the Opal classes -->
-  <target name="api-docs" depends="setenv">
+  <path id="src.path.list">
+    <pathelement path="src"/>
+<!--     <pathelement path="${build.generated}"/> -->
+  </path>
+  <target name="api-docs" depends="compile">
     <javadoc packagenames="edu.sdsc.nbcr.*"
-	     sourcepath="src"
+	     sourcepathref="src.path.list"
 	     defaultexcludes="yes"
 	     destdir="${build.docs}"
 	     author="true"
