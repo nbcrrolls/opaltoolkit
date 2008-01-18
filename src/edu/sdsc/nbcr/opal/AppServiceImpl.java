@@ -1,10 +1,3 @@
-/**
- *
- * Implementation of the Application Wrapper Web service. 
- *
- * @author: Sriram Krishnan [mailto:sriram@sdsc.edu]
- */
-
 package edu.sdsc.nbcr.opal;
 
 import java.io.File;
@@ -33,6 +26,14 @@ import org.globus.gram.GramJob;
 
 import edu.sdsc.nbcr.common.TypeDeserializer;
 
+/**
+ *
+ * Implementation of the AppServicePortType, which represents every
+ * Opal service
+ *
+ * @author Sriram Krishnan
+ */
+
 public class AppServiceImpl 
     implements AppServicePortType {
 
@@ -40,38 +41,68 @@ public class AppServiceImpl
     private static Logger logger = 
 	Logger.getLogger(AppServiceImpl.class.getName());
 
-    public static String catalinaHome; // location of tomcat installation
+    /** Location of tomcat installation */
+    public static String catalinaHome; 
     private static String outputPrefix; // the location of the webapps/ROOT
-    public static String mpiRun; // path to the mpirun executable
-    public static int numProcs; // number of available processors
-    public static String tomcatURL; // URL for tomcat installation
-    public static boolean archiveData; // whether to zip up data after completion
 
-    // the hash table that stores the job status
-    // this is static so that it can be shared across multiple instances
+    /** Path for the mpirun executable */
+    public static String mpiRun; 
+
+    /** Number of available processors */
+    public static int numProcs;
+
+    /** URL for tomcat installation */
+    public static String tomcatURL;
+
+    /** Whether to zip up data after completion */
+    public static boolean archiveData;
+
+    /**
+     * The hash table that stores the job status -
+     * this is static so that it can be shared across multiple instances
+     */
     public static Hashtable statusTable = new Hashtable();
 
-    // the hash table that stores the locations of the outputs
+    /**
+     * Tthe hash table that stores the locations of the outputs
+     */
     public static Hashtable outputTable = new Hashtable();
 
-    // the hash table that stores the references to the jobLaunchUtils
+    /**
+     * The hash table that stores the references to the jobLaunchUtils
+     */
     public static Hashtable jobTable = new Hashtable();
 
-    // following values are set if a database is being used
-    public static boolean dbInUse; // if a database is used or not
-    public static String dbUrl; // jdbc url for the database
-    public static String dbUser; // user name for the database
-    public static String dbPasswd; // password for the user
+    /** If a database is used or not */
+    public static boolean dbInUse; 
 
-    // following values are set for using globus correctly
-    public static boolean globusInUse; // if globus is being used or not
-    public static String gatekeeperContact; // url for the globus gatekeeper
-    public static String serviceCertPath; // location of the cert of service
-    public static String serviceKeyPath; // location of the private key of service
+    /** The jdbc url for the database */
+    public static String dbUrl; 
 
-    // following values are set for using DRMAA for job submission
-    public static boolean drmaaInUse; // if DRMAA is being used or not
-    public static String drmaaPE;  // the name of the parallel environment
+    /** The user name for the database */
+    public static String dbUser;
+
+    /** The  password for the database user */
+    public static String dbPasswd;
+
+
+    /** If globus is being used or not */
+    public static boolean globusInUse;
+
+    /** The url for the globus gatekeeper */
+    public static String gatekeeperContact; 
+
+    /** Location of the service certificate*/
+    public static String serviceCertPath; 
+
+    /** Location of the private key for the service */
+    public static String serviceKeyPath;
+
+    /** If DRMAA is being used or not */
+    public static boolean drmaaInUse; 
+
+    /** The name of the parallel environment for DRMAA */
+    public static String drmaaPE;  
 
     // the configuration information for the application
     private AppConfigType appConfig;
@@ -149,7 +180,8 @@ public class AppServiceImpl
 	    dbPasswd = props.getProperty("database.passwd");
 	    if (dbPasswd == null) {
 		logger.fatal("Can't find property: database.passwd");
-	    }		
+	    }
+
 	}
 
 	// DRMAA setup
@@ -186,6 +218,8 @@ public class AppServiceImpl
 
     /**
      * Default constructor
+     *
+     * @throws FaultType if there is an error during initialization
      */
     public AppServiceImpl() 
 	throws FaultType {
@@ -236,7 +270,14 @@ public class AppServiceImpl
     //-------------------------------------------------------------//
     // Implementation of the methods inside the AppServicePortType //
     //-------------------------------------------------------------//
-    
+
+    /**
+     * Get the metadata for this service
+     * 
+     * @param in dummy object representing doc-literal input parameter
+     * @return application metadata, as specified by the WSDL
+     * @throws FaultType if there is an error during retrieval of application metadata
+     */    
     public AppMetadataType getAppMetadata(AppMetadataInputType in) 
 	throws FaultType {
 	logger.info("called");
@@ -248,6 +289,13 @@ public class AppServiceImpl
 	return appConfig.getMetadata();
     }
 
+    /**
+     * Get the application configuration for this service
+     * 
+     * @param in dummy object representing doc-literal input parameter
+     * @return application configuration, as specified by the WSDL
+     * @throws FaultType if there is an error during retrieval of application configuration
+     */
     public AppConfigType getAppConfig(AppConfigInputType in)
 	throws FaultType {
 	logger.info("called");
@@ -259,6 +307,16 @@ public class AppServiceImpl
 	return appConfig;
     }
 
+    /**
+     * Launch a job on behalf of the user, using the given arguments
+     *
+     * @param in the input object, as defined by the WSDL, which contains the command-line
+     * arguments, list of input files in Base64 encoded form, and a the number of processes
+     * for parallel jobs
+     * @return job submission output, as defined by the WSDL, which contains the <i>jobID</i>, 
+     * and the initial job status
+     * @throws FaultType if there is an error during job submission
+     */
     public JobSubOutputType launchJob(JobInputType in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
@@ -275,6 +333,17 @@ public class AppServiceImpl
 	return output;
     }
 
+    /**
+     * Launch a job on behalf of the user, using the given arguments, and block till it
+     * finishes
+     *
+     * @param in the input object, as defined by the WSDL, which contains the command-line
+     * arguments, list of input files in Base64 encoded form, and a the number of processes
+     * for parallel jobs
+     * @return job output, as defined by the WSDL, which contains the final job status
+     * and output metadata
+     * @throws FaultType if there is an error during job submission
+     */
     public BlockingOutputType launchJobBlocking(JobInputType in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
@@ -291,6 +360,13 @@ public class AppServiceImpl
 	return output;
     }
 
+    /** 
+     * Query job status for the given jobID
+     * 
+     * @param in the <i>jobID</i> for which to query status
+     * @return the status, as described by the WSDL
+     * @throws FaultType if there is an error during the status query
+     */
     public StatusOutputType queryStatus(String in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
@@ -357,6 +433,14 @@ public class AppServiceImpl
 	return status;
     }
 
+    /**
+     * Return output metadata for a particular job run
+     * 
+     * @param in <i>jobID</i> for a particular run
+     * @return an object, as defined by the WSDL, which contains links to the 
+     * standard output and error, and a list of output files
+     * @throws FaultType if there is an error in output retrieval
+     */
     public JobOutputType getOutputs(String in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
@@ -451,6 +535,14 @@ public class AppServiceImpl
 	return outputs;
     }
 
+    /**
+     * Return a Base64 encoded output file for a particular run
+     * 
+     * @param in input object, as defined by the WSDL, which contains a 
+     * <i>jobID</i> and a <i>fileName</i>
+     * @return output file in Base64 encoded binary form
+     * @throws FaultType if there is an error in output generation
+     */
     public byte[] getOutputAsBase64ByName(OutputsByNameInputType in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
@@ -482,6 +574,13 @@ public class AppServiceImpl
 	return data;
     }
 
+    /**
+     * Destroy job representing this jobID
+     *
+     * @param in the jobID for this job
+     * @return the final status for this job
+     * @throws FaultType if there is an error during job destruction
+     */
     public StatusOutputType destroy(String in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();

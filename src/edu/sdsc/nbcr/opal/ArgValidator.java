@@ -1,10 +1,3 @@
-/*
- * Implementation of a class that validates command-line arguments
- * based on the argument schema definition (args.xsd)
- * 
- * @author  Sriram Krishnan [sriram@sdsc.edu]
- */
-
 package edu.sdsc.nbcr.opal;
 
 import java.util.HashSet;
@@ -26,6 +19,13 @@ import org.apache.commons.cli.HelpFormatter;
 
 import edu.sdsc.nbcr.common.TypeDeserializer;
 
+/**
+ * Implementation of a class that validates command-line arguments
+ * based on the argument schema definition, within the WSDL
+ * 
+ * @author  Sriram Krishnan
+ */
+
 public class ArgValidator {
 
     private static Logger logger = 
@@ -35,11 +35,11 @@ public class ArgValidator {
     private ArgumentsType argDesc;
 
     /**
-     * Constructor
+     * Default constructor
+     *
      * @param argDesc_ argument description, parsed from XML desc
      */
-    public ArgValidator(ArgumentsType argDesc_)
-	throws FaultType {
+    public ArgValidator(ArgumentsType argDesc_) {
 	logger.info("called");
 
 	argDesc = argDesc_;
@@ -48,7 +48,10 @@ public class ArgValidator {
 
     /**
      * Validates the command line arguments
-     * @paran args the command line arguments
+     *
+     * @param args the command line arguments
+     * @return true if validation was successful, false otherwise
+     * @throws FaultType if there was an error during argument validation
      */
     public boolean validateArgList(String args)
 	throws FaultType {
@@ -370,7 +373,10 @@ public class ArgValidator {
 
     /**
      * Checks to see if all the implicit parameters are present
-     * @paran workingDir the working direction for execution
+     *
+     * @param workingDir the working direction for execution
+     * @return true if all implicit params are present, false otherwise
+     * @throws FaultType if there in an error during implicit param validation
      */
     public boolean validateImplicitParams(String workingDir)
 	throws FaultType {
@@ -516,6 +522,12 @@ public class ArgValidator {
 	return true;
     }
 
+    /**
+     * Main method to run validation of command-line arguments, given the 
+     * argument schema
+     *
+     * <p>Run <i>java edu.sdsc.nbcr.opal.ArgValidator</i> for usage information
+     */
     public static void main(String args[])
 	throws Exception {
 
