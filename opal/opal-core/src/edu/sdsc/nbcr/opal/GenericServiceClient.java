@@ -1,9 +1,3 @@
-/*
- * Generic client for Opal service
- * 
- * @author  Sriram Krishnan [sriram@sdsc.edu]
- */
-
 package edu.sdsc.nbcr.opal;
 
 import java.net.URL;
@@ -43,8 +37,25 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.StringWriter;
 
+/**
+ * Generic client for any Opal based Web service
+ * 
+ * @author  Sriram Krishnan
+ */
+
 public class GenericServiceClient {
     
+    /**
+     * Default constructor
+     */
+    public GenericServiceClient() {
+    }
+
+    /**
+     * Run the generic Opal Web services client
+     * 
+     * <p>For usage information, type <i>java edu.sdsc.nbcr.opal.GenericServiceClient</i>
+     */
     public static void main(String args[])
 	throws Exception {
 

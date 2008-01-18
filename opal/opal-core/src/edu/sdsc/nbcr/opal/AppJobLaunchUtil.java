@@ -1,8 +1,3 @@
-/**
- * Utility class to launch Globus jobs
- *
- * @author Sriram Krishnan [mailto:sriram@sdsc.edu]
- */
 package edu.sdsc.nbcr.opal;
 
 import org.globus.axis.gsi.GSIConstants;
@@ -51,6 +46,11 @@ import org.ggf.drmaa.DrmaaException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Utility class to launch and manage individual Opal jobs
+ *
+ * @author Sriram Krishnan [mailto:sriram@sdsc.edu]
+ */
 public class AppJobLaunchUtil implements GramJobListener {
 
     // get an instance of a log4j logger
@@ -84,12 +84,14 @@ public class AppJobLaunchUtil implements GramJobListener {
     }
 
     /**
-     * Constructor
+     * Instantiate an AppJobLaunchUtil object with the passed parameters
      *
-     * @param jobID_ the ID for this job
-     * @param jobIn_ the parameters for the job
-     * @param status_ the status of this job
-     * @param outputs_ the outputs for the job
+     * @param jobID_ the jobID for this job
+     * @param jobIn_ the input parameters for the job
+     * @param status_ the initialized status of this job, which is updated
+     * as the job proceeds
+     * @param outputs_ the initialized output metadata for the job, which is updated
+     * once the job is finished
      */
     public AppJobLaunchUtil(String jobID_,
 			    JobInputType jobIn_,
@@ -102,12 +104,12 @@ public class AppJobLaunchUtil implements GramJobListener {
     }
 
     /**
-     * Launch job using properties set inside AppServiceImpl. The only
-     * non-static parameter is the working directory which varies for
-     * ever run
-     *
+     * Launch job inside a working directory using the static properties
+     * set inside the AppServiceImpl, and the application configuration provided
+     * 
      * @param workingDir the directory where the job should be launched
      * @param appConfig the configuration for this particular application
+     * @throws FaultType if there is an error during job launch or execution
      */
     public void launchJob(final String workingDir,
 			  final AppConfigType appConfig) 
@@ -776,7 +778,10 @@ public class AppJobLaunchUtil implements GramJobListener {
     }
 
     /**
-     * Terminate execution 
+     * Terminate execution of job
+     * 
+     * @throws FaultType if there is an error in job termination,
+     * or database update after job termination
      */
     public void destroy() 
 	throws FaultType {
@@ -801,7 +806,9 @@ public class AppJobLaunchUtil implements GramJobListener {
     }
 
     /**
-     * Wait for execution to finish
+     * Wait for the job to finish execution, and for all metadata to be written
+     *
+     * @throws FaultType if there is any error while waiting for the job to finish
      */
     public void waitFor()
 	throws FaultType {
@@ -831,7 +838,10 @@ public class AppJobLaunchUtil implements GramJobListener {
     }
 
     /**
-     * Method defined inside the GramJobListener interface
+     * Implementation of the method defined by the GramJobListener interface, which is
+     * invoked by the Globus JobManager if the job status is updated
+     * 
+     * @param job reference to the Globus GRAM job representing this job
      */
     public void statusChanged(GramJob job) {
 	logger.info("called for job: " + jobID);
@@ -884,7 +894,7 @@ public class AppJobLaunchUtil implements GramJobListener {
     }
 
     /**
-     * Waits till the execution is finished
+     * Wait for completion of the actual executable (and not for metadata to be written)
      */
     private void waitForCompletion() 
 	throws FaultType {
