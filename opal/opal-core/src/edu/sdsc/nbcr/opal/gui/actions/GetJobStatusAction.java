@@ -30,7 +30,7 @@ import edu.sdsc.nbcr.opal.gui.common.OPALService;
 
 /**
  * This action is used to get the job status, it requires a jobId parameters in the request.
- * Have the ID of the job you want to get the status
+ * Given the ID of a job it returns a page displaying its status.
  * 
  * @author clem
  *

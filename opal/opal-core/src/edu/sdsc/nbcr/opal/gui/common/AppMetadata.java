@@ -11,8 +11,24 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * this class holds all the data necessary to create the submission 
- * form and to keep the input inserted by the user.
+ * This bean class holds all the data necessary to create the submission form, it is also used by struts 
+ * to place the inputs of the user when he submits the form.<br/><br/>
+ * This class has the following fields:
+ * <ul>
+ * <li>String serviceName - the name of the service
+ * <li>String usage - a description of its usage
+ * <li>String [] info - some text to describe the command line
+ * <li>String URL - the URL which correspond to this service end point
+ * <li>ArgFlag [] argFlags - a list of ArgFlag objects
+ * <li>ArgParam [] argParams - a list of ArgParam objects
+ * <li>Group [] groups - a list of group to cluster ArgFlag and ArgParam for this service 
+ * <li>String separator - the separator used for the various arguments
+ * <li>String cmdLine - place holder used for keeping the command line submitted by the user using the web form
+ * <li>FormFile [] files - place holder for the input file submitted by the user using the web form
+ * <li>String jobId - place holder for the jobID once this job has been submitted to opal
+ * <li>boolean addFile - place holder used by the submission form, if this field is true it means that the user does not wants to submit the job but it only wants to add an input file
+ * </ul>
+ * 
  * 
  * @author clem
  *
@@ -21,7 +37,6 @@ public class AppMetadata extends ActionForm{
 	
     
     protected Log log = LogFactory.getLog(Constants.PACKAGE);
-    
     
 	private String serviceName;
 	private String usage;
@@ -34,12 +49,14 @@ public class AppMetadata extends ActionForm{
 	//these are to hold the values from the form 
 	private String cmdLine;
 	private FormFile [] files;
-	private int numFile;
 	private String jobId;
 	private boolean addFile;
 	
 
 
+	/**
+	 * Default constructor
+	 */
 	public AppMetadata() {
         serviceName = null;
         usage = null;
@@ -51,12 +68,10 @@ public class AppMetadata extends ActionForm{
         cmdLine = null;
         files = new FormFile[1];
         addFile = false;
-        numFile = 0;
-        log.error("called the constructor of AppMetadata");
 	}
     
 	/**
-	 * it tells you if the current instance of the AppMetadata supports 
+	 * It tells you if the current instance of the AppMetadata supports 
 	 * the complex submission form
 	 * 
 	 * @return true is we have a complex submission form
@@ -197,85 +212,176 @@ public class AppMetadata extends ActionForm{
     	}
     	return null;
     }
-    
+
+
     /* -----    below only getter and setter methods   -------    */
-    public String getSeparator() {
-        return separator;
+    
+    /**
+     * @return the serviceName
+     */
+    public String getServiceName() {
+        return serviceName;
     }
-    public void setSeparator(String separator) {
-        this.separator = separator;
+
+    /**
+     * @param serviceName the serviceName to set
+     */
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
-	public String getUsage() {
-		return usage;
-	}
-	public void setUsage(String usage) {
-		this.usage = usage;
-	}
-	public String [] getInfo() {
-		return info;
-	}
-	public void setInfo(String [] info) {
-		this.info = info;
-	}
-	public String getServiceName() {
-		return serviceName;
-	}
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
-	public ArgFlag[] getArgFlags() {
-		return argFlags;
-	}
-	public void setArgFlags(ArgFlag[] argFlags) {
-		this.argFlags = argFlags;
-	}
-	public ArgParam[] getArgParams() {
-		return argParams;
-	}
-	public void setArgParams(ArgParam[] argParams) {
-		this.argParams = argParams;
-	}
+
+    /**
+     * @return the usage
+     */
+    public String getUsage() {
+        return usage;
+    }
+
+    /**
+     * @param usage the usage to set
+     */
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
+    /**
+     * @return the info
+     */
+    public String[] getInfo() {
+        return info;
+    }
+
+    /**
+     * @param info the info to set
+     */
+    public void setInfo(String[] info) {
+        this.info = info;
+    }
+
+    /**
+     * @return the uRL
+     */
     public String getURL() {
         return URL;
     }
+
+    /**
+     * @param url the uRL to set
+     */
     public void setURL(String url) {
         URL = url;
     }
+
+    /**
+     * @return the argFlags
+     */
+    public ArgFlag[] getArgFlags() {
+        return argFlags;
+    }
+
+    /**
+     * @param argFlags the argFlags to set
+     */
+    public void setArgFlags(ArgFlag[] argFlags) {
+        this.argFlags = argFlags;
+    }
+
+    /**
+     * @return the argParams
+     */
+    public ArgParam[] getArgParams() {
+        return argParams;
+    }
+
+    /**
+     * @param argParams the argParams to set
+     */
+    public void setArgParams(ArgParam[] argParams) {
+        this.argParams = argParams;
+    }
+
+    /**
+     * @return the groups
+     */
+    public Group[] getGroups() {
+        return groups;
+    }
+
+    /**
+     * @param groups the groups to set
+     */
+    public void setGroups(Group[] groups) {
+        this.groups = groups;
+    }
+
+    /**
+     * @return the separator
+     */
+    public String getSeparator() {
+        return separator;
+    }
+
+    /**
+     * @param separator the separator to set
+     */
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
+
+    /**
+     * @return the cmdLine
+     */
     public String getCmdLine() {
         return cmdLine;
     }
+
+    /**
+     * @param cmdLine the cmdLine to set
+     */
     public void setCmdLine(String cmdLine) {
         this.cmdLine = cmdLine;
     }
-    public String getJobId() {
-		return jobId;
-	}
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
-	}
 
-	public Group[] getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Group[] groups) {
-		this.groups = groups;
-	}
-
+    /**
+     * @return the files
+     */
     public FormFile[] getFiles() {
         return files;
     }
 
+    /**
+     * @param files the files to set
+     */
     public void setFiles(FormFile[] files) {
         this.files = files;
     }
 
+    /**
+     * @return the jobId
+     */
+    public String getJobId() {
+        return jobId;
+    }
+
+    /**
+     * @param jobId the jobId to set
+     */
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    /**
+     * @return the addFile
+     */
     public boolean isAddFile() {
         return addFile;
     }
 
+    /**
+     * @param addFile the addFile to set
+     */
     public void setAddFile(boolean addFile) {
         this.addFile = addFile;
     }
-
+    
 }
