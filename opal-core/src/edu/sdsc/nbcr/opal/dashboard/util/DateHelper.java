@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * this class provides some functionalities that are helpful when dealing with dates
+ * This class provides some functionalities that are helpful when dealing with dates.
  * 
  * @author clem
  *
@@ -19,14 +19,14 @@ public class DateHelper {
     protected static Log log = LogFactory.getLog(DateHelper.class.getName());
     
     /**
-     * this function returns (date - 1day)
+     * This function returns (date - 1day).
      */
     public static Date subtractDay(Date date){
         return addDays(date, -1);
     }
     
     /**
-     * this function returns (date - numDays)
+     * This function returns (date - numDays).
      */
     public static Date addDays(Date date, int numDays){
         Calendar cal1 = Calendar.getInstance();
@@ -38,7 +38,7 @@ public class DateHelper {
     }
     
     /**
-     * this functions subtract a month form the date
+     * This functions subtract a month form the date.
      * @param date the input date
      * @return the input date minus one month
      * 
@@ -52,8 +52,8 @@ public class DateHelper {
     }
     
     /**
-     * it tries to parse the string date following the format MM/dd/yy
-     * it return null if it can not parse the date
+     * It tries to parse the string date following the format MM/dd/yy.
+     * It return null if it can not parse the date.
      * 
      * @param date the string to be parsed
      * @return the date parsed
@@ -78,7 +78,7 @@ public class DateHelper {
     }
     
     /**
-     * return true if d1 and d1 are on the same day
+     * Return true if d1 and d1 are on the same day
      * 
      * @param d1
      * @param d2
@@ -102,7 +102,7 @@ public class DateHelper {
     
     
     /**
-     * this function returns the number of days between date1 and date2
+     * This function returns the number of days between date1 and date2
      * @param date1
      * @param date2
      * @return the number of days between date1 and date2
@@ -149,7 +149,7 @@ public class DateHelper {
     /**
      * 
      * Return true if the value is contained in str.
-     * this should not be here... but I just didn't know where to put it
+     * This should not be here... but I just didn't know where to put it
      */
     public static boolean containsString(String [] str, String value){
         for ( int i = 0; i < str.length; i++ ) {

@@ -62,9 +62,9 @@ import java.util.regex.*;
 
 
 /** 
- * This servlet is in charge of plotting the chart.</br>
+ * This Servlet is in charge of plotting the chart.</br>
  * 
- * See the doPost function documentation for more info
+ * See the doPost function documentation for more info.
  * 
  * @see #doPost(HttpServletRequest, HttpServletResponse)
  *  

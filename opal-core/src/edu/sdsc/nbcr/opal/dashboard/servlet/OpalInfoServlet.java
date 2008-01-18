@@ -25,10 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.Character;
 
-/**
- * OpalInfoServlet 
+/** 
  *
- * class that implements all the business logic behind the Opal dashboard
+ * This class implements all the business logic behind the Opal dashboard.
  * 
  * @author clem
  *

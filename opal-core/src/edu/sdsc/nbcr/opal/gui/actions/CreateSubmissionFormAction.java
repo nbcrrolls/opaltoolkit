@@ -41,6 +41,11 @@ import edu.sdsc.nbcr.opal.gui.common.OPALService;
  * This struts action is called to prepare the data necessary 
  * to create the submission form.
  * 
+ * Given a serviceURL it fetches the metadata from the specified service and 
+ * it returns a web page displaying the complex submission form or a simple
+ * submission form depending on the availability of the metadata on the specified 
+ * service.
+ * 
  * @author clem
  *
  */
@@ -216,7 +221,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }//if types
     
     /**
-     * Parse a FlagsType and return the corresponding ArgFlag
+     * Parse a FlagsType and return the corresponding ArgFlag. This class is only a converter.
      * 
      * @param flagType
      * @return the corresponding ArgFlag
@@ -234,8 +239,11 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }
 
     /**
-     * parse a paramType and returns a ArgParam
-     * @param paramType
+     * Parse a paramType and return a ArgParam. This class is only a converter.
+     * 
+     * @param paramType 
+     * @param position the current index for un-tagged parameters
+     * 
      * @return the corresponding ArgParam
      * 
      * @see import edu.sdsc.nbcr.opal.gui.common.ArgParam
@@ -263,9 +271,12 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     }
     
     /**
-     * It parses the groupType and it returns a corresponding Group instance 
-     * @param groupType
-     * @param app
+     * It parses the groupType and it returns a corresponding Group instance. 
+     * This class is only a converter.
+     * 
+     * @param groupType the groupType to be parsed
+     * @param app the current AppMetadata. AppMetadata has to be already loaded with the ArgParams and ArgFlags
+     * 
      * @return the corresponding Group instance 
      */
     private Group parseGroup(GroupsType groupType, AppMetadata app){
@@ -307,8 +318,8 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
      * flags and parameters that have not already been included in 
      * all the other groups
      *  
-     * @param groups
-     * @param app
+     * @param groups the current list of groups
+     * @param app the current appMetadata with all the Group, argParam and ArgFlag loaded
      * @return always true
      */
     private boolean setDefaultGroup(ArrayList groups, AppMetadata app){

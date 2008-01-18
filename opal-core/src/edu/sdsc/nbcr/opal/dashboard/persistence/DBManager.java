@@ -49,26 +49,32 @@ public class DBManager {
     private String dbPassword = null;
     private String error = null;
     
-    
+    /**
+     * 
+     * @return the database URL
+     */
     public String getDatabaseUrl() {
         return databaseUrl;
     }
 
+    /**
+     * 
+     * @return the string representing the driver
+     */
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * @return username used to connect to the DB
+     */
     public String getDbUserName() {
         return dbUserName;
     }
 
     /**
-     * constructor 
+     * See the top of the page for the usage of the various input parameters 
      * 
-     * @param databaseUrl
-     * @param driver
-     * @param dbUserName
-     * @param dbPassword
      */
     public DBManager( String databaseUrl, String driver, String dbUserName, String dbPassword) {
         super();
@@ -79,13 +85,15 @@ public class DBManager {
         this.dbPassword = dbPassword;
     }
     
-    //default constructor
+    /**
+     * default constructor
+     */
     public DBManager(){
         conn = null;
     }
     
     /**
-     * this function has to be called to initialized the connection to the DB
+     * This function has to be called to initialized the connection to the DB
      * @return true if everything went OK
      */
     public boolean init() {
@@ -103,7 +111,7 @@ public class DBManager {
     }
     
     /**
-     * 
+     * Return true if the connection with the DB is valid
      * @return true if the connection to the DB is valid
      */
     public boolean isConnected(){
@@ -112,7 +120,7 @@ public class DBManager {
     }
 
     /**
-     * close the connection with the db
+     * Close the connection with the db
      * @throws java.sql.SQLException
      */
     public void close() throws java.sql.SQLException{
@@ -150,7 +158,7 @@ public class DBManager {
     
 
     /**
-     * legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
+     * Legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
      * 
      * @see #getResultsTimeseries(Date, Date, String, String)
      * 
@@ -161,7 +169,7 @@ public class DBManager {
     }
     
     /**
-     * legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
+     * Legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
      * 
      * @see #getResultsTimeseries(Date, Date, String, String)
      * 
@@ -171,7 +179,7 @@ public class DBManager {
     }
     
     /**
-     * legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
+     * Legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
      * 
      * @see #getResultsTimeseries(Date, Date, String, String)
      * 
@@ -294,7 +302,6 @@ public class DBManager {
      * @return the number of running job of the service 
      */
     public int getRunningJobs(String service){
-        
         //a job is running if its status is 
         //STATUS_PENDING STATUS_ACTIVE STATUS_STAGE_IN STATUS_STAGE_OUT
         //1 2 64 128
@@ -315,9 +322,7 @@ public class DBManager {
             log.error("Nasty error happen while query the Data Base: " + e.getMessage(), e);
             return -1;
         }
-     
         return number;
     }
-    
 
 }
