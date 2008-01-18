@@ -65,7 +65,7 @@ your list of trusted CAs.
 <p>4. To enable grid-map authorization of clients, add the following XML
 fragment inside the <tt>&lt;requestFlow/&gt;</tt> element of the
 <tt>&lt;globalConfiguration/&gt;</tt> in
-$CATALINA_HOME/webapps/axis/WEB-INF/server-config.wsdd.
+$CATALINA_HOME/webapps/opal/WEB-INF/server-config.wsdd.
 <font color="green">
 <pre>
    &lt;handler type="java:edu.sdsc.nbcr.common.GridMapAuthHandler"&gt;
@@ -82,6 +82,28 @@ the following is an entry in a grid-map file:
 <font color="green">
 <pre>
    "/C=US/O=nbcr/OU=sdsc/CN=app_user" app_user
+</pre>
+</font>
+
+<p>Instead, if you would like to authorize based on a list of acceptable
+CAs, then you must enable the ca-map authorization of clients. To do so,
+add the following XML fragment inside the <tt>&lt;requestFlow/&gt;</tt>
+element of the <tt>&lt;globalConfiguration/&gt;</tt> in
+$CATALINA_HOME/webapps/opal/WEB-INF/server-config.wsdd.
+<font color="green">
+<pre>
+   &lt;handler type="java:edu.sdsc.nbcr.common.CAAuthHandler"&gt;
+    &lt;parameter name="ca-map" value="/Users/sriramkrishnan/.globus/ca-mapfile"/&gt;
+   &lt;/handler&gt;
+</pre>
+</font>
+
+<p>Make sure that the value points to a valid ca-map file. To authorize a
+client to use the service, add an entry into the ca-map file with the DN
+for the client's CA, e.g. the following is an entry in a ca-map file:
+<font color="green">
+<pre>
+   "C=US,O=nbcr,OU=sdsc,CN=Certificate Manager" NBCR
 </pre>
 </font>
 
