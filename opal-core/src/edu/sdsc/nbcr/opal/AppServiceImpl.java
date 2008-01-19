@@ -21,6 +21,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import org.globus.gram.GramJob;
 
@@ -182,8 +185,36 @@ public class AppServiceImpl
 		logger.fatal("Can't find property: database.passwd");
 	    }
 
-	}
+	    // clean old dirty entries, if there are any
+	    try {
+		logger.debug("Checking if there are any zombie jobs");
 
+		Connection conn = DriverManager.getConnection(AppServiceImpl.dbUrl,
+							      AppServiceImpl.dbUser,
+							      AppServiceImpl.dbPasswd);
+		
+		String sqlStmt = 
+		    "update job_status " +
+		    "set code = ? , " + 
+		    "message = ? , " + 
+		    "last_update = ? " +
+		    "where code = ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sqlStmt);
+		stmt.setInt(1, GramJob.STATUS_FAILED);
+		stmt.setString(2, "Job failed - server was restarted during job execution");
+		stmt.setString(3, 
+			       new SimpleDateFormat("MMM d, yyyy h:mm:ss a").format(new Date()));
+		stmt.setInt(4, GramJob.STATUS_ACTIVE);
+		int numUpdates = stmt.executeUpdate();
+		logger.debug("Number of DB entries for zombie jobs cleaned up: " + numUpdates);
+
+		conn.close();
+	    } catch (SQLException e) {
+		logger.fatal("Caught SQL exception while trying to clean database", e);
+	    }
+	}
+	
 	// DRMAA setup
 	drmaaInUse =
 	    Boolean.valueOf(props.getProperty("drmaa.use")).booleanValue();
