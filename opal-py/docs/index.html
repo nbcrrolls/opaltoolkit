@@ -12,10 +12,10 @@
 
 <p>This distribution contains the WSDL for the alpha Opal Web service, and
 a sample Python client that invokes a <a
-href="http://openbabel.sourceforge.net/">Babel</a> service that has been
+href="http://pdb2pqr.sourceforge.net/">PDB2PQR</a> service that has been
 deployed via Opal. Before proceeding with the client installation, please
 read the documentation for the Opal Web service implementation, and deploy
-the Babel service via Opal.
+the PDB2PQR service via Opal.
 
 <h2>Prerequisites</h2>
 
@@ -69,11 +69,11 @@ as you have the following packages installed.
 
 <h2>Installation</h2>
 
-<p>1. Download the source distribution for installation from <a
-href="http://nbcr.net/services/#Software">here</a>, if you don't have the
-appropriate version already.
+<!-- <p>1. Download the source distribution for installation from <a -->
+<!-- href="http://opaltoolkit.svn.sourceforge.net/viewvc/opaltoolkit/trunk/opal/opal-py/">SVN</a>, -->
+<!-- if you don't have the appropriate version already. -->
 
-<p>Expand the tarball that you have downloaded using the GNU tar utility,
+<p>1. Expand the tarball that you have downloaded using the GNU tar utility,
 as follows:
 <font color="green">
 <pre>
@@ -101,11 +101,11 @@ types defined in the WSDL for the service.
 
 <h2>Running the Client</h2>
 
-<p>A sample Opal client can be seen in BabelClient.py. It shows how to
+<p>A sample Opal client can be seen in Pdb2pqrClient.py. It shows how to
 retrieve a reference to a remote Web service port, set parameters, and
-invoke remote operations. To launch the remote Babel service, the argument
-string (<tt>-ipdb benzene.pdb -h -opdb output.pdb</tt>) and the list of
-input files (<tt>etc/benzene.pdb</tt>) are sent over. The service returns a
+invoke remote operations. To launch the remote PDB2PQR service, the argument
+string (<tt>--ff=amber sample.pdb sample.pqr</tt>) and the list of
+input files (<tt>etc/sample.pdb</tt>) are sent over. The service returns a
 <tt>jobID</tt> that is used later to query for status and retrieve
 locations of the output files. Alternatively, the service can also be
 invoked in a <em>blocking</em> fashion, where the client blocks until the
@@ -116,13 +116,13 @@ the same invocation.
 $OPAL_PY_HOME directory.
 <font color="green">
 <pre>
-    python BabelClient.py
+    python Pdb2pqrClient.py
 </pre>
 </font>
 
 <p>By default, the client uses the Web service running on
 http://localhost:8080. To change this location, modify the URL inside
-BabelClient.py.
+Pdb2pqrClient.py.
 
 <h2>Security</h2>
 
@@ -130,7 +130,7 @@ BabelClient.py.
 using GSI-based HTTPS (refer to the <a
 href="http://nbcr.net/services/opal/security.html">security</a>
 documentation for instructions). The following snippet of code from
-BabelClient.py shows how to access a secure Opal service from Python.
+Pdb2pqrClient.py shows how to access a secure Opal service from Python.
 <font color="green">
 <pre>
 # set the locations for the X509 certificate and key
@@ -139,7 +139,7 @@ key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
 ...
 	# example of ssl invocation
 	appServicePort = appLocator.getAppServicePortType(
-	    baseURL + "opal/services/BabelServicePort",
+	    baseURL + "opal/services/Pdb2pqrServicePort",
 	    ssl=1,
 	    cert_file=cert,
 	    key_file=key,
