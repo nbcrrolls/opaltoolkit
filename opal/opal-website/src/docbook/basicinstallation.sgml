@@ -1,0 +1,368 @@
+<chapter id="basicinstallation"  xreflabel="Basic Installation Guide">
+<title> Basic Installation Guide </title>
+
+<para>Version: &version;</para>
+
+<para>In this chapter we present how to install Opal with basic functionalities.</para>
+
+<section id="prerequisites" xreflabel="Prerequisites">
+<title>Prerequisites</title>
+
+<para>The source distribution can be used to install both the server and the
+client sides on Unix and Windows platforms. The prerequisites for the
+client and server installations are as follows.</para>
+
+<section id="client-pre" xreflabel="Client Prerequisites">
+<title>Client Prerequisites</title>
+
+
+<orderedlist>
+   <listitem><para>Java 1.5.x or higher: Download and install J2SE from <ulink type="http"
+   url="http://java.sun.com/j2se/downloads">http://java.sun.com/j2se/downloads</ulink>,
+   if you don't have it installed already. Add the Java bin directory to
+   the environment variable PATH. Also set the environment variable
+   JAVA_HOME to point to the top level directory of the JDK
+   installation.</para></listitem>
+
+   <listitem><para>Ant 1.6.1 or higher: Ant is a make-like utility for compiling Java
+   programs. Install Ant from <ulink type="http" url="http://ant.apache.org/">
+   http://ant.apache.org</ulink>. Set the environment variable <emphasis role="italics">ANT_HOME</emphasis>
+   to point to your Ant installation.</para></listitem>
+
+</orderedlist>
+</section>
+
+<section id="server-pre" xreflabel="Server Prerequisites">
+<title>Server Prerequisites</title>
+
+<para>Apart from the above packages required for the client, the server also
+requires the following packages:</para>
+
+<orderedlist>
+   <listitem><para>Tomcat 5.0.30: Tomcat is a servlet container than can be used to
+   host our Web service implementation. Install the binary version of
+   Tomcat 5.0.30 from <ulink type="http" url= "http://jakarta.apache.org/tomcat/">
+   http://jakarta.apache.org/tomcat/</ulink>. A <ulink type="http"
+   url="http://nbcr.net/services/downloads/jakarta-tomcat-5.0.30.tar.gz">cached
+   version</ulink> may also be downloaded alternatively. Henceforth, we will
+   refer to the location of the Tomcat installation as
+   <emphasis role="italics">CATALINA_HOME</emphasis>.</para></listitem>
+</orderedlist>
+
+<para>The following packages are optional:</para>
+<orderedlist>
+   <listitem><para>MPI: If you plan to run your application in parallel, you will need
+   a version of MPI. You will also need to make sure that your SSH keys are
+   set up to be able to run MPI jobs without prompting for a password.</para></listitem>
+
+   <listitem><para>Postgres 7.4.6 (or higher): If you plan to persist the state of the
+   service in a database, you will need to install Postgres from <ulink type="http"
+   url="http://www.postgresql.org/">http://www.postgresql.org/</ulink>.</para></listitem>
+
+   <listitem><para>Scheduler Tools: One way to enable access to schedulers is via the
+   <ulink type="http" url="http://www.globus.org">Globus Toolkit</ulink>. The primary
+   requirement is that clients must be able to launch jobs on your resource
+   using GRAM via the Globus gatekeeper. In addition, jobmanager plugins
+   must be available for the particular scheduler that you have installed.
+   In other words, GRAM clients must be able to submit jobs to your
+   scheduler via the Globus gatekeeper. We have used Globus version 3.2.1
+   for our development and testing, but you may use any other version as
+   long as the above requirements are met. </para>
+
+   <para>We have used <ulink type="http" url="http://www.cs.wisc.edu/condor">Condor</ulink> for
+   serial jobs only, and <ulink type="http" url="http://gridengine.sunsource.net/">SGE</ulink>
+   for serial as well as parallel jobs. Globus jobmanager plugins are
+   available for both of the above, and must be installed if you plan to
+   use either of them.</para>
+
+   <para>Another alternative to access schedulers is via the <ulink type="http"
+   url="http://drmaa.org/">DRMAA</ulink> API. The Web services can submit jobs
+   to schedulers as long as they support the DRMAA API. We have only tested
+   job submits to SGE via DRMAA.</para></listitem>
+</orderedlist>
+</section>
+</section>
+
+
+<section id="Installation"  xreflabel="Installation">
+<title>Installation</title>
+
+
+<para>Download the source distribution for installation from <ulink type="http"
+url="http://sourceforge.net/project/showfiles.php?group_id=211778&amp;package_id=255867">
+here</ulink>, if you don't have the appropriate version already.</para>
+
+<para>Extract the downloaded tarball using the GNU tar utility (or other
+similar utilities for Windows), as follows:
+
+<screen>
+    tar zxvf opal-ws-1.9alpha.tar.gz
+</screen>
+</para>
+
+<para>This should create a new directory called opal-ws-1.9alpha/ where
+all the sources are expanded. Henceforth, we refer to this directory as
+<emphasis role="italics">OPAL_HOME</emphasis>.</para>
+
+<section id="server-installation"  xreflabel="Server Installation">
+<title>Server Installation</title>
+
+<orderedlist>
+<listitem><para>1 Edit $OPAL_HOME/etc/opal.properties to configure the static container
+properties correctly. It should look something like the following:</para>
+
+
+<screen>
+    # the base URL for the tomcat installation 
+    # this is required since Java can't figure out the IP 
+    # address if there are multiple network interfaces
+    tomcat.url=http://localhost:8080
+
+    # parallel parameters
+    num.procs=1
+    mpi.run=/Users/sriramkrishnan/Misc/mpich-1.2.7/bin/mpirun
+
+    # location of working directory relative to $CATALINA_HOME/webapps.
+    # this could be a symbolic link to another location (which should be
+    # NFS mounted if this is on a cluster). if this is a symlink, copy
+    # etc/opal.xml to $CATALINA_HOME/conf/Catalina/localhost/opal.xml. if
+    # the name of the symlink is changed to something other than "opal-jobs", 
+    # modify the opal.xml accordingly
+    # working.dir=opal
+
+    # database information
+    database.use=false
+    database.url=jdbc:postgresql://localhost/opal_db
+    database.user=opal_user
+    database.passwd=opal_passwd
+
+    # drmma information
+    drmaa.use=false
+    drmaa.pe=mpich
+
+    # globus information
+    globus.use=false
+    globus.gatekeeper=localhost:2119/jobmanager-sge
+    globus.service_cert=/Users/sriramkrishnan/certs/opal_service.cert.pem
+    globus.service_privkey=/Users/sriramkrishnan/certs/opal_service.privkey
+</screen>
+
+
+<para>Set the <filename>tomcat.url</filename> to the correct
+<filename>http://ip-address:port</filename> of the server. If the service will wrap a
+parallel application, set the <filename>num.procs</filename> to the number of
+processors available, and the <filename>mpi.run</filename> to the location of the
+mpirun on your host. </para>
+
+<para>By default, all new working directories for job executions are created
+inside the $CATALINA_HOME/webapps/ROOT directory. You may wish to change
+this to another location on your system (which should be NFS mounted, if
+you are installing on a cluster). If you would like to do so for any
+reason, uncomment the property <filename>working.dir</filename>. Then run the following
+commands:
+<screen>
+    cp $OPAL_HOME/etc/opal.xml $CATALINA_HOME/conf/Catalina/localhost/ 
+    cd $CATALINA_HOME/webapps 
+    ln -s /path/to/working_dir/on/nfs opal
+</screen>
+</para>
+
+<para>Note that the above use of symbolic links will only work on Unix
+systems. </para>
+
+<para>If you wish to install a database to persist service state, please refer
+to <xref linkend="database"/>. If you would like to set up
+scheduler support, refer to <xref linkend="scheduler"/>.
+You can also optionally set up secure access to your services by consulting
+<xref linkend="security"/>.</para> </listitem>
+
+<listitem><para>Edit the $OPAL_HOME/build.properties file to ensure that the build
+properties are set correctly. Set <filename>catalina.home</filename> to point to the
+location of your Tomcat installation (i.e. $CATALINA_HOME), and
+<filename>tomcat.port</filename> to the port number that the Tomcat server is running
+on.</para> </listitem>
+
+<listitem><para>Install the Opal toolkit into the Tomcat installation, by executing
+the following command:
+<screen>
+    ant install
+</screen>
+</para> </listitem>
+
+<listitem><para>Run the Tomcat server by changing to the $CATALINA_HOME/bin directory,
+and running the appropriate command (bat on Windows, sh on Unix):
+<screen>
+    ./startup.bat|sh
+</screen>
+</para> </listitem>
+
+<listitem><para>Validate that Opal has been deployed correctly by clicking on <ulink type="http"
+url="http://localhost:8080/opal/happyaxis.jsp">
+http://localhost:8080/opal/happyaxis.jsp</ulink>. If you have deployed Tomcat
+on another port, you will have to change the port number above. If all the
+<emphasis role="bold">Needed Components</emphasis> are found, Axis has been deployed fine. You can
+ignore the warnings about the <emphasis role="bold">Optional Components</emphasis>.</para> </listitem>
+
+<listitem><para>Create a configuration file for your application. For example, you
+can download the <ulink type="http" url="http://pdb2pqr.sourceforge.net/">PDB2PQR</ulink>
+program, which is designed to automate many of the common tasks of
+preparing structures for continuum electrostatics calculations, by
+providing a platform-independent utility for converting protein files in
+PDB format to PQR format. A sample configuration file for the same, located
+in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
+
+<screen>
+&lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;metadata appName="PDB2PQR"&gt;
+    &lt;usage&gt;
+    PDB2PQR is a Python software package that automates many of the common
+    tasks of preparing structures for continuum electrostatics
+    calculations, providing a platform-independent utility for converting
+    protein files in PDB format to PQR format
+    &lt;/usage&gt;
+
+    &lt;info xsd:type="xsd:string"&gt;
+         python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
+ 
+         The required arguments are as follows:
+	 ...         
+         &lt;path&gt;
+             The path to the PDB file or an ID to obtain from the PDB archive
+         &lt;output-path&gt;
+             The desired output name of the PQR file to be generated
+         
+         Optional command-line arguments are:
+         
+         --nodebump
+             Do not perform the debumping operation
+	 ...
+     &lt;/info&gt;
+  &lt;/metadata&gt;
+  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/pdb2pqr.py&lt;/binaryLocation&gt;
+  &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
+  &lt;parallel&gt;false&lt;/parallel&gt;
+&lt;/appConfig&gt;
+</screen>
+</para>
+
+<para>The configuration consists of a top level element <emphasis role="italics">appConfig</emphasis>,
+which contains <emphasis role="italics">metadata</emphasis>, <emphasis role="italics">binaryLocation</emphasis>, <emphasis role="italics">defaultArgs</emphasis>,
+and <emphasis role="italics">parallel</emphasis> elements. The metadata consists of <emphasis role="italics">usage</emphasis>, which
+is a string specifying how the application is to be invoked, and an array
+of optional application information specified as <emphasis role="italics">info</emphasis> elements.
+It also contains an optional <emphasis role="italics">types</emphasis> element, which can ignore
+for now. In the above file, the various options that can be used with
+the application are specified within the metadata. The binaryLocation
+specifies the location of the application binary - note that this has
+to be the location of a <emphasis role="italics">single</emphasis> executable. No arguments may be
+specified here. However, default arguments that need to be used for
+every run can be specified inside the defaultArgs element. The
+parallel element specifies if an application is parallel or not. Use
+the pdb2pqr_config.xml as a guideline to write configurations for your
+particular applications.</para> </listitem>
+
+<listitem><para>Deploy the services inside Tomcat, by changing to the $OPAL_HOME
+directory, and running the following command:
+<screen>
+    $ANT_HOME/bin/ant deploy -DserviceName=&lt;serviceName&gt; -DappConfig=&lt;appConfig&gt;
+</screen>
+</para>
+
+<para>For example, to deploy the PDB2PQR service, you would type the following
+command:
+<screen>
+    $ANT_HOME/bin/ant deploy -DserviceName=Pdb2pqrServicePort \
+                 -DappConfig=$PWD/configs/pdb2pqr_config.xml
+</screen>
+</para>
+
+<para>Note that you can undeploy your service at any time by running the 
+following command:
+<screen>
+    $ANT_HOME/bin/ant undeploy -DserviceName=&lt;serviceName&gt;
+</screen>
+</para>
+</listitem>
+</orderedlist>
+
+<para>If you plan on using the service with large inputs and outputs, it is a
+good idea to increase the heap size being used by the JVM. This can be done
+by setting the <emphasis role="italics">JAVA_OPTS</emphasis> environment variable to <emphasis role="italics">-Xmx1024m</emphasis>,
+and restarting Tomcat. This increases the heap size to 1GB. If all went
+well until this step, the services are running and ready to be used. Test
+them by running the client, described in the following section.</para>
+
+<para>The service creates new working directories for every execution. These
+working directories are not deleted automatically, so they must be
+periodically cleaned up. You may use the script
+$OPAL_HOME/etc/cleanup.sh to do so - you will have to modify it to point
+to your Tomcat installation (and optionally modify the number of days to
+retain scratch directories).</para>
+
+</section>
+<section id="client-installation" xreflabel="Client Installation">
+<title>Client Installation</title>
+
+
+<para>A generic Java client is implemented by the class located in 
+$OPAL_HOME/src/edu/sdsc/nbcr/opal/GenericServiceClient.java. It lets you
+run any application exposed as an Opal service, and retrieve its
+status and outputs.</para>
+
+<para>To compile the client, perform the following step from inside
+the $OPAL_HOME directory.
+<screen>
+    $ANT_HOME/bin/ant jar
+</screen>
+</para>
+
+<para>Before running the client, set your classpath using the
+etc/classpath.bat|(c)sh script depending on the OS/shell you use - e.g. if you
+use tcsh on Unix, set your classpath by typing the following command:
+<screen>
+    source etc/classpath.csh
+</screen>
+</para>
+
+<para>To launch a job using the PDB2PQR service which was described above, you could use the
+following command, which displays the resulting job id, along with the preliminary status.
+<screen>
+    java edu.sdsc.nbcr.opal.GenericServiceClient \
+                 -l http://localhost:8080/opal/services/Pdb2pqrServicePort \
+                 -r launchJob \
+                 -a "--ff=amber sample.pdb output.pqr" \
+                 -f samples/sample.pdb
+</screen>
+</para>
+
+<para>You can retrieve job status by running the following command:
+<screen>
+    java edu.sdsc.nbcr.opal.GenericServiceClient \
+                 -l http://localhost:8080/opal/services/Pdb2pqrServicePort \
+                 -r queryStatus \
+                 -j &lt;job_id&gt;
+</screen>
+</para>
+
+<para>Once the job has finished executing, you can also retrieve output metadata using:
+<screen>
+    java edu.sdsc.nbcr.opal.GenericServiceClient \
+                 -l http://localhost:8080/opal/services/Pdb2pqrServicePort \
+                 -r getOutputs \
+                 -j &lt;job_id&gt;
+</screen>
+</para>
+
+<para>You may need to change the above URL if you used a different port, or are
+running the client from another machine. Note that you can get the complete
+usage information for the client by using the following command:
+<screen>
+   java edu.sdsc.nbcr.opal.GenericServiceClient
+</screen>
+</para>
+</section>
+</section>
+
+</chapter>
+

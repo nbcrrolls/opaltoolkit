@@ -1,35 +1,19 @@
 <html>
 <head>
-<title>The Opal Toolkit for Wrapping Scientific Applications as Web Services</title>
+<title>Opal: The Application Wrapper Web Service</title>
 <link href="./Styles.css" rel="stylesheet" type="text/css"/>
 </head>
 <!-- <body text="black" link="darkblue" vlink="black" link="black" -->
 <!-- bgcolor="white"> -->
 <body>
-
-<!-- google analytics code -->
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write("\<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'>\<\/script>" );
-</script>
-<script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-3213383-1");
-pageTracker._initData();
-pageTracker._trackPageview();
-</script>
-
-
-
-<h1>The Opal Toolkit for Wrapping Scientific Applications as Web Services</h1>
-<h2>Version: 1.9alpha</h2>
-<hr/>
+<h1>Opal: The Application Wrapper Web Service (Version 1.5.1)</h1>
 
 <h2>Overview</h2>
 
-<p>The Opal toolkit provides a mechanism to wrap up existing scientific
-applications rapidly as Web services, and expose them to various clients.
-The implementation provides features such as scheduling (e.g. using
-Condor/SGE via Globus or DRMAA) and security (using GSI-based
+<p>Opal, the Application Wrapper Web service, provides a way to wrap up
+existing scientific applications rapidly as Web services, and expose them
+to various clients. The implementation provides features such as scheduling
+(e.g. using Condor/SGE via Globus or DRMAA) and security (using GSI-based
 certificates), Furthermore, the service provides job and data management
 (by executing every job in a separate working directory), and state
 management (by storing the service state in a PostgreSQL database). The
@@ -120,6 +104,15 @@ client and server installations are as follows.
 requires the following packages:
 
 <ul>
+   <li>Axis 1.2.1: Axis is a SOAP and Web services toolkit for Java.
+   Install the binary or source version of Axis 1.2.1 from <a
+   href="http://ws.apache.org/axis/">http://ws.apache.org/axis/</a>.
+   Alternatively, you could also download a <a
+   href="http://nbcr.net/services/downloads/axis-src-1_2_1.tar.gz">cached
+   version</a>. Henceforth, we will refer to the location of Axis
+   installation as <i>AXIS_HOME</i>.</li>
+
+   <br>
    <li>Tomcat 5.0.30: Tomcat is a servlet container than can be used to
    host our Web service implementation. Install the binary version of
    Tomcat 5.0.30 from <a href= "http://jakarta.apache.org/tomcat/">
@@ -174,17 +167,27 @@ appropriate version already.
 similar utilities for Windows), as follows:
 <font color="green">
 <pre>
-    tar zxvf opal-ws-1.9alpha.tar.gz
+    tar zxvf opal-ws-1.5.1.tar.gz
 </pre>
 </font>
 
-<p>This should create a new directory called opal-ws-1.9alpha/ where
+<p>This should create a new directory called opal-ws-1.5.1/ where
 all the sources are expanded. Henceforth, we refer to this directory as
 <i>OPAL_HOME</i>.
 
 <h3>Server</h3>
 
-<p>1. Edit $OPAL_HOME/etc/opal.properties to configure the static container
+<p>1. Install Axis inside Tomcat by copying over the
+$AXIS_HOME/webapps/axis directory to $CATALINA_HOME/webapps. On Windows,
+you can use Windows Explorer to do the same, while on Unix you can execute
+the following command:
+<font color="green">
+<pre>
+    cp -r $AXIS_HOME/webapps/axis $CATALINA_HOME/webapps
+</pre>
+</font>
+
+<p>2. Edit $OPAL_HOME/etc/opal.properties to configure the static container
 properties correctly. It should look something like the following:
 
 <font color="green">
@@ -202,15 +205,15 @@ properties correctly. It should look something like the following:
     # this could be a symbolic link to another location (which should be
     # NFS mounted if this is on a cluster). if this is a symlink, copy
     # etc/opal.xml to $CATALINA_HOME/conf/Catalina/localhost/opal.xml. if
-    # the name of the symlink is changed to something other than "opal-jobs", 
+    # the name of the symlink is changed to something other than "opal", 
     # modify the opal.xml accordingly
-    # working.dir=opal-jobs
+    # working.dir=opal
 
     # database information
     database.use=false
-    database.url=jdbc:postgresql://localhost/opal_db
-    database.user=opal_user
-    database.passwd=opal_passwd
+    database.url=jdbc:postgresql://localhost/app_db
+    database.user=app_user
+    database.passwd=app_passwd
 
     # drmma information
     drmaa.use=false
@@ -219,8 +222,8 @@ properties correctly. It should look something like the following:
     # globus information
     globus.use=false
     globus.gatekeeper=localhost:2119/jobmanager-sge
-    globus.service_cert=/Users/sriramkrishnan/certs/opal_service.cert.pem
-    globus.service_privkey=/Users/sriramkrishnan/certs/opal_service.privkey
+    globus.service_cert=/Users/sriramkrishnan/certs/app_service.cert.pem
+    globus.service_privkey=/Users/sriramkrishnan/certs/app_service.privkey
 </pre>
 </font>
 
@@ -253,21 +256,22 @@ scheduler support, refer to <a href="./scheduler.html">scheduler.html</a>.
 You can also optionally set up secure access to your services by consulting
 <a href="./security.html">security.html</a>.
 
-<p>2. Edit the $OPAL_HOME/build.properties file to ensure that the build
+<p>3. Edit the $OPAL_HOME/build-opal.properties file to ensure that the build
 properties are set correctly. Set <tt>catalina.home</tt> to point to the
-location of your Tomcat installation (i.e. $CATALINA_HOME), and
-<tt>tomcat.port</tt> to the port number that the Tomcat server is running
-on.
+location of your Tomcat installation (i.e. $CATALINA_HOME),
+<tt>axis.webapp</tt> to the name used by the Axis web application
+(typically, it is just <i>axis</i>), and <tt>tomcat.port</tt> to the port
+number that the Tomcat server is running on.
 
-<p>3. Install the Opal toolkit into the Tomcat installation, by executing
-the following command:
+<p>4. Install the Opal jars into the Axis webapp, by executing the
+following command:
 <font color="green">
 <pre>
-    ant install
+    ant -f build-opal.xml install
 </pre>
 </font>
 
-<p>4. Run the Tomcat server by changing to the $CATALINA_HOME/bin directory,
+<p>5. Run the Tomcat server by changing to the $CATALINA_HOME/bin directory,
 and running the appropriate command (bat on Windows, sh on Unix):
 <font color="green">
 <pre>
@@ -275,51 +279,43 @@ and running the appropriate command (bat on Windows, sh on Unix):
 </pre>
 </font>
 
-<p>5. Validate that Opal has been deployed correctly by clicking on <a
-href="http://localhost:8080/opal/happyaxis.jsp">
-http://localhost:8080/opal/happyaxis.jsp</a>. If you have deployed Tomcat
+<p>6. Validate that Axis has been deployed correctly by clicking on <a
+href="http://localhost:8080/axis/happyaxis.jsp">
+http://localhost:8080/axis/happyaxis.jsp</a>. If you have deployed Tomcat
 on another port, you will have to change the port number above. If all the
 <b>Needed Components</b> are found, Axis has been deployed fine. You can
 ignore the warnings about the <b>Optional Components</b>.
  
-<p>6. Create a configuration file for your application. For example, you
-can download the <a href="http://pdb2pqr.sourceforge.net/">PDB2PQR</a>
-program, which is designed to automate many of the common tasks of
-preparing structures for continuum electrostatics calculations, by
-providing a platform-independent utility for converting protein files in
-PDB format to PQR format. A sample configuration file for the same, located
-in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
-
+<p>7. Create a configuration file for your application. For example, you
+can download the <a href="http://openbabel.sourceforge.net/">Babel</a>
+program, which is designed to support molecular modeling, chemistry, and
+many related areas, including interconversion of file formats and data. A
+sample configuration file for the same, located in
+$OPAL_HOME/etc/babel_config.xml, is shown below.
 <font color="green">
 <pre>
 &lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;metadata appName="PDB2PQR"&gt;
-    &lt;usage&gt;
-    PDB2PQR is a Python software package that automates many of the common
-    tasks of preparing structures for continuum electrostatics
-    calculations, providing a platform-independent utility for converting
-    protein files in PDB format to PQR format
-    &lt;/usage&gt;
-
+  &lt;metadata&gt;
+    &lt;usage&gt;&lt;![CDATA[./babel [-i&lt;input-type&gt;] &lt;name&gt; [-o&lt;output-type&gt;] &lt;name&gt;]]&gt;&lt;/usage&gt;
     &lt;info xsd:type="xsd:string"&gt;
-         python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
- 
-         The required arguments are as follows:
-	 ...         
-         &lt;path&gt;
-             The path to the PDB file or an ID to obtain from the PDB archive
-         &lt;output-path&gt;
-             The desired output name of the PQR file to be generated
-         
-         Optional command-line arguments are:
-         
-         --nodebump
-             Do not perform the debumping operation
-	 ...
-     &lt;/info&gt;
+    &lt;![CDATA[
+    ...
+    Currently supported input types
+	alc -- Alchemy file
+	prep -- Amber PREP file
+	...
+    Currently supported output types
+    ...
+	caccrt -- Cacao Cartesian file
+	cacint -- Cacao Internal file
+    ...
+    Additional options : 
+    ...
+    ]]&gt;
+    &lt;/info&gt;
   &lt;/metadata&gt;
-  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/pdb2pqr.py&lt;/binaryLocation&gt;
+  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/babel&lt;/binaryLocation&gt;
   &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
   &lt;parallel&gt;false&lt;/parallel&gt;
 &lt;/appConfig&gt;
@@ -330,31 +326,29 @@ in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
 which contains <i>metadata</i>, <i>binaryLocation</i>, <i>defaultArgs</i>,
 and <i>parallel</i> elements. The metadata consists of <i>usage</i>, which
 is a string specifying how the application is to be invoked, and an array
-of optional application information specified as <i>info</i> elements.
-It also contains an optional <i>types</i> element, which can ignore
-for now. In the above file, the various options that can be used with
-the application are specified within the metadata. The binaryLocation
-specifies the location of the application binary - note that this has
-to be the location of a <i>single</i> executable. No arguments may be
-specified here. However, default arguments that need to be used for
-every run can be specified inside the defaultArgs element. The
-parallel element specifies if an application is parallel or not. Use
-the pdb2pqr_config.xml as a guideline to write configurations for your
-particular applications.
+of optional application information specified as <i>info</i> elements. In
+the above file, the various options that can be used with the application
+are specified within the metadata. The binaryLocation specifies the
+location of the application binary - note that this has to be the location
+of a <i>single</i> executable. No arguments may be specified here. However,
+default arguments that need to be used for every run can be specified
+inside the defaultArgs element. The parallel element specifies if an
+application is parallel or not. Use the babel_config.xml as a guideline to
+write configurations for your particular applications.
 
-<p>7. Deploy the services inside Tomcat, by changing to the $OPAL_HOME
+<p>8. Deploy the services inside Tomcat, by changing to the $OPAL_HOME
 directory, and running the following command:
 <font color="green">
 <pre>
-    $ANT_HOME/bin/ant deploy -DserviceName=&lt;serviceName&gt; -DappConfig=&lt;appConfig&gt;
+    $ANT_HOME/bin/ant -f build-opal.xml deploy -DserviceName=&lt;serviceName&gt; -DappConfig=&lt;appConfig&gt;
 </pre>
 </font>
 
-<p>For example, to deploy the PDB2PQR service, you would type the following
+<p>For example, to deploy the Babel service, you would type the following
 command:
 <font color="green">
 <pre>
-    $ANT_HOME/bin/ant deploy -DserviceName=Pdb2pqrServicePort -DappConfig=$PWD/configs/pdb2pqr_config.xml
+    $ANT_HOME/bin/ant -f build-opal.xml deploy -DserviceName=BabelServicePort -DappConfig=etc/babel_config.xml
 </pre>
 </font>
 
@@ -362,7 +356,7 @@ command:
 following command:
 <font color="green">
 <pre>
-    $ANT_HOME/bin/ant undeploy -DserviceName=&lt;serviceName&gt;
+    $ANT_HOME/bin/ant -f build-opal.xml undeploy -DserviceName=&lt;serviceName&gt;
 </pre>
 </font>
 
@@ -382,7 +376,7 @@ retain scratch directories).
 
 <h3>Client</h3>
 
-<p>A generic Java client is implemented by the class located in 
+<p>A generic Java client is implemented by 
 $OPAL_HOME/src/edu/sdsc/nbcr/opal/GenericServiceClient.java. It lets you
 run any application exposed as an Opal service, and retrieve its
 status and outputs.
@@ -391,34 +385,34 @@ status and outputs.
 the $OPAL_HOME directory.
 <font color="green">
 <pre>
-    $ANT_HOME/bin/ant jar
+    $ANT_HOME/bin/ant -f build-opal.xml jar
 </pre>
 </font>
 
 <p>Before running the client, set your classpath using the
-etc/classpath.bat|(c)sh script depending on the OS/shell you use - e.g. if you
+classpath.bat|(c)sh script depending on the OS/shell you use - e.g. if you
 use tcsh on Unix, set your classpath by typing the following command:
 <font color="green">
 <pre>
-    source etc/classpath.csh
+    source classpath.csh
 </pre>
 </font>
 
-<p>To launch a job using the PDB2PQR service which was described above, you could use the
+<p>To launch a job using the Babel service which was described above, you could use the
 following command, which displays the resulting job id, along with the preliminary status.
 <font color="green">
 <pre>
-    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/Pdb2pqrServicePort 
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/axis/services/BabelServicePort 
 	                                         -r launchJob 
-						 -a "--ff=amber sample.pdb output.pqr" 
-						 -f samples/sample.pdb
+						 -a "-ipdb sample.pdb -h -opdb output.pdb" 
+						 -f etc/sample.pdb
 </pre>
 </font>
 
 <p>You can retrieve job status by running the following command:
 <font color="green">
 <pre>
-    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/Pdb2pqrServicePort 
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/axis/services/BabelServicePort 
 	                                         -r queryStatus
 						 -j &lt;job_id&gt;
 </pre>
@@ -427,7 +421,7 @@ following command, which displays the resulting job id, along with the prelimina
 <p>Once the job has finished executing, you can also retrieve output metadata using:
 <font color="green">
 <pre>
-    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/opal/services/Pdb2pqrServicePort 
+    java edu.sdsc.nbcr.opal.GenericServiceClient -l http://localhost:8080/axis/services/BabelServicePort 
 	                                         -r getOutputs
 						 -j &lt;job_id&gt;
 </pre>
@@ -444,11 +438,8 @@ usage information for the client by using the following command:
 
 <h2>Feedback</h2>
 
-<p>Please use the Opal Toolkit <a
-href="http://sourceforge.net/tracker/?group_id=211778">Tracker</a> on
-Sourceforge to report bugs and feature requests, and the NBCR Web Services
-User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>)
-for general comments and feedback.
+<p>To report bugs and feature requests, please use the NBCR Web Services
+User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>).
 
 </body>
 </html>

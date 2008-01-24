@@ -11,6 +11,10 @@
         information on Opal.
       </p>
       <ul>
+        <li><a href="docs/1.9.2/index.html"> Opal Toolkit Reference Guide - 1.9.2</a>: This is the main 
+          reference documentation for Opal Toolkit 1.9.2 and for 1.9alpha.</li>
+        <li><a href="docs/1.5.1/index.html">Opal Toolkit Documentation - 1.5.1</a>: Official Opal guide for version 1.5.1.</li>
+<!--
         <li><a href="docs/index.html">Installation Guide</a>: This is the main 
           documentation and also the one you should use if you are trying to 
           started with Opal</li>
@@ -27,7 +31,7 @@
           usage and set up of this new feature just released in Opal 1.9. The Opal DIG 
           supports the automatic generation of submission form customized
           for the input arguments of the underlining service</li>
-<!--        <li><a href="docs/faq.txt">FAQ</a>: the usual FAQ</li>-->
+-->
       </ul>
     </section>
     <section name="Support">

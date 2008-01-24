@@ -26,6 +26,14 @@ To generate the web site:
 
 PS: a good tutorial can be found at: http://www.sonatype.com/book/site-generation.html
 
+  To generate the documentation you also need to install
+  OpenJade and to have available jw on you path.
+  The documentaion is generated using the script makedocumentatin.sh, this script 
+  is called authomatically by maven during the site generation.
+  I could be that you also have to modify some path from the DSL file 
+  in src/docbook/etc/rocks.dsl at the top of the page, the two path 
+  should point to your local installation of OpenJada which is OS dependant
+  
 
 Clem
 
