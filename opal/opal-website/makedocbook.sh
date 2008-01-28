@@ -30,7 +30,7 @@ jw --backend pdf --dsl $DSLFILE/rocks.dsl\#print --output $DESTDIR $SOURCEDIR/in
 
 # finalizing the work...
 mv $DESTDIR/index.pdf $DESTDIR/opal-referenceguide.pdf
-cp -a $SOURCEDIR/images $DESTDIR
+cp -rp $SOURCEDIR/images $DESTDIR
 cp $SOURCEDIR/rocks.css  $DESTDIR
 
 
