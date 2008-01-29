@@ -96,11 +96,11 @@ here</ulink>, if you don't have the appropriate version already.</para>
 similar utilities for Windows), as follows:
 
 <screen>
-    tar zxvf opal-ws-1.9alpha.tar.gz
+    tar zxvf opal-ws-$VERSION.tar.gz
 </screen>
 </para>
 
-<para>This should create a new directory called opal-ws-1.9alpha/ where
+<para>This should create a new directory called opal-ws-$VERSION/ where
 all the sources are expanded. Henceforth, we refer to this directory as
 <emphasis role="italics">OPAL_HOME</emphasis>.</para>
 
@@ -108,7 +108,7 @@ all the sources are expanded. Henceforth, we refer to this directory as
 <title>Server Installation</title>
 
 <orderedlist>
-<listitem><para>1 Edit $OPAL_HOME/etc/opal.properties to configure the static container
+<listitem><para>Edit $OPAL_HOME/etc/opal.properties to configure the static container
 properties correctly. It should look something like the following:</para>
 
 
