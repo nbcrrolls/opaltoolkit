@@ -1,9 +1,13 @@
-NBCR Web Services
------------------
+The Opal Toolkit
+----------------
 
-Thanks for your interest in the NBCR Web services. You will find documentation in the 
-docs/ directory. 
+Thanks for your interest in the the Opal toolkit. In this directory you
+will find the core Opal package implemented in Java, which includes both
+client and server sides. You will also find simple clients written in
+Python and Perl. You will find documentation in the docs/ directory.
 
-The Web services are actively under construction. They are being released
-to solely give users a feel for the structure and usage. Please feel free
-to send comments/feedback to Sriram Krishnan at sriram@sdsc.edu.
+<p>Please use the Opal Toolkit Tracker
+(http://sourceforge.net/tracker/?group_id=211778) on Sourceforge to report
+bugs and feature requests, and the NBCR Web Services User Forum
+(https://nbcr.net/forum/viewforum.php?f=13") for general comments and
+feedback.
