@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=1.9alpha
+VERSION=1.9.2
 
 echo "Creating a temporary directory for the tarball"
 rm -rf opal-py-$VERSION
