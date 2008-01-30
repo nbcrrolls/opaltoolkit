@@ -15,15 +15,17 @@
 <book>
 
 <bookinfo>
-        <title>Opal Toolkit Reference Guide</title>
+        <title>
+		Opal Toolkit Reference Guide
+	</title>
 
-        <subtitle>
-                <inlinemediaobject>
-                        <imageobject>
-                        <imagedata fileref="images/nbcr_logo.png">
-                        </imageobject>
-                </inlinemediaobject>
-        </subtitle>
+<!--         <subtitle> -->
+<!--                 <inlinemediaobject> -->
+<!--                         <imageobject> -->
+<!--                         <imagedata fileref="images/nbcr_logo.png"> -->
+<!--                         </imageobject> -->
+<!--                 </inlinemediaobject> -->
+<!--         </subtitle> -->
 
         <edition> Reference Guide for the Opal Toolkit version &version; </edition>
 
@@ -37,7 +39,8 @@
 
   <releaseinfo>
     The current release of Opal Toolkit is &version;.
-    <ulink url="./opal-referenceguide.pdf">(PDF version of this docuemtation)</ulink>
+    <ulink url="./opal-referenceguide.pdf">(PDF version of this
+    documentation)</ulink>
   </releaseinfo>
 
   <legalnotice>
