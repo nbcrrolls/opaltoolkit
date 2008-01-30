@@ -52,7 +52,7 @@ Author:
   <property name="opal.WEB-INF" location="${project.home}/webapps/${opal.webapp}/WEB-INF" />  
   <property name="build" location="${project.home}/build" />
   <property name="build.classes" location="${build}/classes" />
-  <property name="build.docs" location="${build}/docs" />
+  <property name="docs" location="${project.home}/docs" />
   <property name="build.generated" location="${build}/gen" />
   <property name="build.jar" location="${build}/jar" />
   <property name="build.dist" location="${build}/dist" />
@@ -84,7 +84,6 @@ Author:
   <target name="setenv">
     <mkdir dir="${build}" />
     <mkdir dir="${build.classes}" />
-    <mkdir dir="${build.docs}" />
     <available file="${build.generated}"
                type="dir" 
                property="stubs.present" />
@@ -328,10 +327,13 @@ Author:
 <!--     <pathelement path="${build.generated}"/> -->
   </path>
   <target name="api-docs" depends="compile">
+    <mkdir dir="${docs}" />
+    <delete dir="${docs}/api"/>
+    <mkdir dir="${docs}/api"/>
     <javadoc packagenames="edu.sdsc.nbcr.*"
 	     sourcepathref="src.path.list"
 	     defaultexcludes="yes"
-	     destdir="${build.docs}"
+	     destdir="${docs}/api"
 	     author="true"
 	     version="true"
 	     use="true"
