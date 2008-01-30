@@ -16,25 +16,36 @@ Build Instructions:
    To create source distribution
         ant dist
 
+   To create documentation from docbook sources
+        ant docs
+
 Author:
    Sriram Krishnan [sriram@sdsc.edu]
 </description>
 ==================================================================== -->
 
-<project>
+<project default="usage">
 
   <property file="build.properties" />
   <property name="name" value="opal-ws" />
   <property name="version" value="1.9.2"/>
   <property name="project.home" location="." />
-  <property name="build" location="${project.home}/build" />
+  <property name="build" location="${project.home}/build"/>
   <property name="build.dist" location="${build}/dist" />
   <property name="build.dist.base" location="${build.dist}/${name}-${version}"/>
+  <property name="doc.src" location="${project.home}/docbook"/>
+  <property name="doc.dsl" location="${doc.src}/etc"/>
+  <property name="doc.dest" location="${project.home}/docs"/>
   <property name="debug" value="on"/>
   <property name="fork" value="true"/>
 
+  <!-- print usage -->
+  <target name="usage">
+    <echo message="Usage: ant -f build-admin.xml [usage|dist|docs]"/>
+  </target>
+
   <!-- Create a source distribution -->
-  <target name="dist">
+  <target name="dist" depends="docs">
   
     <!-- create a fresh dist directory -->
     <mkdir dir="${build}" />
@@ -81,5 +92,51 @@ Author:
     <gzip zipfile="${build.dist.base}.tar.gz" src="${build.dist.base}.tar" />
     <delete file="${build.dist.base}.tar" />
     <delete dir="${build.dist.base}" />
+  </target>
+
+  <!-- creation the documentation using docbook -->
+  <target name="docs">
+    <!-- delete old docs directory, and create it again -->
+    <delete dir="${doc.dest}"/>
+    <mkdir dir="${doc.dest}"/>
+
+    <!-- generate the html version of the docs -->
+    <exec executable="jw">
+      <arg value="--backend"/>
+      <arg value="html"/>
+      <arg value="--dsl"/>
+      <arg value="${doc.dsl}/rocks.dsl#html"/>
+      <arg value="--output"/>
+      <arg value="${doc.dest}"/>
+      <arg value="${doc.src}/index.sgml"/>
+    </exec>
+
+    <!-- generate the pdf version of the docs -->
+    <exec executable="jw">
+      <arg value="--backend"/>
+      <arg value="pdf"/>
+      <arg value="--dsl"/>
+      <arg value="${doc.dsl}/rocks.dsl#print"/>
+      <arg value="--output"/>
+      <arg value="${doc.dest}"/>
+      <arg value="${doc.src}/index.sgml"/>
+    </exec>
+
+    <!-- finish up -->
+    <move file="${doc.dest}/index.pdf"
+	  tofile="${doc.dest}/opal-referenceguide.pdf"/>
+    <mkdir dir="${doc.dest}/images"/>
+    <copy todir="${doc.dest}/images">
+      <fileset dir="${doc.src}/images">
+	  <!-- include everything -->
+	  <exclude name="**"/>
+      </fileset>
+    </copy>
+    <copy todir="${doc.dest}">
+      <fileset dir="${doc.src}">
+	  <!-- include rocks.css -->
+	  <include name="rocks.css"/>
+      </fileset>
+    </copy>
   </target>
 </project>
