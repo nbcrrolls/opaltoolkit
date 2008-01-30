@@ -1,14 +1,16 @@
 <html>
 <head>
 <title>Python Opal Web Service Client</title>
-<link href="./Styles.css" rel="stylesheet" type="text/css"/>
+<link href="./rocks.css" rel="stylesheet" type="text/css"/>
 </head>
 <!-- <body text="black" link="darkblue" vlink="black" link="black" -->
 <!-- bgcolor="white"> -->
 <body>
-<h1>Python Opal Web Service Client: Version 1.9alpha</h1>
+<h1>Python Opal Web Service Client: Version 1.9.2</h1>
 
-<h2>Overview</h2>
+<hr/>
+
+<h2>1. Overview</h2>
 
 <p>This distribution contains the WSDL for the alpha Opal Web service, and
 a sample Python client that invokes a <a
@@ -17,19 +19,18 @@ deployed via Opal. Before proceeding with the client installation, please
 read the documentation for the Opal Web service implementation, and deploy
 the PDB2PQR service via Opal.
 
-<h2>Prerequisites</h2>
+<h2>2. Prerequisites</h2>
 
 <p>The Python client should work on both Unix and Windows platforms as long
 as you have the following packages installed.
 
-<ul>
-   <li>Python 2.3 or higher: Download and install Python from <a
+<ol TYPE="1">
+   <li><p>Python 2.3 or higher: Download and install Python from <a
    href="http://www.python.org/">http://www.python.org/</a>, if you don't
    have a Python installation on your local machine. Add the Python bin
    directory to your environment variable PATH.</li>
    
-   <br>
-   <li>PyXML 0.8.3 or higher: PyXML is a set of libraries for processing
+   <li><p>PyXML 0.8.3 or higher: PyXML is a set of libraries for processing
    XML in Python. Download PyXML from <a
    href="http://pyxml.sourceforge.net/">http://pyxml.sourceforge.net/</a>.
    If you are downloading the Windows installer, make sure that you are
@@ -37,69 +38,78 @@ as you have the following packages installed.
    are installing on a Unix platform, change to the extracted PyXML
    directory using a sudo or root shell, and execute the following
    commands:
-   <font color="green">
-   <pre>
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
        python setup.py build
-       python setup.py install
-   </pre>
-   </font>
+       python setup.py install</pre>
+   </FONT></TD></TR>
+   </TABLE>
+   </li>
 
-   <li>ZSI 1.7: ZSI is a SOAP and Web services toolkit for
+   <li><p>ZSI 1.7: ZSI is a SOAP and Web services toolkit for
    Python. Download ZSI from <a
    href="http://pywebsvcs.sourceforge.net/">http://pywebsvcs.sourceforge.net/</a>.
    If you are installing on a Unix platform, you would need to use a sudo
    or root shell. Change to the ZSI-1.7/ directory that is extracted from
    the tarball, and execute the following command:
-   <font color="green">
-   <pre>
-       python setup.py install
-   </pre>
-   </font>
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
+       python setup.py install</pre>
+   </FONT></TD></TR>
+   </TABLE>
 
    <p>Note the location where the ZSI package is installed. In particular,
    note the location of the <i>wsdl2py.py</i> script that we need to use in
    the future. Typically, the packages are installed inside the Python
    installation. On Windows, wsdl2py.py typically resides inside
    $PYTHON_HOME/scripts, where PYTHON_HOME represents the location of the
-   Python installation. On Unix, it is usually inside $PYTHON_HOME/bin. 
+   Python installation. On Unix, it is usually inside $PYTHON_HOME/bin.
+   Henceforth, we will refer to this location as <i>WSDL2PY_HOME</i>.
 
    <p><i>Opal will not work with a higher version of ZSI. Please ensure
    that you are using ZSI version 1.7.</i>.
-</ul>
+</ol>
 
-<h2>Installation</h2>
+<h2>3. Installation</h2>
 
-<p>1. Download the Python source distribution for installation from <a
+<ol TYPE="1">
+<li><p>Download the Python source distribution for installation from <a
 href="https://sourceforge.net/project/showfiles.php?group_id=211778">here</a>,
 if you don't have the appropriate version already.
 
 <p>Expand the tarball that you have downloaded using the GNU tar utility,
 as follows:
-<font color="green">
-<pre>
-    tar zxvf opal-py-1.9alpha.tar.gz
-</pre>
-</font>
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
+    tar zxvf opal-py-$VERSION.tar.gz</pre>
+   </FONT></TD></TR>
+   </TABLE>
 
-<p>This should create a new directory called opal-py-1.9alpha/ where all
+<p>This should create a new directory called opal-py-$VERSION/ where all
 the sources are expanded. Henceforth, we will call this directory
 <i>OPAL_PY_HOME</i>.
+</li>
 
-<p>2. Generate the stubs from the WSDL file with the following command inside
+<li><p>Generate the stubs from the WSDL file with the following command inside
 the $OPAL_PY_HOME directory:
-<font color="green">
-<pre>
-    python &lt;prefix_to_wsdl2py&gt;/wsdl2py.py -f wsdl/opal.wsdl
-</pre>
-</font>
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
+    python $WSDL2PY_HOME/wsdl2py.py -f wsdl/opal.wsdl</pre>
+   </FONT></TD></TR>
+   </TABLE>
 
-<p>Replace <i>prefix_to_wsdl2py</i> with the location of wsdl2py.py on your
-local installation. This generates two files - AppService_services.py and
+<p>This generates two files - AppService_services.py and
 AppService_services_types.py. The former contains the stubs required to
 communicate with the remote Web service, while the latter contains the
 types defined in the WSDL for the service.
+</li>
+</ol>
 
-<h2>Running the Client</h2>
+<h2>4. Running the Client</h2>
 
 <p>A sample Opal client is shown in $OPAL_PY_HOME/Pdb2pqrClient.py. It shows how to
 retrieve a reference to a remote Web service port, set parameters, and
@@ -114,29 +124,31 @@ the same invocation.
 
 <p>To run the client, you can run the following command from inside the
 $OPAL_PY_HOME directory.
-<font color="green">
-<pre>
-    python Pdb2pqrClient.py
-</pre>
-</font>
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
+    python Pdb2pqrClient.py</pre>
+   </FONT></TD></TR>
+   </TABLE>
 
 <p>By default, the client uses the Web service running on
 http://localhost:8080. To change this location, modify the URL inside
 Pdb2pqrClient.py.
 
-<h2>Security</h2>
+<h2>5. Security</h2>
 
 <p>The Opal Web service can be optionally set up to accept connections
 using GSI-based HTTPS (refer to the <a
 href="http://nbcr.net/services/opal/security.html">security</a>
 documentation for instructions). The following snippet of code from
 Pdb2pqrClient.py shows how to access a secure Opal service from Python.
-<font color="green">
-<pre>
-# set the locations for the X509 certificate and key
-cert = "/Users/sriramkrishnan/certs/apbs_service.cert.pem"
-key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
-...
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
+    # set the locations for the X509 certificate and key
+    cert = "/Users/sriramkrishnan/certs/apbs_service.cert.pem"
+    key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
+    ...
 	# example of ssl invocation
 	appServicePort = appLocator.getAppServicePortType(
 	    baseURL + "opal/services/Pdb2pqrServicePort",
@@ -144,9 +156,9 @@ key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
 	    cert_file=cert,
 	    key_file=key,
 	    transport=httplib.HTTPSConnection)
-...
-</pre>
-</font>
+    ...</pre>
+  </FONT></TD></TR>
+  </TABLE>
 
 <p>Note that if you are using proxy certificates, they have to be RFC 3820
 compliant. This can be done by creating a Grid proxy using
@@ -154,13 +166,13 @@ compliant. This can be done by creating a Grid proxy using
 has only been tested with OpenSSL version 0.9.7g, and may not work with
 older versions.
 
-<h2>Feedback</h2>
+<h2>6. Feedback</h2>
 
 <p>Please use the Opal Toolkit <a
 href="http://sourceforge.net/tracker/?group_id=211778">Tracker</a> on
 Sourceforge to report bugs and feature requests, and the NBCR Web Services
 User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>)
 for general comments and feedback.
-
+<hr/>
 </body>
 </html>
