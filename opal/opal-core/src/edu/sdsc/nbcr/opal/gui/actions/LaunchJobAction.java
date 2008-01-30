@@ -72,7 +72,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             ArgFlag [] flags = app.getArgFlags();
             if (flags != null ) { 
                 for (int i = 0; i < flags.length; i++ ) {
-                    debug += "for flags " + flags[i].getId() + " the user has entered: " + flags[i].getSelected() + "\n";
+                    debug += "for flags " + flags[i].getId() + " the user has entered: " + flags[i].isSelected() + "\n";
                 }
             }else { debug += "no falgs found"; }
             ArgParam [] params = app.getArgParams();
@@ -165,7 +165,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                 ArgFlag [] flags = app.getArgFlags();
                 for ( int i = 0; i < flags.length; i++){
                     //if ( (flags[i].getSelected() != null) && (flags[i].getSelected().equals("on")) )
-                	if ( flags[i].getSelected() )
+                	if ( flags[i].isSelected() )
                         str += " " + flags[i].getTag();
                 }//for
             }
