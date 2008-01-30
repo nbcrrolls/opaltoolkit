@@ -7,11 +7,11 @@
 
 VERSION=1.9.2
 # where sources file are located
-SOURCEDIR=src/docbook
+SOURCEDIR=docbook
 DSLFILE=$SOURCEDIR/etc
 # where the output will be placed
 # DESTDIR=target/site/docs/$VERSION
-DESTDIR=../opal-core/docs
+DESTDIR=docs
 
 
 #
