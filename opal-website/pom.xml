@@ -220,7 +220,7 @@ you have to create a ~/.m2/settings.xml file with the follwing content
             <inherited>false</inherited>
             <configuration>
               <tasks>
-                <echo>Generating the docuemtation with docbook...</echo>
+                <echo>Generating the documentation with docbook...</echo>
                 <exec executable="./makedocbook.sh">
                  <!-- <arg value="-l"/>
                   <arg value="-r"/>
