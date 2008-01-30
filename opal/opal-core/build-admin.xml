@@ -1,0 +1,85 @@
+<!-- ===================================================================
+<description>
+The build file for the Opal Application Wrapper Web service admin tasks
+
+Notes:
+   This is a build file for use with the Jakarta Ant build tool.
+
+Prerequisites:
+
+   jakarta-ant from http://jakarta.apache.org
+
+Build Instructions:
+
+   Modify build.properties
+
+   To create source distribution
+        ant dist
+
+Author:
+   Sriram Krishnan [sriram@sdsc.edu]
+</description>
+==================================================================== -->
+
+<project>
+
+  <property file="build.properties" />
+  <property name="name" value="opal-ws" />
+  <property name="version" value="1.9.2"/>
+  <property name="project.home" location="." />
+  <property name="build" location="${project.home}/build" />
+  <property name="build.dist" location="${build}/dist" />
+  <property name="build.dist.base" location="${build.dist}/${name}-${version}"/>
+  <property name="debug" value="on"/>
+  <property name="fork" value="true"/>
+
+  <!-- Create a source distribution -->
+  <target name="dist">
+  
+    <!-- create a fresh dist directory -->
+    <mkdir dir="${build}" />
+    <delete dir="${build.dist}" />
+    <mkdir dir="${build.dist.base}" />
+
+    <!-- copy over the relevant sources -->
+    <copy todir="${build.dist.base}">
+      <fileset dir="${project.home}">
+
+	  <!-- exclude certain directories -->
+	  <exclude name="**/build/**"/>
+	  <exclude name="docbook/**"/>
+	  <exclude name="build-devel.xml"/>
+      </fileset>
+    </copy>
+
+    <!-- Moving the template file  -->
+    <move file="${build.dist.base}/etc/opal.properties.template" tofile="${build.dist.base}/etc/opal.properties"/>
+    <move file="${build.dist.base}/build.properties.template" tofile="${build.dist.base}/build.properties"/>
+
+
+    <!-- adjusting text files to local conventions -->
+    <fixcrlf srcdir="${build.dist.base}"
+       eol="lf" eof="remove"
+       includes="**/*.html,**/*.txt,**/*.sh,**/*.bat,**/*.properties,**/*.xml" />
+
+    <!-- make all shell scripts executable -->
+    <chmod perm="a+x" dir="${build.dist.base}"
+       includes="**/*.*sh" />
+
+    <!-- tar everything up -->
+    <tar tarfile="${build.dist.base}.tar" longfile="gnu">
+      <tarfileset dir="${build.dist}" mode="755">
+        <include name="**/*.*sh"/>
+      </tarfileset>
+      <tarfileset dir="${build.dist}" group="nbcr">
+        <include name="**"/>
+        <exclude name="**/*.*sh"/>
+      </tarfileset>
+    </tar>
+
+    <!-- zip the tarfile -->
+    <gzip zipfile="${build.dist.base}.tar.gz" src="${build.dist.base}.tar" />
+    <delete file="${build.dist.base}.tar" />
+    <delete dir="${build.dist.base}" />
+  </target>
+</project>
