@@ -23,6 +23,7 @@ import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.util.Date;
+import java.util.Locale;
 import java.text.SimpleDateFormat;
 
 import org.globus.gram.GramJob;
@@ -204,7 +205,7 @@ public class AppServiceImpl
 		stmt.setInt(1, GramJob.STATUS_FAILED);
 		stmt.setString(2, "Job failed - server was restarted during job execution");
 		stmt.setString(3, 
-			       new SimpleDateFormat("MMM d, yyyy h:mm:ss a").format(new Date()));
+			       new SimpleDateFormat("MMM d, yyyy h:mm:ss a", Locale.US).format(new Date()));
 		stmt.setInt(4, GramJob.STATUS_ACTIVE);
 		int numUpdates = stmt.executeUpdate();
 		logger.debug("Number of DB entries for zombie jobs cleaned up: " + numUpdates);
