@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Locale;
 import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
@@ -210,7 +211,7 @@ public class AppJobLaunchUtil implements GramJobListener {
 	    }
 
 	    String time = 
-		new SimpleDateFormat("MMM d, yyyy h:mm:ss a").format(new Date());
+		new SimpleDateFormat("MMM d, yyyy h:mm:ss a", Locale.US).format(new Date());
 	    String sqlStmt = 
 		"insert into job_status(job_id, code, message, base_url, " + 
 		"client_dn, client_ip, service_name, start_time, last_update) " +
@@ -975,7 +976,7 @@ public class AppJobLaunchUtil implements GramJobListener {
 	stmt.setString(2, status.getMessage());
 	stmt.setString(3, status.getBaseURL().toString());
 	stmt.setString(4, 
-		       new SimpleDateFormat("MMM d, yyyy h:mm:ss a").format(new Date()));
+		       new SimpleDateFormat("MMM d, yyyy h:mm:ss a", Locale.US).format(new Date()));
 	stmt.setString(5, jobID);
 	stmt.executeUpdate();
 	conn.close();
