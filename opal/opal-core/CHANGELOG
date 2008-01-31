@@ -1,24 +1,24 @@
 
 
 Current version:
-- now the Simple Submission Form support multiple input file (LC)
-- the help section of the applications what not displaying properly html symbol like <>, now it does (LC)
-- build.properties and etc/opal.properties are move in .template file (LC)
-- Open the output page in a new browser page (LC)
-- Made the NBCR logo transparent (LC)
-- Now the "Number of jobs currently running" chart is colored with different colors (LC) 
+- now the Simple Submission Form support multiple input files (LC)
+- the help section of the submission form new displayes properly also html symbol like <> (LC)
+- build.properties and etc/opal.properties have been renamed with .template extension (LC)
+- the output page after the submission is now open in a new browser (LC)
+- the NBCR logo is now transparent (LC)
+- the "Number of jobs currently running" chart is rendered with different colors (LC) 
 - Made the code compatible with java 1.4 (LC)
 - updated the way opal handles symlinked working directories - now we do
   not need Tomcat to be on NFS (SK)
-- now the charts use a thicker line (LC)
+- now the charts use a thicker brush in the statistics page (LC)
 - patched some Boolean comparison in the jsp which caused errors with older jsp compiler (SK)
-- improved the statistics page when a Data Based connection is not present (LC)
+- nicer error page when a Data Based connection is not present (LC)
 - the output files can now be retrieved as zip file if a parameter
   (data.archive) is set in the opal.properties (SK)
-- in the summary page now displays the data lifetime which can be set in the opal.properties (LC)
-- in the statistics page now there is a chart with the running jobs (LC)
-- corrected the load-on-startup order of the various servlets which was causing a missing DB connection (LC)
-- removed an error in the statistics page in the generation of the img URL of the various charts (LC)
+- the summary page now displays the data lifetime that can be set in the opal.properties (LC)
+- add a chart with the running jobs in the statistics page (LC)
+- correct the load-on-startup order of the various servlets which in some case could cause a missing DB connection (LC)
+- remove an error in the statistics page the URL used for the immages to display the charts was wrong (LC)
 
 1.9 alpha:
 - Opal Dashboard: it is a web based interface that provide an easy way to check the 
