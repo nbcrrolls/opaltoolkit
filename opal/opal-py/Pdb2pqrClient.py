@@ -23,19 +23,19 @@ key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
 # key = "/tmp/x509up_u506"
 
 # Host and port for remote services
-# baseURL = proto + "://rocks-106.sdsc.edu:8080/"
-baseURL = proto + "://localhost:8080/"
+# baseURL = proto + "://localhost:8080/"
+baseURL = proto + "://ws.nbcr.net:8080/"
 
 # Retrieve a reference to the AppServicePort
 appLocator = AppServiceLocator()
 if proto == "http":
     appServicePort = appLocator.getAppServicePortType(
-	baseURL + "opal/services/Pdb2pqrServicePort")
+	baseURL + "opal/services/Pdb2pqrOpalService")
 else:
     if proto == "https":
 	# example of ssl invocation
 	appServicePort = appLocator.getAppServicePortType(
-	    baseURL + "opal/services/Pdb2pqrServicePort",
+	    baseURL + "opal/services/Pdb2pqrOpalService",
 	    ssl=1,
 	    cert_file=cert,
 	    key_file=key,
