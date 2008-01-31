@@ -12,12 +12,13 @@
 
 <h2>1. Overview</h2>
 
-<p>This distribution contains the WSDL for the alpha Opal Web service, and
-a sample Python client that invokes a <a
+<p>This distribution contains the WSDL for the Opal Web service toolkit,
+and a sample Python client that invokes a <a
 href="http://pdb2pqr.sourceforge.net/">PDB2PQR</a> service that has been
-deployed via Opal. Before proceeding with the client installation, please
-read the documentation for the Opal Web service implementation, and deploy
-the PDB2PQR service via Opal.
+deployed via Opal on our production cluster (ws.nbcr.net). Alternatively,
+you could follow the documentation for the server-side installation of Opal
+<a href="http://nbcr.net/software/opal/documentation.html">here</a>, and
+deploy a PDB2PQR service yourself.
 
 <h2>2. Prerequisites</h2>
 
@@ -132,7 +133,7 @@ $OPAL_PY_HOME directory.
    </TABLE>
 
 <p>By default, the client uses the Web service running on
-http://localhost:8080. To change this location, modify the URL inside
+http://ws.nbcr.net:8080. To change this location, modify the URL inside
 Pdb2pqrClient.py.
 
 <h2>5. Security</h2>
