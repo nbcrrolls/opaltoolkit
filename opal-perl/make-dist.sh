@@ -8,7 +8,7 @@ mkdir opal-perl-$VERSION
 
 # copy dummy client, README, LICENSE, XSD, and WSDL into the temp directory
 echo "Copying sources into temporary directory"
-cp -r pdb2pqrclient.pl LICENSE README docs etc wsdl opal-perl-$VERSION/
+cp -r pdb2pqrclient.pl LICENSE README docs etc wsdl OpalServices.pm OpalTypes.pm opal-perl-$VERSION/
 rm -rf `find opal-perl-$VERSION -name ".svn"`
 
 # create a tarball
