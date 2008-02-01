@@ -3,12 +3,12 @@
 <![%html;[
 <!ENTITY % print "IGNORE">
 <!ENTITY docbook.dsl SYSTEM 
-"/sw/share/sgml/dsssl/docbook-dsssl-nwalsh/html/docbook.dsl" CDATA dsssl>
+"/usr/share/sgml/docbook/stylesheet/dsssl/modular/html/docbook.dsl" CDATA dsssl>
 ]]>
 <!ENTITY % print "INCLUDE">
 <![%print;[
 <!ENTITY docbook.dsl SYSTEM 
-"/sw/share/sgml/dsssl/docbook-dsssl-nwalsh/print/docbook.dsl" CDATA dsssl>
+"/usr/share/sgml/docbook/stylesheet/dsssl/modular/print/docbook.dsl" CDATA dsssl>
 ]]>
 ]>
 

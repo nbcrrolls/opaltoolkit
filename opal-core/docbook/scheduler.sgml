@@ -57,7 +57,7 @@ to Condor/SGE via GRAM (and the Java CoG Kit). We use Globus version 3.2.0
 on our cluster.</para>
 
 <para>Ensure that you can submit jobs to Condor/SGE via Globus, especially
-using the certificate/key-pair of the Tomcat server (described in  <xref linkend="security"/>
+using the certificate/key-pair of the Tomcat server (described in  <xref linkend="security">
 ). You can do this by following these
 steps:</para>
 
