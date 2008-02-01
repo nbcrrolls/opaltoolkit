@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Perl Opal Web Service Client</title>
+		<link rel="stylesheet" href="./rocks.css" type="text/css">
+	</head>
+	<body id="index">
+		<h1 id="perl_opal_web_service_client:_version_1.9.2">Perl Opal Web Service Client: Version 1.9.2</h1>
+		<hr/>
+		<h2>1.  Overview</h2>
+		<p>This distribution contains the WSDL for the Opal Web Service Toolkit, and a sample Perl client that 
+			invokes a <a href="http://pdb2pqr.sourceforge.net/">PDB2PQR</a> service that has been deployed via 
+			Opal on our production cluster (ws.nbcr.net).  Alternatively, you could follow the documentation 
+			for the server-side installation of Opal 
+			<a href="http://nbcr.net/software/opal/documentation.html">here</a>, and deploy a PDB2PQR 
+			service yourself.
+		
+		<h2>2.  Prerequisites</h2>
+		
+		<p>The Perl client should work on both Unix and Windows platforms as long as you have the following
+			packages installed:
+		<ol TYPE="1">
+			<li><p>Perl 5.0.8 or higher: Download and install Perl from <a href="http://www.perl.org/">http://www.perl.org</a> 
+				if you don't have Perl installed on your machine.</p></li>
+			<li><p>SOAP::Lite 0.69 or higher: Installation instructions can be found at 
+				<a href="http://www.reesespieces.org/soaplite/2003/06/installation_in.html">http://www.reesespieces.org/soaplite/2003/06/installation_in.html</a>, 
+				but the basic gist is this:
+				<table border="0" bgcolor="#E0E0E0" width="100%">
+					<tr><td><FONT COLOR="#000000"><pre class="SCREEN">	perl -MCPAN -e 'install SOAP::Lite'</pre></FONT>
+						</td></tr>
+				</table>
+			</li>
+		</ol>
+		
+		<h2>3.  Installation</h2>
+		
+		<ol TYPE="1">
+			<li><p>Download the Perl source distribution for installation from 
+				<a href="https://sourceforge.net/project/showfies.php?group_id=211778">here</a>, 
+				if you don't have the appropriate version already.</p>
+				
+				<p>Expand the tarball that you have downloaded using the GNU tar utility as follows:
+					<TABLE border="0" bgcolor="#E0E0E0" width="100%">
+						<tr><td><FONT COLOR="#000000"><pre class="screen">	tar zxvf opal-pl-$VERSION.tar.gz</pre></FONT>
+							</td></tr>
+					</TABLE>
+				<p>This should create a new directory called opal-pl-$VERSION/ where the source is expanded.  Henceforth,
+					we will call this directory <i>OPAL_PL_HOME</i>.</p>
+			</li>
+		</ol>
+		
+		<h2>4.  Running the Client</h2>
+		
+		<p>A sample Opal client is shown in $OPAL_PY_HOME/Pdb2pqrClient.py. It shows how to	retrieve a reference 
+			to a remote Web service port, set parameters, and	invoke remote operations. To launch the remote 
+			PDB2PQR service, the argument	string (<tt>--ff=amber sample.pdb sample.pqr</tt>) and the list of 
+			input files (<tt>etc/sample.pdb</tt>) are sent over. The service returns a <tt>jobID</tt> that is 
+			used later to query for status and retrieve	locations of the output files. Alternatively, the service 
+			can also be	invoked in a <em>blocking</em> fashion, where the client blocks until the	remote execution 
+			is complete, and the outputs are returned as a response to the same invocation.
+
+
+		<p>To run the client, you can run the following command from inside the
+		$OPAL_PL_HOME directory.
+		<table border="0" bgcolor="#E0E0E0" width="100%">
+		<tr><td><FONT COLOR="#000000"><pre class="SCREEN">	perl pdb2pqrclient.pl</pre></FONT>
+		</td></tr>
+		</table>
+
+		<p>By default, the client uses the Web service running on	http://localhost:8080. To change this 
+			location, modify the URL inside	Pdb2pqrClient.py.</p>
+		
+		<h2>5.  Feedback</h2>
+		<p>Please use the Opal Toolkit <a href="http://sourceforge.net/tracker/?group_id=211778">Tracker</a> on 
+			Sourceforge to report bugs and feature requests, and the NBCR Web Services User Forum 
+			(<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>) for general comments and feedback.
+		<hr/>
+	</body>
+</html>
