@@ -171,10 +171,10 @@ commands:
 systems. </para>
 
 <para>If you wish to install a database to persist service state, please refer
-to <xref linkend="database"/>. If you would like to set up
-scheduler support, refer to <xref linkend="scheduler"/>.
+to <xref linkend="database">. If you would like to set up
+scheduler support, refer to <xref linkend="scheduler">.
 You can also optionally set up secure access to your services by consulting
-<xref linkend="security"/>.</para> </listitem>
+<xref linkend="security">.</para> </listitem>
 
 <listitem><para>Edit the $OPAL_HOME/build.properties file to ensure that the build
 properties are set correctly. Set <filename>catalina.home</filename> to point to the
