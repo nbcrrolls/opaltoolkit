@@ -32,7 +32,7 @@ Version 1.9.2:
   - Job outputs can optionally be archived by setting a parameter
     (data.archive) inside the opal.properties file
 
-- General
+- General:
 
   - The code should now compile and run with Java 1.4 and older JSP compilers
 
