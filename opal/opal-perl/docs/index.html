@@ -43,17 +43,17 @@
 				
 				<p>Expand the tarball that you have downloaded using the GNU tar utility as follows:
 					<TABLE border="0" bgcolor="#E0E0E0" width="100%">
-						<tr><td><FONT COLOR="#000000"><pre class="screen">	tar zxvf opal-pl-$VERSION.tar.gz</pre></FONT>
+						<tr><td><FONT COLOR="#000000"><pre class="screen">	tar zxvf opal-perl-$VERSION.tar.gz</pre></FONT>
 							</td></tr>
 					</TABLE>
-				<p>This should create a new directory called opal-pl-$VERSION/ where the source is expanded.  Henceforth,
-					we will call this directory <i>OPAL_PL_HOME</i>.</p>
+				<p>This should create a new directory called opal-perl-$VERSION/ where the source is expanded.  Henceforth,
+					we will call this directory <i>OPAL_PERL_HOME</i>.</p>
 			</li>
 		</ol>
 		
 		<h2>4.  Running the Client</h2>
 		
-		<p>A sample Opal client is shown in $OPAL_PL_HOME/pdb2pqrclient.py. It shows how to	retrieve a reference 
+		<p>A sample Opal client is shown in $OPAL_PERL_HOME/pdb2pqrclient.py. It shows how to	retrieve a reference 
 			to a remote Web service port, set parameters, and	invoke remote operations. To launch the remote 
 			PDB2PQR service, the argument	string (<tt>--ff=amber sample.pdb sample.pqr</tt>) and the list of 
 			input files (<tt>etc/sample.pdb</tt>) are sent over. The service returns a <tt>jobID</tt> that is 
@@ -63,7 +63,7 @@
 
 
 		<p>To run the client, you can run the following command from inside the
-		$OPAL_PL_HOME directory.
+		$OPAL_PERL_HOME directory.
 		<table border="0" bgcolor="#E0E0E0" width="100%">
 		<tr><td><FONT COLOR="#000000"><pre class="SCREEN">	perl pdb2pqrclient.pl</pre></FONT>
 		</td></tr>
