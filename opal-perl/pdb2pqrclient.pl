@@ -43,6 +43,7 @@ $result = $pdb2pqr->launchJob($req);
 print "\nJob Launched:\n";
 print "\tCode: ",$result->getCode(),"\n";
 print "\tMessage: ",$result->getMessage(),"\n";
+print "\tBase URL: ",$result->getBaseURL(),"\n";
 
 # Loop until job GRAM status is 8 (Finished)
 $statuscode = 0;
@@ -60,11 +61,15 @@ $output = $pdb2pqr->getOutputs($jobid);
 @list = $output->getFiles();
 print "\nList of output files:\n";
 foreach (@list) {
-  print "\t",$_->getName(),": ",$_->getURL(),"\n";
+  print "\t",$_->getName(),":\t",$_->getURL(),"\n";
 }
 
 # Retrieve output file as a Base64 encoded binary
-print "\nDownloading output file - sample.pqr:\n";
+print "\nDownloading output file - sample.pqr: ";
 $req = OutputsByNameInputType->new($jobid,"sample.pqr");
 $result = $pdb2pqr->getOutputAsBase64ByName($req);
-print $result;
+$outfile = "sample.pqr";
+open OUTFILE, ">sample.pqr";
+print OUTFILE $result;
+close OUTFILE;
+print "Done.\n";

@@ -126,7 +126,7 @@ package JobInputType;
   
   sub setInputFile {
     my $self = shift;
-    $self->{inputFile} = shift;
+    $self->{inputFile} = \@_;
   }
   
   sub getInputFile {
@@ -138,8 +138,8 @@ package JobInputType;
     my $self = shift;
     $arglist = SOAP::Data->name("argList"=>$self->{arglist});
     push(@soap,$arglist);
-    @inputfilelist = $self->{inputFile};
-    foreach(@inputfilelist) {
+    $inputfilelist = $self->{inputFile};
+    foreach(@$inputfilelist) {
       $mysoap = $_->toSOAP();
       push(@soap,$mysoap);
     }
@@ -309,7 +309,7 @@ package JobOutputType;
     $self = {
       stdout=>$stdout,
       stderr=>$stderr,
-      files=>@files
+      files=>\@files
     };
     bless($self,$class);
     return $self;
@@ -342,7 +342,7 @@ package JobOutputType;
   
   sub getFiles {
     my $self = shift;
-    $self->{files};
+    @{$self->{files}};
   }
   
 package OutputsByNameInputType;
