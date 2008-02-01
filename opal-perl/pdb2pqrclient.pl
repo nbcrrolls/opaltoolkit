@@ -20,10 +20,10 @@ print "\tInfo:\n";
 print $result->getInfo(),"\n";
 
 # Similar invocation for getting the application configuration
-$result = $pdb2pqr->getAppConfig();
-print "\nApp Config:\n";
-print "\tBinary Location: ",$result->getBinaryLocation(),"\n";
-print "\tDefault Args: ",$result->getDefaultArgs(),"\n";
+# $result = $pdb2pqr->getAppConfig();
+# print "\nApp Config:\n";
+# print "\tBinary Location: ",$result->getBinaryLocation(),"\n";
+# print "\tDefault Args: ",$result->getDefaultArgs(),"\n";
 
 # Open the pdb file and read all of it into a string
 open MYFILE, $pdbfile;
@@ -40,7 +40,7 @@ $req->setInputFile($inputFile);
 
 # Launch job and retrieve job ID
 $result = $pdb2pqr->launchJob($req);
-print "\nJob Launched:\n";
+print "Job Launched:\n";
 print "\tCode: ",$result->getCode(),"\n";
 print "\tMessage: ",$result->getMessage(),"\n";
 print "\tBase URL: ",$result->getBaseURL(),"\n";
@@ -54,22 +54,25 @@ while ($statuscode != 8) {
   print "Query Status:\n";
   print "\tCode: ",$status->getCode(),"\n";
   print "\tMessage: ",$status->getMessage(),"\n";
+  print "\tBase URL: ",$status->getBaseURL(),"\n";
   sleep(5);
 }
 # Get list of job output files
 $output = $pdb2pqr->getOutputs($jobid);
 @list = $output->getFiles();
 print "\nList of output files:\n";
+print "\tStandard Output: ",$output->getStdOut(),"\n";
+print "\tStandard Error: ",$output->getStdErr(),"\n";
 foreach (@list) {
-  print "\t",$_->getName(),":\t",$_->getURL(),"\n";
+  print "\t",$_->getName(),": ",$_->getURL(),"\n";
 }
 
 # Retrieve output file as a Base64 encoded binary
-print "\nDownloading output file - sample.pqr: ";
-$req = OutputsByNameInputType->new($jobid,"sample.pqr");
-$result = $pdb2pqr->getOutputAsBase64ByName($req);
-$outfile = "sample.pqr";
-open OUTFILE, ">sample.pqr";
-print OUTFILE $result;
-close OUTFILE;
-print "Done.\n";
+# print "\nDownloading output file - sample.pqr: ";
+# $req = OutputsByNameInputType->new($jobid,"sample.pqr");
+# $result = $pdb2pqr->getOutputAsBase64ByName($req);
+# $outfile = "sample.pqr";
+# open OUTFILE, ">sample.pqr";
+# print OUTFILE $result;
+# close OUTFILE;
+# print "Done.\n";
