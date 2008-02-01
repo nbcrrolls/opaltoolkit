@@ -33,12 +33,12 @@ forms depending on the configuration of the specific application:</para>
 <section id="autointerface-simplesub"  xreflabel="Simple Submission Form">
 <title>Simple Submission Form</title>
 <para >If applications have
-been deployed following the instruction at <xref linkend="basicinstallation"/>
+been deployed following the instruction at <xref linkend="basicinstallation">
 the Opal DIG will display a simple form with an input text field and
 an input file box. 
 The user should type the desired command-line into the input 
 text box and he can also upload an input file. 
-The application configuration file described at  <xref linkend="server-installation"/> 
+The application configuration file described at  <xref linkend="server-installation"> 
 does not present any metadata describing the format of the input arguments 
 of the application. Hence the Opal DIG can display to the user only the 
 symple submission form.</para>
