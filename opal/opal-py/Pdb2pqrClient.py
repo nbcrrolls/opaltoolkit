@@ -103,12 +103,12 @@ if status.Get_code() == 8: # 8 = GramJob.STATUS_DONE
 
 
     # Retrieve an output file as a Base64 encoded binary
-    print "Downloading Pdb2pqr output: "
-    req = getOutputAsBase64ByNameRequestWrapper()
-    req.Set_jobID(jobID)
-    req.Set_fileName("sample.pqr")
-    resp = appServicePort.getOutputAsBase64ByName(req)
-    print resp
+#     print "Downloading Pdb2pqr output: "
+#     req = getOutputAsBase64ByNameRequestWrapper()
+#     req.Set_jobID(jobID)
+#     req.Set_fileName("sample.pqr")
+#     resp = appServicePort.getOutputAsBase64ByName(req)
+#     print resp
 
 # Set up blocking job launch
 req = launchJobBlockingRequestWrapper()
