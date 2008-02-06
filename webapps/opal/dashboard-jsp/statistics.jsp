@@ -112,7 +112,7 @@ function checkAll(){
    }
 %>
     <tr>
-        <td colspan="2" class="leftCol boxBody colColor" align="right"><br/><input type="submit" value="Upade charts"/></td>
+        <td colspan="2" class="leftCol boxBody colColor" align="right"><br/><input type="submit" value="Update Charts"/></td>
     </tr>
     
 </table>
