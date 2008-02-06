@@ -1,3 +1,10 @@
+Version 1.9.3:
+
+- Opal Services:
+   
+   - Fixed a bug where the job status was being retrieved incorrectly
+     during a destroy() operation when a database was being used to persist
+     state
 
 Version 1.9.2:
 
