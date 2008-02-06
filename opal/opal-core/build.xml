@@ -45,7 +45,7 @@ Author:
 
   <property file="build.properties" />
   <property name="name" value="opal-ws" />
-  <property name="version" value="1.9.2"/>
+  <property name="version" value="1.9.3"/>
   <property name="project.home" location="." />
   <property name="lib" location="${project.home}/lib" />
   <property name="opal.webapp" value="opal" />
