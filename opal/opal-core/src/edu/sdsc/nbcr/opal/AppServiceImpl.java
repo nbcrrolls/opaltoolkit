@@ -631,9 +631,8 @@ public class AppServiceImpl
 	    jobLaunchUtil.destroy();
 	    jobLaunchUtil.waitFor();
 
-	    // get the job status - ok to retrieve from memory this time 
-	    // because only the former call is made to an in-memory store anyways
-	    status = (StatusOutputType) statusTable.get(in);
+	    // get the final job status
+	    status = queryStatus(in);
 	} else {
 	    // check if the job has finished executing, or if it didn't exist at all
 	    if (!dbInUse) {
