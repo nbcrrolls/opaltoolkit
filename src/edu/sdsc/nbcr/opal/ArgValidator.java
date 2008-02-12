@@ -49,11 +49,13 @@ public class ArgValidator {
     /**
      * Validates the command line arguments
      *
+     * @param workingDir the working direction for execution
      * @param args the command line arguments
      * @return true if validation was successful, false otherwise
      * @throws FaultType if there was an error during argument validation
      */
-    public boolean validateArgList(String args)
+    public boolean validateArgList(String workingDir, 
+				   String args)
 	throws FaultType {
 	logger.info("called");
 
@@ -197,13 +199,14 @@ public class ArgValidator {
 				ioType = new IOType("INPUT");
 			    if (ioType.getValue().equals(IOType._INPUT) ||
 				ioType.getValue().equals(IOType._INOUT)) {
-				File test = new File(current);
+				String filePath = workingDir + File.separator + current;
+				File test = new File(filePath);
 				if (test.exists()) {
-				    logger.debug("Value: " + current + " is a valid FILE");
+				    logger.debug("Value: " + filePath + " is a valid FILE");
 				} else {
-				    logger.error("File parameter: " + current + " for tag " +
+				    logger.error("File parameter: " + filePath + " for tag " +
 						 expr + " doesn't exist");
-				    throw new FaultType("File parameter: " + current + " for tag " +
+				    throw new FaultType("File parameter: " + filePath + " for tag " +
 							expr + " doesn't exist");
 				}
 			    } else {
@@ -293,13 +296,14 @@ public class ArgValidator {
 			    ioType = new IOType("INPUT");
 			if (ioType.getValue().equals(IOType._INPUT) ||
 			    ioType.getValue().equals(IOType._INOUT)) {
-			    File test = new File(current);
+			    String filePath = workingDir + File.separator + current;
+			    File test = new File(filePath);
 			    if (test.exists()) {
-				logger.debug("Value: " + current + " is a valid FILE");
+				logger.debug("Value: " + filePath + " is a valid FILE");
 			    } else {
-				logger.error("File parameter: " + current + " for id: " +
+				logger.error("File parameter: " + filePath + " for id: " +
 					     id + " doesn't exist");
-				throw new FaultType("File parameter: " + current + "for id: " +
+				throw new FaultType("File parameter: " + filePath + "for id: " +
 						    id + " doesn't exist");
 			    }
 			} else {
@@ -531,14 +535,14 @@ public class ArgValidator {
     public static void main(String args[])
 	throws Exception {
 
-	String argsFile = null;
+	String configFile = null;
 	String workingDir = null;
 	String cmdArgs = null;
 
 	Options options = new Options();
-	options.addOption(OptionBuilder.withArgName("desc")
+	options.addOption(OptionBuilder.withArgName("config")
 			  .isRequired()
-			  .withDescription("argument descriptor XML")
+			  .withDescription("application configuration XML")
 			  .hasArg()
 			  .create("d"));
 	options.addOption(OptionBuilder.withArgName("dir")
@@ -568,28 +572,35 @@ public class ArgValidator {
 	    System.exit(1);
 	}
 
-	argsFile = line.getOptionValue("d");
+	configFile = line.getOptionValue("d");
 	workingDir = line.getOptionValue("w");
 	cmdArgs = line.getOptionValue("a");
 
 	System.out.println("Parsing argument description");
-	ArgumentsType argsDesc_ = 
-	    (ArgumentsType) TypeDeserializer.getValue(argsFile,
-						      new ArgumentsType());
+	AppConfigType appConfig =
+	    (AppConfigType) TypeDeserializer.getValue(configFile,
+						      new AppConfigType());
+	ArgumentsType argsDesc_ = appConfig.getMetadata().getTypes();
+	if (argsDesc_ == null) {
+	    System.err.println("Opal configuration file: " + configFile +
+			       " does not include argument description");
+	    System.exit(1);
+	}
+
 	ArgValidator av = new ArgValidator(argsDesc_);
 
 	System.out.println("Validating arguments");
-	boolean success = av.validateArgList(cmdArgs);
+	boolean success = av.validateArgList(workingDir, cmdArgs);
 	if (success)
 	    System.out.println("Argument validation successful");
 	else
-	    System.out.println("Argument validation unsuccessful");
+	    System.err.println("Argument validation unsuccessful");
 
 	System.out.println("Validating presence of implicit parameters");
 	success = av.validateImplicitParams(workingDir);
 	if (success)
 	    System.out.println("Validation of implicit parameters successful");
 	else
-	    System.out.println("Validation of implicit parameters unsuccessful");
+	    System.err.println("Validation of implicit parameters unsuccessful");
     }
 }
