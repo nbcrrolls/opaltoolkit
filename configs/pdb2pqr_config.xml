@@ -222,7 +222,7 @@
           </group>
           <group>
             <name>otherParamGroup</name>
-            <elements>with-ph ligand hbond verbose nodebump noopt chain assign-only clean apbs-input</elements>
+            <elements>with-ph ligand verbose nodebump noopt chain assign-only clean apbs-input</elements>
             <required>false</required>
             <textDesc>Other parameters</textDesc>
           </group>
