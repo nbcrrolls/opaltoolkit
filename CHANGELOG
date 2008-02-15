@@ -6,6 +6,12 @@ Version 1.9.3:
      during a destroy() operation when a database was being used to persist
      state
 
+   - Fixed a bug in the submission form where input file parameters were not 
+     properly handled on the command line
+
+   - Improved clean task of the build.xml file, now it delets also the generated 
+     JavaDoc
+
 Version 1.9.2:
 
 - Opal Dashboard:
