@@ -3,6 +3,7 @@ package edu.sdsc.nbcr.opal.dashboard.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,7 +61,7 @@ public class DateHelper {
      */
     public static Date parseDate(String date){
         if ( date == null) return null;
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
         Date returnDate = null;
         try {
             returnDate = formatter.parse(date);
@@ -73,7 +74,7 @@ public class DateHelper {
     
 
     public static String formatDate(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
         return formatter.format(date);
     }
     
