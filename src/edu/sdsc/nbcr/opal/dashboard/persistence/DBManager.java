@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -211,7 +212,7 @@ public class DBManager {
 
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
         String startDateString = formatter.format(startDate);
         String endDateString = formatter.format(endDate);
         

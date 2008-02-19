@@ -21,6 +21,7 @@ import java.awt.image.IndexColorModel;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -283,7 +284,7 @@ public class PloterServlet extends HttpServlet
                 true, true, false);
             XYPlot plot = chart.getXYPlot();
             DateAxis axis = (DateAxis) plot.getDomainAxis();
-            axis.setDateFormatOverride(new SimpleDateFormat("MMM-dd-yyyy"));
+            axis.setDateFormatOverride(new SimpleDateFormat("MMM-dd-yyyy", Locale.US));
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
             //BasicStroke stroke = (BasicStroke) renderer.getBaseStroke();
             BasicStroke stroke = new BasicStroke(3.0f);
