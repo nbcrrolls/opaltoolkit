@@ -9,8 +9,10 @@ Version 1.9.3:
    - Fixed a bug in the submission form where input file parameters were not 
      properly handled on the command line
 
-   - Improved clean task of the build.xml file, now it delets also the generated 
+   - Improved clean task of the build.xml file, now it deletes also the generated 
      JavaDoc
+
+   - Updated argument validation to now account for groups
 
 Version 1.9.2:
 
