@@ -19,6 +19,8 @@ import org.apache.commons.cli.HelpFormatter;
 
 import edu.sdsc.nbcr.common.TypeDeserializer;
 
+import org.apache.axis.types.IDRefs;
+
 /**
  * Implementation of a class that validates command-line arguments
  * based on the argument schema definition, within the WSDL
@@ -47,6 +49,97 @@ public class ArgValidator {
 
 
     /**
+     * Validate the type of the current argument based on the 
+     * given type of parameter and working directory
+     */
+    private boolean validateParamType(String current,
+				      ParamsType param,
+				      String workingDir) 
+	throws FaultType {
+
+	ParamType type = param.getParamType();
+	Id id = param.getId();
+
+	String[] values = param.getValue();
+	if (values != null) {
+	    boolean found = false;
+	    for (int j = 0; j < values.length; j++) {
+		logger.debug("Comparing with value: " + values[j]);
+		if (current.equals(values[j])) {
+		    logger.debug("Value matches acceptable value: " +
+				 values[j]);
+		    found = true;
+		    break;
+		}
+	    }
+	    if (!found) {
+		String msg = "Value: " + current + " not found on the list " +
+		    "of acceptable values for id: " + id;
+		logger.error(msg);
+		throw new FaultType(msg);
+	    }
+	}
+
+	if (type.getValue().equals(ParamType._INT)) {
+	    try {
+		Integer.parseInt(current);
+		logger.debug("Value: " + current + " is of valid type INT");
+	    } catch (Exception e) {
+		logger.error(e);
+		throw new FaultType("Parameter " + id + " expects integer value");
+	    }
+	} else if (type.getValue().equals(ParamType._BOOL)) {
+	    try {
+		Boolean.valueOf(current);
+		logger.debug("Value: " + current + " is of valid type BOOL");
+	    } catch (Exception e) {
+		logger.error(e);
+		throw new FaultType("Parameter " + id + " expects boolean value");
+	    }
+	} else if (type.getValue().equals(ParamType._FLOAT)) {
+	    try {
+		Float.parseFloat(current);
+		logger.debug("Value: " + current + " is of valid type FLOAT");
+	    } catch (Exception e) {
+		logger.error(e);
+		throw new FaultType("Parameter " + id + " expects float value");
+	    }
+	} else if (type.getValue().equals(ParamType._STRING)) {
+	    // this is always true
+	} else if (type.getValue().equals(ParamType._FILE)) {
+	    IOType ioType = param.getIoType();
+	    if (ioType == null)
+		ioType = new IOType("INPUT");
+	    if (ioType.getValue().equals(IOType._INPUT) ||
+		ioType.getValue().equals(IOType._INOUT)) {
+		String filePath = workingDir + File.separator + current;
+		File test = new File(filePath);
+		if (test.exists()) {
+		    logger.debug("Value: " + filePath + " is a valid FILE");
+		} else {
+		    logger.error("File parameter: " + filePath + " for tag " +
+				 id + " doesn't exist");
+		    throw new FaultType("File parameter: " + filePath + " for tag " +
+					id + " doesn't exist");
+		}
+	    } else {
+		logger.debug("Not checking existence of OUTPUT file: " + current);
+	    }
+	} else { // type.getValue().equals(ParamType._URL)
+	    try {
+		new URL(current);
+		logger.debug("Value: " + current + " is a valid URL");
+	    } catch (Exception e) {
+		logger.error(e);
+		throw new FaultType("Parameter " + id + " expects a valid URL");
+	    }
+	}
+	
+	// if we got here, return true
+	return true;
+    }
+
+    /**
      * Validates the command line arguments
      *
      * @param workingDir the working direction for execution
@@ -63,12 +156,44 @@ public class ArgValidator {
 	FlagsType[] flags = null;
 	if (argDesc.getFlags() != null)
 	    flags = argDesc.getFlags().getFlag();
+	// table for flags
+	Hashtable flagsTable = new Hashtable();
+	for (int i = 0; i < flags.length; i++) {
+	    flagsTable.put(flags[i].getTag(), flags[i]);
+	}
+
 	ParamsType[] taggedParams = null;
 	if (argDesc.getTaggedParams() != null)
 	    taggedParams = argDesc.getTaggedParams().getParam();
+	// table for taggedParams
+	Hashtable taggedParamsTable = new Hashtable();
+	for (int i = 0; i < taggedParams.length; i++) {
+	    taggedParamsTable.put(taggedParams[i].getTag(), taggedParams[i]);
+	}
+
 	ParamsType[] untaggedParams = null;
 	if (argDesc.getUntaggedParams() != null)
 	    untaggedParams = argDesc.getUntaggedParams().getParam();
+
+	GroupsType[] groups = null;
+	if (argDesc.getGroups() != null)
+	    groups = argDesc.getGroups().getGroup();
+	// table for the groups
+	Hashtable groupTable = new Hashtable();
+	for (int i = 0; i < groups.length; i++) {
+	    groupTable.put(groups[i].getName(), groups[i]);
+	}
+
+	// mapping between parameter ids and groups
+	Hashtable groupMap = new Hashtable();
+	for (int i = 0; i < groups.length; i++) {
+	    IDRefs elements = groups[i].getElements();
+	    String elemString = elements.toString();
+	    String[] elemIDs = elemString.split("[\\s]+");
+	    for (int j = 0; j < elemIDs.length; j++) {
+		groupMap.put(elemIDs[j], groups[i].getName());
+	    }
+	}
 
 	// separate the tags and their values
 	String separator = null;
@@ -91,26 +216,16 @@ public class ArgValidator {
 	HashSet present = new HashSet();
 
 	while (index < argList.length) {
-	    boolean match = false;
 	    String current = argList[index];
 
 	    logger.debug("args[" + index + "]: " + current);
 
 	    // check if this is a valid flag
 	    if ((flags != null) && (!untagged)) {
-		for (int i = 0; i < flags.length; i++) {
-		    String expr = flags[i].getTag();
-		    logger.debug("Comparing with flag: " + expr);
-		    match = Pattern.matches(expr, current);
-		    if (match) {
-			logger.debug("Flag " + current + " matches pattern: " + expr);
-			Id id = flags[i].getId();
-			present.add(id);
-			break;
-		    }
-		}
-		// if this was a valid flag, get the next parameter
-		if (match) {
+		if (flagsTable.containsKey(current)) {
+		    logger.debug("Argument " + current + " matches flag");
+		    Id id = ((FlagsType) flagsTable.get(current)).getId();
+		    present.add(id);
 		    index++;
 		    continue;
 		}
@@ -118,116 +233,27 @@ public class ArgValidator {
 
 	    // check if this is a valid tagged parameter
 	    if ((taggedParams != null) && (!untagged)) {
-		for (int i = 0; i < taggedParams.length; i++) {
-		    String expr = taggedParams[i].getTag();
-		    Id id = taggedParams[i].getId();
+		if (taggedParamsTable.containsKey(current)) { 
+		    logger.debug("Tag " + current + " matches tagged parameter");
 
-		    logger.debug("Comparing with tag: " + expr);
-		    if (expr == null) {
-			throw new FaultType("Tag missing for parameter with id: " + 
-					    id + " in descriptor");
+		    // check the validity of the parameter value
+		    index++;
+		    if (index == argList.length) {
+			String msg = "Too few arguments, can't find value for tag: " +
+			    current;
+			logger.error(msg);
+			throw new FaultType(msg);
 		    }
 
-		    match = Pattern.matches(expr, current);
-		    if (match) {
-			logger.debug("Tag " + current + " matches pattern: " + expr);
-
-			// check the validity of the parameter value
-			index++;
-			if (index == argList.length) {
-			    String msg = "Too few arguments, can't find value for tag: " +
-				current;
-			    logger.error(msg);
-			    throw new FaultType(msg);
-			}
-
-			current = argList[index];
-			logger.debug("Received value: " + current + " for tag: " + expr);
+		    String tag = current;
+		    ParamsType taggedParam = (ParamsType) taggedParamsTable.get(tag);
+		    current = argList[index];
+		    logger.debug("Received value: " + current + " for tag: " + tag);
 			
-			// check with enumerated values, if they exist
-			String[] values = taggedParams[i].getValue();
-			if (values != null) {
-			    boolean found = false;
-			    for (int j = 0; j < values.length; j++) {
-				logger.debug("Comparing with value: " + values[j]);
-				if (current.equals(values[j])) {
-				    logger.debug("Value matches acceptable value: " +
-						 values[j]);
-				    found = true;
-				    break;
-				}
-			    }
-			    if (!found) {
-				String msg = "Value: " + current + " not found on the list " +
-				    "of acceptable values for id: " + id;
-				logger.error(msg);
-				throw new FaultType(msg);
-			    }
-			}
+		    // check with enumerated values, if they exist
+		    validateParamType(current, taggedParam, workingDir);
 
-			// check type validity
-			ParamType type = taggedParams[i].getParamType();
-			if (type.getValue().equals(ParamType._INT)) {
-			    try {
-				Integer.parseInt(current);
-				logger.debug("Value: " + current + " is of valid type INT");
-			    } catch (Exception e) {
-				logger.error(e);
-				throw new FaultType("Parameter " + expr + " expects integer value");
-			    }
-			} else if (type.getValue().equals(ParamType._BOOL)) {
-			    try {
-				Boolean.valueOf(current);
-				logger.debug("Value: " + current + " is of valid type BOOL");
-			    } catch (Exception e) {
-				logger.error(e);
-				throw new FaultType("Parameter " + expr + " expects boolean value");
-			    }
-			} else if (type.getValue().equals(ParamType._FLOAT)) {
-			    try {
-				Float.parseFloat(current);
-				logger.debug("Value: " + current + " is of valid type FLOAT");
-			    } catch (Exception e) {
-				logger.error(e);
-				throw new FaultType("Parameter " + expr + " expects float value");
-			    }
-			} else if (type.getValue().equals(ParamType._STRING)) {
-			    // this is always true
-			} else if (type.getValue().equals(ParamType._FILE)) {
-			    IOType ioType = taggedParams[i].getIoType();
-			    if (ioType == null)
-				ioType = new IOType("INPUT");
-			    if (ioType.getValue().equals(IOType._INPUT) ||
-				ioType.getValue().equals(IOType._INOUT)) {
-				String filePath = workingDir + File.separator + current;
-				File test = new File(filePath);
-				if (test.exists()) {
-				    logger.debug("Value: " + filePath + " is a valid FILE");
-				} else {
-				    logger.error("File parameter: " + filePath + " for tag " +
-						 expr + " doesn't exist");
-				    throw new FaultType("File parameter: " + filePath + " for tag " +
-							expr + " doesn't exist");
-				}
-			    } else {
-				logger.debug("Not checking existence of OUTPUT file: " + current);
-			    }
-			} else { // type.getValue().equals(ParamType._URL)
-			    try {
-				new URL(current);
-				logger.debug("Value: " + current + " is a valid URL");
-			    } catch (Exception e) {
-				logger.error(e);
-				throw new FaultType("Parameter " + expr + " expects a valid URL");
-			    }
-			}
-			present.add(id);
-			break;
-		    }
-		}
-
-		// if this was a valid parameter, get the next parameter
-		if (match) {
+		    present.add(taggedParam.getId());
 		    index++;
 		    continue;
 		}
@@ -237,97 +263,57 @@ public class ArgValidator {
 	    // since order matters, check only with the current untagged param
 	    if (untaggedParams != null) {
 		if (untaggedIndex < untaggedParams.length) {
+		    // now looking at untagged parameters
+		    untagged = true;
+
 		    Id id = untaggedParams[untaggedIndex].getId();
+		    
+		    // figure out if this parameter belongs to a group
+		    GroupsType group = null;
+		    if (groupMap.containsKey(id.toString())) {
+			String groupName = (String) groupMap.get(id.toString());
+			logger.debug("Found group: " + groupName + " for param: " + id);
+
+			group = (GroupsType) groupTable.get(groupName);
+			if (group == null) {
+			    logger.error("Can't find group in hash table: " + groupName);
+			    throw new FaultType("Can't find group in hash table: " + groupName);
+			}
+		    }
+
+		    // if this is part of a group of mutually exclusive parameters,
+		    // skip the validation step because it is impossible to figure out
+		    // which one of the untagged params this one is
+		    if (group != null) {
+			if (group.getExclusive() != null) {
+			    if (group.getExclusive()) {
+				String elemString = group.getElements().toString();
+				String[] elemIDs = elemString.split("[\\s]+");
+				int size = elemIDs.length;
+				
+				// increment the indices, and continue
+				logger.debug("Skipping validation of untagged param: " + current);
+				untaggedIndex += size;
+				index++;
+				continue;
+			    }
+			}
+		    }
+
+		    // if it is not part of an exclusive group, validate as usual
 		    logger.debug("Checking if " + current + " is a valid untagged parameter" +
 				 " for id: " + id);
 
 		    // check with enumerated values, if they exist
-		    String[] values = untaggedParams[untaggedIndex].getValue();
-		    if (values != null) {
-			boolean found = false;
-			for (int j = 0; j < values.length; j++) {
-			    logger.debug("Comparing with value: " + values[j]);
-			    if (current.equals(values[j])) {
-				logger.debug("Value matches acceptable value: " +
-					     values[j] + " for id: " + id);
-				found = true;
-				break;
-			    }
-			}
-			if (!found) {
-			    String msg = "Value: " + current + " not found on the list " +
-				"of acceptable values for id: " + id;
-			    logger.error(msg);
-			    throw new FaultType(msg);
-			}
-		    }
-
-		    // check type validity
-		    ParamType type = untaggedParams[untaggedIndex].getParamType();
-		    if (type.getValue().equals(ParamType._INT)) {
-			try {
-			    Integer.parseInt(current);
-			    logger.debug("Value: " + current + " is of valid type INT");
-			} catch (Exception e) {
-			    logger.error(e);
-			    throw new FaultType("Parameter " + id + " expects integer value");
-			}
-		    } else if (type.getValue().equals(ParamType._BOOL)) {
-			try {
-			    Boolean.valueOf(current);
-			    logger.debug("Value: " + current + " is of valid type BOOL");
-			} catch (Exception e) {
-			    logger.error(e);
-			    throw new FaultType("Parameter " + id + " expects boolean value");
-			}
-		    } else if (type.getValue().equals(ParamType._FLOAT)) {
-			try {
-			    Float.parseFloat(current);
-			    logger.debug("Value: " + current + " is of valid type FLOAT");
-			} catch (Exception e) {
-			    logger.error(e);
-			    throw new FaultType("Parameter " + id + " expects float value");
-			}
-		    } else if (type.getValue().equals(ParamType._STRING)) {
-			// this is always true
-		    } else if (type.getValue().equals(ParamType._FILE)) {
-			IOType ioType = untaggedParams[untaggedIndex].getIoType();
-			if (ioType == null)
-			    ioType = new IOType("INPUT");
-			if (ioType.getValue().equals(IOType._INPUT) ||
-			    ioType.getValue().equals(IOType._INOUT)) {
-			    String filePath = workingDir + File.separator + current;
-			    File test = new File(filePath);
-			    if (test.exists()) {
-				logger.debug("Value: " + filePath + " is a valid FILE");
-			    } else {
-				logger.error("File parameter: " + filePath + " for id: " +
-					     id + " doesn't exist");
-				throw new FaultType("File parameter: " + filePath + "for id: " +
-						    id + " doesn't exist");
-			    }
-			} else {
-			    logger.debug("Not checking existence of OUTPUT file: " + current);
-			}
-		    } else { // type.getValue().equals(ParamType._URL)
-			try {
-			    new URL(current);
-			    logger.debug("Value: " + current + " is a valid URL");
-			} catch (Exception e) {
-			    logger.error(e);
-			    throw new FaultType("Parameter " + id + " expects a valid URL");
-			}
-		    }
+		    validateParamType(current, untaggedParams[untaggedIndex], workingDir);
 		    
 		    // if this is the right type and/or matches list of possible values,
 		    // there is a match for an untagged parameter
 		    logger.debug(current + " is a valid untagged parameter for id: " + id);
 		    present.add(id);
-		    match = true;
 
 		    // set up for next iteration
 		    untaggedIndex++;
-		    untagged = true;
 		    index++;
 		    continue;
 		} else {
@@ -337,11 +323,9 @@ public class ArgValidator {
 		}
 	    }
 
-	    // make sure that there is a match
-	    if (!match) {
-		logger.error("No match found for argument: " + current);
-		throw new FaultType("No match found for argument: " + current);
-	    }
+	    // something went wrong if we got here
+	    logger.error("No match found for argument: " + current);
+	    throw new FaultType("No match found for argument: " + current);
 	}
 
 	// check if all required arguments are present
@@ -595,12 +579,5 @@ public class ArgValidator {
 	    System.out.println("Argument validation successful");
 	else
 	    System.err.println("Argument validation unsuccessful");
-
-	System.out.println("Validating presence of implicit parameters");
-	success = av.validateImplicitParams(workingDir);
-	if (success)
-	    System.out.println("Validation of implicit parameters successful");
-	else
-	    System.err.println("Validation of implicit parameters unsuccessful");
     }
 }
