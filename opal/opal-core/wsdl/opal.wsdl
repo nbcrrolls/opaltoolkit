@@ -41,7 +41,6 @@
 	  <xsd:element name="id" type="xsd:ID"/>
 
 	  <!-- name of flag listing one at a time (e.g. -a, -l) -->
-	  <!-- or a regular expression representing a combination -->
 	  <xsd:element name="tag" type="xsd:string"/>
 	  
 	  <!-- what is the default value for this flag  -->
@@ -61,7 +60,7 @@
 	  <!-- for referencing this parameter later -->
 	  <xsd:element name="id" type="xsd:ID"/>
 	  
-	  <!-- tags or expressions that refer to the parameter (e.g. -p, -o, etc) -->
+	  <!-- tags that refer to the parameter (e.g. -p, -o, etc) -->
 	  <!-- optional for unnamed (non-tagged) parameters -->
 	  <xsd:element name="tag" type="xsd:string" minOccurs="0"/>
 	  
