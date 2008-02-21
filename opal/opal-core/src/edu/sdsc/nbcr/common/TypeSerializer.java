@@ -42,7 +42,7 @@ public class TypeSerializer {
 	       InvocationTargetException,
 	       IOException {
 
-	logger.info("called");
+	logger.debug("called");
 	
 	// System.out.println(ret.toString());
         
