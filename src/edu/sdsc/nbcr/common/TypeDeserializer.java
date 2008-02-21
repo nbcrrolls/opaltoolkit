@@ -47,7 +47,7 @@ public class TypeDeserializer {
 	       SAXException,
 	       IOException {
 
-	logger.info("called");
+	logger.debug("called");
 
         // path: path to xml file to deserialize
         // ret: instance of class that will hold deserialized object
