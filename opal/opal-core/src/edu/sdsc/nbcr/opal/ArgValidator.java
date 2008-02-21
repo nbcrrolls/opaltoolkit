@@ -42,7 +42,7 @@ public class ArgValidator {
      * @param argDesc_ argument description, parsed from XML desc
      */
     public ArgValidator(ArgumentsType argDesc_) {
-	logger.info("called");
+	logger.debug("called");
 
 	argDesc = argDesc_;
     }
@@ -174,6 +174,11 @@ public class ArgValidator {
 	ParamsType[] untaggedParams = null;
 	if (argDesc.getUntaggedParams() != null)
 	    untaggedParams = argDesc.getUntaggedParams().getParam();
+	// table for untaggedParams
+	Hashtable untaggedParamsTable = new Hashtable();
+	for (int i = 0; i < untaggedParams.length; i++) {
+	    untaggedParamsTable.put(untaggedParams[i].getId().toString(), untaggedParams[i]);
+	}
 
 	GroupsType[] groups = null;
 	if (argDesc.getGroups() != null)
@@ -281,7 +286,7 @@ public class ArgValidator {
 			}
 		    }
 
-		    // if this is part of a group of mutually exclusive parameters,
+		    // if this is part of a group of mutually exclusive untagged parameters,
 		    // skip the validation step because it is impossible to figure out
 		    // which one of the untagged params this one is
 		    if (group != null) {
@@ -289,13 +294,21 @@ public class ArgValidator {
 			    if (group.getExclusive()) {
 				String elemString = group.getElements().toString();
 				String[] elemIDs = elemString.split("[\\s]+");
-				int size = elemIDs.length;
-				
+				int size = 0;
+				for (int i = 0; i < elemIDs.length; i++) {
+				    if (untaggedParamsTable.containsKey(elemIDs[i])) {
+					size++;
+				    }
+				}
+
 				// increment the indices, and continue
-				logger.debug("Skipping validation of untagged param: " + current);
-				untaggedIndex += size;
-				index++;
-				continue;
+				if (size > 1) {
+				    logger.debug("Skipping validation of untagged param: " + current);
+				    logger.debug("Number of params to skip in exclusive group: " + size);
+				    untaggedIndex += size;
+				    index++;
+				    continue;
+				}
 			    }
 			}
 		    }
@@ -352,6 +365,30 @@ public class ArgValidator {
 		if ((required) && (!present.contains(id))) {
 		    logger.error("Required parameter " + id + " not found");
 		    throw new FaultType("Required parameter " + id + " not found");
+		}
+	    }
+	}
+
+	// check groups and exclusivity
+	if (groups != null) {
+	    for (int i = 0; i < groups.length; i++) {
+		if (groups[i].getExclusive() != null) {
+		    if (groups[i].getExclusive()) {
+			String elemString = groups[i].getElements().toString();
+			String[] elemIDs = elemString.split("[\\s]+");
+			boolean exclusive = false;
+			for (int j = 0; j < elemIDs.length; j++) {
+			    if (present.contains(new Id(elemIDs[j]))) {
+				if (exclusive) {
+				    logger.error("Found multiple parameters inside exclusive group: " +
+						 groups[i].getName());
+				    throw new FaultType("Found multiple parameters inside exclusive group: " +
+							groups[i].getName());
+				} else
+				    exclusive = true;
+			    }
+			}
+		    }
 		}
 	    }
 	}
