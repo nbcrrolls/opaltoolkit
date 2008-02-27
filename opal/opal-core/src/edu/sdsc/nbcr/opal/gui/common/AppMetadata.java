@@ -128,7 +128,7 @@ public class AppMetadata extends ActionForm{
      * @return the number of files submitted by the user, -1 if no complex form is enable 
      */
     public int getNumArgFileSubmitted(){
-        if (isArgMetadataEnable() ) {
+        if (argParams != null ) {
             int numFile = 0;
             for (int i = 0; i < argParams.length; i++){
                 if ( argParams[i].isFileUploaded() ) 
@@ -147,6 +147,7 @@ public class AppMetadata extends ActionForm{
      */
     public ArgParam getArgFileSubmitted(int position){
         int currentPosition = 0;
+        if (argParams == null) return null;
         for (int i = 0; i < argParams.length; i++ ) {
             if (argParams[i].isFileUploaded() ) {
                 if (position == currentPosition) {
@@ -165,6 +166,7 @@ public class AppMetadata extends ActionForm{
      */
     public int getNumUnttagedParams(){
         int counter = 0;
+        if ( argParams == null) return 0;
         for (int i = 0; i < argParams.length; i++ ){
             if (argParams[i].getTag() == null )
                 counter++;
@@ -192,11 +194,13 @@ public class AppMetadata extends ActionForm{
      * If it does not find an ArgFlag with an id equals to id it returns null
      * 
      */
-    public ArgFlag getArgFlagId(String id){    	
-    	for (int i = 0; i < argFlags.length; i++ ) {
-    		if ( argFlags[i].getId().equals(id) )
-    			return argFlags[i];
-    	}
+    public ArgFlag getArgFlagId(String id){
+        if ( argFlags != null ){
+        	for (int i = 0; i < argFlags.length; i++ ) {
+        		if ( argFlags[i].getId().equals(id) )
+        			return argFlags[i];
+        	}
+        }
     	return null;
     }
     
@@ -206,10 +210,12 @@ public class AppMetadata extends ActionForm{
      * If it does not find an ArgParam with an id equals to id it returns null
      */    
     public ArgParam getArgParamId(String id){
-    	for (int i = 0; i < argParams.length; i++ ) {
-    		if ( argParams[i].getId().equals(id) )
-    			return argParams[i];
-    	}
+        if ( argParams != null ){
+            for (int i = 0; i < argParams.length; i++ ) {
+                if ( argParams[i].getId().equals(id) )
+                    return argParams[i];
+            }
+        }
     	return null;
     }
 
