@@ -351,6 +351,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
      * 
      */
     private ArgParam []  getUngroupedParams(ArrayList groups, ArgParam [] params){
+        if ( params == null ) return new ArgParam[0];
     	ArrayList paramList = new ArrayList(Arrays.asList(params));
     	
     	for (int i = 0; i < groups.size(); i++) {
@@ -370,6 +371,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
      * 
      */
     private ArgFlag [] getUngroupedFlags(ArrayList groups, ArgFlag [] flags){
+        if ( flags == null ) return new ArgFlag[0];
     	ArrayList flagsList = new ArrayList(Arrays.asList(flags));
     	
     	for ( int i = 0; i < groups.size(); i++ ) {
