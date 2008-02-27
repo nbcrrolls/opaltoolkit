@@ -1,18 +1,29 @@
 Version 1.9.3:
 
+- Opal Dashboard:
+
+   - Fixed a bug in the submission form where input file parameters were not 
+     properly handled on the command line
+
+   - Fixed a bug in the automatic interface generation where an exception
+     was thrown if the number of flags were zero
+
+   - Fixed a bug where the usage information wasn't displayed correctly for 
+     the automatically generated interface
+
+   - Fixed a locale issue in the formatting of dates used by the statistics
+     tab of the dashboard
+
 - Opal Services:
    
    - Fixed a bug where the job status was being retrieved incorrectly
      during a destroy() operation when a database was being used to persist
      state
 
-   - Fixed a bug in the submission form where input file parameters were not 
-     properly handled on the command line
+   - Updated command-line argument validation client to now account for groups
 
    - Improved clean task of the build.xml file, now it deletes also the generated 
      JavaDoc
-
-   - Updated argument validation to now account for groups
 
 Version 1.9.2:
 
