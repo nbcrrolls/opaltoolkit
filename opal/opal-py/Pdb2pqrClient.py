@@ -2,17 +2,18 @@ import sys
 import time
 import httplib
 
-from AppService_services import \
-     AppServiceLocator, getAppMetadataRequestWrapper, launchJobRequestWrapper, \
-     launchJobBlockingRequestWrapper, getOutputAsBase64ByNameRequestWrapper
-from AppService_services_types import ns1
+from AppService_client import \
+     AppServiceLocator, getAppMetadataRequest, launchJobRequest, \
+     queryStatusRequest, getOutputsRequest, \
+     launchJobBlockingRequest, getOutputAsBase64ByNameRequest
+from AppService_types import ns0
 from ZSI.TC import String
 
 # Set the protocol to http or https
 proto = "http"
 
 # Ignore these values if you are not using security
-# set the locations for the X509 certificate and key
+# Otherwise, set the locations for the X509 certificate and key
 cert = "/Users/sriramkrishnan/certs/apbs_service.cert.pem"
 key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
 
@@ -25,20 +26,20 @@ key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
 # Host and port for remote services
 # baseURL = proto + "://localhost:8080/"
 baseURL = proto + "://ws.nbcr.net:8080/"
+# baseURL = proto + "://ws.nbcr.net:8443/"
 
 # Retrieve a reference to the AppServicePort
 appLocator = AppServiceLocator()
 if proto == "http":
-    appServicePort = appLocator.getAppServicePortType(
+    appServicePort = appLocator.getAppServicePort(
 	baseURL + "opal/services/Pdb2pqrOpalService")
 else:
     if proto == "https":
 	# example of ssl invocation
-	appServicePort = appLocator.getAppServicePortType(
+	appServicePort = appLocator.getAppServicePort(
 	    baseURL + "opal/services/Pdb2pqrOpalService",
 	    ssl=1,
-	    cert_file=cert,
-	    key_file=key,
+	    transdict=dict(cert_file=cert, key_file=key),
 	    transport=httplib.HTTPSConnection)
     else:
 	print "Unknown protocol: ", proto
@@ -46,40 +47,40 @@ else:
 	
 # Make remote invocation to get application metadata
 print "Getting Application Metadata"
-req = getAppMetadataRequestWrapper()
+req = getAppMetadataRequest()
 resp = appServicePort.getAppMetadata(req)
-print "Usage:", resp.Get_usage()
+print "Usage:", resp._usage
 
 # Set up remote job launch
-req = launchJobRequestWrapper()
-req.Set_argList("--ff=amber sample.pdb sample.pqr")
+req = launchJobRequest()
+req._argList = "--ff=amber sample.pdb sample.pqr"
 inputFiles = []
-inputFile = ns1.InputFileType_Def()
-inputFile.Set_name('sample.pdb')
+inputFile = ns0.InputFileType_Def('inputFile')
+inputFile._name = 'sample.pdb'
 sampleFile = open("./etc/sample.pdb", "r")
 sampleFileString = sampleFile.read()
 sampleFile.close()
-inputFile.Set_contents(sampleFileString)
+inputFile._contents = sampleFileString
 inputFiles.append(inputFile)
-req.Set_inputFile(inputFiles)
+req._inputFile = inputFiles
 
 # Launch job, and retrieve job ID
 print "Launching remote Pdb2pqr job"
 resp = appServicePort.launchJob(req)
-jobID = resp.Get_jobID()
+jobID = resp._jobID
 print "Received Job ID:", jobID
 
 # Poll for job status
-status = resp.Get_status()
+status = resp._status
 print "Polling job status"
 while 1:
     # print current status
     print "Status:"
-    print "\tCode:", status.Get_code()
-    print "\tMessage:", status.Get_message()
-    print "\tOutput Base URL:", status.Get_baseURL()
+    print "\tCode:", status._code
+    print "\tMessage:", status._message
+    print "\tOutput Base URL:", status._baseURL
 
-    if (status.Get_code() == 8) or (status.Get_code() == 4): # STATUS_DONE || STATUS_FAILED
+    if (status._code == 8) or (status._code == 4): # STATUS_DONE || STATUS_FAILED
         break
 
     # Sleep for 30 seconds
@@ -87,54 +88,54 @@ while 1:
     time.sleep(30)
     
     # Query job status
-    status = appServicePort.queryStatus(jobID)
+    status = appServicePort.queryStatus(queryStatusRequest(jobID))
 
 # Retrieve job outputs, if execution is successful
-if status.Get_code() == 8: # 8 = GramJob.STATUS_DONE
+if status._code == 8: # 8 = GramJob.STATUS_DONE
     print "Retrieving Pdb2pqr output metadata: "
-    resp = appServicePort.getOutputs(jobID)
+    resp = appServicePort.getOutputs(getOutputsRequest(jobID))
 
     # Retrieve a listing of all output files
-    print "\tStandard Output:", resp.Get_stdOut(), "\n", \
-	  "\tStandard Error:", resp.Get_stdErr()
-    if (resp.Get_outputFile() != None):
-	for i in range(0, resp.Get_outputFile().__len__()):
-	    print "\t" + resp.Get_outputFile()[i].Get_name(), ":", resp.Get_outputFile()[i].Get_url()
+    print "\tStandard Output:", resp._stdOut, "\n", \
+	  "\tStandard Error:", resp._stdErr
+    if (resp._outputFile != None):
+	for i in range(0, resp._outputFile.__len__()):
+	    print "\t" + resp._outputFile[i]._name, ":", resp._outputFile[i]._url
 
 
     # Retrieve an output file as a Base64 encoded binary
 #     print "Downloading Pdb2pqr output: "
-#     req = getOutputAsBase64ByNameRequestWrapper()
-#     req.Set_jobID(jobID)
-#     req.Set_fileName("sample.pqr")
+#     req = getOutputAsBase64ByNameRequest()
+#     req._jobID = jobID
+#     req._fileName = "sample.pqr"
 #     resp = appServicePort.getOutputAsBase64ByName(req)
 #     print resp
 
 # Set up blocking job launch
-req = launchJobBlockingRequestWrapper()
-req.Set_argList("--ff=amber sample.pdb sample.pqr")
+req = launchJobBlockingRequest()
+req._argList = "--ff=amber sample.pdb sample.pqr"
 inputFiles = []
-inputFile = ns1.InputFileType_Def()
-inputFile.Set_name('sample.pdb')
+inputFile = ns0.InputFileType_Def('inputFile')
+inputFile._name = 'sample.pdb'
 sampleFile = open("./etc/sample.pdb", "r")
 sampleFileString = sampleFile.read()
 sampleFile.close()
-inputFile.Set_contents(sampleFileString)
+inputFile._contents = sampleFileString
 inputFiles.append(inputFile)
-req.Set_inputFile(inputFiles)
+req._inputFile = inputFiles
 
 # Launch a blocking job
 print "Launching blocking Pdb2pqr job"
 resp = appServicePort.launchJobBlocking(req)
-print "Status:", resp.Get_status().Get_code(), "-", resp.Get_status().Get_message()
-print "Base Output URL:", resp.Get_status().Get_baseURL()
+print "Status:", resp._status._code, "-", resp._status._message
+print "Base Output URL:", resp._status._baseURL
 
 # List job outputs, if execution is successful
-if resp.Get_status().Get_code() == 8: # 8 = GramJob.STATUS_DONE
-    out = resp.Get_jobOut()
+if resp._status._code == 8: # 8 = GramJob.STATUS_DONE
+    out = resp._jobOut
 
-    print "\tStandard Output:", out.Get_stdOut(), "\n", \
-	  "\tStandard Error:", out.Get_stdErr()
-    if (out.Get_outputFile() != None):
-	for i in range(0, out.Get_outputFile().__len__()):
-	    print "\t" + out.Get_outputFile()[i].Get_name(), ":", out.Get_outputFile()[i].Get_url()
+    print "\tStandard Output:", out._stdOut, "\n", \
+	  "\tStandard Error:", out._stdErr
+    if (out._outputFile != None):
+	for i in range(0, out._outputFile.__len__()):
+	    print "\t" + out._outputFile[i]._name, ":", out._outputFile[i]._url
