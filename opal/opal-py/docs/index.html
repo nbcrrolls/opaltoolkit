@@ -6,7 +6,7 @@
 <!-- <body text="black" link="darkblue" vlink="black" link="black" -->
 <!-- bgcolor="white"> -->
 <body>
-<h1>Python Opal Web Service Client: Version 1.9.2</h1>
+<h1>Python Opal Web Service Client: Version 1.9.3</h1>
 
 <hr/>
 
@@ -31,28 +31,11 @@ as you have the following packages installed.
    have a Python installation on your local machine. Add the Python bin
    directory to your environment variable PATH.</li>
    
-   <li><p>PyXML 0.8.3 or higher: PyXML is a set of libraries for processing
-   XML in Python. Download PyXML from <a
-   href="http://pyxml.sourceforge.net/">http://pyxml.sourceforge.net/</a>.
-   If you are downloading the Windows installer, make sure that you are
-   choosing the appropriate version for your Python installation. If you
-   are installing on a Unix platform, change to the extracted PyXML
-   directory using a sudo or root shell, and execute the following
-   commands:
-   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
-   <pre class="SCREEN">
-       python setup.py build
-       python setup.py install</pre>
-   </FONT></TD></TR>
-   </TABLE>
-   </li>
-
-   <li><p>ZSI 1.7: ZSI is a SOAP and Web services toolkit for
+   <li><p>ZSI 2.1_a1: ZSI is a SOAP and Web services toolkit for
    Python. Download ZSI from <a
-   href="http://pywebsvcs.sourceforge.net/">http://pywebsvcs.sourceforge.net/</a>.
+   href="http://sourceforge.net/project/showfiles.php?group_id=26590&package_id=30660">SourceForge</a>.
    If you are installing on a Unix platform, you would need to use a sudo
-   or root shell. Change to the ZSI-1.7/ directory that is extracted from
+   or root shell. Change to the ZSI-2.1-a1/ directory that is extracted from
    the tarball, and execute the following command:
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
@@ -62,15 +45,15 @@ as you have the following packages installed.
    </TABLE>
 
    <p>Note the location where the ZSI package is installed. In particular,
-   note the location of the <i>wsdl2py.py</i> script that we need to use in
+   note the location of the <i>wsdl2py</i> script that we need to use in
    the future. Typically, the packages are installed inside the Python
-   installation. On Windows, wsdl2py.py typically resides inside
+   installation. On Windows, wsdl2py typically resides inside
    $PYTHON_HOME/scripts, where PYTHON_HOME represents the location of the
    Python installation. On Unix, it is usually inside $PYTHON_HOME/bin.
    Henceforth, we will refer to this location as <i>WSDL2PY_HOME</i>.
 
-   <p><i>Opal will not work with a higher version of ZSI. Please ensure
-   that you are using ZSI version 1.7.</i>.
+   <p><i>Opal will not work with any other version of ZSI. Please ensure
+   that you are using ZSI version 2.1-a1.</i>.
 </ol>
 
 <h2>3. Installation</h2>
@@ -99,12 +82,12 @@ the $OPAL_PY_HOME directory:
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
-    python $WSDL2PY_HOME/wsdl2py.py -f wsdl/opal.wsdl</pre>
+    $WSDL2PY_HOME/wsdl2py wsdl/opal.wsdl</pre>
    </FONT></TD></TR>
    </TABLE>
 
-<p>This generates two files - AppService_services.py and
-AppService_services_types.py. The former contains the stubs required to
+<p>This generates two useful files - AppService_client.py and
+AppService_types.py. The former contains the stubs required to
 communicate with the remote Web service, while the latter contains the
 types defined in the WSDL for the service.
 </li>
@@ -154,8 +137,7 @@ Pdb2pqrClient.py shows how to access a secure Opal service from Python.
 	appServicePort = appLocator.getAppServicePortType(
 	    baseURL + "opal/services/Pdb2pqrServicePort",
 	    ssl=1,
-	    cert_file=cert,
-	    key_file=key,
+     	    transdict=dict(cert_file=cert, key_file=key),
 	    transport=httplib.HTTPSConnection)
     ...</pre>
   </FONT></TD></TR>
