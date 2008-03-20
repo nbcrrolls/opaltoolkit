@@ -221,7 +221,7 @@ you have to create a ~/.m2/settings.xml file with the follwing content
             <configuration>
               <tasks>
                 <echo>Generating the documentation with docbook...</echo>
-                <exec executable="./makedocbook.sh">
+                <exec executable="./copydocs.sh">
                  <!-- <arg value="-l"/>
                   <arg value="-r"/>
                   <arg value="-a"/>  -->

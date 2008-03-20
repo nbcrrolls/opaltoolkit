@@ -11,9 +11,22 @@
         information on Opal.
       </p>
       <ul>
-        <li><a href="docs/1.9.2/index.html"> Opal Toolkit Reference Guide - 1.9.2</a>: This is the main 
-          reference documentation for Opal Toolkit 1.9.2 and for 1.9alpha.</li>
-        <li><a href="docs/1.5.1/index.html">Opal Toolkit Documentation - 1.5.1</a>: Official Opal guide for version 1.5.1.</li>
+        <li>Opal 1.9</li>
+        <ul>
+          <li><a href="docs/1.9/index.html"> Opal Toolkit Reference Guide</a>: This is the main 
+            reference documentation for Opal Toolkit.</li>
+          <li><a href="docs/1.9/api/index.html">Opal Toolkit API documentation</a>:Javadoc of Opal 
+            core package.</li>
+          <li><a href="docs/1.9/opal-py-index.html">Opal Toolkit Python Reference Guide</a>:This is the main 
+            reference documentation for the Opal Toolkit Python client APIs</li>
+          <li><a href="docs/1.9/opal-perl-index.html">Opal Toolkit Perl Reference Guide</a>:This is the main 
+            reference documentation for the Opal Toolkit Perl client APIs</li>
+
+        </ul>
+        <li>Opal 1.5</li>
+        <ul>
+          <li><a href="docs/1.5/index.html">Opal Toolkit Documentation</a>: Official Opal guide for version.</li>
+        </ul> 
 <!--
         <li><a href="docs/index.html">Installation Guide</a>: This is the main 
           documentation and also the one you should use if you are trying to 
@@ -33,6 +46,16 @@
           for the input arguments of the underlining service</li>
 -->
       </ul>
+    </section>
+    <section name="Opal Tutorial">
+      <p>
+        Below some tutorials availabe for Opal:
+      </p>
+      <ul>
+        <li><a href="tutorials/opal-tutorial.ppt">Opal Core tutorial</a>: this tutorial explains how to set up Opal server and how to deploy some applications on it</li>
+        <li><a href="">Opal Java client tutorial</a>: this tutorial explains how to use Opal Java command line and API (work in progres!!).</li>
+      </ul>
+
     </section>
     <section name="Support">
       <p>
