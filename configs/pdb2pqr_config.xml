@@ -183,7 +183,7 @@
                 <id>inId</id>
                 <paramType>STRING</paramType>
                 <ioType>INPUT</ioType>
-                <!--  <required>true</required>   -->
+                <!-- <required>true</required> -->
                 <textDesc>The ID to use to retrive the input file from the PDB archive (for testing use '1a1p')</textDesc>
             </param>
             <param>
@@ -230,7 +230,7 @@
     </types>
 
   </metadata>
-  <binaryLocation>/home/clem/opalGUI/pdb2pqr-1.2.1/pdb2pqr.py</binaryLocation>
+  <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr-dummy.sh</binaryLocation>
   <defaultArgs></defaultArgs>
   <parallel>false</parallel>
 </appConfig>
