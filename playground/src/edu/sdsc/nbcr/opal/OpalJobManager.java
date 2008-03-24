@@ -63,15 +63,6 @@ public interface OpalJobManager {
 	throws FaultType;
 
     /**
-     * Query job status using the saved information
-     * 
-     * @return the job status for this job
-     * @throws FaultType if there is an error during query status
-     */
-    public StatusOutputType queryStatus()
-	throws FaultType;
-    
-    /**
      * Destroy this job
      * 
      * @return final job status
