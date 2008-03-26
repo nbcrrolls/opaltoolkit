@@ -1,0 +1,125 @@
+<chapter id="scheduler" xreflabel="Setting up scheduler support for Opal">
+<title>Setting up scheduler support for Opal</title>
+
+<para>In this chapter is described how to configure Opal so that it submit 
+jobs to an external scheduler.</para>
+
+<para>Install a Condor or SGE pool on your compute cluster. Consult the
+appropriate documentation for the same. Note that we don't currently stage
+and input and output files from the Opal server to the submit host; hence,
+the machines should be on a shared file system, such as NFS. Also note
+that Condor doesn't support parallel execution using any recent version of
+MPI. If you plan to configure parallel execution, use SGE instead.</para>
+
+
+<para>Access to the schedulers is provided in one of two ways - using the
+DRMAA API, or the Globus Toolkit. Depending upon your setup, follow one of
+the following two sets of steps. In practice, it is probably easier to set
+up access via DRMAA if your scheduler supports the same.</para>
+
+
+<section id="drmaa-scheduler" xreflabel="DRMAA Setup">
+<title>DRMAA Setup</title>
+
+<orderedlist>
+<listitem><para>Ensure that your scheduler supports job submission via the DRMAA API.
+Also ensure that <emphasis role="italics">libdrmaa.so</emphasis> is in your library path (by setting
+ the LD_LIBRARY_PATH environment variable). We have only tested job
+ submissions to SGE 6.x.</para></listitem>
+
+<listitem><para>Set the following properties inside the opal.properties file:
+drmaa.use to true, and drmaa.pe to the name of the parallel environment
+(PE) to be used to submit parallel jobs. You can ignore drmaa.pe if you do
+not plan on supporting parallel jobs. </para></listitem>
+
+<listitem><para>Reinstall Opal by running the following command:
+<screen>
+    ant install
+</screen>
+</para>
+</listitem>
+
+<listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
+
+</orderedlist>
+</section>
+
+<section id="globus-scheduler" xreflabel="Globus Setup">
+<title>Globus Setup</title>
+
+<orderedlist>
+<listitem><para>Install Globus (especially the Globus gatekeeper) on the head node of
+the cluster. We use Globus GRAM to communicate programmatically with
+Condor/SGE. To enable this, make sure that you have also installed the
+Condor/SGE job-manager. Follow the documentation for this on the Globus web
+site. You may install any version of Globus as long as you can submit jobs
+to Condor/SGE via GRAM (and the Java CoG Kit). We use Globus version 3.2.0
+on our cluster.</para>
+
+<para>Ensure that you can submit jobs to Condor/SGE via Globus, especially
+using the certificate/key-pair of the Tomcat server (described in  <xref linkend="security">
+). You can do this by following these
+steps:</para>
+
+<orderedlist>
+  <listitem><para>Copy app_service.cert.pem (the certificate file) to
+  app_service.all.pem.</para></listitem>
+
+  <listitem><para>Edit app_service.all.pem, and strip out everything excluding the
+  region between the lines <filename>-----BEGIN CERTIFICATE-----</filename> and
+  <filename>-----END CERTIFICATE-----</filename>. Leave those two lines in.</para></listitem>
+
+  <listitem><para>Append the app_service.privkey (the unencrypted private key) to the
+  contents of app_service.all.pem.</para></listitem>
+
+  <listitem><para>Set the X509_USER_PROXY environment variable to the location of
+  app_service.all.pem.</para></listitem>
+
+  <listitem><para>Submit a test job using the above proxy to the Condor job-manager as
+  follows: <filename>globus-job-run "hostname:2119/jobmanager-condor"
+  "/bin/ls"</filename>. If you are using SGE, use
+  <filename>"hostname:2119/jobmanager-sge"</filename>.</para>
+
+  <para>If this above job succeeds, then Globus/Condor(SGE) can be used for
+  scheduling purposes. You will have to add an entry into the grid-mapfile
+  of the Globus installation (usually inside the /etc/grid-security
+  directory) to authorize the service to launch jobs as follows:
+  <filename>"/C=US/O=grid-devel/OU=sdsc/CN=app_service" app_user</filename>. Replace
+  the value within quotes with the DN for the app_service.cert.pem. You can
+  get the DN by running: <filename>grid-cert-info -subject -file
+  app_service.cert.pem</filename>.</para>
+
+  <para>You may also have to add the CA cert and signing policy of the above
+  certificate into the list of trusted certificates for the Globus
+  installation (usually inside the /etc/grid-security/certificates
+  directory).</para>
+
+  <para>You may also want to check if you can submit parallel jobs via
+  Globus. You can do so by running something like this: <filename>globusrun -o -r
+  hostname:2119/jobmanager-sge
+  "&amp;(executable=&lt;my_mpi_exec&gt;)(count=n)(jobtype=mpi)"</filename>. Replace
+  <filename>&lt;my_mpi_exec&gt;</filename> with some valid MPI executable, and replace
+  count with a valid number of processes for your executable</para></listitem>
+</orderedlist>
+</listitem>
+
+<listitem><para>Set the following properties inside the opal.properties file:
+drmaa.use to false, globus.use to true, globus.gatekeeper to the URL for
+the Globus/Condor(SGE) gatekeeper, globus.service_cert to the location of
+the server certificate, globus.service_privkey to the location of the
+server's unencrypted private key. If drmaa.use is set to true or globus.use
+is set to false, then all Globus specific properties are ignored.</para></listitem>
+
+<listitem><para>Reinstall Opal by running the following command:
+<screen>
+    ant install
+</screen>
+</para>
+</listitem>
+
+<listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
+</orderedlist>
+
+</section>
+</chapter>
+
