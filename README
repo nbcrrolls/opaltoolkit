@@ -1,0 +1,13 @@
+The Opal Toolkit
+----------------
+
+Thanks for your interest in the the Opal toolkit. In this directory you
+will find the core Opal package implemented in Java, which includes both
+client and server sides. You will find documentation in the "docs"
+directory.
+
+Please use the Sourceforge Opal Toolkit Tracker
+(http://sourceforge.net/tracker/?group_id=211778) to report bugs and
+feature requests, and the NBCR Web Services User Forum
+(https://nbcr.net/forum/viewforum.php?f=13") for general comments and
+feedback.

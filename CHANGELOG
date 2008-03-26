@@ -1,0 +1,79 @@
+Version 1.9.3:
+
+- Opal Dashboard:
+
+   - Fixed a bug in the submission form where input file parameters were not 
+     properly handled on the command line
+
+   - Fixed a bug in the automatic interface generation where an exception
+     was thrown if the number of flags were zero
+
+   - Fixed a bug where the usage information wasn't displayed correctly for 
+     the automatically generated interface
+
+   - Fixed a locale issue in the formatting of dates used by the statistics
+     tab of the dashboard
+
+- Opal Services:
+   
+   - Fixed a bug where the job status was being retrieved incorrectly
+     during a destroy() operation when a database was being used to persist
+     state
+
+   - Updated command-line argument validation client to now account for groups
+
+   - Improved clean task of the build.xml file, now it deletes also the generated 
+     JavaDoc
+
+Version 1.9.2:
+
+- Opal Dashboard:
+
+  - The simple submission form now supports upload of multiple input files
+
+  - The output page after job submission is now opened in a new window
+
+  - The help section of the submission form now displays HTML tags correctly
+
+  - The list of jobs currently running is plotted as a bar graph, with
+    different colors for every service
+
+  - Better error reporting if database connection can not be established
+    for statistical purposes
+
+  - The summary page now displays the lifetime for the user data to be
+    available on the remote cluster (by reading a parameter from the
+    opal.properties file)
+
+  - Corrected the "load-on-startup" order of the servlets - an incorrect
+    order could potentially cause a database connection error
+
+- Opal Services:
+  
+  - In earlier versions of Opal, the Tomcat server had to be installed on
+    an NFS partition visible to all compute nodes. This is no longer
+    required as long as a working directory is NFS mounted, and
+    symbolically linked to a location within the Tomcat "webapps" directory
+
+  - Job outputs can optionally be archived by setting a parameter
+    (data.archive) inside the opal.properties file
+
+- General:
+
+  - The code should now compile and run with Java 1.4 and older JSP compilers
+
+
+Version 1.9 alpha:
+
+- Opal Dashboard: it is a web based interface that provide an easy way to check the 
+  status of the opal installation 
+
+- If an external database has been used the Dashboard can also display chart with 
+  access and usage statistics
+
+- Dynamic Interface Generation for Opal: This web based interface allows user to 
+  invoke Opal based service directly from their browser. It is also possible to 
+  create customized submission form based on the command line syntax
+
+- Modified and streamlined the install and upgrade process - now bundling
+  axis webapp with Opal, thus reducing an external prerequisite
