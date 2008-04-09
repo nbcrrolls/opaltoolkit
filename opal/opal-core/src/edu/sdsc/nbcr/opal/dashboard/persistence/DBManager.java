@@ -252,8 +252,9 @@ public class DBManager {
         try {
             Statement sql = conn.createStatement();
             ResultSet rs = sql.executeQuery(query);
-            double [] values = new double[numberOfDays+1];
             int counter = numberOfDays;
+            double [] values = new double[counter+1];
+            
             Date previousDate =  endDate;//we are gonna start from the current date (today)
             //now we have put the data from the result of the query into the return array
             while( rs.next() ) {
@@ -265,6 +266,10 @@ public class DBManager {
                     counter--;
                     previousDate = DateHelper.subtractDay(previousDate);
                 }//if
+                if ( counter == -1) {
+                    log.debug("Series has been filled up with zeros for service: " + service); 
+                    break;
+                }
                 //we don't have a gap!
                 if (type.equals("hits") ) {
                     values[counter] = (double) rs.getInt("count");                    

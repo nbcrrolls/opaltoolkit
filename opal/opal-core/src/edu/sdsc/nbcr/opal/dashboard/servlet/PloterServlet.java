@@ -23,14 +23,19 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.apache.commons.beanutils.converters.FloatArrayConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.DateTickUnit;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.encoders.EncoderUtil;
 import org.jfree.chart.encoders.ImageFormat;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -261,7 +266,7 @@ public class PloterServlet extends HttpServlet
             yAxisTitle = "Numbers of hits";
             title = "Jobs executed per day";
         }else if ( type.equals(exectime) ) {
-            yAxisTitle = "Execution time";
+            yAxisTitle = "Execution time in seconds";
             title = "Daily average execution time for a job submission";
         }else if ( type.equals(error) ) {
             yAxisTitle = "Number of errors";
@@ -278,7 +283,9 @@ public class PloterServlet extends HttpServlet
                  // include legend, tooltips, urls
                     true, true, true);
             //http://www.google.com/codesearch?hl=en&q=+BarChart3DDemo4.java+show:P7RwiKyu_fE:jBqt4P62SWA:MPRcQZS7yqc&sa=N&cd=1&ct=rc&cs_p=http://feathers.dlib.vt.edu/~etana/VisualViews/JFreechart/jfreechart-1.0.1-demo.zip&cs_f=jfreechart-1.0.1-demo/source/demo/BarChart3DDemo4.java#first
-            
+            CategoryPlot plot = chart.getCategoryPlot();
+            NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+            rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         }else{
             chart = ChartFactory.createTimeSeriesChart( title, xAxisTitle, yAxisTitle, dataset,
                 true, true, false);
@@ -287,6 +294,8 @@ public class PloterServlet extends HttpServlet
             axis.setDateFormatOverride(new SimpleDateFormat("MMM-dd-yyyy", Locale.US));
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
             //BasicStroke stroke = (BasicStroke) renderer.getBaseStroke();
+            NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+            rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
             BasicStroke stroke = new BasicStroke(3.0f);
             renderer.setBaseStroke(stroke);
         }
