@@ -59,14 +59,20 @@ public class LaunchJobAction extends MappingDispatchAction{
         //let's print some debug informations
         String debug = "";
         if ( app.isAddFile() ) {
-            log.info("Adding one more input file to the simple submission form");
-            //let's add an element to the files array
+            //maybe the user has updated a file, let's check
             FormFile [] formFiles = app.getFiles();
-            FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
-            for (int i = 0; i < formFiles.length; i++ ){
-                newFormFiles[i] = formFiles[i];
+            if ( (formFiles[formFiles.length - 1] != null) 
+                    && (formFiles[formFiles.length - 1].getFileName().length() > 0 ) ) {
+                //the user has actually uploaded something!
+                log.info("Adding one more input file to the simple submission form");
+                //let's add an element to the files array so the user upload a new file there is a place holder (the last element)
+                
+                FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
+                for (int i = 0; i < formFiles.length; i++ ){
+                    newFormFiles[i] = formFiles[i];
+                }
+                app.setFiles(newFormFiles);
             }
-            app.setFiles(newFormFiles);
             return mapping.findForward("DisplaySimpleForm");
         }else if ( app.isArgMetadataEnable()) {
             ArgFlag [] flags = app.getArgFlags();
