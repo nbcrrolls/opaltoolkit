@@ -1,3 +1,14 @@
+Version 1.9.4:
+
+- Opal Dashboard:
+
+   - Fixed a bug in the creation of the time series for the charts
+
+   - Improved checking for the "Add a File" button in the simple submission form.
+     Now it checks that the user has actually uploaded a file.
+
+   - The chart now uses integer numbers for the X axis.
+
 Version 1.9.3:
 
 - Opal Dashboard:
