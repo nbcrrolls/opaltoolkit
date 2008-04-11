@@ -9,6 +9,9 @@ Version 1.9.4:
 
    - The chart now uses integer numbers for the X axis.
 
+   - Fixed a bug in the JobStatus page that was not displaying properly the 
+     name of the service
+
 Version 1.9.3:
 
 - Opal Dashboard:
