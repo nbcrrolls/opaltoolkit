@@ -48,7 +48,7 @@ Author:
   <property name="version" value="2.0alpha"/>
   <property name="project.home" location="." />
   <property name="lib" location="${project.home}/lib" />
-  <property name="opal.webapp" value="opal" />
+  <property name="opal.webapp" value="opal2" />
   <property name="opal.WEB-INF" location="${project.home}/webapps/${opal.webapp}/WEB-INF" />  
   <property name="build" location="${project.home}/build" />
   <property name="build.classes" location="${build}/classes" />
