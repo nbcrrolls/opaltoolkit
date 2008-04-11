@@ -291,7 +291,7 @@ public class ArgValidator {
 		    // which one of the untagged params this one is
 		    if (group != null) {
 			if (group.getExclusive() != null) {
-			    if (group.getExclusive()) {
+			    if ( group.getExclusive().booleanValue() ) {
 				String elemString = group.getElements().toString();
 				String[] elemIDs = elemString.split("[\\s]+");
 				int size = 0;
@@ -373,7 +373,7 @@ public class ArgValidator {
 	if (groups != null) {
 	    for (int i = 0; i < groups.length; i++) {
 		if (groups[i].getExclusive() != null) {
-		    if (groups[i].getExclusive()) {
+		    if ( groups[i].getExclusive().booleanValue() ) {
 			String elemString = groups[i].getElements().toString();
 			String[] elemIDs = elemString.split("[\\s]+");
 			boolean exclusive = false;
