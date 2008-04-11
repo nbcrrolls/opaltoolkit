@@ -1,5 +1,5 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <metadata>
+  <metadata appName="MEME">
     <usage><![CDATA[MEME is a tool for discovering motifs in a group of related DNA or protein sequences]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
@@ -44,7 +44,123 @@
         [-sf <sf>]              print <sf> as name of sequence file
     ]]>
     </info>
+    <types> 
+        <!-- list of flags -->
+        <flags>
+            <flag>
+                <id>text</id>
+                <tag>-text</tag>
+                <textDesc>Output in text format (default is html).</textDesc>
+            </flag>
+            <flag>
+                <id>revcomp</id>
+                <tag>-revcomp</tag>
+                <textDesc>MEME searches for motifs on both the given DNA strand and the reverse complement strand by default. Checking this box will cause MEME to search the given DNA strand only.</textDesc>
+            </flag>
+            <flag>
+                <id>pal</id>
+                <tag>--pal</tag>
+                <textDesc>Checking this box causes MEME to search only for DNA palindromes</textDesc>
+            </flag>
+        </flags>
+    
+        <!-- list of tagged parameters -->
+        <taggedParams>
+            <param>
+                <id>mod</id>
+                <tag>-mod</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>oops</value>
+                <value>zoops</value>
+                <value>anr</value>
+                <default>zoops</default>
+                <textDesc><![CDATA[Distribution of motifs. <UL> <LI>oops: MEME assumes that each sequence in the dataset contains exactly one occurrence of each motif.</LI><LI>zoops: MEME assumes that each sequence may contain at most one occurrence of each motif.</LI><LI> anr: MEME assumes each sequence may contain any number of non-overlapping occurrences of each motif.</LI></UL>]]></textDesc>
+            </param>
+
+            <param>
+                <id>minw</id>
+                <tag>-minw</tag>
+                <paramType>INT</paramType>
+                <default>6</default>                
+                <textDesc>The minum width of the motif(s) to search for.</textDesc>
+            </param>
+            <param>
+                <id>maxw</id>
+                <tag>-maxw</tag>
+                <paramType>INT</paramType>
+                <default>50</default>                
+                <textDesc>The maximu width of the motif(s) to search for.</textDesc>
+            </param>
+            <param>
+                <id>nmotifs</id>
+                <tag>-nmotifs</tag>
+                <paramType>INT</paramType>
+                <default>3</default>
+                <textDesc> The number of different motifs to search for.</textDesc>
+            </param>
+
+            <!-- optional parameters -->
+            <param>
+                <id>minsites</id>
+                <tag>-minsites</tag>
+                <paramType>INT</paramType>
+                <textDesc>Minimum number of sites for each motif (&gt;=2).</textDesc>
+            </param>
+            <param>
+                <id>maxsites</id>
+                <tag>-maxsites</tag>
+                <paramType>INT</paramType>
+                <textDesc>Maximum number of sites for each motif (&lt;=300).</textDesc>
+            </param>
+            <!-- optional paramters -->
+
+        </taggedParams>
+    
+        <!-- list of untagged parameters, in order -->
+        <untaggedParams>
+            <param>
+                <id>dataSet</id>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <required>true</required>
+                <textDesc><![CDATA[File containing sequences in FASTA format. You can get a sample from here <a href="http://meme.nbcr.net/meme/examples/At.fa">At.fa</a>   ]]></textDesc>
+            </param>
+
+
+<!--            <param>
+                <id>inId</id>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>The ID to use to retrive the input file from the PDB archive (for testing use '1a1p')</textDesc>
+            </param>
+            <param>
+                <id>output-file</id>
+                <paramType>FILE</paramType>
+                <ioType>OUTPUT</ioType>
+                <required>true</required>
+                <default>output</default>
+                <textDesc>The desired output name of the PQR file to be generated</textDesc>
+            </param> -->
+
+        </untaggedParams>
+        <groups>
+          <group>
+            <name>required</name>
+            <elements>dataSet nmotifs minw maxw mod</elements>
+            <required>true</required>
+            <textDesc>Required parameters</textDesc>
+          </group>
+          <group>
+            <name>optional</name>
+            <elements>text revcomp pal minsites maxsites</elements>
+            <required></required>
+            <textDesc>Optional parameters</textDesc>
+          </group>
+        </groups>
+    </types>
+
   </metadata>
-  <binaryLocation>/Users/sriramkrishnan/Projects/meme354/bin/meme</binaryLocation>
+  <binaryLocation>/usr/local/various/meme_3.5.7_binaries/bin/meme</binaryLocation>
   <parallel>false</parallel>
 </appConfig>
