@@ -218,6 +218,16 @@ public class AppMetadata extends ActionForm{
         }
     	return null;
     }
+    
+    /**
+     * it returns the name of the service as it appears in the endpoint URL  
+     *  
+     * @return
+     */
+    public String getServiceID(){
+        String ret = URL.substring(URL.lastIndexOf('/') + 1, URL.length());
+        return ret;        
+    }
 
 
     /* -----    below only getter and setter methods   -------    */

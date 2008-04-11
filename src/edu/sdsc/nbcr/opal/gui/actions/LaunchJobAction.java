@@ -151,7 +151,7 @@ public class LaunchJobAction extends MappingDispatchAction{
 
         // everything went allright redirect to the status page
         // put the jobId in the URL coz we are redirecting and not forwarding 
-        return new ActionRedirect(mapping.findForward("JobStatus").getPath() + "?jobId=" +  subOut.getJobID());
+        return new ActionRedirect(mapping.findForward("JobStatus").getPath() + "?jobId=" +  subOut.getJobID() + "&serviceID=" + app.getServiceID());
     }//exectue
     
     
