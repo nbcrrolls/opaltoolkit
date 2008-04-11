@@ -78,8 +78,8 @@ public class AppServiceImpl
     private static boolean globusInUse;
 
     // the configuration information for the application
-    private AppConfigType appConfig;
-    private File appConfigFile;
+    private AppConfigType config;
+    private File configFile;
     private long lastModified;
 
     // containier properties - initialize only once
@@ -168,11 +168,11 @@ public class AppServiceImpl
 	throws FaultType {
 	logger.info("called");
 
-	// make sure that the appConfig has been retrieved
+	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
 	// return the metadata
-	return appConfig.getMetadata();
+	return config.getMetadata();
     }
 
     /**
@@ -186,11 +186,11 @@ public class AppServiceImpl
 	throws FaultType {
 	logger.info("called");
 
-	// make sure that the appConfig has been retrieved
+	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
-	// return the appConfig
-	return appConfig;
+	// return the config
+	return config;
     }
 
     /**
@@ -208,11 +208,16 @@ public class AppServiceImpl
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
 
-	// make sure that the appConfig has been retrieved
+	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
-	// write the input files, and launch the job
-	JobSubOutputType output = launchApp(in);
+	// write the input files, and launch the job in a non-blocking fashion
+	String jobID = launchApp(in, false);
+
+	// create output object
+	JobSubOutputType output = new JobSubOutputType();
+	output.setJobID(jobID);
+	output.setStatus((StatusOutputType) statusTable.get(jobID));
 
 	long t1 = System.currentTimeMillis();
 	logger.debug("Server execution time: " + (t1-t0) + " ms");
@@ -235,11 +240,16 @@ public class AppServiceImpl
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
 
-	// make sure that the appConfig has been retrieved
+	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
-	// write the input files, and launch the job
-	BlockingOutputType output = launchAppBlocking(in);
+	// write the input files, and launch the job in a blocking fashion
+	String jobID = launchApp(in, true);
+
+	// create output object
+	BlockingOutputType output = new BlockingOutputType();
+	output.setStatus((StatusOutputType) statusTable.get(jobID));
+	output.setJobOut((JobOutputType) outputTable.get(jobID));
 
 	long t1 = System.currentTimeMillis();
 	logger.debug("Server execution time: " + (t1-t0) + " ms");
@@ -258,7 +268,7 @@ public class AppServiceImpl
 	long t0 = System.currentTimeMillis();
 	logger.info("called for job: " + in);
 	
-	// make sure that the appConfig has been retrieved
+	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
 	// retrieve the status
@@ -291,7 +301,7 @@ public class AppServiceImpl
 	long t0 = System.currentTimeMillis();
 	logger.info("called for job: " + in);
 	
-	// make sure that the appConfig has been retrieved
+	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
 	// retrieve the outputs
@@ -374,11 +384,11 @@ public class AppServiceImpl
 	// check to see if it is still running
 	if (jobTable.containsKey(in)) {
 	    // retrieve the job manager from the jobTable
-	    OpalJobManager jobManagger =
+	    OpalJobManager jobManager =
 		(OpalJobManager) jobTable.get(in);
 
 	    // destroy the job, and wait until it is done
-	    status = jobManagger.destroyJob();
+	    status = jobManager.destroyJob();
 	} else {
 	    // use an in memory hash table
 	    if (statusTable.containsKey(in)) {
@@ -399,85 +409,63 @@ public class AppServiceImpl
     //    Private helper methods used by the above public impl methods    //
     //--------------------------------------------------------------------//
 
-    private JobSubOutputType launchApp(JobInputType in)
+    private String launchApp(JobInputType in,
+			     boolean blocking)
 	throws FaultType {
 
-// 	// create a working directory where it can be accessible
-// 	final String jobID = "app" + System.currentTimeMillis();
-// 	String outputDirName = 
-// 	    outputPrefix + File.separator + jobID + File.separator;
-// 	final File outputDir = new File(outputDirName);
-// 	if (!outputDir.mkdir()) {
-// 	    logger.error("Can't create new directory to run application in");
-// 	    throw new FaultType("Can't create new directory to run application in");
-// 	}
+	// create a working directory where it can be accessible
+	final String jobID = "app" + System.currentTimeMillis();
+	String outputDirName = 
+	    outputPrefix + File.separator + jobID + File.separator;
+	final File outputDir = new File(outputDirName);
+	if (!outputDir.mkdir()) {
+	    logger.error("Can't create new directory to run application in");
+	    throw new FaultType("Can't create new directory to run application in");
+	}
 
-// 	// create the application input files there 
-// 	writeAppInput(in, outputDirName);
+	// create the application input files there 
+	writeAppInput(in, outputDirName);
 
-// 	// create a new status object, and initialize AppJobLaunchUtil
-// 	StatusOutputType status = new StatusOutputType();
-// 	JobOutputType outputs = new JobOutputType();
-// 	AppJobLaunchUtil jobLaunchUtil = new AppJobLaunchUtil(jobID,
-// 							      in,
-// 							      status,
-// 							      outputs);
+	// create a new status object and save it
+	StatusOutputType status = new StatusOutputType();
+	status.setCode(GramJob.STATUS_PENDING);
+	status.setMessage("Launching executable");
+	try {
+	    status.setBaseURL(new URI(tomcatURL + jobID));
+	} catch (Exception e) {
+	    String message = "Exception while trying to construct base URL";
+	    logger.error(message);
+	    throw new FaultType(message);
+	}
+	statusTable.put(jobID, status);
 
-// 	// add this jobLaunchUtil into the jobTable
-// 	jobTable.put(jobID, jobLaunchUtil);
+	// instantiate & initialize the job manager
+	OpalJobManager jobManager = null;
+	if (drmaaInUse) {
+	    throw new FaultType("DRMAA job manager not supported yet");
+	} else if (globusInUse) {
+	    throw new FaultType("Globus job manager not supported yet");
+	} else { // process exec
+	    jobManager = new ForkJobManager();
+	}
+	jobManager.initialize(props, config, null);
 
-// 	// launch the job asynchronously
-// 	jobLaunchUtil.launchJob(outputDirName,
-// 				appConfig);
+	// launch job with the given arguments
+	String handle = jobManager.launchJob(in.getArgList(), 
+					     in.getNumProcs(),
+					     outputDirName);
 
-// 	// return the jobID, and preliminary status
-// 	JobSubOutputType out = new JobSubOutputType();
-// 	out.setJobID(jobID);
-// 	out.setStatus(status);
-// 	return out;
-	return null;
-    }
+	// add this jobLaunchUtil into the jobTable
+	jobTable.put(jobID, jobManager);
 
-    private BlockingOutputType launchAppBlocking(JobInputType in)
-	throws FaultType {
+	if (!blocking) {
+	    // TODO: launch thread to monitor status
+	} else {
+	    // TODO: monitor status in the same thread
+	}
 
-// 	// create a working directory where it can be accessible
-// 	final String jobID = "app" + System.currentTimeMillis();
-// 	String outputDirName = 
-// 	    outputPrefix + File.separator + jobID + File.separator;
-// 	final File outputDir = new File(outputDirName);
-// 	if (!outputDir.mkdir()) {
-// 	    logger.error("Can't create new directory to run application in");
-// 	    throw new FaultType("Can't create new directory to run application in");
-// 	}
-
-// 	// create the application input files there 
-// 	writeAppInput(in, outputDirName);
-
-// 	// create a new status object, and initialize AppJobLaunchUtil
-// 	StatusOutputType status = new StatusOutputType();
-// 	JobOutputType outputs = new JobOutputType();
-// 	AppJobLaunchUtil jobLaunchUtil = new AppJobLaunchUtil(jobID,
-// 							      in,
-// 							      status,
-// 							      outputs);
-
-// 	// add this jobLaunchUtil into the jobTable
-// 	jobTable.put(jobID, jobLaunchUtil);
-
-// 	// launch the job asynchronously
-// 	jobLaunchUtil.launchJob(outputDirName,
-// 				appConfig);
-
-// 	// wait for the job to finish
-// 	jobLaunchUtil.waitFor();
-
-// 	// return the status and the job outputs
-// 	BlockingOutputType out = new BlockingOutputType();
-// 	out.setStatus(status);
-// 	out.setJobOut(outputs);
-// 	return out;
-	return null;
+	// return the jobID
+	return jobID;
     }
 
     private void writeAppInput(JobInputType in,
@@ -513,38 +501,38 @@ public class AppServiceImpl
 	throws FaultType {
 	logger.info("called");
 
-	// read location of appConfig file
+	// read location of config file
 	MessageContext mc = MessageContext.getCurrentContext();
 	SOAPService service = mc.getService();
-	String appConfigFileName = (String) service.getOption("appConfig");
-	if (appConfigFileName == null) {
+	String configFileName = (String) service.getOption("appConfig");
+	if (configFileName == null) {
 	    logger.error("Required parameter appConfig not found in WSDD");
 	    throw new FaultType("Required parameter appConfig not found in WSDD");
 	}
 	    
 	// read the config file if it is not set, or if has been modified
 	boolean reconfigure = false;
-	if (appConfigFile == null) {
-	    appConfigFile = new File(appConfigFileName);
-	    lastModified = appConfigFile.lastModified();
+	if (configFile == null) {
+	    configFile = new File(configFileName);
+	    lastModified = configFile.lastModified();
 	}
-	long newLastModified = appConfigFile.lastModified();
+	long newLastModified = configFile.lastModified();
 	if (newLastModified > lastModified) {
 	    reconfigure = true;
 	    lastModified = newLastModified;
 	    logger.info("Application config modified recently -- reconfiguring");
 	}
-	if (appConfig == null) {
+	if (config == null) {
 	    reconfigure = true;
 	    logger.info("Configuring service for the first time");
 	}
 
 	if (reconfigure) {
-	    logger.info("Reading application config: " + appConfigFileName);
+	    logger.info("Reading application config: " + configFileName);
 
 	    try {
-		appConfig = 
-		    (AppConfigType) TypeDeserializer.getValue(appConfigFileName,
+		config = 
+		    (AppConfigType) TypeDeserializer.getValue(configFileName,
 							      new AppConfigType());;
 	    } catch (Exception e) {
 		logger.error("Can't read application configuration from XML: " +
