@@ -26,6 +26,8 @@
 
 <%
 StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
+String serviceID = (String)request.getAttribute("serviceID");
+String jobId = (String)request.getAttribute("jobId");
 %>
 
 </head>
@@ -33,12 +35,12 @@ StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
 <body>
 <jsp:include page="header.jsp"/>
 <br/>
-    <h2>Submission results for <bean:write name="appMetadata" property="serviceName" /></h2>
+    <h2>Submission results for <%= serviceID %></h2>
 <br/>
 
 <table cellspacing="10">
 
-    <tr><td>JobId :</td><td> <bean:write name="appMetadata" property="jobId" /> </td>
+    <tr><td>JobId :</td><td> <%= jobId %></td>
 
     <tr><td>Status code:</td><td><%= status.getCode() %></td>
     
