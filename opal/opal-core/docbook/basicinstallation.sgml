@@ -128,7 +128,7 @@ properties correctly. It should look something like the following:</para>
     # etc/opal.xml to $CATALINA_HOME/conf/Catalina/localhost/opal.xml. if
     # the name of the symlink is changed to something other than "opal-jobs", 
     # modify the opal.xml accordingly
-    # working.dir=opal
+    # working.dir=opal-jobs
 
     # database information
     database.use=false
