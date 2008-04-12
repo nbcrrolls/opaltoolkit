@@ -238,6 +238,15 @@ public class ForkJobManager implements OpalJobManager {
 			      exitValue);
 	}
 
+	// make sure all the threads are done
+	done = true;
+	try {
+	    logger.debug("Waiting for all outputs to be written out");
+	    stdoutThread.join();
+	    stderrThread.join();
+	    logger.debug("All outputs successfully written out");
+	} catch (InterruptedException ignore) {}
+
 	return status;
     }
 

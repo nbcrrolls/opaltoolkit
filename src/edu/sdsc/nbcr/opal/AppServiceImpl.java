@@ -30,6 +30,9 @@ import org.globus.gram.GramJob;
 
 import edu.sdsc.nbcr.common.TypeDeserializer;
 
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 /**
  *
  * Implementation of the AppServicePortType, which represents every
@@ -217,7 +220,13 @@ public class AppServiceImpl
 	// create output object
 	JobSubOutputType output = new JobSubOutputType();
 	output.setJobID(jobID);
-	output.setStatus((StatusOutputType) statusTable.get(jobID));
+	StatusOutputType status = (StatusOutputType) statusTable.get(jobID);
+	if (status == null) {
+	    String msg = "Can't retrieve status for job: " + jobID;
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+	output.setStatus(status);
 
 	long t1 = System.currentTimeMillis();
 	logger.debug("Server execution time: " + (t1-t0) + " ms");
@@ -248,8 +257,20 @@ public class AppServiceImpl
 
 	// create output object
 	BlockingOutputType output = new BlockingOutputType();
-	output.setStatus((StatusOutputType) statusTable.get(jobID));
-	output.setJobOut((JobOutputType) outputTable.get(jobID));
+	StatusOutputType status = (StatusOutputType) statusTable.get(jobID);
+	if (status == null) {
+	    String msg = "Can't retrieve status for job: " + jobID;
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+	output.setStatus(status);
+	JobOutputType jobOut = (JobOutputType) outputTable.get(jobID);
+	if (jobOut == null) {
+	    String msg = "Can't retrieve outputs for job: " + jobID;
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+	output.setJobOut(jobOut);
 
 	long t1 = System.currentTimeMillis();
 	logger.debug("Server execution time: " + (t1-t0) + " ms");
@@ -415,7 +436,7 @@ public class AppServiceImpl
 
 	// create a working directory where it can be accessible
 	final String jobID = "app" + System.currentTimeMillis();
-	String outputDirName = 
+	final String outputDirName = 
 	    outputPrefix + File.separator + jobID + File.separator;
 	final File outputDir = new File(outputDirName);
 	if (!outputDir.mkdir()) {
@@ -430,8 +451,10 @@ public class AppServiceImpl
 	StatusOutputType status = new StatusOutputType();
 	status.setCode(GramJob.STATUS_PENDING);
 	status.setMessage("Launching executable");
+	final URI baseURL;
 	try {
-	    status.setBaseURL(new URI(tomcatURL + jobID));
+	    baseURL = new URI(tomcatURL + jobID);
+	    status.setBaseURL(baseURL);
 	} catch (Exception e) {
 	    String message = "Exception while trying to construct base URL";
 	    logger.error(message);
@@ -440,7 +463,7 @@ public class AppServiceImpl
 	statusTable.put(jobID, status);
 
 	// instantiate & initialize the job manager
-	OpalJobManager jobManager = null;
+	final OpalJobManager jobManager;
 	if (drmaaInUse) {
 	    throw new FaultType("DRMAA job manager not supported yet");
 	} else if (globusInUse) {
@@ -459,13 +482,176 @@ public class AppServiceImpl
 	jobTable.put(jobID, jobManager);
 
 	if (!blocking) {
-	    // TODO: launch thread to monitor status
+	    // launch thread to monitor status
+	    new Thread() {
+		public void run() {
+		    try {
+			monitorStatus(jobManager, jobID, outputDirName, baseURL);
+		    } catch (FaultType f) {
+			// status is logged, not much else to do here
+			logger.error(f);
+		    }
+		}
+	    }.start();
 	} else {
-	    // TODO: monitor status in the same thread
+	    // monitor status in the same thread
+	    monitorStatus(jobManager, jobID, outputDirName, baseURL);
 	}
 
 	// return the jobID
 	return jobID;
+    }
+
+    private void monitorStatus(OpalJobManager jobManager,
+			       String jobID,
+			       String workingDir,
+			       URI baseURL)
+	throws FaultType {
+
+	// wait for job activation
+	StatusOutputType status = jobManager.waitForActivation();
+	if (status.getBaseURL() == null)
+	    status.setBaseURL(baseURL);
+	statusTable.put(jobID, status);
+
+	// if the job is still running, wait for it to finish
+	if (!((status.getCode() == GramJob.STATUS_FAILED) ||
+	      (status.getCode() == GramJob.STATUS_DONE))) {
+	    status = jobManager.waitForCompletion();
+	}
+	if (status.getBaseURL() == null)
+	    status.setBaseURL(baseURL);
+	
+	// bit of a hack because execution completion does not
+	// equal completion of Web service call
+	int jobCode = status.getCode();
+	String jobMessage = status.getMessage();
+	status.setCode(GramJob.STATUS_STAGE_OUT);
+	status.setMessage("Writing output metadata");
+	statusTable.put(jobID, status);
+
+	// retrieve job outputs
+	// make sure the stdout and stderr exist
+	File stdOutFile = new File(workingDir + File.separator + "stdout.txt");
+	if (!stdOutFile.exists()) {
+	    String msg = "Standard output missing for execution";
+	    logger.error(msg);
+	    status.setCode(GramJob.STATUS_FAILED);
+	    status.setMessage(msg);
+	    statusTable.put(jobID, status);
+	    jobTable.remove(jobID);
+	    return;
+	}
+	File stdErrFile = new File(workingDir + File.separator + "stderr.txt");
+	if (!stdErrFile.exists()) {
+	    String msg = "Standard error missing for execution";
+	    logger.error(msg);
+	    status.setCode(GramJob.STATUS_FAILED);
+	    status.setMessage(msg);
+	    statusTable.put(jobID, status);
+	    jobTable.remove(jobID);
+	    return;
+	}
+	
+	// archive the outputs, if need be
+	if (archiveData) {
+	    logger.debug("Archiving output files");
+
+	    // get a list of files
+	    File f = new File(workingDir);
+	    File[] outputFiles = f.listFiles();
+	    
+	    // Create a buffer for reading the files
+	    byte[] buf = new byte[1024];
+	    
+	    try {
+
+		ZipOutputStream out = 
+		    new ZipOutputStream(new FileOutputStream(workingDir + 
+							     File.separator + 
+							     jobID + 
+							     ".zip"));
+		
+		// Compress the files
+		for (int i = 0; i < outputFiles.length; i++) {
+		    FileInputStream in = new FileInputStream(outputFiles[i]);
+		    
+		    // Add ZIP entry to output stream.
+		    out.putNextEntry(new ZipEntry(outputFiles[i].getName()));
+		    
+		    // Transfer bytes from the file to the ZIP file
+		    int len;
+		    while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
+		    }
+		    
+		    // Complete the entry
+		    out.closeEntry();
+		    in.close();
+		}
+		
+		// Complete the ZIP file
+		out.close();
+	    } catch (IOException e) {
+		logger.error(e);
+		logger.error("Error not fatal - moving on");
+	    }
+	}
+	
+	// at least 2 files exist now - stdout and stderr
+	JobOutputType outputs = new JobOutputType();
+
+	try {
+	    File f = new File(workingDir);
+	    File[] outputFiles = f.listFiles();
+	
+	    OutputFileType[] outputFileObj = new OutputFileType[outputFiles.length-2];
+	    int j = 0;
+	    for (int i = 0; i < outputFiles.length; i++) {
+		if (outputFiles[i].getName().equals("stdout.txt")) {
+		    outputs.setStdOut(new URI(tomcatURL +
+					      jobID + 
+					      "/stdout.txt"));
+		} else if (outputFiles[i].getName().equals("stderr.txt")) {
+		    outputs.setStdErr(new URI(tomcatURL +
+					      jobID + 
+					      "/stderr.txt"));
+		} else {
+		    // NOTE: all input files will also be duplicated here
+		    OutputFileType next = new OutputFileType();
+		    next.setName(outputFiles[i].getName());
+		    next.setUrl(new URI(tomcatURL +
+					jobID +
+					"/" +
+					outputFiles[i].getName()));
+		    outputFileObj[j++] = next;
+		}
+	    }
+	    outputs.setOutputFile(outputFileObj);
+
+	    // update the outputs table
+	    outputTable.put(jobID, outputs);
+	} catch (IOException e) {
+	    // log exception
+	    logger.error(e);
+
+	    // set status to FAILED
+	    status.setCode(GramJob.STATUS_FAILED);
+	    status.setMessage("Cannot retrieve outputs after finish - " +
+			      e.getMessage());
+
+	    // finish up
+	    statusTable.put(jobID, status);
+	    jobTable.remove(jobID);
+	}
+
+	// update final status
+	status.setCode(jobCode);
+	status.setMessage(jobMessage);
+	statusTable.put(jobID, status);
+
+	// get rid of the jobManager from the jobTable
+	jobTable.remove(jobID);
     }
 
     private void writeAppInput(JobInputType in,
