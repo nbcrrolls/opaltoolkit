@@ -1,4 +1,4 @@
-package edu.sdsc.nbcr.opal;
+package edu.sdsc.nbcr.opal.manager;
 
 import java.util.Properties;
 
@@ -12,6 +12,10 @@ import java.io.IOException;
 import org.globus.gram.GramJob;
 
 import org.apache.log4j.Logger;
+
+import edu.sdsc.nbcr.opal.AppConfigType;
+import edu.sdsc.nbcr.opal.StatusOutputType;
+import edu.sdsc.nbcr.opal.FaultType;
 
 /**
  *

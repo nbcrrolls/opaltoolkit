@@ -33,6 +33,9 @@ import edu.sdsc.nbcr.common.TypeDeserializer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import edu.sdsc.nbcr.opal.manager.OpalJobManager;
+import edu.sdsc.nbcr.opal.manager.ForkJobManager;
+
 /**
  *
  * Implementation of the AppServicePortType, which represents every
