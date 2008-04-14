@@ -1,4 +1,4 @@
-package edu.sdsc.nbcr.opal;
+package edu.sdsc.nbcr.opal.util;
 
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -20,6 +20,16 @@ import org.apache.commons.cli.HelpFormatter;
 import edu.sdsc.nbcr.common.TypeDeserializer;
 
 import org.apache.axis.types.IDRefs;
+
+import edu.sdsc.nbcr.opal.AppConfigType;
+import edu.sdsc.nbcr.opal.ArgumentsType;
+import edu.sdsc.nbcr.opal.ParamType;
+import edu.sdsc.nbcr.opal.ParamsType;
+import edu.sdsc.nbcr.opal.ImplicitParamsType;
+import edu.sdsc.nbcr.opal.GroupsType;
+import edu.sdsc.nbcr.opal.FlagsType;
+import edu.sdsc.nbcr.opal.IOType;
+import edu.sdsc.nbcr.opal.FaultType;
 
 /**
  * Implementation of a class that validates command-line arguments
@@ -109,7 +119,7 @@ public class ArgValidator {
 	} else if (type.getValue().equals(ParamType._FILE)) {
 	    IOType ioType = param.getIoType();
 	    if (ioType == null)
-		ioType = new IOType("INPUT");
+		ioType = IOType.INPUT;
 	    if (ioType.getValue().equals(IOType._INPUT) ||
 		ioType.getValue().equals(IOType._INOUT)) {
 		String filePath = workingDir + File.separator + current;
