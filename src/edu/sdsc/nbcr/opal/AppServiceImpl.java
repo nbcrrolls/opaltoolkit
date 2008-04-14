@@ -486,7 +486,7 @@ public class AppServiceImpl
 	    new Thread() {
 		public void run() {
 		    try {
-			monitorStatus(jobManager, jobID, outputDirName, baseURL);
+			manageJob(jobManager, jobID, outputDirName, baseURL);
 		    } catch (FaultType f) {
 			// status is logged, not much else to do here
 			logger.error(f);
@@ -495,17 +495,17 @@ public class AppServiceImpl
 	    }.start();
 	} else {
 	    // monitor status in the same thread
-	    monitorStatus(jobManager, jobID, outputDirName, baseURL);
+	    manageJob(jobManager, jobID, outputDirName, baseURL);
 	}
 
 	// return the jobID
 	return jobID;
     }
 
-    private void monitorStatus(OpalJobManager jobManager,
-			       String jobID,
-			       String workingDir,
-			       URI baseURL)
+    private void manageJob(OpalJobManager jobManager,
+			   String jobID,
+			   String workingDir,
+			   URI baseURL)
 	throws FaultType {
 
 	// wait for job activation
@@ -643,6 +643,8 @@ public class AppServiceImpl
 	    // finish up
 	    statusTable.put(jobID, status);
 	    jobTable.remove(jobID);
+
+	    return;
 	}
 
 	// update final status
@@ -652,6 +654,8 @@ public class AppServiceImpl
 
 	// get rid of the jobManager from the jobTable
 	jobTable.remove(jobID);
+
+	logger.info("Execution complete for job: " + jobID);
     }
 
     private void writeAppInput(JobInputType in,

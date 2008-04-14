@@ -177,7 +177,9 @@ public class ForkJobManager implements OpalJobManager {
 	// notify sleepers - no one should really need to wait for activation
 	// of a job spawned by process exec, but this is here for completeness
 	started = true;
-	this.notifyAll();
+	synchronized(this) {
+	    this.notifyAll();
+	}
 
 	// return an identifier for this process
 	return proc.toString();
@@ -196,7 +198,9 @@ public class ForkJobManager implements OpalJobManager {
 	// poll till status is ACTIVE or ERROR
 	while (!started) {
 	    try {
-		this.wait();
+		synchronized(this) {
+		    this.wait();
+		}
 	    } catch (InterruptedException ie) {
 		// minor exception - log exception and continue
 		logger.error(ie.getMessage());
