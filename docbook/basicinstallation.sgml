@@ -163,7 +163,7 @@ commands:
 <screen>
     cp $OPAL_HOME/etc/opal.xml $CATALINA_HOME/conf/Catalina/localhost/ 
     cd $CATALINA_HOME/webapps 
-    ln -s /path/to/working_dir/on/nfs opal
+    ln -s /path/to/working_dir/on/nfs opal-jobs
 </screen>
 </para>
 
