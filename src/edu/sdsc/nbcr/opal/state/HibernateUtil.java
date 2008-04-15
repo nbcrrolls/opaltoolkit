@@ -52,43 +52,74 @@ public class HibernateUtil {
 	logger.info("Initializing hibernate");
         Session session = HibernateUtil.getSessionFactory().openSession();
 
-	// initialize entry
-	JobStatus entry = new JobStatus();
-	entry.setJobID("app" + System.currentTimeMillis());
-	entry.setCode(0);
-	entry.setMessage("This is a test");
-	entry.setBaseURL("http://localhost/test");
-	entry.setStartTime(new Date());
-	entry.setLastUpdate(new Date());
-	entry.setClientDN("CN=Test");
-	entry.setClientIP("127.0.0.1");
-	entry.setServiceName("Command-line");
+	// initialize info
+	JobInfo info = new JobInfo();
+	String jobID = "app" + System.currentTimeMillis();
+	info.setJobID(jobID);
+	info.setCode(0);
+	info.setMessage("This is a test");
+	info.setBaseURL("http://localhost/test");
+	info.setStartTime(new Date());
+	info.setLastUpdate(new Date());
+	info.setClientDN("CN=Test");
+	info.setClientIP("127.0.0.1");
+	info.setServiceName("Command-line");
 
-	// save system entry
-	logger.info("Trying to save JobStatus into database");
+	// save job info
+	logger.info("Trying to save JobInfo into database");
         session.beginTransaction();
-	session.save(entry);
+	session.save(info);
 	session.getTransaction().commit();
 	session.close();
-	logger.info("Saved JobStatus into database successfully");
+	logger.info("Saved JobInfo into database successfully");
+
+	// initialize job outputs
+	JobOutput output = new JobOutput();
+	output.setJobID(jobID);
+	output.setStdOut("stdout.txt");
+	output.setStdErr("stderr.txt");
+
+	// save job output
+	logger.info("Trying to save JobOutput into database");
+	session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+	session.save(output);
+	session.getTransaction().commit();
+	session.close();
+	logger.info("Saved JobOutput into database successfully");
+
+	// initialize output files
+	OutputFile file = new OutputFile();
+	file.setJob(info);
+	file.setName("foo.txt");
+	file.setUrl("http://localhost/test/foo.txt");
+
+	// save output files
+	logger.info("Trying to save OutputFile into database");
+	session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+	session.save(file);
+	session.getTransaction().commit();
+	session.close();
+	logger.info("Saved OutputFile into database successfully");
 
 	// list entries
-	logger.info("Listing JobStatus's");
+	logger.info("Listing JobInfo's");
 	session = HibernateUtil.getSessionFactory().openSession();
 	session.beginTransaction();
-	List results = session.createQuery("from JobStatus").list();
+	List results = session.createQuery("from JobInfo").list();
 	session.getTransaction().commit();
 	for (int i = 0; i < results.size(); i++) {
-	    entry = (JobStatus) results.get(i);
-	    logger.info("Job Status: " + entry.getJobID() +
-			" - {" + entry.getCode() +
-			", " + entry.getMessage() +
-			", " + entry.getBaseURL() +
-			", " + entry.getStartTime() + 
-			", " + entry.getLastUpdate() +
-			", " + entry.getClientIP() + 
-			", " + entry.getClientDN() + 
-			", " + entry.getServiceName() + "}");
+	    info = (JobInfo) results.get(i);
+	    logger.info("Job Info: " + info.getJobID() +
+			" - {" + info.getCode() +
+			", " + info.getMessage() +
+			", " + info.getBaseURL() +
+			", " + info.getStartTime() + 
+			", " + info.getLastUpdate() +
+			", " + info.getClientIP() + 
+			", " + info.getClientDN() + 
+			", " + info.getServiceName() + "}");
 	}
 	session.close();
     }

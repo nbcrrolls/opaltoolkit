@@ -21,8 +21,11 @@ public class OutputFile {
     private static Logger logger =
 	Logger.getLogger(OutputFile.class.getName());
     
-    // the jobID for this job
-    private String jobID;
+    // primary key
+    private long id;
+
+    // reference to the job
+    private JobInfo job;
 
     // file name and url
     private String name;
@@ -31,12 +34,20 @@ public class OutputFile {
     public OutputFile() {}
 
     // getter and setter methods
-    public String getJobID() {
-	return jobID;
+    public long getId() {
+	return id;
     }
 
-    public void setJobID(String jobID) {
-	this.jobID = jobID;
+    public void setId(long id) {
+	this.id = id;
+    }
+
+    public JobInfo getJob() {
+	return job;
+    }
+
+    public void setJob(JobInfo job) {
+	this.job = job;
     }
 
     public String getName() {

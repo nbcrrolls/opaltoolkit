@@ -21,7 +21,7 @@ public class JobOutput {
     private static Logger logger =
 	Logger.getLogger(JobOutput.class.getName());
 
-    // the jobID for this job
+    // primary key - the job id
     private String jobID;
 
     // standard output and error

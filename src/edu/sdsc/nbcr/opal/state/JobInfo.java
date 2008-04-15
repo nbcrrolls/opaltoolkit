@@ -10,11 +10,11 @@ import org.apache.log4j.Logger;
  * @author Sriram Krishnan
  */
 
-public class JobStatus {
+public class JobInfo {
 
     // get an instance of the log4j Logger
     private static Logger logger =
-	Logger.getLogger(JobStatus.class.getName());
+	Logger.getLogger(JobInfo.class.getName());
 
     // the jobID for this job
     private String jobID;
@@ -30,7 +30,7 @@ public class JobStatus {
     private String serviceName;
 
     // default constructor
-    public JobStatus() {}
+    public JobInfo() {}
 
     // getter and setter methods
     public String getJobID() {
