@@ -40,4 +40,14 @@
 	<many-to-one name="jobID" column="job_id" class="JobStatus" insert="false" update="false"/>
     </class>
 
+    <class name="OutputFile" table="output_file">
+
+        <id name="url" column="url" type="string">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="name" type="string" column="name"/>
+
+	<many-to-one name="jobID" column="job_id" class="JobStatus" insert="false" update="false"/>
+    </class>
 </hibernate-mapping>
