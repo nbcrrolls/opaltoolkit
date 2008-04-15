@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="edu.sdsc.nbcr.opal.state.JobStatus" table="job_status">
+        <id name="jobID" column="job_id" type="string">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="code" type="integer" column="code"/>
+
+        <property name="message" type="string" column="message"/>
+
+        <property name="baseURL" type="string" column="base_url"/>
+
+        <property name="startTime" type="timestamp" column="start_time"/>
+
+        <property name="lastUpdate" type="timestamp" column="last_update"/>
+
+        <property name="clientDN" type="string" column="client_dn"/>
+
+        <property name="clientIP" type="string" column="client_ip"/>
+
+        <property name="serviceName" type="string" column="service_name"/>
+    </class>
+
+
+</hibernate-mapping>
