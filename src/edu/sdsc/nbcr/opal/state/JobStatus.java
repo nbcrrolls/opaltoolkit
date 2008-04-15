@@ -25,7 +25,6 @@ public class JobStatus {
     private String jobID;
 
     // the other fields - self explanatory
-
     private int code;
     private String message;
     private String baseURL;
