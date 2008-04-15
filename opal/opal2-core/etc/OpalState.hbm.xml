@@ -3,18 +3,18 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
+<hibernate-mapping package="edu.sdsc.nbcr.opal.state">
 
-    <class name="edu.sdsc.nbcr.opal.state.JobStatus" table="job_status">
+    <class name="JobStatus" table="job_status">
         <id name="jobID" column="job_id" type="string">
             <generator class="assigned"/>
         </id>
 
-        <property name="code" type="integer" column="code"/>
+        <property name="code" type="integer" column="code" not-null="true"/>
 
-        <property name="message" type="string" column="message"/>
+        <property name="message" type="string" column="message" not-null="true"/>
 
-        <property name="baseURL" type="string" column="base_url"/>
+        <property name="baseURL" type="string" column="base_url" not-null="true"/>
 
         <property name="startTime" type="timestamp" column="start_time"/>
 
@@ -27,5 +27,17 @@
         <property name="serviceName" type="string" column="service_name"/>
     </class>
 
+
+    <class name="JobOutput" table="job_output">
+        <id name="jobID" column="job_id" type="string">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="stdOut" type="string" column="std_out" not-null="true"/>
+
+        <property name="stdErr" type="string" column="std_err" not-null="true"/>
+
+	<many-to-one name="jobID" column="job_id" class="JobStatus" insert="false" update="false"/>
+    </class>
 
 </hibernate-mapping>
