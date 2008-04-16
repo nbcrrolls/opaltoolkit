@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import org.hibernate.criterion.Expression;
+
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -75,7 +77,7 @@ public class HibernateUtil {
 
 	// initialize job outputs
 	JobOutput output = new JobOutput();
-	output.setJobID(jobID);
+	output.setJob(info);
 	output.setStdOut("stdout.txt");
 	output.setStdErr("stderr.txt");
 
@@ -103,12 +105,14 @@ public class HibernateUtil {
 	session.close();
 	logger.info("Saved OutputFile into database successfully");
 
-	// list entries
-	logger.info("Listing JobInfo's");
+	// do some searches
+	logger.info("Searching for info about job: " + jobID);
 	session = HibernateUtil.getSessionFactory().openSession();
 	session.beginTransaction();
-	List results = session.createQuery("from JobInfo").list();
-	session.getTransaction().commit();
+	List results = session.createCriteria(JobInfo.class)
+	    .add(Expression.eq("jobID", jobID))
+	    .list();
+
 	for (int i = 0; i < results.size(); i++) {
 	    info = (JobInfo) results.get(i);
 	    logger.info("Job Info: " + info.getJobID() +
@@ -120,6 +124,38 @@ public class HibernateUtil {
 			", " + info.getClientIP() + 
 			", " + info.getClientDN() + 
 			", " + info.getServiceName() + "}");
+	}
+	session.close();
+
+	logger.info("Searching for job outputs for job: " + jobID);
+	session = HibernateUtil.getSessionFactory().openSession();
+	session.beginTransaction();
+	results = session.createQuery("from JobOutput output " +
+				      "left join fetch output.job " +
+				      "where output.job.jobID = '" +
+				      jobID + "'")
+	    .list();
+	for (int i = 0; i < results.size(); i++) {
+	    output = (JobOutput) results.get(i);
+	    logger.info("Job Outputs: " + jobID +
+			" - {" + output.getStdOut() +
+			", " + output.getStdErr() + "}");
+	}
+	session.close();
+
+	logger.info("Searching for output files for job: " + jobID);
+	session = HibernateUtil.getSessionFactory().openSession();
+	session.beginTransaction();
+	results = session.createQuery("from OutputFile file " +
+				      "left join fetch file.job " +
+				      "where file.job.jobID = '" +
+				      jobID + "'")
+	    .list();
+	for (int i = 0; i < results.size(); i++) {
+	    file = (OutputFile) results.get(i);
+	    logger.info("Output File: " + jobID +
+			" - {" + file.getName() +
+			", " + file.getUrl() + "}");
 	}
 	session.close();
     }

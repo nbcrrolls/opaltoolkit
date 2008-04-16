@@ -23,6 +23,7 @@ public class JobInfo {
     private int code;
     private String message;
     private String baseURL;
+    private String handle;
     private Date startTime;
     private Date lastUpdate;
     private String clientDN;
@@ -63,6 +64,14 @@ public class JobInfo {
 
     public void setBaseURL(String baseURL) {
 	this.baseURL = baseURL;
+    }
+
+    public String getHandle() {
+	return handle;
+    }
+
+    public void setHandle(String handle) {
+	this.handle = handle;
     }
 
     public Date getStartTime() {

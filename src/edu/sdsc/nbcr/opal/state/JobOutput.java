@@ -21,8 +21,11 @@ public class JobOutput {
     private static Logger logger =
 	Logger.getLogger(JobOutput.class.getName());
 
-    // primary key - the job id
-    private String jobID;
+    // primary key
+    private long id;
+
+    // reference to the job
+    private JobInfo job;
 
     // standard output and error
     private String stdOut;
@@ -31,12 +34,20 @@ public class JobOutput {
     public JobOutput() {}
 
     // getter and setter methods
-    public String getJobID() {
-	return jobID;
+    public long getId() {
+	return id;
     }
 
-    public void setJobID(String jobID) {
-	this.jobID = jobID;
+    public void setId(long id) {
+	this.id = id;
+    }
+
+    public JobInfo getJob() {
+	return job;
+    }
+
+    public void setJob(JobInfo job) {
+	this.job = job;
     }
 
     public String getStdOut() {

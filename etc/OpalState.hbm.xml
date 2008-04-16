@@ -16,6 +16,8 @@
 
         <property name="baseURL" type="string" column="base_url" not-null="true"/>
 
+        <property name="handle" type="string" column="handle"/>
+
         <property name="startTime" type="timestamp" column="start_time"/>
 
         <property name="lastUpdate" type="timestamp" column="last_update"/>
@@ -28,19 +30,18 @@
     </class>
 
     <class name="JobOutput" table="job_output">
-        <id name="jobID" column="job_id" type="string">
-            <generator class="assigned"/>
-	</id>
- 
+        <id name="id">
+            <generator class="native"/>
+        </id>
+
         <property name="stdOut" type="string" column="std_out" not-null="true"/>
  
         <property name="stdErr" type="string" column="std_err" not-null="true"/>
  
-        <one-to-one name="jobID" class="JobInfo" constrained="true"/>
+	<many-to-one name="job" column="job_id" class="JobInfo" unique="true" not-null="true"/>
     </class>
 
     <class name="OutputFile" table="output_file">
-
         <id name="id">
             <generator class="native"/>
         </id>
