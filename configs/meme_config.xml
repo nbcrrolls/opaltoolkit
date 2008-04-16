@@ -83,14 +83,14 @@
                 <tag>-minw</tag>
                 <paramType>INT</paramType>
                 <default>6</default>                
-                <textDesc>The minum width of the motif(s) to search for.</textDesc>
+                <textDesc>The minimum width of the motif(s) to search for.</textDesc>
             </param>
             <param>
                 <id>maxw</id>
                 <tag>-maxw</tag>
                 <paramType>INT</paramType>
                 <default>50</default>                
-                <textDesc>The maximu width of the motif(s) to search for.</textDesc>
+                <textDesc>The maximum width of the motif(s) to search for.</textDesc>
             </param>
             <param>
                 <id>nmotifs</id>
@@ -126,22 +126,6 @@
                 <required>true</required>
                 <textDesc><![CDATA[File containing sequences in FASTA format. You can get a sample from here <a href="http://meme.nbcr.net/meme/examples/At.fa">At.fa</a>   ]]></textDesc>
             </param>
-
-
-<!--            <param>
-                <id>inId</id>
-                <paramType>STRING</paramType>
-                <ioType>INPUT</ioType>
-                <textDesc>The ID to use to retrive the input file from the PDB archive (for testing use '1a1p')</textDesc>
-            </param>
-            <param>
-                <id>output-file</id>
-                <paramType>FILE</paramType>
-                <ioType>OUTPUT</ioType>
-                <required>true</required>
-                <default>output</default>
-                <textDesc>The desired output name of the PQR file to be generated</textDesc>
-            </param> -->
 
         </untaggedParams>
         <groups>
