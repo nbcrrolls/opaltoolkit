@@ -64,7 +64,7 @@ public class HibernateUtil {
 	throws FaultType {
 	logger.info("called");
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
 	session.save(info);
 	session.getTransaction().commit();
@@ -90,7 +90,7 @@ public class HibernateUtil {
 	logger.info("called");
 	logger.debug("Updating status to: " + message);
 
-	Session session = HibernateUtil.getSessionFactory().openSession();
+	Session session = getSessionFactory().openSession();
 	session.beginTransaction();
 	Date lastUpdate = new Date();
 	int numRows = session.createQuery("update JobInfo info " +
@@ -131,7 +131,7 @@ public class HibernateUtil {
 	throws FaultType {
 	logger.info("called");
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
 
 	// retrieve the job info object
@@ -183,7 +183,7 @@ public class HibernateUtil {
 	StatusOutputType status = null;
 
 	// retrieve job status from hibernate
-	Session session = HibernateUtil.getSessionFactory().openSession();
+	Session session = getSessionFactory().openSession();
 	session.beginTransaction();
 	List results = session.createCriteria(JobInfo.class)
 	    .add(Expression.eq("jobID", jobID))
@@ -224,7 +224,7 @@ public class HibernateUtil {
 
 	JobOutputType outputs = new JobOutputType();
 
-	Session session = HibernateUtil.getSessionFactory().openSession();
+	Session session = getSessionFactory().openSession();
 	session.beginTransaction();
 	List results = session.createQuery("from JobOutput output " +
 					   "left join fetch output.job " +
@@ -282,8 +282,8 @@ public class HibernateUtil {
 	throws Exception {
 
 	// initialize hibernate
-	logger.info("Initializing hibernate");
-        Session session = HibernateUtil.getSessionFactory().openSession();
+	System.out.println("Initializing hibernate");
+        Session session = getSessionFactory().openSession();
 
 	// initialize info
 	JobInfo info = new JobInfo();
@@ -299,108 +299,45 @@ public class HibernateUtil {
 	info.setServiceName("Command-line");
 
 	// save job info
-	logger.info("Trying to save JobInfo into database");
-        session.beginTransaction();
-	session.save(info);
-	session.getTransaction().commit();
-	session.close();
-	logger.info("Saved JobInfo into database successfully");
-
-	// initialize job outputs
-	JobOutput output = new JobOutput();
-	output.setJob(info);
-	output.setStdOut("stdout.txt");
-	output.setStdErr("stderr.txt");
-
-	// save job output
-	logger.info("Trying to save JobOutput into database");
-	session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-	session.save(output);
-	session.getTransaction().commit();
-	session.close();
-	logger.info("Saved JobOutput into database successfully");
-
-	// initialize output files
-	OutputFile file = new OutputFile();
-	file.setJob(info);
-	file.setName("foo.txt");
-	file.setUrl("http://localhost/test/foo.txt");
+	System.out.println("Trying to save JobInfo into database");
+	saveJobInfoInDatabase(info);
+	System.out.println("Saved JobInfo into database successfully");
 
 	// save output files
-	logger.info("Trying to save OutputFile into database");
-	session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-	session.save(file);
-	session.getTransaction().commit();
-	session.close();
-	logger.info("Saved OutputFile into database successfully");
+	System.out.println("Trying to save job outputs into database");
+	JobOutputType outputs = new JobOutputType();
+	outputs.setStdOut(new URI("http://localhost/test/stdout.txt"));
+	outputs.setStdErr(new URI("http://localhost/test/stderr.txt"));
+	OutputFileType[] files = new OutputFileType[1];
+	files[0] = new OutputFileType();
+	files[0].setName("foo.txt");
+	files[0].setUrl(new URI("http://localhost/test/foo.txt"));
+	outputs.setOutputFile(files);
+	saveOutputsInDatabase(jobID, outputs);
+	System.out.println("Saved OutputFile into database successfully");
+
+	System.out.println("Update job info for job: " + jobID);
+	updateJobInfoInDatabase(jobID,
+				1,
+				"This is a test update",
+				info.getBaseURL(),
+				"testHandle");
 
 	// do some searches
-	logger.info("Searching for info about job: " + jobID);
-	session = HibernateUtil.getSessionFactory().openSession();
-	session.beginTransaction();
-	List results = session.createCriteria(JobInfo.class)
-	    .add(Expression.eq("jobID", jobID))
-	    .list();
+	System.out.println("Searching for status for job: " + jobID);
+	StatusOutputType status = getStatus(jobID);
+	System.out.println("Job Status: " + jobID +
+			   " - {" + status.getCode() +
+			   ", " + status.getMessage() +
+			   ", " + status.getBaseURL() + "}");
 
-	for (int i = 0; i < results.size(); i++) {
-	    info = (JobInfo) results.get(i);
-	    logger.info("Job Info: " + info.getJobID() +
-			" - {" + info.getCode() +
-			", " + info.getMessage() +
-			", " + info.getBaseURL() +
-			", " + info.getStartTime() + 
-			", " + info.getLastUpdate() +
-			", " + info.getClientIP() + 
-			", " + info.getClientDN() + 
-			", " + info.getServiceName() + "}");
+	System.out.println("Searching for job outputs for job: " + jobID);
+	outputs = getOutputs(jobID);
+	System.out.println("Standard output: " + outputs.getStdOut());
+	System.out.println("Standard error: " + outputs.getStdErr());
+	files = outputs.getOutputFile();
+	for (int i = 0; i < files.length; i++) {
+	    System.out.println(files[i].getName() + ": " + files[i].getUrl());
 	}
-	session.close();
-
-	logger.info("Update job info for job: " + jobID);
-	session = HibernateUtil.getSessionFactory().openSession();
-	session.beginTransaction();
-	Date lastUpdate = new Date();
-	int numRows = session.createQuery("update JobInfo info " +
-					  "set info.lastUpdate = :lastUpdate " +
-					  "where info.jobID = '" +
-					  jobID + "'")
-	    .setTimestamp("lastUpdate", lastUpdate)
-	    .executeUpdate();
-	logger.info(numRows + " rows updated");
-	session.close();
-
-	logger.info("Searching for job outputs for job: " + jobID);
-	session = HibernateUtil.getSessionFactory().openSession();
-	session.beginTransaction();
-	results = session.createQuery("from JobOutput output " +
-				      "left join fetch output.job " +
-				      "where output.job.jobID = '" +
-				      jobID + "'")
-	    .list();
-	for (int i = 0; i < results.size(); i++) {
-	    output = (JobOutput) results.get(i);
-	    logger.info("Job Outputs: " + jobID +
-			" - {" + output.getStdOut() +
-			", " + output.getStdErr() + "}");
-	}
-	session.close();
-
-	logger.info("Searching for output files for job: " + jobID);
-	session = HibernateUtil.getSessionFactory().openSession();
-	session.beginTransaction();
-	results = session.createQuery("from OutputFile file " +
-				      "left join fetch file.job " +
-				      "where file.job.jobID = '" +
-				      jobID + "'")
-	    .list();
-	for (int i = 0; i < results.size(); i++) {
-	    file = (OutputFile) results.get(i);
-	    logger.info("Output File: " + jobID +
-			" - {" + file.getName() +
-			", " + file.getUrl() + "}");
-	}
-	session.close();
     }
 }
