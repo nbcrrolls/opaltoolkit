@@ -4,6 +4,10 @@ import org.apache.axis.MessageContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.axis.transport.http.HTTPConstants;
 
+import org.globus.axis.gsi.GSIConstants;
+
+import org.apache.log4j.Logger;
+
 /**
  *
  * Utility class used by various other classes
@@ -12,6 +16,10 @@ import org.apache.axis.transport.http.HTTPConstants;
  */
 
 public class Util {
+
+    // get an instance of the log4j Logger
+    private static Logger logger = 
+	Logger.getLogger(Util.class.getName());
 
     /**
      * Get IP address of remote Web service client
@@ -29,6 +37,29 @@ public class Util {
         }
 
         HttpServletRequest req = (HttpServletRequest) tmp;
-	return req.getRemoteAddr();
+
+	// get the client IP
+	String clientIP = req.getRemoteAddr();
+	logger.info("Client's IP: " + clientIP);
+	return clientIP;
+    }
+
+    /**
+     * Get the DN for the remote Web service client
+     */
+    public static String getRemoteDN() {
+	// get the current MessageContext
+        MessageContext mc = MessageContext.getCurrentContext();
+        HttpServletRequest req = 
+            (HttpServletRequest) mc.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
+
+	// get the client DN
+        String clientDN = (String) req.getAttribute(GSIConstants.GSI_USER_DN);
+        if(clientDN == null) {
+	    clientDN = "Unknown client";
+	}
+
+	logger.info("Client's DN: " + clientDN);
+	return clientDN;
     }
 }

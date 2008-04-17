@@ -177,6 +177,30 @@ Author:
       </fileset>
     </copy>
 
+    <!-- copy over the hibernate related jars -->
+    <copy todir="${tomcat.WEB-INF}/lib">
+      <fileset dir="${lib}">
+        <!-- hibernate specific jars -->
+        <include name="antlr-2.7.6rc1.jar"/>
+        <include name="asm.jar"/>
+        <include name="asm-attrs.jar"/>
+	<include name="cglib-2.1.3.jar"/>
+	<include name="commons-collections-2.1.1.jar"/>
+	<include name="dom4j-1.6.1.jar"/>
+	<include name="hibernate3.jar"/>
+	<include name="hsqldb.jar"/>
+	<include name="jta.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${tomcat.WEB-INF}/classes">
+      <fileset dir="${project.home}/etc/">
+        <!-- hibernate configs -->
+        <include name="hibernate-opal.cfg.xml"/>
+        <include name="OpalState.hbm.xml"/>
+      </fileset>
+    </copy>
+
     <!-- copy over other jar files required into WEB-INF/lib -->
     <copy todir="${tomcat.WEB-INF}/lib">
       <fileset dir="${lib}">

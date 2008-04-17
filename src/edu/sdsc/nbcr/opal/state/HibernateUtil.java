@@ -127,6 +127,19 @@ public class HibernateUtil {
 	}
 	session.close();
 
+	logger.info("Update job info for job: " + jobID);
+	session = HibernateUtil.getSessionFactory().openSession();
+	session.beginTransaction();
+	Date lastUpdate = new Date();
+	int numRows = session.createQuery("update JobInfo info " +
+					  "set info.lastUpdate = :lastUpdate " +
+					  "where info.jobID = '" +
+					  jobID + "'")
+	    .setTimestamp("lastUpdate", lastUpdate)
+	    .executeUpdate();
+	logger.info(numRows + " rows updated");
+	session.close();
+
 	logger.info("Searching for job outputs for job: " + jobID);
 	session = HibernateUtil.getSessionFactory().openSession();
 	session.beginTransaction();
