@@ -16,15 +16,9 @@ import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.soap.SOAPService;
 import org.apache.axis.description.ServiceDesc;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.util.Date;
-import java.util.Locale;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.globus.gram.GramJob;
 
@@ -35,6 +29,16 @@ import java.util.zip.ZipOutputStream;
 
 import edu.sdsc.nbcr.opal.manager.OpalJobManager;
 import edu.sdsc.nbcr.opal.manager.ForkJobManager;
+
+import edu.sdsc.nbcr.opal.state.JobInfo;
+import edu.sdsc.nbcr.opal.state.JobOutput;
+import edu.sdsc.nbcr.opal.state.OutputFile;
+import edu.sdsc.nbcr.opal.state.HibernateUtil;
+
+import edu.sdsc.nbcr.opal.util.Util;
+
+import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
 
 /**
  *
@@ -62,12 +66,6 @@ public class AppServiceImpl
     private static boolean archiveData;
 
     /**
-     * The hash table that stores the job status -
-     * this is static so that it can be shared across multiple instances
-     */
-    private static Hashtable statusTable = new Hashtable();
-
-    /**
      * Tthe hash table that stores the locations of the outputs
      */
     private static Hashtable outputTable = new Hashtable();
@@ -84,6 +82,7 @@ public class AppServiceImpl
     private static boolean globusInUse;
 
     // the configuration information for the application
+    private String serviceName;
     private AppConfigType config;
     private File configFile;
     private long lastModified;
@@ -223,12 +222,7 @@ public class AppServiceImpl
 	// create output object
 	JobSubOutputType output = new JobSubOutputType();
 	output.setJobID(jobID);
-	StatusOutputType status = (StatusOutputType) statusTable.get(jobID);
-	if (status == null) {
-	    String msg = "Can't retrieve status for job: " + jobID;
-	    logger.error(msg);
-	    throw new FaultType(msg);
-	}
+	StatusOutputType status = queryStatus(jobID);
 	output.setStatus(status);
 
 	long t1 = System.currentTimeMillis();
@@ -260,12 +254,7 @@ public class AppServiceImpl
 
 	// create output object
 	BlockingOutputType output = new BlockingOutputType();
-	StatusOutputType status = (StatusOutputType) statusTable.get(jobID);
-	if (status == null) {
-	    String msg = "Can't retrieve status for job: " + jobID;
-	    logger.error(msg);
-	    throw new FaultType(msg);
-	}
+	StatusOutputType status = queryStatus(jobID);
 	output.setStatus(status);
 	JobOutputType jobOut = (JobOutputType) outputTable.get(jobID);
 	if (jobOut == null) {
@@ -298,13 +287,30 @@ public class AppServiceImpl
 	// retrieve the status
 	StatusOutputType status = null;
 
-	// use the memory hash table
-	if (statusTable.containsKey(in)) {
-	    status =
-		(StatusOutputType) statusTable.get(in);
-	} else {
-	    logger.error("Unknown job id: " + in);
-	    throw new FaultType("Unknown job id: " + in);
+	// retrieve job status from hibernate
+	Session session = HibernateUtil.getSessionFactory().openSession();
+	session.beginTransaction();
+	List results = session.createCriteria(JobInfo.class)
+	    .add(Expression.eq("jobID", in))
+	    .list();
+	if (results.size() == 1) {
+	    JobInfo info = (JobInfo) results.get(0);
+	    status = new StatusOutputType();
+	    status.setCode(info.getCode());
+	    status.setMessage(info.getMessage());
+	    try {
+		status.setBaseURL(new URI(info.getBaseURL()));
+	    } catch (MalformedURIException e) {
+		// log and contiue
+		logger.error(e.getMessage());
+	    }
+	}
+	session.close();
+
+	if (status == null) {
+	    String msg = "Can't retrieve job status for id: " + in;
+	    logger.error(msg);
+	    throw new FaultType(msg);
 	}
 
 	long t1 = System.currentTimeMillis();
@@ -414,14 +420,8 @@ public class AppServiceImpl
 	    // destroy the job, and wait until it is done
 	    status = jobManager.destroyJob();
 	} else {
-	    // use an in memory hash table
-	    if (statusTable.containsKey(in)) {
-		status =
-		    (StatusOutputType) statusTable.get(in);
-	    } else {
-		logger.error("Unknown job id: " + in);
-		throw new FaultType("Unknown job id: " + in);
-	    }
+	    // retrieve status for a possible finished job
+	    status = queryStatus(in);
 	}
 
 	long t1 = System.currentTimeMillis();
@@ -463,7 +463,19 @@ public class AppServiceImpl
 	    logger.error(message);
 	    throw new FaultType(message);
 	}
-	statusTable.put(jobID, status);
+
+	// initialize the job information in database
+	final JobInfo info = new JobInfo();
+	info.setJobID(jobID);
+	info.setCode(status.getCode());
+	info.setMessage(status.getMessage());
+	info.setBaseURL(status.getBaseURL().toString());
+	info.setStartTime(new Date());
+	info.setLastUpdate(new Date());
+	info.setClientDN(Util.getRemoteDN());
+	info.setClientIP(Util.getRemoteIP());
+	info.setServiceName(serviceName);
+	saveJobInfoInDatabase(info);
 
 	// instantiate & initialize the job manager
 	final OpalJobManager jobManager;
@@ -477,9 +489,9 @@ public class AppServiceImpl
 	jobManager.initialize(props, config, null);
 
 	// launch job with the given arguments
-	String handle = jobManager.launchJob(in.getArgList(), 
-					     in.getNumProcs(),
-					     outputDirName);
+	final String handle = jobManager.launchJob(in.getArgList(), 
+						   in.getNumProcs(),
+						   outputDirName);
 
 	// add this jobLaunchUtil into the jobTable
 	jobTable.put(jobID, jobManager);
@@ -489,7 +501,7 @@ public class AppServiceImpl
 	    new Thread() {
 		public void run() {
 		    try {
-			manageJob(jobManager, jobID, outputDirName, baseURL);
+			manageJob(jobManager, jobID, outputDirName, baseURL, handle);
 		    } catch (FaultType f) {
 			// status is logged, not much else to do here
 			logger.error(f);
@@ -498,7 +510,7 @@ public class AppServiceImpl
 	    }.start();
 	} else {
 	    // monitor status in the same thread
-	    manageJob(jobManager, jobID, outputDirName, baseURL);
+	    manageJob(jobManager, jobID, outputDirName, baseURL, handle);
 	}
 
 	// return the jobID
@@ -508,14 +520,21 @@ public class AppServiceImpl
     private void manageJob(OpalJobManager jobManager,
 			   String jobID,
 			   String workingDir,
-			   URI baseURL)
+			   URI baseURL,
+			   String handle)
 	throws FaultType {
 
 	// wait for job activation
 	StatusOutputType status = jobManager.waitForActivation();
 	if (status.getBaseURL() == null)
 	    status.setBaseURL(baseURL);
-	statusTable.put(jobID, status);
+
+	// update status in database
+	updateJobInfoInDatabase(jobID, 
+				status.getCode(),
+				status.getMessage(),
+				status.getBaseURL().toString(),
+				handle);
 
 	// if the job is still running, wait for it to finish
 	if (!((status.getCode() == GramJob.STATUS_FAILED) ||
@@ -531,7 +550,13 @@ public class AppServiceImpl
 	String jobMessage = status.getMessage();
 	status.setCode(GramJob.STATUS_STAGE_OUT);
 	status.setMessage("Writing output metadata");
-	statusTable.put(jobID, status);
+
+	// update status in database
+	updateJobInfoInDatabase(jobID, 
+				status.getCode(),
+				status.getMessage(),
+				status.getBaseURL().toString(),
+				handle);
 
 	// retrieve job outputs
 	// make sure the stdout and stderr exist
@@ -541,7 +566,14 @@ public class AppServiceImpl
 	    logger.error(msg);
 	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage(msg);
-	    statusTable.put(jobID, status);
+
+	    // update status in database
+	    updateJobInfoInDatabase(jobID, 
+				    status.getCode(),
+				    status.getMessage(),
+				    status.getBaseURL().toString(),
+				    handle);
+	    
 	    jobTable.remove(jobID);
 	    return;
 	}
@@ -551,7 +583,14 @@ public class AppServiceImpl
 	    logger.error(msg);
 	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage(msg);
-	    statusTable.put(jobID, status);
+
+	    // update status in database
+	    updateJobInfoInDatabase(jobID, 
+				    status.getCode(),
+				    status.getMessage(),
+				    status.getBaseURL().toString(),
+				    handle);
+	    
 	    jobTable.remove(jobID);
 	    return;
 	}
@@ -644,7 +683,14 @@ public class AppServiceImpl
 			      e.getMessage());
 
 	    // finish up
-	    statusTable.put(jobID, status);
+
+	    // update status in database
+	    updateJobInfoInDatabase(jobID, 
+				    status.getCode(),
+				    status.getMessage(),
+				    status.getBaseURL().toString(),
+				    handle);
+
 	    jobTable.remove(jobID);
 
 	    return;
@@ -653,7 +699,13 @@ public class AppServiceImpl
 	// update final status
 	status.setCode(jobCode);
 	status.setMessage(jobMessage);
-	statusTable.put(jobID, status);
+	
+	// update status in database
+	updateJobInfoInDatabase(jobID, 
+				status.getCode(),
+				status.getMessage(),
+				status.getBaseURL().toString(),
+				handle);
 
 	// get rid of the jobManager from the jobTable
 	jobTable.remove(jobID);
@@ -697,6 +749,11 @@ public class AppServiceImpl
 	// read location of config file
 	MessageContext mc = MessageContext.getCurrentContext();
 	SOAPService service = mc.getService();
+	serviceName = service.getName();
+	if (serviceName == null) {
+	    serviceName = "Unknown service";
+	}
+
 	String configFileName = (String) service.getOption("appConfig");
 	if (configFileName == null) {
 	    logger.error("Required parameter appConfig not found in WSDD");
@@ -733,6 +790,53 @@ public class AppServiceImpl
 		throw new FaultType("Can't read application configuration from XML: " +
 				    e.getMessage());
 	    }
+	}
+    }
+
+    private void saveJobInfoInDatabase(JobInfo info)
+	throws FaultType {
+	logger.info("called");
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+	session.save(info);
+	session.getTransaction().commit();
+	session.close();
+    }
+
+    private void updateJobInfoInDatabase(String jobID,
+					 int code,
+					 String message,
+					 String baseURL,
+					 String handle)
+	throws FaultType {
+	logger.info("called");
+
+	Session session = HibernateUtil.getSessionFactory().openSession();
+	session.beginTransaction();
+	Date lastUpdate = new Date();
+	int numRows = session.createQuery("update JobInfo info " +
+					  "set info.lastUpdate = :lastUpdate, " +
+					  "info.code = :code, " +
+					  "info.message = :message, " +
+					  "info.baseURL = :baseURL, " +
+					  "info.handle = :handle " +
+					  "where info.jobID = '" +
+					  jobID + "'")
+	    .setTimestamp("lastUpdate", lastUpdate)
+	    .setInteger("code", code)
+	    .setString("message", message)
+	    .setString("baseURL", baseURL)
+	    .setString("handle", handle)
+	    .executeUpdate();
+	session.close();
+
+	if (numRows == 1) {
+	    logger.info("Updated status for job: " + jobID);
+	} else {
+	    String msg = "Unable to update status for job: " + jobID;
+	    logger.error(msg);
+	    throw new FaultType(msg);
 	}
     }
 }
