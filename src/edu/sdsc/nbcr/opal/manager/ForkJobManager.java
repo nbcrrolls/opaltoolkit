@@ -199,6 +199,13 @@ public class ForkJobManager implements OpalJobManager {
 	throws FaultType {
 	logger.info("called");
 
+	// check if this process has been started already
+	if (proc == null) {
+	    String msg = "Can't wait for a process that hasn't be started";
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+
 	// poll till status is ACTIVE or ERROR
 	while (!started) {
 	    try {
@@ -224,6 +231,13 @@ public class ForkJobManager implements OpalJobManager {
     public StatusOutputType waitForCompletion() 
 	throws FaultType {
 	logger.info("called");
+
+	// check if this process has been started already
+	if (proc == null) {
+	    String msg = "Can't wait for a process that hasn't be started";
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
 
 	// wait till the process finishes
 	int exitValue = 0;
@@ -267,6 +281,13 @@ public class ForkJobManager implements OpalJobManager {
     public StatusOutputType destroyJob()
 	throws FaultType {
 	logger.info("called");
+
+	// check if this process has been started already
+	if (proc == null) {
+	    String msg = "Can't destroy a process that hasn't be started";
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
 
 	// destroy process
 	proc.destroy();
