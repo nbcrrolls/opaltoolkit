@@ -63,7 +63,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
    <context-param>
         <!-- insert the URL of the opal service that you want to use -->
         <param-name>opalUrl</param-name>
-        <param-value>http://localhost:8080/opal/services</param-value>
+        <param-value>http://localhost:8080/opal2/services</param-value>
     </context-param>
   <!-- Opal GUI config param... do not touch this -->
 
