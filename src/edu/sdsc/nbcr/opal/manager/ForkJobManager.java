@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
-import edu.sdsc.nbcr.opal.FaultType;
 
 /**
  *
@@ -44,12 +43,12 @@ public class ForkJobManager implements OpalJobManager {
      * @param handle manager specific handle to bind to, if this is a resumption. 
      * NULL,if this manager is being initialized for the first time.
      * 
-     * @throws FaultType if there is an error during initialization
+     * @throws JobManagerException if there is an error during initialization
      */
     public void initialize(Properties props,
 			   AppConfigType config,
 			   String handle)
-	throws FaultType {
+	throws JobManagerException {
 	logger.info("called");
 
 	this.props = props;
@@ -63,14 +62,14 @@ public class ForkJobManager implements OpalJobManager {
     /**
      * General clean up, if need be 
      *
-     * @throws FaultType if there is an error during destruction
+     * @throws JobManagerException if there is an error during destruction
      */
     public void destroyJobManager()
-	throws FaultType {
+	throws JobManagerException {
 	logger.info("called");
 
 	// TODO: not sure what needs to be done here
-	throw new FaultType("destroyJobManager() method not implemented");
+	throw new JobManagerException("destroyJobManager() method not implemented");
     }
     
     /**
@@ -83,12 +82,12 @@ public class ForkJobManager implements OpalJobManager {
      * @param wd String representing the working directory of this job on the local system
      * 
      * @return a plugin specific job handle to be persisted by the service implementation
-     * @throws FaultType if there is an error during job launch
+     * @throws JobManagerException if there is an error during job launch
      */
     public String launchJob(String argList, 
 			    Integer numProcs, 
 			    String wd)
-	throws FaultType {
+	throws JobManagerException {
 	logger.info("called");
 
 	// make sure we have all parameters we need
@@ -96,7 +95,7 @@ public class ForkJobManager implements OpalJobManager {
 	    String msg = "Can't find application configuration - "
 		+ "Plugin not initialized correctly";
 	    logger.error(msg);
-	    throw new FaultType(msg);
+	    throw new JobManagerException(msg);
 	}
 
 	// create list of arguments
@@ -125,12 +124,12 @@ public class ForkJobManager implements OpalJobManager {
 	    if (numProcs == null) {
 		String msg = "Number of processes unspecified for parallel job";
 		logger.error(msg);
-		throw new FaultType(msg);
+		throw new JobManagerException(msg);
 	    } else if (numProcs.intValue() > systemProcs) {
 		String msg = "Processors required - " + numProcs +
 		    ", available - " + systemProcs;
 		logger.error(msg);
-		throw new FaultType(msg);
+		throw new JobManagerException(msg);
 	    }
 	} else {
 	}
@@ -144,7 +143,7 @@ public class ForkJobManager implements OpalJobManager {
 	    if (mpiRun == null) {
 		String msg = "Can't find property mpi.run for running parallel job";
 		logger.error(msg);
-		throw new FaultType(msg);
+		throw new JobManagerException(msg);
 	    }
 	    cmd = new String(mpiRun + " " + "-np " + numProcs + " " +
 			     config.getBinaryLocation());
@@ -168,10 +167,10 @@ public class ForkJobManager implements OpalJobManager {
 	    stdoutThread = writeStdOut(proc, wd);
 	    stderrThread = writeStdErr(proc, wd);
 	} catch (IOException ioe) {
-	    logger.error(ioe);
-	    status.setCode(GramJob.STATUS_FAILED);
-	    status.setMessage("Error while running executable via fork - " +
-			      ioe.getMessage());
+	    String msg = "Error while running executable via fork - " +
+		ioe.getMessage();
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
 	}
 	
 	// update status to active
@@ -193,17 +192,17 @@ public class ForkJobManager implements OpalJobManager {
      * Block until the job state is GramJob.STATUS_ACTIVE
      *
      * @return status for this job after blocking
-     * @throws FaultType if there is an error while waiting for the job to be ACTIVE
+     * @throws JobManagerException if there is an error while waiting for the job to be ACTIVE
      */
     public StatusOutputType waitForActivation() 
-	throws FaultType {
+	throws JobManagerException {
 	logger.info("called");
 
 	// check if this process has been started already
 	if (proc == null) {
 	    String msg = "Can't wait for a process that hasn't be started";
 	    logger.error(msg);
-	    throw new FaultType(msg);
+	    throw new JobManagerException(msg);
 	}
 
 	// poll till status is ACTIVE or ERROR
@@ -226,17 +225,17 @@ public class ForkJobManager implements OpalJobManager {
      * Block until the job finishes executing
      *
      * @return final job status
-     * @throws FaultType if there is an error while waiting for the job to finish
+     * @throws JobManagerException if there is an error while waiting for the job to finish
      */
     public StatusOutputType waitForCompletion() 
-	throws FaultType {
+	throws JobManagerException {
 	logger.info("called");
 
 	// check if this process has been started already
 	if (proc == null) {
 	    String msg = "Can't wait for a process that hasn't be started";
 	    logger.error(msg);
-	    throw new FaultType(msg);
+	    throw new JobManagerException(msg);
 	}
 
 	// wait till the process finishes
@@ -246,7 +245,7 @@ public class ForkJobManager implements OpalJobManager {
 	} catch (InterruptedException ie) {
 	    String msg = "Exception while waiting for process to finish";
 	    logger.error(msg, ie);
-	    throw new FaultType(msg + " - " + ie.getMessage());
+	    throw new JobManagerException(msg + " - " + ie.getMessage());
 	}
 
 	// update status
@@ -276,17 +275,17 @@ public class ForkJobManager implements OpalJobManager {
      * Destroy this job
      * 
      * @return final job status
-     * @throws FaultType if there is an error during job destruction
+     * @throws JobManagerException if there is an error during job destruction
      */
     public StatusOutputType destroyJob()
-	throws FaultType {
+	throws JobManagerException {
 	logger.info("called");
 
 	// check if this process has been started already
 	if (proc == null) {
 	    String msg = "Can't destroy a process that hasn't be started";
 	    logger.error(msg);
-	    throw new FaultType(msg);
+	    throw new JobManagerException(msg);
 	}
 
 	// destroy process

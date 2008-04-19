@@ -29,6 +29,7 @@ import java.util.zip.ZipOutputStream;
 
 import edu.sdsc.nbcr.opal.manager.OpalJobManager;
 import edu.sdsc.nbcr.opal.manager.ForkJobManager;
+import edu.sdsc.nbcr.opal.manager.JobManagerException;
 
 import edu.sdsc.nbcr.opal.state.JobInfo;
 import edu.sdsc.nbcr.opal.state.JobOutput;
@@ -371,7 +372,13 @@ public class AppServiceImpl
 		(OpalJobManager) jobTable.get(in);
 
 	    // destroy the job, and wait until it is done
-	    status = jobManager.destroyJob();
+	    try {
+		status = jobManager.destroyJob();
+	    } catch (JobManagerException jme) {
+		String msg = jme.getMessage();
+		logger.error(msg);
+		throw new FaultType(msg);
+	    }
 	} else {
 	    // retrieve status for a possible finished job
 	    status = queryStatus(in);
@@ -439,12 +446,39 @@ public class AppServiceImpl
 	} else { // process exec
 	    jobManager = new ForkJobManager();
 	}
-	jobManager.initialize(props, config, null);
+	try {
+	    jobManager.initialize(props, config, null);
+	} catch (JobManagerException jme) {
+	    logger.error(jme.getMessage());
+
+	    // save status in database
+	    HibernateUtil.updateJobInfoInDatabase(jobID,
+						  GramJob.STATUS_FAILED,
+						  jme.getMessage(),
+						  info.getBaseURL(),
+						  null);
+
+	    throw new FaultType(jme.getMessage());
+	}
 
 	// launch job with the given arguments
-	final String handle = jobManager.launchJob(in.getArgList(), 
-						   in.getNumProcs(),
-						   outputDirName);
+	final String handle;
+	try {
+	    handle = jobManager.launchJob(in.getArgList(), 
+					  in.getNumProcs(),
+					  outputDirName);
+	} catch (JobManagerException jme) {
+	    logger.error(jme.getMessage());
+
+	    // save status in database
+	    HibernateUtil.updateJobInfoInDatabase(jobID,
+						  GramJob.STATUS_FAILED,
+						  jme.getMessage(),
+						  info.getBaseURL(),
+						  null);
+
+	    throw new FaultType(jme.getMessage());
+	}
 
 	// add this jobLaunchUtil into the jobTable
 	jobTable.put(jobID, jobManager);
@@ -478,7 +512,22 @@ public class AppServiceImpl
 	throws FaultType {
 
 	// wait for job activation
-	StatusOutputType status = jobManager.waitForActivation();
+	StatusOutputType status = null;
+	try {
+	    jobManager.waitForActivation();
+	} catch (JobManagerException jme) {
+	    logger.error(jme.getMessage());
+
+	    // save status in database
+	    HibernateUtil.updateJobInfoInDatabase(jobID,
+						  GramJob.STATUS_FAILED,
+						  jme.getMessage(),
+						  baseURL.toString(),
+						  handle);
+
+	    throw new FaultType(jme.getMessage());
+	}
+
 	if (status.getBaseURL() == null)
 	    status.setBaseURL(baseURL);
 
@@ -492,7 +541,20 @@ public class AppServiceImpl
 	// if the job is still running, wait for it to finish
 	if (!((status.getCode() == GramJob.STATUS_FAILED) ||
 	      (status.getCode() == GramJob.STATUS_DONE))) {
-	    status = jobManager.waitForCompletion();
+	    try {
+		status = jobManager.waitForCompletion();
+	    } catch (JobManagerException jme) {
+		logger.error(jme.getMessage());
+
+		// save status in database
+		HibernateUtil.updateJobInfoInDatabase(jobID,
+						      GramJob.STATUS_FAILED,
+						      jme.getMessage(),
+						      status.getBaseURL().toString(),
+						      handle);
+
+		throw new FaultType(jme.getMessage());
+	    }
 	}
 	if (status.getBaseURL() == null)
 	    status.setBaseURL(baseURL);

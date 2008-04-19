@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
-import edu.sdsc.nbcr.opal.FaultType;
 
 /**
  * Job Manager interface for Opal 2.x
@@ -26,20 +25,20 @@ public interface OpalJobManager {
      * @param handle manager specific handle to bind to, if this is a resumption. 
      * NULL,if this manager is being initialized for the first time.
      * 
-     * @throws FaultType if there is an error during initialization
+     * @throws JobManagerException if there is an error during initialization
      */
     public void initialize(Properties props,
 			   AppConfigType config,
 			   String handle)
-	throws FaultType;
+	throws JobManagerException;
     
     /**
      * General clean up, if need be 
      *
-     * @throws FaultType if there is an error during destruction
+     * @throws JobManagerException if there is an error during destruction
      */
     public void destroyJobManager()
-	throws FaultType;
+	throws JobManagerException;
     
     /**
      * Launch a job with the given arguments. The input files are already staged in by
@@ -51,38 +50,38 @@ public interface OpalJobManager {
      * @param wd String representing the working directory of this job on the local system
      * 
      * @return a plugin specific job handle to be persisted by the service implementation
-     * @throws FaultType if there is an error during job launch
+     * @throws JobManagerException if there is an error during job launch
      */
     public String launchJob(String argList, 
 			    Integer numproc, 
 			    String wd)
-	throws FaultType;
+	throws JobManagerException;
 
     /**
      * Block until the job state is GramJob.STATUS_ACTIVE
      *
      * @return status for this job after blocking
-     * @throws FaultType if there is an error while waiting for the job to be ACTIVE
+     * @throws JobManagerException if there is an error while waiting for the job to be ACTIVE
      */
     public StatusOutputType waitForActivation() 
-	throws FaultType;
+	throws JobManagerException;
 
     /**
      * Block until the job finishes executing
      *
      * @return final job status
-     * @throws FaultType if there is an error while waiting for the job to finish
+     * @throws JobManagerException if there is an error while waiting for the job to finish
      */
     public StatusOutputType waitForCompletion() 
-	throws FaultType;
+	throws JobManagerException;
 
     /**
      * Destroy this job
      * 
      * @return final job status
-     * @throws FaultType if there is an error during job destruction
+     * @throws JobManagerException if there is an error during job destruction
      */
     public StatusOutputType destroyJob()
-	throws FaultType;
+	throws JobManagerException;
 
 }
