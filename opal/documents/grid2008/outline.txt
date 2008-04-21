@@ -1,22 +1,39 @@
-1) Intro on scientific workflows
-2) Vision vs other workflow management systems
+Authors: 
+
+Sriram, Guillaume, Wes, Luca, Jane, Sargis, Wilfred, Michel, Peter
+
+Title:
+
+On Supporting Molecular Visualization on Grid Resources using Visual
+Programming Environments
+
+Outline:
+
+1) Intro on scientific workflows (MS) and grid computing (SK)
+
+2) Vision vs other workflow management systems (MS, except section 2.c)
 	a. Design -- workflow representation and control
-	b. API -- introspection requirement
-	c. Comparison with other tools
+	b. API -- how to write Vision nodes, introspection, etc
+	c. Comparison with other tools (LC)
 	   i)  Kepler, Ptolemy and MoML
-	   ii) Taverna, Scufl and freeflo
-3) Application based services
+	   ii) Taverna, Scufl and Freeflou
+
+3) Application based services (SK)
 	a. Opal wrapper and GUI
 	b. Opal and Opal-CSF4
 	c. Data services
+
 4) Service based workflows
-	a. Vision based grid workflows
-	b. Virtualization of Opal services
+	a. Vision based grid workflows (MS, GV, SD)
+	b. Virtualization of Opal services (SD - could you write something about how you automatically create Vision nodes from the service list)
 	c. Virtualization of Vision based workflows
-	   i) Use a local CLI opal client to access local or remote services
-	   ii) automatic vision node creation through the opal client information service
-5) Discussion - Workflow modeling and execution 
-	a. How vision currently stores workflow
-	b. fault tolerance
-	c. Support for XPDL and other representations for workflows
-6) Conclusions
+	   i) Use a local CLI opal client to access local or remote services (SK)
+	   ii) Automatic vision node creation through the opal client information service (SK, GV - how the generated class is converted into a Vision node using introspection)
+
+5) Discussion - Workflow modeling and execution
+	a. How vision currently stores workflow (MS)
+	b. Fault tolerance (MS, SK)
+	c. Support for XPDL and other representations for workflows (LC)
+
+6) Conclusions (SK)
+
