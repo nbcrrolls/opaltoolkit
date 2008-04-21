@@ -1,0 +1,23 @@
+1) Intro on scientific workflows
+2) Vision vs other workflow management systems
+	a. Design -- workflow representation and control
+	b. API -- introspection requirement
+	c. comparison with other tools
+3) Application based services
+	a. Opal wrapper and GUI
+	b. Opal and Opal-CSF4
+	c. Data services
+4) Service based workflows
+	a. Vision based grid workflows
+	b. Virtualization of Opal services
+	c. Virtualization of Vision based workflows
+		i) Use a local CLI opal client to access local or remote services
+		ii) automatic vision node creation through the opal client information service
+5) Workflow modeling and execution 
+	a. How vision currently stores workflow
+	b. fault tolerance
+	c. Support for XPDL and other representations for workflows
+6) Related works
+	a. Kepler, Ptolemy and MoML
+	b. Taverna, Scufl and freeflo
+7) Discussion
