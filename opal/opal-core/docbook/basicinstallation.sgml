@@ -130,6 +130,12 @@ properties correctly. It should look something like the following:</para>
     # modify the opal.xml accordingly
     # working.dir=opal-jobs
 
+    # if you are using symlinks above, and they resolve to a different
+    # location on the head node as opposed to the compute nodes (depending
+    # on how NFS is set up), then set the following property to the path
+    # that is valid on the head node as well as the compute nodes
+    # absolute.path=/tmp/opal-jobs
+
     # database information
     database.use=false
     database.url=jdbc:postgresql://localhost/opal_db
@@ -168,7 +174,12 @@ commands:
 </para>
 
 <para>Note that the above use of symbolic links will only work on Unix
-systems. </para>
+systems. In addition, on certain clusters, the absolute paths may resolve
+differently on the head node and the compute nodes of a cluster (depending
+on the NFS mounts). However, there is always one path that can be
+consistently used for the working directory on the head node as well as the
+compute nodes. In this scenario, se the <filename>absolute.path</filename>
+to point to this consistent path.</para>
 
 <para>If you wish to install a database to persist service state, please refer
 to <xref linkend="database">. If you would like to set up
