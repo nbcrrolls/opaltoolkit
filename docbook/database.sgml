@@ -1,10 +1,14 @@
 <chapter id="database" xreflabel="Opal State Database Installation Instruction">
 <title>Opal State Database Installation Instruction</title>
 
-<para>This chapter describes how to configure Opal to save its state information in an external Data Base.</para>
+<para>By default, Opal stores its state into an in-memory <ulink
+type="http" url="http://hsqldb.org/">HSQL</ulink> database, so
+it should work out of the box. However, for production systems you may wish
+to store the Opal state in a real external database. This chapter describes
+how to configure Opal to use PostgreSQL to store its state</para>
 
 <orderedlist>
-<listitem><para>Install a PostgreSQL database (version 7.4.6 or higher).</para></listitem>
+<listitem><para>Install a PostgreSQL database (version 8.2.x).</para></listitem>
 
 <listitem><para>Create a database called <emphasis role="italics">opal_db</emphasis>, and a user called
 <emphasis role="italics">opal_user</emphasis> with a password. Grant all permissions on opal_db to the
@@ -12,51 +16,42 @@ opal_user. Configure the database to accept remote JDBC connections (consult
 the database documentation for this).</para>
 </listitem>
 
-<listitem><para>Create the job status table inside the <emphasis role="italics">opal_db</emphasis> database using
-the following:
+<listitem><para>Edit the <emphasis
+role="italics">etc/hibernate-opal.cfg.xml</emphasis> configuration file and
+comment out the properties that are HSQL specific. In particular, the
+following five lines should be commented out as follows:
 <screen>
-   create table job_status (
-              job_id varchar(32) not null primary key,
-       	      code integer not null,
-       	      message text not null,
-       	      base_url varchar(128) not null,
-	      start_time varchar(128),
-	      last_update varchar(128),
-       	      client_dn varchar(128),
-       	      client_ip varchar(128),
-       	      service_name varchar(128));
-</screen>
+        &lt;!-- Database connection settings for HSQL --&gt;
+&lt;!--         &lt;property name="connection.driver_class"&gt;org.hsqldb.jdbcDriver&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="connection.url"&gt;jdbc:hsqldb:file:data/opaldb&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="connection.username"&gt;sa&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="connection.password"&gt;&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="dialect"&gt;org.hibernate.dialect.HSQLDialect&lt;/property&gt; --&gt;
+</screen> 
 </para>
 </listitem>
 
-<listitem><para>Create the output table inside the <emphasis role="italics">opal_db</emphasis> database using the
-following:
+<listitem><para>Uncomment the properties that are PostgreSQL specific. In
+particular, uncomment the following five lines as follows:
 <screen>
-   create table job_output (
-              job_id varchar(32) not null primary key,
-       	      std_out varchar(128) not null,
-       	      std_err varchar(128) not null,
-       	      foreign key(job_id) references job_status(job_id));
+        &lt;!-- Database connection settings for PostgreSQL --&gt;
+        &lt;property name="connection.driver_class"&gt;org.postgresql.Driver&lt;/property&gt;
+        &lt;property name="connection.url"&gt;jdbc:postgresql://localhost/opaldb&lt;/property&gt;
+        &lt;property name="connection.username"&gt;opal_user&lt;/property&gt;
+        &lt;property name="connection.password"&gt;opal_passwd&lt;/property&gt;
+        &lt;property name="dialect"&gt;org.hibernate.dialect.PostgreSQLDialect&lt;/property&gt;
 </screen>
+</para>
+
+<para>Note that you can change the property <emphasis
+role="italics">connection.url</emphasis> to point to a database that is
+running on another machine as long as it can accept JDBC connection from
+the machine running the Opal services. If the database is running on the
+same machine as the Opal server, there is no need to change the value of
+this property.
 </para>
 </listitem>
 
-<listitem><para>Create the output file table inside the <emphasis role="italics">opal_db</emphasis> database using
-the following:
-<screen>
-   create table output_file (
-              job_id varchar(32) not null,
-       	      name varchar(128) not null,
-       	      url varchar(128) not null,
-       	      foreign key(job_id) references job_status(job_id));
-</screen>
-</para>
-</listitem>
-
-<listitem><para>Set the following properties in the opal.properties file:
-database.url (a jdbc url), database.user (opal_user), database.passwd, and
-database.use (true, if database is to be used - default is false).</para>
-</listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>

@@ -55,8 +55,9 @@ requires the following packages:</para>
    a version of MPI. You will also need to make sure that your SSH keys are
    set up to be able to run MPI jobs without prompting for a password.</para></listitem>
 
-   <listitem><para>Postgres 7.4.6 (or higher): If you plan to persist the state of the
-   service in a database, you will need to install Postgres from <ulink type="http"
+   <listitem><para>Postgres 8.2.4 (or higher 8.2 flavors): If you plan to
+   persist the state of the service in a database, you will need to install
+   Postgres from <ulink type="http"
    url="http://www.postgresql.org/">http://www.postgresql.org/</ulink>.</para></listitem>
 
    <listitem><para>Scheduler Tools: One way to enable access to schedulers is via the
@@ -129,12 +130,6 @@ properties correctly. It should look something like the following:</para>
     # the name of the symlink is changed to something other than "opal-jobs", 
     # modify the opal.xml accordingly
     # working.dir=opal
-
-    # database information
-    database.use=false
-    database.url=jdbc:postgresql://localhost/opal_db
-    database.user=opal_user
-    database.passwd=opal_passwd
 
     # drmma information
     drmaa.use=false
