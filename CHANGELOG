@@ -12,6 +12,12 @@ Version 1.9.4:
    - Fixed a bug in the JobStatus page that was not displaying properly the 
      name of the service
 
+- Opal Services:
+  
+  - The user can now set the location of the working directory in the
+    opal.properties if the symlinks are resolved to different locations on
+    the head and compute nodes of a cluster
+
 Version 1.9.3:
 
 - Opal Dashboard:
