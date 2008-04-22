@@ -149,6 +149,13 @@ public class AppServiceImpl
 	try {
 	    File prefixDir = new File(outputPrefix);
 	    outputPrefix = prefixDir.getCanonicalPath();
+	    String absolutePath = props.getProperty("absolute.path");
+	    if (absolutePath != null) {
+		outputPrefix = absolutePath;
+		logger.info("Found absolute path for working dir: " + outputPrefix);
+	    } else {
+		logger.info("Found canonical path for working dir: " + outputPrefix);
+	    }
 	} catch (IOException e) {
 	    logger.fatal(e);
 	}
