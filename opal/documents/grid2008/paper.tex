@@ -1,0 +1,101 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{graphicx}
+
+\begin{document}
+
+% paper title
+\title{On Supporting Molecular Visualization on Grid Resources using Visual
+  Programming Environments}
+
+% author information
+\author{\authorblockN{Sriram Krishnan\authorrefmark{1}\authorrefmark{2},
+    Guillaume Vareille\authorrefmark{3},
+    Wesley Goodman\authorrefmark{1},
+    Luca Clementi\authorrefmark{1},\\
+    Jane Ren\authorrefmark{1},
+    Sargis Dallakyan\authorrefmark{3},
+    Wilfred Li\authorrefmark{1}\authorrefmark{2},
+    Michel Sanner\authorrefmark{3} and
+    Peter Arzberger\authorrefmark{1}}
+  \authorblockA{\authorrefmark{1}National Biomedical Computation Resource\\
+    CRBS, UC San Diego, 9500 Gilman Dr, La Jolla, CA 92093}
+  \authorblockA{\authorrefmark{2}San Diego Supercomputer Center\\
+    UC San Diego MC 0505, 9500 Gilman Dr, La Jolla, CA 92093}
+  \authorblockA{\authorrefmark{3}The Molecular Graphics Lab\\
+    The Scripps Research Institute, La Jolla, CA 92093
+    }
+  \authorblockA{sriram@sdsc.edu, vareille@scripps.edu, \{wgoodman,
+      lclement, j2ren@ucsd.edu\},\\
+      wilfred@sdsc.edu, sanner@scripps.edu, parzberger@ucsd.edu}
+  }
+
+
+% make the title area
+\maketitle
+
+\begin{abstract}
+
+  Abstract goes here (Sriram)
+
+\end{abstract}
+
+\section{Intro on scientific workflows and grid computing}
+
+- Scientific workflows: Michel
+
+- Grid computing: Sriram
+
+\section {Vision vs other workflow management systems (MS, except section
+  2.c)}
+
+- Design -- workflow representation and control: Michel
+
+- API -- how to write Vision nodes, introspection, etc: Michel
+
+- Comparison with other tools: Luca
+
+  - Kepler, Ptolemy and MoML
+
+  - Taverna, Scufl and Freeflou
+
+\section {Application based services}
+
+- Opal wrapper and GUI \cite{opal}: Sriram 
+
+- Opal and Opal-CSF4: Sriram
+
+- Data services: Sriram
+
+\section {Service based workflows}
+
+- Vision based grid workflows (Michel, Guillaume, Sargis)
+
+- Virtualization of Opal services (Sargis - something about how you
+automatically create Vision nodes from the service list)
+
+- Virtualization of Vision based workflows
+
+  i) Use a local CLI opal client to access local or remote services (Sriram)
+
+ ii) Automatic vision node creation through the opal client information
+ service (Sriram, Guillaume - how the generated class is converted into a Vision node using introspection)
+
+\section {Discussion - Workflow modeling and execution}
+
+- How vision currently stores workflow (Michel)
+
+- Fault tolerance (Michel, Sriram)
+
+- Support for XPDL and other representations for workflows (Luca)
+
+\section {Conclusions}
+
+- Conclusions (Sriram)
+
+%% References
+\bibliographystyle{plain}
+\bibliography{paper}
+
+% that's all folks
+\end{document}
