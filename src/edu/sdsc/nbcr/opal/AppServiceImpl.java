@@ -514,7 +514,7 @@ public class AppServiceImpl
 	// wait for job activation
 	StatusOutputType status = null;
 	try {
-	    jobManager.waitForActivation();
+	    status = jobManager.waitForActivation();
 	} catch (JobManagerException jme) {
 	    logger.error(jme.getMessage());
 
