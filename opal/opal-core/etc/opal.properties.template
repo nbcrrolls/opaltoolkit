@@ -15,16 +15,20 @@ mpi.run=/path/to/your/mpi
 # NFS mounted if this is on a cluster). if this is a symlink, copy
 # etc/opal.xml to $CATALINA_HOME/conf/Catalina/localhost/opal.xml. if
 # the name of the symlink is changed to something other than "opal-jobs", 
-# modify the opal.xml accordingly
+# modify the opal.xml accordingly. 
 # working.dir=opal-jobs
+
+# if you are using symlinks above, and they resolve to a different
+# location on the head node as opposed to the compute nodes (depending
+# on how NFS is set up), then set the following property to the path
+# that is valid on the head node as well as the compute nodes
+# absolute.path=/tmp/opal-jobs
 
 # database information
 database.use=false
-database.url=jdbc:postgresql://localhost/app_db
-database.user=app_user
-database.passwd=app_user
-
-
+database.url=jdbc:postgresql://localhost/opal_db
+database.user=opal_user
+database.passwd=opal_user
 
 # drmma information
 drmaa.use=false
@@ -33,8 +37,8 @@ drmaa.pe=mpich
 # globus information, if drmaa is not being used
 globus.use=false
 globus.gatekeeper=ws.nbcr.net:2119/jobmanager-sge
-globus.service_cert=/Users/sriramkrishnan/certs/app_service.cert.pem
-globus.service_privkey=/Users/sriramkrishnan/certs/app_service.privkey
+globus.service_cert=/Users/sriramkrishnan/certs/opal_service.cert.pem
+globus.service_privkey=/Users/sriramkrishnan/certs/opal_service.privkey
 
 
 # use this key to display how long to save user data on server
