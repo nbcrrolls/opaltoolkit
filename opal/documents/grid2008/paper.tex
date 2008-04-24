@@ -318,22 +318,50 @@ this paper (and can be found in \cite{opal}), the overall architecture of
 is shown in Figure \ref{fig:arch}. The salient features of Opal are as
 follows:
 
-% TODO: Expand (04/23)
 \begin{enumerate}
-\item{Scheduling and Cluster Management}
-\item{Data management and Persistence}
-\item{Security}
-\item{Standardized WSDL API}
-\item{Argument Description and Dynamic Interface Generation}
+\item{{\bf Scheduling and Cluster Management:} Since different sites use
+    different schedulers such as SGE \cite{sge}, Condor \cite{condor},
+    etc., Opal provides a uniform way to access them via standard APIs such
+    as Globus GRAM \cite{gram} and DRMAA \cite{drmaa}. The schedulers are
+    simply specified using a properties file, and Opal configures itself
+    appropriately to access the schedulers via the appropriate parameters.
+    In addition, we are currently also able to submit jobs to the CSF4
+    metascheduler \cite{csf4} using its WSRF API \cite{wsrf} as described
+    in \cite{opal-gui}.}
+
+\item{{\bf Data management and Persistence:} The Opal toolkit manages the
+    job data for a particular run on behalf of the user. Every job is run
+    in a separate workspace so that multiple jobs from different users can
+    be run concurrently. Furthermore, information about job status and
+    outputs is persisted in a database to provide fault-tolerance for the
+    services.}
+
+\item{{\bf Security:} Opal services can be configured to use
+    transport-level GSI-based \cite{gsi} security so as to restrict access
+    to only authorized users.}
+
+\item{{\bf Standardized WSDL API:} All Opal use a standard WSDL so that
+    they can accessed in a uniform manner by different clients. We choose
+    not to generate application specific WSDLs to avoid regneration of
+    client-side stubs and rewriting of clients for every application.}
+
+\item{{\bf Argument Description and Dynamic Interface Generation:} Opal
+    services can be optionally configured with an XML specification for the
+    command-line arguments. This specification consists of a description
+    for flags, tagged and untagged parameters, and grouping of arguments.
+    Flags are not ordered and are usually represented with a character
+    prefixed with a dash and they activate a functionality in the
+    application (e.g. -verbose). Tagged Parameters are usually formed by a
+    prefix and input value (e.g. -input <filename>) - they can appear in
+    any order. Untagged parameters are not prefixed, and hence their order
+    is relevant. The argument description is mainly useful for two purposes
+    - for validation of command-line arguments passed to the application,
+    and for automatic interface generation. A detailed description of the
+    argument description, and automatic generation of Web forms from the
+    description is provided in \cite{opal-gui}. A complete lifecycle of
+    this process is shown in Figure \ref{fig:opal-gui}.}
+
 \end{enumerate}
-
-- Opal wrapper and GUI: Sriram 
-
-- Opal and Opal-CSF4: Sriram
-
-- Data services: Sriram
-
-- Status, more information
 
 \begin{figure}
 \begin{center}
@@ -342,6 +370,11 @@ follows:
 \caption{Service Invocation via the Opal GUI}
 \label{fig:opal-gui}
 \end{figure}
+
+The Opal toolkit is freely available from SourceForge, and uses an Open
+Source BSD-style license. The current stable version of Opal at the time of
+writing this manuscript is 1.9.3, and more information is available from
+out website \cite{opal-website}.
 
 - Towards Opal2
 
