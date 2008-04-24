@@ -36,32 +36,33 @@
 
 \begin{abstract}
 
-  The visual programming paradigm provided by tools such as AVS [ref],
-  OpenDX [ref], SciRun [ref], etc have been around for a couple decades.
-  Recently, with the advent of the Web 2.0 paradigm and the concept of {\em
-    mashups} [ref], there has been renewed interest in such types of
-  environments. Over the past several years, we have developed one such
-  tool called Vision [ref], which is a component-based, application-domain
-  agnostic, cross-platform visual programming environment. Meanwhile,
-  advances in distributed and Grid computing have opened up avenues for
-  scientists to run large simulations on a scale that was impossible until
-  recent times. In the past, visual programming tools were generally
-  limited to running scientific experiments on user's individual
-  workstations, and had limited capability to use distributed resources.
-  With the proliferation of Web services, distributed resources are much
-  more easy to access from any workstation that is connected to the
-  Internet. In particular, we have developed the Opal toolkit, which
-  provides a mechanism to wrap scientific applications running on Grid
-  resources as Web services, thus providing the clients with a simple Web
-  API to the back-end computational functionality. Opal encapsulates
-  standard Grid security mechanisms, schedulers, and state management for
-  jobs, and also provides a mechanism to describe command-line arguments
-  that can be used to automatically generate user-interfaces [ref]. In this
-  paper, we describe our current work on enabling access to scientific
-  applications running on Grid resources via Opal from the Vision
-  environment. We present brief overviews of both Vision and Opal, and
-  discuss a scientific workflow that has been implemented with the above
-  tools. We discuss our experiences, and plans for future work.
+  The visual programming paradigm provided by tools such as AVS \cite{avs},
+  OpenDX \cite{opendx}, SciRun \cite{scirun}, etc have been around for a
+  couple decades. Recently, with the advent of the Web 2.0 paradigm and the
+  concept of {\em mashups} \cite{web2.0}, there has been renewed interest
+  in such types of environments. Over the past several years, we have
+  developed one such tool called Vision \cite{viper}, which is a
+  component-based, application-domain agnostic, cross-platform visual
+  programming environment. Meanwhile, advances in distributed and Grid
+  computing have opened up avenues for scientists to run large simulations
+  on a scale that was impossible until recent times. In the past, visual
+  programming tools were generally limited to running scientific
+  experiments on user's individual workstations, and had limited capability
+  to use distributed resources. With the proliferation of Web services,
+  distributed resources are much more easy to access from any workstation
+  that is connected to the Internet. In particular, we have developed the
+  Opal toolkit, which provides a mechanism to wrap scientific applications
+  running on Grid resources as Web services, thus providing the clients
+  with a simple Web API to the back-end computational functionality. Opal
+  encapsulates standard Grid security mechanisms, schedulers, and state
+  management for jobs, and also provides a mechanism to describe
+  command-line arguments that can be used to automatically generate
+  user-interfaces \cite{opal}. In this paper, we describe our current work
+  on enabling access to scientific applications running on Grid resources
+  via Opal from the Vision environment. We present brief overviews of both
+  Vision and Opal, and discuss a scientific workflow that has been
+  implemented with the above tools. We discuss our experiences, and plans
+  for future work.
 
 \end{abstract}
 
@@ -71,12 +72,13 @@
 
 % TODO: Add more context 
 
-The visual-programming paradigm provided by tools such as the AVS [X],
-OpenDX [X], Khoros [X], DataExplorer [X], Ptoleme [X] or Scirun, [X] has
-been around for a couple of decades. Recently, there has recently been a
-renewed interest in this type of user interface and numerous pipelining
-tools have become available, including: PHENIX [x], pipeline pilot [X],
-mapero [X], Orange [X], Elefant [X], Kepler [X], Taverna [X] to name a few.
+The visual-programming paradigm provided by tools such as the AVS
+\cite{avs}, OpenDX \cite{opendx}, or SciRun \cite{scirun} has been around
+for a couple of decades. Recently, there has recently been a renewed
+interest in this type of user interface and numerous pipelining tools have
+become available, including: PHENIX [ref], pipeline pilot [ref], mapero
+[ref], Orange [ref], Elefant [ref], Kepler \cite{kepler}, Taverna
+\cite{taverna} to name a few.
 
 These software environments, allow a user to construct a computational
 network by placing nodes performing a specific task onto a canvas and
@@ -110,12 +112,12 @@ domain of application.
 
 % - API -- how to write Vision nodes, introspection, etc: Michel
 
-Over the past 8 years we have developed Vision [X], a component-based,
-application-domain agnostic, cross-platform visual programming environment.
-Vision has been designed as an extension to the Python programming language
-[X] thus providing a fully fledged, high level, object-oriented,
-interpretive language for the interactive manipulation of data and/or
-modification of the application itself.
+Over the past 8 years we have developed Vision \cite{viper}, a
+component-based, application-domain agnostic, cross-platform visual
+programming environment. Vision has been designed as an extension to the
+Python programming language thus providing a fully fledged, high level,
+object-oriented, interpretive language for the interactive manipulation of
+data and/or modification of the application itself.
 
 The Vision framework was designed to dynamically load libraries of
 computational nodes providing specific functionality. Not only does this
@@ -165,19 +167,19 @@ of its children nodes for each one of the objects in the sequence. Begin
 and end of loop events allow the accumulation of data during a loop and the
 execution of code after the completion of the loop. 
 
-To date, several libraries of nodes are available [Fig X]. The standard
-library comprises nodes exposing Python keywords (print, eval, setattr and
-call methods), along with nodes enabling the generation of simple input
-data such as floats, integers, and strings. The 3-D Visualization library
-is based on the DejaVu component and provides nodes to create 3-D
-geometries and display them. The SymServ library implements a set of nodes
-defining geometric transformations such as symmetries, translation,
-rotation, helical arrangements etc. that can be combined to created streams
-of nested 3-D transformations. The MolKit library is based on the MolKit
-package and provides nodes to read molecular data files and manipulate
-molecules. The Imaging library currently exposes a subset of the
-functionality available in the Python Image Library (PIL) thus enabling the
-creation of image processing pipelines.
+To date, several libraries of nodes are available as seen in Figure
+\ref{fig:vision-overview}. The standard library comprises nodes exposing
+Python keywords (print, eval, setattr and call methods), along with nodes
+enabling the generation of simple input data such as floats, integers, and
+strings. The 3-D Visualization library is based on the DejaVu component and
+provides nodes to create 3-D geometries and display them. The SymServ
+library implements a set of nodes defining geometric transformations such
+as symmetries, translation, rotation, helical arrangements etc. that can be
+combined to created streams of nested 3-D transformations. The MolKit
+library is based on the MolKit package and provides nodes to read molecular
+data files and manipulate molecules. The Imaging library currently exposes
+a subset of the functionality available in the Python Image Library (PIL)
+thus enabling the creation of image processing pipelines.
 
 So far, Vision has essentially been used in an interactive way with most
 computational nodes running locally (i.e. in the same process as the Python
@@ -204,35 +206,37 @@ support for nodes running web services.
 Several tools have been developed by the scientific community to support
 the design and execution of workflows. Each one of them use different
 approaches to model a graphical environment for designing and executing
-workflow.  In this section we present three workflow management systems:
+workflow. In this section we present three workflow management systems:
 Kepler, Taverna, and AVS. This paragraph does not want to provide an
-exaustive survey of these systems, for more information refer to [grid].
+exaustive survey of these systems, for more information refer to
+\cite{wf-grid}.
 
-Kepler [6] is a workflow system developed under several research projects.
-It is written in Java and based on Ptolemy II [6], a system originally
-created to study modeling, simulation, and design of concurrent systems.
-Kepler models workflow in MoMl, a markup language developed in Ptolemy that
-is based on the concept of actors. Each actor has input and output ports
-and wraps typical workflow actions like invoke a Web Service or a Grid
-Services, launch a Globus Grid Jobs, perform a GridFTP transfer, and many
-others. The designer can model non Directed Acyclic Graph [5] using a
+Kepler is a workflow system developed under several research projects. It
+is written in Java and based on Ptolemy II \cite{ptolemy}, a system
+originally created to study modeling, simulation, and design of concurrent
+systems. Kepler models workflow in MoMl, a markup language developed in
+Ptolemy that is based on the concept of actors. Each actor has input and
+output ports and wraps typical workflow actions like invoke a Web Service
+or a Grid Services, launch a Globus Grid Jobs, perform a GridFTP transfer,
+and many others. The designer can model non Directed Acyclic Graph using a
 simple Graphic User Interface where the user has simply to drag and drop
-icons and connect them.  Kepler can also be classified as a workflow system
-based on the data flow model [6], where data is streamed from one actor to
-another triggering their activation. Moreover an extensible architecture
-based on the plugin model allows developers to easily interagte thrid party
-tools.
+icons and connect them. Kepler can also be classified as a workflow system
+based on the data flow model \cite{kepler}, where data is streamed from one
+actor to another triggering their activation. Moreover an extensible
+architecture based on the plugin model allows developers to easily
+interagte thrid party tools.
 
 Taverna is an open source software tool for designing and executing
-bioinformatics workflows, developed in the myGrid project [7]. It uses
-Scufl as a runtime language for the execution of the workflow, and Freefluo
-as an execution engine. Scufl can be extended using Processor plugins that
-manage the interaction with different external service interfaces. Taverna
-is shipped with a set of processors that guarantee interaction with
-services based on WS-I standard. The designer is based on a directed ciclic
-graph that represents data flow, which uses a simple graphical notation
-developed by the Taverna team. The GUI can be easily extended creating new
-palettes and new widgets with development of new plugins.
+bioinformatics workflows, developed in the myGrid project \cite{taverna}.
+It uses Scufl as a runtime language for the execution of the workflow, and
+Freefluo as an execution engine. Scufl can be extended using Processor
+plugins that manage the interaction with different external service
+interfaces. Taverna is shipped with a set of processors that guarantee
+interaction with services based on WS-I standard. The designer is based on
+a directed ciclic graph that represents data flow, which uses a simple
+graphical notation developed by the Taverna team. The GUI can be easily
+extended creating new palettes and new widgets with development of new
+plugins.
 
 \section {Services Oriented Science}
 
@@ -241,43 +245,65 @@ There is hope that Service-Oriented Architectures (SOA) can address this
 problem by providing platform-independent, language-neutral service
 interfaces that hide the complexity of the implementations while providing
 a well-defined and high-performance Quality of Service (QoS). In our recent
-paper [ref], we claimed that in order to lower the entrance barrier for
-scientific application developers and end-users to Grid infrastructures, we
-must do the following: 
+paper \cite{escience}, we claimed that in order to lower the entrance
+barrier for scientific application developers and end-users to Grid
+infrastructures, we must do the following:
 
-% TODO: possibly expand every bullet (04/23)
 \begin{enumerate}
-\item{Focus on application-level services}
-\item{Provide users access to virtualized resources}
-\item{Provide multiple user interfaces to scientific users}
-\item{Lower deployment costs}
-\item{Follow the Web 2.0 paradigm by enabling user participation and contribution}
+\item{{\bf Focus on application-level services:} From the perspective of a
+    domain scientist, the services that are most relevant are the ones that
+    provide a scientific operation, and where the semantics of the
+    operations are defined in terms of the domain science, and not computer
+    science. This is what Foster terms ''services-oriented science''
+    \cite{sos}.}
+
+\item{{\bf Provide users access to virtualized resources:} The use of
+    virtualized resources through a layer of indirection allows the system
+    developers to add or move resources as needed without any interruption.}
+
+\item{{\bf Provide multiple user interfaces to scientific users:} A single
+    user interface is typically not sufficient for all the users using Grid
+    resources. We advocate application services that can be used by a
+    number of end-user tools, including Web-based portals, rich desktop
+    applications, command-line tools and language-specific libraries.}
+
+\item{{\bf Lower deployment costs:} Scientific end-users don’t have the
+    time or money to invest in trying to figure out the complexity of the
+    back-end resources, and deploying an application on Grid resources
+    should be as easy as possible.}
+
+\item{{\bf Follow the Web 2.0 paradigm by enabling user participation and
+      contribution:} In principle, the Web 2.0 paradigm allows users to
+    contribute their applications, share data, and participate in
+    collaborative activities with ease and keep their focus on the process
+    of creation, instead of maintaining and learning new tools and
+    interfaces.}
 \end{enumerate}
 
-Towards this end, we have developed the Opal toolkit
-\cite{opal} for wrapping scientific applications as Web services. In order
-to wrap an application as a Web service, application developers are
-expected to write a simple XML-based application configuration. The
-application configuration contains information about the scientific
-application, such as application name, binary location, and application
-metadata (e.g. usage information). Using a simple Apache Ant task, the Opal
-toolkit can deploy the application as a Web service into a container based
-on Apache Tomcat and Axis. Once the application is deployed as a Web
-service, clients can access this service programmatically using its WSDL
-description. The WSDL API provides operations for job launch (which accepts
-command-line arguments and input files as its parameters), querying status,
-and retrieving outputs. Furthermore, it also provides an API for retrieving
-application metadata. WSDL savvy users could write their own clients to
-access Opal based applications. However, not every scientific user is
-capable or interested in writing Web service clients. Hence, several
-interfaces have been provided for the end-user. Apart from command-line
-clients written in languages like Java, Python [4] and Perl [15] available
-from NBCR, Web interfaces for Opal based services are available through the
-GridSphere portal environment [18], such as the MEME portlet in My
-WorkSphere [24]. In addition, Opal based interfaces via Rich Internet
-Applications (RIA) such as Gemstone [20], and Problem Solving Environments
-(PSE) such as the Python Molecular Viewer (PMV) [22], AutoDockTools [21]
-and Continuity [27] have also been provided.
+Towards this end, we have developed the Opal toolkit \cite{opal} for
+wrapping scientific applications as Web services. In order to wrap an
+application as a Web service, application developers are expected to write
+a simple XML-based application configuration. The application configuration
+contains information about the scientific application, such as application
+name, binary location, and application metadata (e.g. usage information).
+Using a simple Apache Ant task, the Opal toolkit can deploy the application
+as a Web service into a container based on Apache Tomcat and Axis. Once the
+application is deployed as a Web service, clients can access this service
+programmatically using its WSDL description. The WSDL API provides
+operations for job launch (which accepts command-line arguments and input
+files as its parameters), querying status, and retrieving outputs.
+Furthermore, it also provides an API for retrieving application metadata.
+WSDL savvy users could write their own clients to access Opal based
+applications. However, not every scientific user is capable or interested
+in writing Web service clients. Hence, several interfaces have been
+provided for the end-user. Apart from command-line clients written in
+languages like Java, Python and Perl available from NBCR, Web interfaces
+for Opal based services are available through the GridSphere portal
+environment \cite{gridsphere}, such as the MEME portlet in My WorkSphere
+\cite{myworksphere}. In addition, Opal based interfaces via Rich Internet
+Applications (RIA) such as Gemstone \cite{gemstone}, and Problem Solving
+Environments (PSE) such as the Python Molecular Viewer (PMV), AutoDockTools
+\cite{pmv-vision-adt} and Continuity \cite{continuity} have also been provided.
 
 \begin{figure}
 \begin{center}
@@ -321,7 +347,7 @@ follows:
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=8.5cm]{opal2-providers}
+\includegraphics[width=9cm]{opal2-providers}
 \end{center}
 \caption{The Opal2 Provider Model}
 \label{fig:opal2-providers}
@@ -400,7 +426,6 @@ grant for the CAMERA project, and the NSF grants INT-0314015 and
 OCI-0627026 for the PRAGMA project. 
 
 %% References
-% TODO (04/23)
 \bibliographystyle{plain}
 \bibliography{paper}
 
