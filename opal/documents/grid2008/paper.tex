@@ -223,11 +223,13 @@ palettes and new widgets with development of new plugins.
 
 \section {Application based services}
 
+\subsection {Opal Overview}
+
 - Opal wrapper and GUI \cite{opal}: Sriram 
-
 - Opal and Opal-CSF4: Sriram
-
 - Data services: Sriram
+
+\subsection {Towards Opal2}
 
 \section {Service based workflows}
 
@@ -243,6 +245,8 @@ automatically create Vision nodes from the service list)
  ii) Automatic vision node creation through the opal client information
  service (Sriram, Guillaume - how the generated class is converted into a Vision node using introspection)
 
+- PDB2PQR-APBS workflow in action
+
 \section {Discussion - Workflow modeling and execution}
 
 - How vision currently stores workflow (Michel)
@@ -253,7 +257,34 @@ automatically create Vision nodes from the service list)
 
 \section {Conclusions}
 
-- Conclusions (Sriram)
+Visual programming environments enable non-programmers to intuitively and
+interactively build scientific workflows and visualize their data, without
+having to write code or understand the details of the back-end
+infrastructure. In this paper, we described our tool called Vision, which
+is a component-based, application-domain agnostic, cross-platform visual
+programming environment. On the other hand, Grid computing provides an
+enormous opportunity to scientific end-users to use distributed computing
+and storage resources to enable novel science hitherto impossible using
+traditional computing mechanisms. However, most Grid middleware tools are
+complicated to install and too jargon rich for scientists to learn. In
+order to simplify the use of Grid infrastructures, one has to provide easy
+to use abstractions to the complex back-end functionality. Towards this
+end, we have developed the Opal toolkit, which enables wrapping scientific
+applications running on Grid resources as simple Web services, which can be
+accessed via a number of user interfaces. In this paper, we described how
+we can use the metadata provided by the Opal services to automatically
+generate Vision nodes to access the applications running on Grid resources.
+With the help of a molecular visualization workflow, we demonstrated how
+this is being used by domain scientists, while being completely shielded
+from the complexity of the back-end computational infrastructure. We
+believe that the use of services-oriented science within visual programming
+environments will go a long way towards lowering the entrance barrier for
+scientific end-users to effectively use Grid middleware.
+
+The authors would like to acknowledge support from the NIH P41 RR 08605 to
+NBCR; TATRC W81XWH-07-2-0014 to PWA, the Gordon and Betty Moore Foundation
+grant for the CAMERA project, and the NSF grants INT-0314015 and
+OCI-0627026 for the PRAGMA project. 
 
 %% References
 \bibliographystyle{plain}
