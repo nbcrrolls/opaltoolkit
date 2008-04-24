@@ -98,7 +98,7 @@ domain of application.
 
 - Grid computing: Sriram
 
-\section {Background}
+\section {Visual Programming Environments}
 
 \subsection {The Vision Environment}
 
@@ -221,15 +221,97 @@ graph that represents data flow, which uses a simple graphical notation
 developed by the Taverna team. The GUI can be easily extended creating new
 palettes and new widgets with development of new plugins.
 
-\section {Application based services}
+\section {Services Oriented Science}
 
-\subsection {Opal Overview}
+Programming and using distributed Grid resources is quite a challenge task.
+There is hope that Service-Oriented Architectures (SOA) can address this
+problem by providing platform-independent, language-neutral service
+interfaces that hide the complexity of the implementations while providing
+a well-defined and high-performance Quality of Service (QoS). In our recent
+paper [ref], we claimed that in order to lower the entrance barrier for
+scientific application developers and end-users to Grid infrastructures, we
+must do the following: 
 
-- Opal wrapper and GUI \cite{opal}: Sriram 
+% TODO: possibly expand every bullet
+\begin{itemize}
+\item{Focus on application-level services}
+\item{Provide users access to virtualized resources}
+\item{Provide multiple user interfaces to scientific users}
+\item{Lower deployment costs}
+\item{Follow the Web 2.0 paradigm by enabling user participation and contribution}
+\end{itemize}
+
+Towards this end, we have developed the Opal toolkit
+\cite{opal} for wrapping scientific applications as Web services. In order
+to wrap an application as a Web service, application developers are
+expected to write a simple XML-based application configuration. The
+application configuration contains information about the scientific
+application, such as application name, binary location, and application
+metadata (e.g. usage information). Using a simple Apache Ant task, the Opal
+toolkit can deploy the application as a Web service into a container based
+on Apache Tomcat and Axis. Once the application is deployed as a Web
+service, clients can access this service programmatically using its WSDL
+description. The WSDL API provides operations for job launch (which accepts
+command-line arguments and input files as its parameters), querying status,
+and retrieving outputs. Furthermore, it also provides an API for retrieving
+application metadata. WSDL savvy users could write their own clients to
+access Opal based applications. However, not every scientific user is
+capable or interested in writing Web service clients. Hence, several
+interfaces have been provided for the end-user. Apart from command-line
+clients written in languages like Java, Python [4] and Perl [15] available
+from NBCR, Web interfaces for Opal based services are available through the
+GridSphere portal environment [18], such as the MEME portlet in My
+WorkSphere [24]. In addition, Opal based interfaces via Rich Internet
+Applications (RIA) such as Gemstone [20], and Problem Solving Environments
+(PSE) such as the Python Molecular Viewer (PMV) [22], AutoDockTools [21]
+and Continuity [27] have also been provided.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm]{architecture}
+\end{center}
+\caption{Services Oriented Science Using the Opal Toolkit}
+\label{fig:arch}
+\end{figure}
+
+Although a detailed description of the Opal toolkit is beyond the scope of
+this paper (and can be found in \cite{opal}), the overall architecture of
+is shown in Figure \ref{fig:arch}. The salient features of Opal are as
+follows:
+
+\begin{itemize}
+\item{Scheduling and Cluster Management}
+\item{Data management and Persistence}
+\item{Security}
+\item{Standardized WSDL API}
+\item{Argument Description and Dynamic Interface Generation}
+\end{itemize}
+
+- Opal wrapper and GUI: Sriram 
+
 - Opal and Opal-CSF4: Sriram
+
 - Data services: Sriram
 
-\subsection {Towards Opal2}
+- Status, more information
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm]{opal-gui}
+\end{center}
+\caption{Service Invocation via the Opal GUI}
+\label{fig:opal-gui}
+\end{figure}
+
+- Towards Opal2
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=8.5cm]{opal2-providers}
+\end{center}
+\caption{The Opal2 Provider Model}
+\label{fig:opal2-providers}
+\end{figure}
 
 \section {Service based workflows}
 
