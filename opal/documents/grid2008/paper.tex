@@ -65,9 +65,11 @@
 
 \end{abstract}
 
-\section{Intro on scientific workflows and grid computing}
+\section{Introduction}
 
 - Scientific workflows: Michel
+
+% TODO: Add more context 
 
 The visual-programming paradigm provided by tools such as the AVS [X],
 OpenDX [X], Khoros [X], DataExplorer [X], Ptoleme [X] or Scirun, [X] has
@@ -95,6 +97,8 @@ constitute the development environment for a specific application) rather
 than being a software component that will integrate and dovetail nicely
 with other software components and that does not make assumptions about the
 domain of application.
+
+% TODO: Add Grid stuff
 
 - Grid computing: Sriram
 
@@ -180,13 +184,22 @@ computational nodes running locally (i.e. in the same process as the Python
 interpreter running Vision). In this paper we describe the addition of
 support for nodes running web services. 
 
+% TODO: Need a more useful screenshot
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm]{vision-overview}
+\end{center}
+\caption{A typical scientific workflow composed using the Vision interface}
+\label{fig:vision-overview}
+\end{figure}
+
+\subsection {Related Work}
+
 % - Comparison with other tools: Luca
 
 %   - Kepler, Ptolemy and MoML
 
 %   - Taverna, Scufl and Freeflou
-
-\subsection {Related Work}
 
 Several tools have been developed by the scientific community to support
 the design and execution of workflows. Each one of them use different
@@ -232,14 +245,14 @@ paper [ref], we claimed that in order to lower the entrance barrier for
 scientific application developers and end-users to Grid infrastructures, we
 must do the following: 
 
-% TODO: possibly expand every bullet
-\begin{itemize}
+% TODO: possibly expand every bullet (04/23)
+\begin{enumerate}
 \item{Focus on application-level services}
 \item{Provide users access to virtualized resources}
 \item{Provide multiple user interfaces to scientific users}
 \item{Lower deployment costs}
 \item{Follow the Web 2.0 paradigm by enabling user participation and contribution}
-\end{itemize}
+\end{enumerate}
 
 Towards this end, we have developed the Opal toolkit
 \cite{opal} for wrapping scientific applications as Web services. In order
@@ -268,9 +281,9 @@ and Continuity [27] have also been provided.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=8cm]{architecture}
+\includegraphics[width=8.5cm]{architecture}
 \end{center}
-\caption{Services Oriented Science Using the Opal Toolkit}
+\caption{Services Oriented Science using the Opal Toolkit}
 \label{fig:arch}
 \end{figure}
 
@@ -279,13 +292,14 @@ this paper (and can be found in \cite{opal}), the overall architecture of
 is shown in Figure \ref{fig:arch}. The salient features of Opal are as
 follows:
 
-\begin{itemize}
+% TODO: Expand (04/23)
+\begin{enumerate}
 \item{Scheduling and Cluster Management}
 \item{Data management and Persistence}
 \item{Security}
 \item{Standardized WSDL API}
 \item{Argument Description and Dynamic Interface Generation}
-\end{itemize}
+\end{enumerate}
 
 - Opal wrapper and GUI: Sriram 
 
@@ -297,7 +311,7 @@ follows:
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=8cm]{opal-gui}
+\includegraphics[width=8.5cm]{opal-gui}
 \end{center}
 \caption{Service Invocation via the Opal GUI}
 \label{fig:opal-gui}
@@ -313,7 +327,7 @@ follows:
 \label{fig:opal2-providers}
 \end{figure}
 
-\section {Service based workflows}
+\section {Services-based Workflows in Vision}
 
 - Vision based grid workflows (Michel, Guillaume, Sargis)
 
@@ -327,9 +341,26 @@ automatically create Vision nodes from the service list)
  ii) Automatic vision node creation through the opal client information
  service (Sriram, Guillaume - how the generated class is converted into a Vision node using introspection)
 
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm]{vision-gui}
+\end{center}
+\caption{Automatic interface generation for the PDB2PQR service in Vision}
+\label{fig:vision-gui}
+\end{figure}
+
 - PDB2PQR-APBS workflow in action
 
-\section {Discussion - Workflow modeling and execution}
+% TODO: Need a more accurate screenshot
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm]{vision-workflow}
+\end{center}
+\caption{Vision worklow using local and remote services}
+\label{fig:vision-workflow}
+\end{figure}
+
+\section {Discussion}
 
 - How vision currently stores workflow (Michel)
 
@@ -369,6 +400,7 @@ grant for the CAMERA project, and the NSF grants INT-0314015 and
 OCI-0627026 for the PRAGMA project. 
 
 %% References
+% TODO (04/23)
 \bibliographystyle{plain}
 \bibliography{paper}
 
