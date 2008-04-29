@@ -1,0 +1,26 @@
+
+ - Update version number in the code:
+     opal-core/build.properties.template
+     opal-core/webapps/opal/WEB-INF/web.xml
+     opal-core/CHANGELOG
+     opal-core/docbook/index.sgml
+   If it is a major release update also the documentation page of the web site:
+     opal-website/src/site/xdoc/documentation.xml
+
+ - Regenerate the web site and upload it
+   From the opal-website run:
+     mvn site
+   sync the opal-website/target/site directory with the web site directory
+
+ - Tag the SVN with the version number:
+     svn cp https://lclement@opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit/trunk/opal/opal-core https://lclement@opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit/tags/opal-core-<version number>
+
+ - Use ant -f build-admin.xml dist to create a new package to upload on SF
+
+ - Upload the package on SF
+
+ - Send an e-mail on opal mailing list
+
+ - Post a news on the SF/Opal web page
+
+
