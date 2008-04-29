@@ -1,3 +1,6 @@
+# version number
+version = 1.9.4
+
 # location of the tomcat installation
 catalina.home = /path/to/catalina_home
 
