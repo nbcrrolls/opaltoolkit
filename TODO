@@ -1,0 +1,13 @@
+* Plug-ins
+  * Globus
+  * DRMAA
+  * CSF4
+
+* WSDL additions/improvements
+  * Optional URL for retrieving input files
+    * HTTP for now - GridFTP later
+  * Additional statistics for job to be set by client (like email address)
+  * Operations to retrieve statistics
+
+* Additional Features
+  * Server side argument validation (based on opal.properties)
