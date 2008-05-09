@@ -18,8 +18,9 @@
    String systemUptime = (String) request.getAttribute("systemUptime"); 
    String systemBuildDate = (String) request.getAttribute("systemBuildDate"); 
    String opalVersion = (String) request.getAttribute("opalVersion");  
+/* not userd anymore!
    String dbUrl = (String) request.getAttribute("dbURL");
-   String dbUsername = (String) request.getAttribute("dbUsername");
+   String dbUsername = (String) request.getAttribute("dbUsername"); */
    String dbDriver = (String) request.getAttribute("dbDriver");
    String opalWebsite = (String) request.getAttribute("opalWebsite");
    String opalDocumentation = (String) request.getAttribute("opalDocumentation");

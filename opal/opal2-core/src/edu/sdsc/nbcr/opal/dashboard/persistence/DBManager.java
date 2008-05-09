@@ -2,6 +2,11 @@
 
 package edu.sdsc.nbcr.opal.dashboard.persistence;
 
+
+import org.hibernate.classic.Session;
+import org.hibernate.SessionFactory;
+import java.util.List;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
@@ -40,14 +46,18 @@ public class DBManager {
 
     protected static Log log = LogFactory.getLog(DBManager.class.getName());
 
+    //new hiberante stuff
+    private Session session = null;
+
+
     /**
 
      */
-    private Connection conn = null;
-    private String databaseUrl = null;
-    private String driver = null;
-    private String dbUserName = null;
-    private String dbPassword = null;
+    //private Connection conn = null;
+    //private String databaseUrl = null;
+    //private String driver = null;
+    //private String dbUserName = null;
+    //private String dbPassword = null;
     private String error = null;
     
     /**
@@ -55,7 +65,13 @@ public class DBManager {
      * @return the database URL
      */
     public String getDatabaseUrl() {
-        return databaseUrl;
+        String driver = null;
+        try {
+            driver = session.connection().getMetaData().getURL();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return driver;
     }
 
     /**
@@ -63,34 +79,41 @@ public class DBManager {
      * @return the string representing the driver
      */
     public String getDriver() {
+        String driver = null;
+        try {
+            driver = session.connection().getMetaData().getDriverName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return driver;
     }
 
     /**
      * @return username used to connect to the DB
-     */
+     * not used anymore
     public String getDbUserName() {
         return dbUserName;
     }
+     */
 
     /**
      * See the top of the page for the usage of the various input parameters 
      * 
      */
-    public DBManager( String databaseUrl, String driver, String dbUserName, String dbPassword) {
+   /* public DBManager( String databaseUrl, String driver, String dbUserName, String dbPassword) {
         super();
 
         this.databaseUrl = databaseUrl;
         this.driver = driver;
         this.dbUserName = dbUserName;
         this.dbPassword = dbPassword;
-    }
+    }  */
     
     /**
      * default constructor
      */
     public DBManager(){
-        conn = null;
+        session = null;
     }
     
     /**
@@ -98,17 +121,8 @@ public class DBManager {
      * @return true if everything went OK
      */
     public boolean init() {
-        try {
-            Class.forName(driver).newInstance();
-            conn = DriverManager.getConnection(databaseUrl, dbUserName, dbPassword);
-            log.info("Connection to the database established");
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            error = e.getMessage();
-            conn = null;
-            return false;
-        }
+        session = edu.sdsc.nbcr.opal.state.HibernateUtil.getSessionFactory().openSession();
+	return true ;
     }
     
     /**
@@ -116,20 +130,20 @@ public class DBManager {
      * @return true if the connection to the DB is valid
      */
     public boolean isConnected(){
-        if ( conn != null ) return true;
+        if ( session != null ) return true;
         else return false;
     }
 
     /**
      * Close the connection with the db
      * @throws java.sql.SQLException
-     */
     public void close() throws java.sql.SQLException{
         if (isConnected()) {
             conn.close();
         }
         
     }
+     */
 
 
     /**
@@ -142,19 +156,10 @@ public class DBManager {
      * 
      */
     public String [] getServicesList(){
-        ArrayList serviceList = new ArrayList();
-        String query = "select service_name from job_status group by service_name;";
-        if ( ! isConnected() ) return null;
-        try {
-            Statement sql = conn.createStatement();
-            ResultSet rs = sql.executeQuery(query);
-            for (; rs.next(); ) {
-                serviceList.add(rs.getString("service_name"));
-            }
-        }catch (SQLException e ) {
-            log.error("Error retreiving the list of services: " + e.getMessage(), e);
-        }
-        return (String[]) serviceList.toArray(new String[serviceList.size()]);
+        List serviceList = session.createQuery(
+            "select serviceName from JobInfo group by serviceName ").list();
+        Iterator itera = serviceList.iterator();
+        return (String []) serviceList.toArray(new String[serviceList.size()]);
     }
     
 
@@ -210,6 +215,7 @@ public class DBManager {
      */
     public double [] getResultsTimeseries(Date startDate, Date endDate, String service, String type){
 
+        /*
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
@@ -293,6 +299,8 @@ public class DBManager {
             log.error("Error while querying for the " + type + " with service " + service + " : " + e.getMessage(), e);
             return null;
         }
+        */
+        return null;
     }
     
     
@@ -306,6 +314,7 @@ public class DBManager {
         //a job is running if its status is 
         //STATUS_PENDING STATUS_ACTIVE STATUS_STAGE_IN STATUS_STAGE_OUT
         //1 2 64 128
+        /*
         int number = -1;
         String query = " select count(job_id) from job_status where " +
         		"(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
@@ -322,8 +331,16 @@ public class DBManager {
         }catch ( Exception e) {
             log.error("Nasty error happen while query the Data Base: " + e.getMessage(), e);
             return -1;
-        }
-        return number;
+        }*/
+        
+        String query = " select count(jobID) from JobInfo where " +
+            "(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
+            "code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
+            "serviceName='" + service + "' ";
+        
+        Integer ret = (Integer) session.createQuery(query).uniqueResult();
+        
+        return ret.intValue();
     }
 
 }

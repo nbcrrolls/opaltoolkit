@@ -76,13 +76,10 @@ public class OpalInfoServlet extends HttpServlet {
         }
         
         
-        
         //-------     initializing the DB connection    -----
         java.util.Properties props = new java.util.Properties();
         String propsFileName = "opal.properties";
         String databaseUrl = null;
-        String dbUserName = null;
-        String dbPassword = null;
         boolean initialized = false;
         try {
             // load runtime properties from properties file
@@ -113,7 +110,7 @@ public class OpalInfoServlet extends HttpServlet {
         } else opalDataLifetime = null;
         
         
-        if (props.getProperty("database.use") != null) {
+/*        if (props.getProperty("database.use") != null) {
             if ( props.getProperty("database.use").equals("true") ) {
                 dbUsed = Boolean.TRUE;
                 initialized = true;
@@ -136,13 +133,15 @@ public class OpalInfoServlet extends HttpServlet {
         if ( initialized ) {
             // connect to database
             System.out.println("Initializing database connection... to " + databaseUrl);
-            dbManager = new DBManager( databaseUrl, "org.postgresql.Driver", dbUserName, dbPassword);
             if ( dbManager.init() ) {
                 initialized = true;
                 config.getServletContext().setAttribute("dbManager", dbManager);
             }
             else initialized = false;
         }//if
+	*/
+        dbManager = new DBManager();
+        dbManager.init();
         
     }
 
@@ -176,7 +175,19 @@ public class OpalInfoServlet extends HttpServlet {
             throws IOException, ServletException {
         String command = req.getParameter("command");
         RequestDispatcher dispatcher;
-        
+       
+        if (dbManager == null ) {
+            String errorMsg = "There is a problem conecting to the Data base.<br/>";
+            log.error("We had an error: " + errorMsg);
+            req.setAttribute("error", errorMsg);
+            dispatcher = getServletContext().getRequestDispatcher(ERROR_JSP);
+            try { dispatcher.forward(req, res); }
+            catch (Exception e ) {
+               log.error("Impossible to forward to the error page...Don't know what else I can do....", e);
+            }
+            return;
+        }
+
 
         if ("statistics".equals(command)) {
             //let's check if the DB connection is OK
@@ -236,8 +247,8 @@ public class OpalInfoServlet extends HttpServlet {
             req.setAttribute("opalVersion", opalVersion);
             req.setAttribute("opalWebsite", opalWebsite);
             req.setAttribute("opalDocumentation", opalDocumentation);
-            req.setAttribute("dbURL", dbManager.getDatabaseUrl());
-            req.setAttribute("dbUsername", dbManager.getDbUserName());
+            //req.setAttribute("dbURL", dbManager.getDatabaseUrl());
+            //req.setAttribute("dbUsername", dbManager.getDbUserName());
             req.setAttribute("dbDriver", dbManager.getDriver());
             req.setAttribute("drmaa", drmaa);
             req.setAttribute("globus", globus);
