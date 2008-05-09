@@ -108,7 +108,6 @@ public class PloterServlet extends HttpServlet
     
     /**
      * closes servlet and cleans up connection
-     */
     public void destroy() {
 
         System.out.println("Closing database connection ...");
@@ -120,6 +119,7 @@ public class PloterServlet extends HttpServlet
             }
         }
     }
+     */
 
     /**
      * same as doPost
