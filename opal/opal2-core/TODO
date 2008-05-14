@@ -3,8 +3,8 @@
   * DRMAA
   * CSF4
 
-* dashboard
-  * migrate it to hibernate
+* Dashboard
+  * Migrate it to hibernate
 
 * WSDL additions/improvements
   * Optional URL for retrieving input files
@@ -12,15 +12,13 @@
   * Additional statistics for job to be set by client (like email address)
   * Operations to retrieve statistics
   * The <usage> tag is used improperly, it contains now the description of the application
-  * Possibility to use different submision manager for each application deploied
-
-
+  * Possibility to use different submision manager for each application deployed
 
 * Additional Features
   * Server side argument validation (based on opal.properties)
-  * implicit file: I have the feeling they are gonna start to be important 
-    (I'm referring to validation, GUI, etc.)
-    (how to express 1-* or 2-* multiplicity? specify the min but not the max?)
+  * Addition of implicit files to dashboard
+  * Arguments schema: how to express 1-* or 2-* multiplicity? specify the
+    min but not the max?
 
 
 

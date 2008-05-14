@@ -47,14 +47,14 @@ public interface OpalJobManager {
      *
      * @param argList a string containing the command line used to launch the application
      * @param numproc the number of processors requested. Null, if it is a serial job
-     * @param wd String representing the working directory of this job on the local system
+     * @param workingDir String representing the working directory of this job on the local system
      * 
      * @return a plugin specific job handle to be persisted by the service implementation
      * @throws JobManagerException if there is an error during job launch
      */
     public String launchJob(String argList, 
 			    Integer numproc, 
-			    String wd)
+			    String workingDir)
 	throws JobManagerException;
 
     /**

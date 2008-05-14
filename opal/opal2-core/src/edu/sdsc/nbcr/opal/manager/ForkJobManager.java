@@ -79,14 +79,14 @@ public class ForkJobManager implements OpalJobManager {
      *
      * @param argList a string containing the command line used to launch the application
      * @param numProcs the number of processors requested. Null, if it is a serial job
-     * @param wd String representing the working directory of this job on the local system
+     * @param workingDir String representing the working directory of this job on the local system
      * 
      * @return a plugin specific job handle to be persisted by the service implementation
      * @throws JobManagerException if there is an error during job launch
      */
     public String launchJob(String argList, 
 			    Integer numProcs, 
-			    String wd)
+			    String workingDir)
 	throws JobManagerException {
 	logger.info("called");
 
@@ -119,6 +119,9 @@ public class ForkJobManager implements OpalJobManager {
 	    systemProcs = Integer.parseInt(systemProcsString);
 	}
 
+	// launch executable using process exec
+	String cmd = null;
+	
 	if (config.isParallel()) {
 	    // make sure enough processors are present for the job
 	    if (numProcs == null) {
@@ -131,13 +134,7 @@ public class ForkJobManager implements OpalJobManager {
 		logger.error(msg);
 		throw new JobManagerException(msg);
 	    }
-	} else {
-	}
 
-	// launch executable using process exec
-	String cmd = null;
-	
-	if (config.isParallel()) {
 	    // create command string for parallel run
 	    String mpiRun = props.getProperty("mpi.run");
 	    if (mpiRun == null) {
@@ -151,7 +148,7 @@ public class ForkJobManager implements OpalJobManager {
 	    // create command string for serial run
 	    cmd = new String(config.getBinaryLocation());
 	}
-	
+
 	// append arguments
 	if (args != null) {
 	    cmd += " " + args;
@@ -160,12 +157,12 @@ public class ForkJobManager implements OpalJobManager {
 	
 	// run executable in the working directory
 	try {
-	    logger.debug("Working directory: " + wd);
-	    proc = Runtime.getRuntime().exec(cmd, null, new File(wd));
+	    logger.debug("Working directory: " + workingDir);
+	    proc = Runtime.getRuntime().exec(cmd, null, new File(workingDir));
 	    
 	    // spawn new threads to write out stdout, and stderr
-	    stdoutThread = writeStdOut(proc, wd);
-	    stderrThread = writeStdErr(proc, wd);
+	    stdoutThread = writeStdOut(proc, workingDir);
+	    stderrThread = writeStdErr(proc, workingDir);
 	} catch (IOException ioe) {
 	    String msg = "Error while running executable via fork - " +
 		ioe.getMessage();
