@@ -59,14 +59,20 @@ public class LaunchJobAction extends MappingDispatchAction{
         //let's print some debug informations
         String debug = "";
         if ( app.isAddFile() ) {
-            log.info("Adding one more input file to the simple submission form");
-            //let's add an element to the files array
+            //maybe the user has updated a file, let's check
             FormFile [] formFiles = app.getFiles();
-            FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
-            for (int i = 0; i < formFiles.length; i++ ){
-                newFormFiles[i] = formFiles[i];
+            if ( (formFiles[formFiles.length - 1] != null) 
+                    && (formFiles[formFiles.length - 1].getFileName().length() > 0 ) ) {
+                //the user has actually uploaded something!
+                log.info("Adding one more input file to the simple submission form");
+                //let's add an element to the files array so the user upload a new file there is a place holder (the last element)
+                
+                FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
+                for (int i = 0; i < formFiles.length; i++ ){
+                    newFormFiles[i] = formFiles[i];
+                }
+                app.setFiles(newFormFiles);
             }
-            app.setFiles(newFormFiles);
             return mapping.findForward("DisplaySimpleForm");
         }else if ( app.isArgMetadataEnable()) {
             ArgFlag [] flags = app.getArgFlags();
@@ -121,14 +127,21 @@ public class LaunchJobAction extends MappingDispatchAction{
         	log.info("No file has been submitted.");
         }
         //finally invoke opal service!
-        AppServiceLocator asl = new AppServiceLocator();
-        AppServicePortType appServicePort = asl.getAppServicePort(new URL(app.getURL()));
-
-        JobSubOutputType subOut = appServicePort.launchJob(in);
-        if ( subOut == null ) {
-        	log.error("An error occurred while submitting the job.");
-        	log.error("The JobSubOutputType is null!!");
+        JobSubOutputType subOut = null;
+        try {
+            AppServiceLocator asl = new AppServiceLocator();
+            AppServicePortType appServicePort = asl.getAppServicePort(new URL(app.getURL()));
+    
+             subOut = appServicePort.launchJob(in);
+            if ( subOut == null ) {
+                throw new Exception("launchJob returned null");
+            }
+        }catch (Exception e){
+            log.error("An error occurred while submitting the job.");
+            log.error("The error message is: " + e.getMessage(), e);
+            
             errors.add("An error occured while submitting the job to the remote server");
+            errors.add("the error message is: " + e.getMessage());
             errors.add("Please go back to the welcome page");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
@@ -145,7 +158,7 @@ public class LaunchJobAction extends MappingDispatchAction{
 
         // everything went allright redirect to the status page
         // put the jobId in the URL coz we are redirecting and not forwarding 
-        return new ActionRedirect(mapping.findForward("JobStatus").getPath() + "?jobId=" +  subOut.getJobID());
+        return new ActionRedirect(mapping.findForward("JobStatus").getPath() + "?jobId=" +  subOut.getJobID() + "&serviceID=" + app.getServiceID());
     }//exectue
     
     

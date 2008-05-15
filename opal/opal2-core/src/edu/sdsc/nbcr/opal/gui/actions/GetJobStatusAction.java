@@ -46,23 +46,33 @@ public class GetJobStatusAction extends MappingDispatchAction{
         
     	log.info("Action: GetJobStatusAction");
         String jobId = (String) request.getParameter("jobId");
-        AppMetadata app = (AppMetadata) request.getSession().getAttribute("appMetadata");
-        if ( (jobId == null) || (app == null) ) {
+        String serviceID = (String) request.getParameter("serviceID");
+        
+        if ( (jobId == null)  || (serviceID == null) || (jobId.length() == 0) || (serviceID.length() == 0 ) ) {
         	ArrayList errors = new ArrayList();
-        	if ( jobId == null ) log.error("Error jobId can not be retrived.");
-        	if ( app == null ) log.error("Error AppMetadata can not be retrived.");
+        	if ( (jobId == null) || (jobId.length() == 0) ) log.error("Error jobId can not be retrived.");
+        	if ( (serviceID == null) || (serviceID.length() == 0) ) log.error("Error serviceID can not be retrived.");
             //something went wrong return an error
             errors = new ArrayList();
-            errors.add("I could not find the jobId or the appMetadata");
+            errors.add("I could not find the jobId and the serviceID");
             errors.add("Please return to the welcome page...");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
-        }//if
+        }//if */
+        
+        String url = getServlet().getServletContext().getInitParameter("opalUrl");
+        if ( url == null ) {
+            log.warn("the opalUrl was not found in the WEB-INF/web.xml file.\nUsing the default...");
+            url = Constants.OPALDEFAULT_URL;
+        }
+        
         AppServiceLocator asl = new AppServiceLocator();
-        AppServicePortType appServicePort = asl.getAppServicePort(new URL( app.getURL() ));
+        AppServicePortType appServicePort = asl.getAppServicePort(new URL( url + "/" + serviceID ));
         StatusOutputType status = appServicePort.queryStatus(jobId);
+        
+        request.setAttribute("serviceID", serviceID);
+        request.setAttribute("jobId",jobId);
         request.setAttribute("status", status);
-
         return  mapping.findForward("JobStatus");
     }//exectue
     
