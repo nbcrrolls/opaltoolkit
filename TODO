@@ -13,6 +13,7 @@
   * Operations to retrieve statistics
   * The <usage> tag is used improperly, it contains now the description of the application
   * Possibility to use different submision manager for each application deployed
+  * Possibility to specify a MAX wall clock time 
 
 * Additional Features
   * Server side argument validation (based on opal.properties)
