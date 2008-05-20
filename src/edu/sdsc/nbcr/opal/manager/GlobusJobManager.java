@@ -274,8 +274,11 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 
 	// wait till the process finishes, and get final status
 	try {
-	    synchronized(job) {
-		job.wait();
+	    while (!((status.getCode() == GramJob.STATUS_FAILED) || 
+		     (status.getCode() == GramJob.STATUS_DONE))) {
+		synchronized(job) {
+		    job.wait();
+		}
 	    }
 	} catch (Exception e) {
 	    String msg = "Exception while waiting for Globus process to finish";
@@ -342,16 +345,15 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	    message = GramJob.getStatusAsString(code);
 	logger.info("Job status: " + message);
 	
-	// update job status in memory or in database
+	// update job status
+	status.setCode(code);
+	status.setMessage(message);
+
+	// deactivate listener, which gets rid of a GRAM thread
 	if ((code == GramJob.STATUS_DONE) ||
 	    (code == GramJob.STATUS_FAILED)) {
-	    // deactivate listener, which gets rid of a GRAM thread
 	    job.removeListener(this);
 	    Gram.deactivateCallbackHandler(job.getCredentials());
-
-	} else {
-	    status.setCode(code);
-	    status.setMessage(message);
 	}
 
 	// notify sleepers that the job is finished
