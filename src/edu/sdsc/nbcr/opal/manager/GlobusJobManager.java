@@ -2,47 +2,36 @@ package edu.sdsc.nbcr.opal.manager;
 
 import java.util.Properties;
 
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.gram.Gram;
 import org.globus.gram.GramJob;
+import org.globus.gram.GramJobListener;
+import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
+import org.ietf.jgss.GSSCredential;
 
 import org.apache.log4j.Logger;
-
-import org.ggf.drmaa.Session;
-import org.ggf.drmaa.SessionFactory;
-import org.ggf.drmaa.JobTemplate;
-import org.ggf.drmaa.JobInfo;
-import org.ggf.drmaa.DrmaaException;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
 
 /**
  *
- * Implementation of an Opal Job Manager using DRMAA
+ * Implementation of an Opal Job Manager using Globus
  */
-public class DRMAAJobManager implements OpalJobManager {
+public class GlobusJobManager implements OpalJobManager, GramJobListener {
 
     // get an instance of a log4j logger
-    private static Logger logger = Logger.getLogger(DRMAAJobManager.class.getName());
+    private static Logger logger = Logger.getLogger(GlobusJobManager.class.getName());
 
     private Properties props; // the container properties being passed
     private AppConfigType config; // the application configuration
     private StatusOutputType status; // current status
-    private String handle; // the DRMAA job id for this submission
+    private String handle; // the OS specific process id for this job
     private boolean started = false; // whether the execution has started
     private volatile boolean done = false; // whether the execution is complete
 
-    private static Session session = null; // drmaa session
-    private JobInfo jobInfo; // job information returned after completion by DRMAA
-
-    static {
-	SessionFactory factory = SessionFactory.getFactory();
-	session = factory.getSession();
-	try {
-	    session.init(null);
-	} catch (DrmaaException de) {
-	    logger.fatal("Can't initialize DRMAA session: " + de.getMessage());
-	}
-    }
+    private GramJob job; // the GramJob object for this run
 
     /**
      * Initialize the Job Manager for a particular job
@@ -129,10 +118,9 @@ public class DRMAAJobManager implements OpalJobManager {
 	}
 
 
-	// launch executable using DRMAA
-	String cmd = null;
-	String[] argsArray = null;
-
+	// launch executable using Globus
+	String rsl = null;
+	
 	if (config.isParallel()) {
 	    // make sure enough processors are present for the job
 	    if (numProcs == null) {
@@ -146,71 +134,80 @@ public class DRMAAJobManager implements OpalJobManager {
 		throw new JobManagerException(msg);
 	    }
 
-	    // check if the mpi.run property is set
-	    String mpiRun = props.getProperty("mpi.run");
-	    if (mpiRun == null) {
-		String msg = "Can't find property mpi.run for running parallel job";
-		logger.error(msg);
-		throw new JobManagerException(msg);
-	    }
-
-	    // create command string and arguments for parallel run
-	    cmd = "/bin/sh";
-	    
-	    // append arguments - needs to be this way to locate machinefile
-	    String newArgs = mpiRun + 
-		" -machinefile $TMPDIR/machines" +
-		" -np " + numProcs + " " +
-		config.getBinaryLocation();
-	    if (args != null) {
-		args = newArgs + " " + args;
-	    } else {
-		args = newArgs;
-	    }
-	    logger.debug("CMD: " + args);
-	    
-	    // construct the args array
-	    argsArray = new String[] {"-c", args};
+	    // create RSL for parallel run
+	    rsl =
+		"&(directory=" + workingDir + ")" + 
+		"(executable=" + config.getBinaryLocation() + ")" + 
+		"(count=" + numProcs + ")" +
+		"(jobtype=mpi)" +
+		"(stdout=stdout.txt)" + 
+		"(stderr=stderr.txt)";
 	} else {
-	    // create command string and arguments for serial run
-	    cmd = config.getBinaryLocation();
-	    if (args == null)
-		args = "";
-	    logger.debug("CMD: " + cmd + " " + args);
-	    
-	    // construct the args array
-	    argsArray = args.split(" ");
-	}
-
-	// get the parallel environment being used
-	String drmaaPE = null;
-	if (config.isParallel()) {
-	    drmaaPE = props.getProperty("drmaa.pe");
-	    if (drmaaPE == null) {
-		String msg = "Can't find property drmaa.pe for running parallel job";
-		logger.error(msg);
-		throw new JobManagerException(msg);
-	    }
+	    // create RSL for serial run
+	    rsl = 
+		"&(directory=" + workingDir + ")" + 
+		"(executable=" + config.getBinaryLocation() + ")" + 
+		"(stdout=stdout.txt)" + 
+		"(stderr=stderr.txt)";
 	}
 	
+	// add arguments to the RSL
+	if (args != null) {
+	    // put every argument within quotes - needed by Globus if some of 
+	    // the arguments are of the form name=value
+	    args = "\"" + args + "\"";
+	    args = args.replaceAll("[\\s]+", "\" \"");
+	    rsl += "(arguments=" + args + ")";
+	}
+	logger.debug("RSL: " + rsl);
+
+	// get the service cert and key
+	String serviceCertPath = props.getProperty("globus.service_cert");
+	if (serviceCertPath == null) {
+	    String msg = "Can't find property: globus.service_cert";
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
+	}
+	String serviceKeyPath = props.getProperty("globus.service_privkey");
+	if (serviceKeyPath == null) {
+	    String msg = "Can't find property: globus.service_privkey";
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
+	}
+
+	// get the location of the Globus gatekeeper
+	String gatekeeperContact = props.getProperty("globus.gatekeeper");
+	if (gatekeeperContact == null) {
+	    String msg = "Can't find property: globus.gatekeeper";
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
+	}
+
+	// execute the job using GRAM
 	try {
-	    logger.debug("Working directory: " + workingDir);
+	    job = new GramJob(rsl);	    
+
+	    // create credentials from service certificate/key
+	    GlobusCredential globusCred = 
+		new GlobusCredential(serviceCertPath, 
+				     serviceKeyPath);
+	    GSSCredential gssCred = 
+		new GlobusGSSCredentialImpl(globusCred,
+					    GSSCredential.INITIATE_AND_ACCEPT);
 	    
-	    JobTemplate jt = session.createJobTemplate();
-	    if (config.isParallel()) {
-		String nativeSpec = "-pe " + drmaaPE + " " + numProcs;
-		jt.setNativeSpecification(nativeSpec);
-	    }
-	    jt.setRemoteCommand(cmd);
-	    jt.setArgs(argsArray);
-	    jt.setWorkingDirectory(workingDir);
-	    jt.setErrorPath(":" + workingDir + "/stderr.txt");
-	    jt.setOutputPath(":" + workingDir + "/stdout.txt");
-	    handle = session.runJob(jt);
-	    logger.info("DRMAA job has been submitted with id " + handle);
-	    session.deleteJobTemplate(jt);
+	    // set the credentials for the job
+	    job.setCredentials(gssCred);
+	    
+	    // execute the globus job
+	    job.request(gatekeeperContact);
+
+	    // add a listener
+	    job.addListener(this);
+
+	    // set the handle 
+	    handle = job.getIDAsString();
 	} catch (Exception e) {
-	    String msg = "Error while running executable via DRMAA - " +
+	    String msg = "Error while running executable via Globus - " +
 		e.getMessage();
 	    logger.error(msg);
 	    throw new JobManagerException(msg);
@@ -244,7 +241,7 @@ public class DRMAAJobManager implements OpalJobManager {
 	while (!started) {
 	    try {
 		synchronized(this) {
-		    // TODO: Should ideally check DRMAA status to see if 
+		    // TODO: Should ideally check Globus status to see if 
 		    // job is still pending or active
 		    this.wait();
 		}
@@ -277,26 +274,16 @@ public class DRMAAJobManager implements OpalJobManager {
 
 	// wait till the process finishes, and get final status
 	try {
-	    jobInfo = session.wait(handle, Session.TIMEOUT_WAIT_FOREVER);
-	} catch (DrmaaException de) {
-	    String msg = "Exception while waiting for process to finish";
-	    logger.error(msg, de);
-	    throw new JobManagerException(msg + " - " + de.getMessage());
+	    synchronized(job) {
+		job.wait();
+	    }
+	} catch (Exception e) {
+	    String msg = "Exception while waiting for Globus process to finish";
+	    logger.error(msg, e);
+	    throw new JobManagerException(msg + " - " + e.getMessage());
 	}
 
-	// update status
-	int exitValue = jobInfo.getExitStatus();
-
-	if (exitValue == 0) {
-	    status.setCode(GramJob.STATUS_DONE);
-	    status.setMessage("Execution complete - " + 
-			      "check outputs to verify successful execution");
-	} else {
-	    status.setCode(GramJob.STATUS_FAILED);
-	    status.setMessage("Execution failed - process exited with value " +
-			      exitValue);
-	}
-
+	// return status
 	return status;
     }
 
@@ -319,11 +306,11 @@ public class DRMAAJobManager implements OpalJobManager {
 
 	// destroy process
 	try {
-	    session.control(handle, Session.TERMINATE);
-	} catch (DrmaaException de) {
-	    String msg = "Exception while trying to destroy process";
-	    logger.error(msg, de);
-	    throw new JobManagerException(msg + " - " + de.getMessage());
+	    job.cancel();
+	} catch (Exception e) {
+	    String msg = "Exception while trying to destroy Globus process";
+	    logger.error(msg, e);
+	    throw new JobManagerException(msg + " - " + e.getMessage());
 	}
 
 	// update status
@@ -331,5 +318,48 @@ public class DRMAAJobManager implements OpalJobManager {
 	status.setMessage("Process destroyed on user request");
 
 	return status;
+    }
+
+    /**
+     * Implementation of the method defined by the GramJobListener interface, which is
+     * invoked by the Globus JobManager if the job status is updated
+     * 
+     * @param job reference to the Globus GRAM job representing this job
+     */
+    public void statusChanged(GramJob job) {
+	logger.info("called for job: " + handle);
+	
+	// get the job status code and message
+	int code = job.getStatus();
+	String message;
+	if (code == GramJob.STATUS_DONE)
+	    message = GramJob.getStatusAsString(code) +
+		" - check outputs to verify successful execution";
+	else if (code == GramJob.STATUS_FAILED)
+	    message = GramJob.getStatusAsString(code) + 
+		", Error code - " + job.getError();
+	else
+	    message = GramJob.getStatusAsString(code);
+	logger.info("Job status: " + message);
+	
+	// update job status in memory or in database
+	if ((code == GramJob.STATUS_DONE) ||
+	    (code == GramJob.STATUS_FAILED)) {
+	    // deactivate listener, which gets rid of a GRAM thread
+	    job.removeListener(this);
+	    Gram.deactivateCallbackHandler(job.getCredentials());
+
+	} else {
+	    status.setCode(code);
+	    status.setMessage(message);
+	}
+
+	// notify sleepers that the job is finished
+	if ((code == GramJob.STATUS_FAILED) || (code == GramJob.STATUS_DONE)) {
+	    logger.info("Job " + handle + " finished with status - " + message);
+	    synchronized(job) {
+		job.notifyAll();
+	    }
+	}
     }
 }

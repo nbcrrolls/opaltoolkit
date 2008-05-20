@@ -174,8 +174,7 @@ public class ForkJobManager implements OpalJobManager {
 	status.setCode(GramJob.STATUS_ACTIVE);
 	status.setMessage("Execution in progress");
 
-	// notify sleepers - no one should really need to wait for activation
-	// of a job spawned by process exec, but this is here for completeness
+	// notify listeners that process is activated
 	started = true;
 	synchronized(this) {
 	    this.notifyAll();
