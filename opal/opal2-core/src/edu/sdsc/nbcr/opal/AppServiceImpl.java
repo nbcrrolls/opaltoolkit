@@ -30,6 +30,7 @@ import java.util.zip.ZipOutputStream;
 import edu.sdsc.nbcr.opal.manager.OpalJobManager;
 import edu.sdsc.nbcr.opal.manager.ForkJobManager;
 import edu.sdsc.nbcr.opal.manager.DRMAAJobManager;
+import edu.sdsc.nbcr.opal.manager.GlobusJobManager;
 import edu.sdsc.nbcr.opal.manager.JobManagerException;
 
 import edu.sdsc.nbcr.opal.state.JobInfo;
@@ -443,7 +444,7 @@ public class AppServiceImpl
 	if (drmaaInUse) {
 	    jobManager = new DRMAAJobManager();
 	} else if (globusInUse) {
-	    throw new FaultType("Globus job manager not supported yet");
+	    jobManager = new GlobusJobManager();
 	} else { // process exec
 	    jobManager = new ForkJobManager();
 	}
