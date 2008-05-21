@@ -4,6 +4,7 @@ package edu.sdsc.nbcr.opal.dashboard.persistence;
 
 
 import org.hibernate.classic.Session;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import java.util.List;
 
@@ -215,7 +216,6 @@ public class DBManager {
      */
     public double [] getResultsTimeseries(Date startDate, Date endDate, String service, String type){
 
-        /*
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
@@ -224,63 +224,80 @@ public class DBManager {
         
         String query = null;
         if ( type.equals("hits") ) {
-            query = "select to_date(start_time, 'Mon DD, YYYY'), count(*) " +
-                "from job_status where service_name='" + service + "' " +
-                " and to_date(start_time, 'Mon DD, YYYY') >= to_date('" + startDateString + "', 'Mon DD, YYYY') " +
-                " and to_date(start_time, 'Mon DD, YYYY') <= to_date('" + endDateString + "', 'Mon DD, YYYY') " +
-                "group by to_date(start_time, 'Mon DD, YYYY') " +
-                "order by to_date(start_time, 'Mon DD, YYYY') desc;";
+            query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime))  , count(*)  " +            
+                " from JobInfo where serviceName= :service" +
+                " and startTime >= :startDate " +
+                " and startTime <= :endDate " +
+                " group by  str(year(startTime))||str(month(startTime))||str(day(startTime)) " +
+                " order by  str(year(startTime))||str(month(startTime))||str(day(startTime)) desc"; 
         }else if (type.equals("exectime") ) {
-            query = "select to_date(start_time, 'Mon DD, YYYY'), sum(to_timestamp(last_update, 'Mon DD, YYYY HH:MI:SS AM') - to_timestamp(start_time, 'Mon DD, YYYY HH:MI:SS AM'))/count(*) as average " +
-                "from job_status " +
-                "where service_name='" + service + "' " +
-                "and to_date(start_time, 'Mon DD, YYYY') >= to_date('" + startDateString + "', 'Mon DD, YYYY') " +
-                "and to_date(start_time, 'Mon DD, YYYY') <= to_date('" + endDateString + "', 'Mon DD, YYYY') " +
-                "and code=8 " +
-                "group by to_date(start_time, 'Mon DD, YYYY') " +
-                "order by to_date(start_time, 'Mon DD, YYYY') desc;" ;
+            query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), " +
+                //"sum( (lastUpdate - startTime) ) / count(*) as average " +
+                "avg( (second(last_update) - second(start_time))  + (minute(last_update) - minute(start_time)) * 60 + " +
+                "(hour(last_update) - hour(start_time))*60*60) " + 
+                " from JobInfo " +
+                " where serviceName= :service " +
+                " and startTime >= :startDate " +
+                " and startTime <= :endDate " +
+                " and code=8 " +
+                " group by str(year(startTime))||str(month(startTime))||str(day(startTime)) " +
+                " order by str(year(startTime))||str(month(startTime))||str(day(startTime)) desc" ;
         } else if (type.equals("error") ){
-            query  = "select to_date(start_time, 'Mon DD, YYYY'), count(*) " +
-            		"from job_status " +
-            		"where service_name='" + service + "' " +
-            		"and to_date(start_time, 'Mon DD, YYYY') >= to_date('" + startDateString + "', 'Mon DD, YYYY') " +
-            		"and to_date(start_time, 'Mon DD, YYYY') <= to_date('" + endDateString + "', 'Mon DD, YYYY') " +
-            		"and code=4 " +
-            		"group by to_date(start_time, 'Mon DD, YYYY') " +
-            		"order by to_date(start_time, 'Mon DD, YYYY') desc;";   
+            query  = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), count(*) " +
+                "from JobInfo " +
+            	"where serviceName= :service " +
+            	"and startTime >= :startDate " +
+            	"and startTime <= :endDate " +
+            	"and code=4 " +
+            	"group by str(year(startTime))||str(month(startTime))||str(day(startTime)) " +
+            	"order by str(year(startTime))||str(month(startTime))||str(day(startTime)) desc";   
         }
-        log.info("Going to get the " + type + " for the service: " + service + " and with start date: " + startDateString + " " +
-                "and end date: " + endDateString + "  " + 
-                "\nRunning the following query: " + query);
+        
         
         //going to execute the query
         if ( ! isConnected() ) return null;
         try {
-            Statement sql = conn.createStatement();
-            ResultSet rs = sql.executeQuery(query);
+             Query queryStat = session.createQuery(query)
+                .setString("service", service)
+                .setTimestamp("startDate", startDate)
+                .setTimestamp("endDate", endDate);
+            List result = queryStat.list();
+            Iterator itera = result.iterator();
+            log.info("Going to get the " + type + " for the service: " + service + 
+                    "\nRunning the following query: " + queryStat.getQueryString());
+            
             double [] values = new double[numberOfDays+1];
             int counter = numberOfDays;
             Date previousDate =  endDate;//we are gonna start from the current date (today)
             //now we have put the data from the result of the query into the return array
-            while( rs.next() ) {
-                Date date = rs.getDate("to_date");
+            while( itera.hasNext() ) {
+                Object [] entry = (Object []) itera.next();
+                Date date = DateHelper.parseDateWithSpaces((String) entry[0]);
+                //log.debug("For the date " + date + " we have n entries: " + ((Integer)entry[1]) );
+                
                 while ( ! DateHelper.compareDates(previousDate, date) ){
                     //since some day can have no hits we have to put zero in the array for those days
                     values[counter] = 0;
                     log.trace("Inserting a zero for date: " + previousDate + " on position: " + counter);
                     counter--;
                     previousDate = DateHelper.subtractDay(previousDate);
+                    if ( counter == -1 ) {
+                        break;
+                    }
                 }//if
+                if ( counter == -1 ) {
+                    break;
+                }
                 //we don't have a gap!
                 if (type.equals("hits") ) {
-                    values[counter] = (double) rs.getInt("count");                    
+                    values[counter] = ((Integer)entry[1]).doubleValue(); 
                 }else if ( type.equals("exectime") ) {
-                    PGInterval pginterval =  (PGInterval)rs.getObject("average");
-                    double interval =  pginterval.getSeconds() + pginterval.getMinutes() * 60 + pginterval.getHours() * 60 * 60 + 
-                    pginterval.getDays() * 24 * 60 * 60 + pginterval.getMonths() * 30 * 24 * 60 * 60;
-                    values[counter] = interval;
+                    //PGInterval pginterval =  (PGInterval)rs.getObject("average");
+                    //double interval =  pginterval.getSeconds() + pginterval.getMinutes() * 60 + pginterval.getHours() * 60 * 60 + 
+                    //pginterval.getDays() * 24 * 60 * 60 + pginterval.getMonths() * 30 * 24 * 60 * 60;
+                    values[counter] = ((Float)entry[1]).doubleValue();
                 }else if ( type.equals("error") ) {
-                    values[counter] = (double) rs.getInt("count"); 
+                    values[counter] = (double) ((Integer)entry[1]).doubleValue(); 
                 }
                 log.trace("Inserting the value " + values[counter] + " for date: " + date + " on position: " + counter);
                 //decrease the counter
@@ -293,14 +310,13 @@ public class DBManager {
             String str = new String();
             for ( counter = 0; counter < values.length; counter++)
                 str += values[counter] + ", ";
-            log.info("The query on " + type + " with service " + service + " is returning values: " + str);
+            log.info("The query on " + type + " with service " + service + " is returning values: " + str); 
             return values;
-        }catch (SQLException e ) {
+        }catch (Exception e ) {
             log.error("Error while querying for the " + type + " with service " + service + " : " + e.getMessage(), e);
             return null;
         }
-        */
-        return null;
+        //return null;
     }
     
     
@@ -339,7 +355,7 @@ public class DBManager {
             "serviceName='" + service + "' ";
         
         Integer ret = (Integer) session.createQuery(query).uniqueResult();
-        
+        log.debug("getRunningJobs for service: " + service + " returning:" + ret); 
         return ret.intValue();
     }
 

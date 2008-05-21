@@ -72,6 +72,26 @@ public class DateHelper {
         return returnDate;
     }
     
+    /**
+     * It tries to parse the string date following the format yyyy MM dd.
+     * It return null if it can not parse the date.
+     * 
+     * @param date the string to be parsed
+     * @return the date parsed
+     */
+    public static Date parseDateWithSpaces(String date){
+        if ( date == null) return null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy MM dd", Locale.US);
+        Date returnDate = null;
+        try {
+            returnDate = formatter.parse(date);
+        }
+        catch (Exception e){
+            log.error("Impossible to parse date: " + date, e );
+        }
+        return returnDate;
+    }
+    
 
     public static String formatDate(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);

@@ -142,6 +142,8 @@ public class OpalInfoServlet extends HttpServlet {
 	*/
         dbManager = new DBManager();
         dbManager.init();
+        config.getServletContext().setAttribute("dbManager", dbManager);
+        initialized = true;
         
     }
 
