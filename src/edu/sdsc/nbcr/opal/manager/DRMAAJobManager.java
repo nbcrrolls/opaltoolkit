@@ -216,15 +216,8 @@ public class DRMAAJobManager implements OpalJobManager {
 	    throw new JobManagerException(msg);
 	}
 
-	// update status to active
-	status.setCode(GramJob.STATUS_ACTIVE);
-	status.setMessage("Execution in progress");
-
-	// notify listeners that the job has been submitted
+	// job has been started
 	started = true;
-	synchronized(this) {
-	    this.notifyAll();
-	}
 
 	// return an identifier for this process
 	return handle;
@@ -240,20 +233,34 @@ public class DRMAAJobManager implements OpalJobManager {
 	throws JobManagerException {
 	logger.info("called");
 
-	// poll till status is ACTIVE or ERROR
-	while (!started) {
-	    try {
-		synchronized(this) {
-		    // TODO: Should ideally check DRMAA status to see if 
-		    // job is still pending or active
-		    this.wait();
-		}
-	    } catch (InterruptedException ie) {
-		// minor exception - log exception and continue
-		logger.error(ie.getMessage());
-		continue;
-	    }
+	// check if this process has been started already
+	if (!started) {
+	    String msg = "Can't wait for a process that hasn't be started";
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
 	}
+
+	// poll till status is RUNNING
+	try {
+	    while (session.getJobProgramStatus(handle) != Session.RUNNING) {
+		try {
+		    // sleep for 3 seconds
+		    Thread.sleep(3000);
+		} catch (InterruptedException ie) {
+		    // minor exception - log exception and continue
+		    logger.error(ie.getMessage());
+		    continue;
+		}
+	    }
+	} catch (DrmaaException de) {
+	    String msg = "Can't get status for DRMAA job: " + handle;
+	    logger.error(msg, de);
+	    throw new JobManagerException(msg + " - " + de.getMessage());
+	}
+
+	// update status to active
+	status.setCode(GramJob.STATUS_ACTIVE);
+	status.setMessage("Execution in progress");
 
 	return status;
     }
