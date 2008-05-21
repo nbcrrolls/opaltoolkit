@@ -29,7 +29,8 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
     private StatusOutputType status; // current status
     private String handle; // the OS specific process id for this job
     private boolean started = false; // whether the execution has started
-    private volatile boolean done = false; // whether the execution is complete
+    private boolean active = false; // whether the job is active already
+    private boolean destroyed = false; // whether the process was destroyed
 
     private GramJob job; // the GramJob object for this run
 
@@ -213,15 +214,8 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	    throw new JobManagerException(msg);
 	}
 
-	// update status to active
-	status.setCode(GramJob.STATUS_ACTIVE);
-	status.setMessage("Execution in progress");
-
-	// notify listeners that the job has been submitted
+	// job has been started
 	started = true;
-	synchronized(this) {
-	    this.notifyAll();
-	}
 
 	// return an identifier for this process
 	return handle;
@@ -237,13 +231,12 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	throws JobManagerException {
 	logger.info("called");
 
-	// poll till status is ACTIVE or ERROR
-	while (!started) {
+	// wait till the job is active
+	while (!active) {
 	    try {
-		synchronized(this) {
-		    // TODO: Should ideally check Globus status to see if 
-		    // job is still pending or active
-		    this.wait();
+		synchronized(job) {
+		    // will be notified once the job is active
+		    job.wait();
 		}
 	    } catch (InterruptedException ie) {
 		// minor exception - log exception and continue
@@ -310,6 +303,7 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	// destroy process
 	try {
 	    job.cancel();
+	    destroyed = true;
 	} catch (Exception e) {
 	    String msg = "Exception while trying to destroy Globus process";
 	    logger.error(msg, e);
@@ -335,21 +329,36 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	// get the job status code and message
 	int code = job.getStatus();
 	String message;
-	if (code == GramJob.STATUS_DONE)
+	if (code == GramJob.STATUS_DONE) {
 	    message = GramJob.getStatusAsString(code) +
 		" - check outputs to verify successful execution";
-	else if (code == GramJob.STATUS_FAILED)
+	} else if (code == GramJob.STATUS_FAILED) {
 	    message = GramJob.getStatusAsString(code) + 
 		", Error code - " + job.getError();
-	else
+	} else {
 	    message = GramJob.getStatusAsString(code);
+	}
 	logger.info("Job status: " + message);
-	
+
 	// update job status
 	status.setCode(code);
-	status.setMessage(message);
+	if (!destroyed) {
+	    // don't update message if this has been explicitly destroyed
+	    status.setMessage(message);
+	}
+	
+	// if the status just changed to active or failed, notify sleepers
+	if (!active) {
+	    if ((code == GramJob.STATUS_ACTIVE) ||
+		(code == GramJob.STATUS_FAILED)) {
+		active = true;
+		synchronized(job) {
+		    job.notifyAll();
+		}
+	    }
+	}
 
-	// deactivate listener, which gets rid of a GRAM thread
+	// if done, deactivate listener, which gets rid of a GRAM thread
 	if ((code == GramJob.STATUS_DONE) ||
 	    (code == GramJob.STATUS_FAILED)) {
 	    job.removeListener(this);
