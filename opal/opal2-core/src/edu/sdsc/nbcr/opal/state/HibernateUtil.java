@@ -3,6 +3,7 @@ package edu.sdsc.nbcr.opal.state;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.HibernateException;
 
 import org.hibernate.criterion.Expression;
 
@@ -17,7 +18,6 @@ import org.globus.gram.GramJob;
 import edu.sdsc.nbcr.opal.StatusOutputType;
 import edu.sdsc.nbcr.opal.JobOutputType;
 import edu.sdsc.nbcr.opal.OutputFileType;
-import edu.sdsc.nbcr.opal.FaultType;
 
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
@@ -42,7 +42,7 @@ public class HibernateUtil {
             // Create the SessionFactory from hibernate.cfg.xml
             sessionFactory = 
 		new Configuration().configure("hibernate-opal.cfg.xml").buildSessionFactory();
-        } catch (Throwable ex) {
+        } catch (HibernateException ex) {
             // Make sure you log the exception, as it might be swallowed
             logger.error("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -60,43 +60,55 @@ public class HibernateUtil {
      * Saves the job information into the hibernate database
      *
      * @param info the job information object to be saved
-     * @throws FaultType if there is an error during the database commit
+     * @throws StateManagerException if there is an error during the database commit
      */
     public static void saveJobInfoInDatabase(JobInfo info)
-	throws FaultType {
+	throws StateManagerException {
 	logger.info("called");
-
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-	session.save(info);
-	session.getTransaction().commit();
-	session.close();
+	
+	try {
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    session.save(info);
+	    session.getTransaction().commit();
+	    session.close();
+	} catch (HibernateException ex) {
+	    String msg = "Error during database update: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
     }
 
     /**
      * Marks all jobs currently active as zombies - useful during startup
      */
     public static int markZombieJobs() 
-	throws FaultType {
+	throws StateManagerException {
 	logger.info("called");
 
-	Session session = getSessionFactory().openSession();
-	session.beginTransaction();
-	Date lastUpdate = new Date();
-	int numUpdates = session.createQuery("update JobInfo info " +
-					     "set info.lastUpdate = :lastUpdate, " +
-					     "info.code = :code, " +
-					     "info.message = :message " +
-					     "where info.code != " + GramJob.STATUS_DONE + 
-					     "and info.code != " + GramJob.STATUS_FAILED)
-	    .setTimestamp("lastUpdate", lastUpdate)
-	    .setInteger("code", GramJob.STATUS_FAILED)
-	    .setString("message", "Job failed - server was restarted during job execution")
-	    .executeUpdate();
-	session.getTransaction().commit();
-	session.close();
-	
-	return numUpdates;
+	try {
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    Date lastUpdate = new Date();
+	    int numUpdates = session.createQuery("update JobInfo info " +
+						 "set info.lastUpdate = :lastUpdate, " +
+						 "info.code = :code, " +
+						 "info.message = :message " +
+						 "where info.code != " + GramJob.STATUS_DONE + 
+						 "and info.code != " + GramJob.STATUS_FAILED)
+		.setTimestamp("lastUpdate", lastUpdate)
+		.setInteger("code", GramJob.STATUS_FAILED)
+		.setString("message", "Job failed - server was restarted during job execution")
+		.executeUpdate();
+	    session.getTransaction().commit();
+	    session.close();
+	    
+	    return numUpdates;
+	} catch (HibernateException ex) {
+	    String msg = "Error during database update: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
     }
 
     /**
@@ -107,21 +119,23 @@ public class HibernateUtil {
      * @param message the status message for this job
      * @param baseURL the base URL for this job
      * @param handle the manager specific handle to communicate with the job
-     * @throws FaultType if there is an error during the database commit
+     * @throws StateManagerException if there is an error during the database commit
      */
     public static void updateJobInfoInDatabase(String jobID,
 					       int code,
 					       String message,
 					       String baseURL,
 					       String handle)
-	throws FaultType {
+	throws StateManagerException {
 	logger.info("called");
 	logger.debug("Updating status to: " + message);
-
-	Session session = getSessionFactory().openSession();
-	session.beginTransaction();
-	Date lastUpdate = new Date();
-	int numRows = session.createQuery("update JobInfo info " +
+	
+	int numRows = 1;
+	try {
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    Date lastUpdate = new Date();
+	    numRows = session.createQuery("update JobInfo info " +
 					  "set info.lastUpdate = :lastUpdate, " +
 					  "info.code = :code, " +
 					  "info.message = :message, " +
@@ -129,21 +143,26 @@ public class HibernateUtil {
 					  "info.handle = :handle " +
 					  "where info.jobID = '" +
 					  jobID + "'")
-	    .setTimestamp("lastUpdate", lastUpdate)
-	    .setInteger("code", code)
-	    .setString("message", message)
-	    .setString("baseURL", baseURL)
-	    .setString("handle", handle)
-	    .executeUpdate();
-	session.getTransaction().commit();
-	session.close();
-
+		.setTimestamp("lastUpdate", lastUpdate)
+		.setInteger("code", code)
+		.setString("message", message)
+		.setString("baseURL", baseURL)
+		.setString("handle", handle)
+		.executeUpdate();
+	    session.getTransaction().commit();
+	    session.close();
+	} catch (HibernateException ex) {
+	    String msg = "Error during database update: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
+	    
 	if (numRows == 1) {
 	    logger.info("Updated status for job: " + jobID);
 	} else {
 	    String msg = "Unable to update status for job: " + jobID;
 	    logger.error(msg);
-	    throw new FaultType(msg);
+	    throw new StateManagerException(msg);
 	}
     }
 
@@ -152,49 +171,55 @@ public class HibernateUtil {
      *
      * @param jobID the job id for this job
      * @param outputs job outputs for this job
-     * @throws FaultType if there is an error during the database commit
+     * @throws StateManagerException if there is an error during the database commit
      */
     public static void saveOutputsInDatabase(String jobID,
 					     JobOutputType outputs)
-	throws FaultType {
+	throws StateManagerException {
 	logger.info("called");
 
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
-
-	// retrieve the job info object
-	List results = session.createCriteria(JobInfo.class)
-	    .add(Expression.eq("jobID", jobID))
-	    .list();
-	if (results.size() != 1) {
+	try {
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    
+	    // retrieve the job info object
+	    List results = session.createCriteria(JobInfo.class)
+		.add(Expression.eq("jobID", jobID))
+		.list();
+	    if (results.size() != 1) {
+		session.close();
+		throw new StateManagerException("Can't find job info for job: " + jobID);
+	    }
+	    JobInfo info = (JobInfo) results.get(0);
+	    
+	    // initialize job outputs
+	    JobOutput out = new JobOutput();
+	    out.setJob(info);
+	    out.setStdOut(outputs.getStdOut().toString());
+	    out.setStdErr(outputs.getStdErr().toString());
+	    
+	    // initialize the output files
+	    OutputFile files[] = new OutputFile[outputs.getOutputFile().length];
+	    for (int i = 0; i < outputs.getOutputFile().length; i++) {
+		// initialize output files
+		files[i] = new OutputFile();
+		files[i].setJob(info);
+		files[i].setName(outputs.getOutputFile()[i].getName());
+		files[i].setUrl(outputs.getOutputFile()[i].getUrl().toString());
+	    }
+	    
+	    // save the outputs
+	    session.save(out);
+	    for (int i = 0; i < files.length; i++) {
+		session.save(files[i]);
+	    }
+	    session.getTransaction().commit();
 	    session.close();
-	    throw new FaultType("Can't find job info for job: " + jobID);
+	} catch (HibernateException ex) {
+	    String msg = "Error during database update: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
 	}
-	JobInfo info = (JobInfo) results.get(0);
-
-	// initialize job outputs
-	JobOutput out = new JobOutput();
-	out.setJob(info);
-	out.setStdOut(outputs.getStdOut().toString());
-	out.setStdErr(outputs.getStdErr().toString());
-
-	// initialize the output files
-	OutputFile files[] = new OutputFile[outputs.getOutputFile().length];
-	for (int i = 0; i < outputs.getOutputFile().length; i++) {
-	    // initialize output files
-	    files[i] = new OutputFile();
-	    files[i].setJob(info);
-	    files[i].setName(outputs.getOutputFile()[i].getName());
-	    files[i].setUrl(outputs.getOutputFile()[i].getUrl().toString());
-	}
-
-	// save the outputs
-	session.save(out);
-	for (int i = 0; i < files.length; i++) {
-	    session.save(files[i]);
-	}
-	session.getTransaction().commit();
-	session.close();
     }
 
     /**
@@ -202,38 +227,44 @@ public class HibernateUtil {
      *
      * @param jobID the job id for this job
      * @return the status for this job
-     * @throws FaultType if there is an error during status retrieval
+     * @throws StateManagerException if there is an error during status retrieval
      */
     public static StatusOutputType getStatus(String jobID) 
-	throws FaultType {
+	throws StateManagerException {
 	logger.info("called");
 
 	StatusOutputType status = null;
 
-	// retrieve job status from hibernate
-	Session session = getSessionFactory().openSession();
-	session.beginTransaction();
-	List results = session.createCriteria(JobInfo.class)
-	    .add(Expression.eq("jobID", jobID))
-	    .list();
-	if (results.size() == 1) {
-	    JobInfo info = (JobInfo) results.get(0);
-	    status = new StatusOutputType();
-	    status.setCode(info.getCode());
-	    status.setMessage(info.getMessage());
-	    try {
-		status.setBaseURL(new URI(info.getBaseURL()));
-	    } catch (MalformedURIException e) {
-		// log and contiue
-		logger.error(e.getMessage());
+	try {
+	    // retrieve job status from hibernate
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    List results = session.createCriteria(JobInfo.class)
+		.add(Expression.eq("jobID", jobID))
+		.list();
+	    if (results.size() == 1) {
+		JobInfo info = (JobInfo) results.get(0);
+		status = new StatusOutputType();
+		status.setCode(info.getCode());
+		status.setMessage(info.getMessage());
+		try {
+		    status.setBaseURL(new URI(info.getBaseURL()));
+		} catch (MalformedURIException e) {
+		    // log and contiue
+		    logger.error(e.getMessage());
+		}
 	    }
+	    session.close();
+	} catch (HibernateException ex) {
+	    String msg = "Error while getting status from database: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
 	}
-	session.close();
-
+	
 	if (status == null) {
 	    String msg = "Can't retrieve status for job: " + jobID;
 	    logger.error(msg);
-	    throw new FaultType(msg);
+	    throw new StateManagerException(msg);
 	}
 
 	return status;
@@ -244,63 +275,69 @@ public class HibernateUtil {
      *
      * @param jobID the job id for this job
      * @return the outputs for this job
-     * @throws FaultType if there is an error during status retrieval
+     * @throws StateManagerException if there is an error during status retrieval
      */
     public static JobOutputType getOutputs(String jobID) 
-	throws FaultType {
+	throws StateManagerException {
 	logger.info("called");
 
 	JobOutputType outputs = new JobOutputType();
 
-	Session session = getSessionFactory().openSession();
-	session.beginTransaction();
-	List results = session.createQuery("from JobOutput output " +
-					   "left join fetch output.job " +
-					   "where output.job.jobID = '" +
-					   jobID + "'")
-	    .list();
-	JobOutput output = null;
-	if (results.size() == 1) {
-	    output = (JobOutput) results.get(0);
-	} else {
-	    String msg = "Can't get job outputs for job: " + jobID;
-	    logger.error(msg);
-	    throw new FaultType(msg);
-	}
 	try {
-	    // set the stdout and stderr from the DB
-	    outputs.setStdOut(new URI(output.getStdOut()));
-	    outputs.setStdErr(new URI(output.getStdErr()));
-	} catch (MalformedURIException e) {
-	    String msg = "Can't set URI for stdout/stderr for job: " + e.getMessage();
-	    logger.error(msg);
-	    throw new FaultType(msg);
-	}
-
-	results = session.createQuery("from OutputFile file " +
-				      "left join fetch file.job " +
-				      "where file.job.jobID = '" +
-				      jobID + "'")
-	    .list();
-	if (results != null) {
-	    OutputFileType[] outputFileObj = new OutputFileType[results.size()];
-	    // set the output file objects from the database
-	    for (int i = 0; i < results.size(); i++) {
-		OutputFile file = (OutputFile) results.get(i);
-		outputFileObj[i] = new OutputFileType();
-		outputFileObj[i].setName(file.getName());
-		try {
-		    outputFileObj[i].setUrl(new URI(file.getUrl()));
-		} catch (MalformedURIException e) {
-		    String msg = "Can't set URI for output file: " + e.getMessage();
-		    logger.error(msg);
-		    throw new FaultType(msg);
-		}
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    List results = session.createQuery("from JobOutput output " +
+					       "left join fetch output.job " +
+					       "where output.job.jobID = '" +
+					       jobID + "'")
+		.list();
+	    JobOutput output = null;
+	    if (results.size() == 1) {
+		output = (JobOutput) results.get(0);
+	    } else {
+		String msg = "Can't get job outputs for job: " + jobID;
+		logger.error(msg);
+		throw new StateManagerException(msg);
 	    }
-
-	    outputs.setOutputFile(outputFileObj);
+	    try {
+		// set the stdout and stderr from the DB
+		outputs.setStdOut(new URI(output.getStdOut()));
+		outputs.setStdErr(new URI(output.getStdErr()));
+	    } catch (MalformedURIException e) {
+		String msg = "Can't set URI for stdout/stderr for job: " + e.getMessage();
+		logger.error(msg);
+		throw new StateManagerException(msg);
+	    }
+	    
+	    results = session.createQuery("from OutputFile file " +
+					  "left join fetch file.job " +
+					  "where file.job.jobID = '" +
+					  jobID + "'")
+		.list();
+	    if (results != null) {
+		OutputFileType[] outputFileObj = new OutputFileType[results.size()];
+		// set the output file objects from the database
+		for (int i = 0; i < results.size(); i++) {
+		    OutputFile file = (OutputFile) results.get(i);
+		    outputFileObj[i] = new OutputFileType();
+		    outputFileObj[i].setName(file.getName());
+		    try {
+			outputFileObj[i].setUrl(new URI(file.getUrl()));
+		    } catch (MalformedURIException e) {
+			String msg = "Can't set URI for output file: " + e.getMessage();
+			logger.error(msg);
+			throw new StateManagerException(msg);
+		    }
+		}
+		
+		outputs.setOutputFile(outputFileObj);
+	    }
+	    session.close();
+	} catch (HibernateException ex) {
+	    String msg = "Error while getting outputs from database: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
 	}
-	session.close();
 
 	return outputs;
     }
