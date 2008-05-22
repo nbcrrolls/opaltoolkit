@@ -123,8 +123,17 @@ public class AppServiceImpl
 	    logger.info("Data will be available as archive after job completion");
 	}
 
-	// TODO: clean up zombie jobs
+	// clean up zombie jobs
+	try {
+	    logger.debug("Checking if there are any zombie jobs");
 
+	    int numUpdates = HibernateUtil.markZombieJobs();
+
+	    logger.debug("Number of DB entries for zombie jobs cleaned up: " + numUpdates);
+	} catch (FaultType f) {
+	    logger.fatal("Caught exception while trying to clean database", f);
+	}
+	
 	// check if DRMAA is being used
 	drmaaInUse =
 	    Boolean.valueOf(props.getProperty("drmaa.use")).booleanValue();

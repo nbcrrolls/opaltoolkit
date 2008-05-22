@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Iterator;
 
+import org.globus.gram.GramJob;
+
 import edu.sdsc.nbcr.opal.StatusOutputType;
 import edu.sdsc.nbcr.opal.JobOutputType;
 import edu.sdsc.nbcr.opal.OutputFileType;
@@ -69,6 +71,32 @@ public class HibernateUtil {
 	session.save(info);
 	session.getTransaction().commit();
 	session.close();
+    }
+
+    /**
+     * Marks all jobs currently active as zombies - useful during startup
+     */
+    public static int markZombieJobs() 
+	throws FaultType {
+	logger.info("called");
+
+	Session session = getSessionFactory().openSession();
+	session.beginTransaction();
+	Date lastUpdate = new Date();
+	int numUpdates = session.createQuery("update JobInfo info " +
+					     "set info.lastUpdate = :lastUpdate, " +
+					     "info.code = :code, " +
+					     "info.message = :message " +
+					     "where info.code != " + GramJob.STATUS_DONE + 
+					     "and info.code != " + GramJob.STATUS_FAILED)
+	    .setTimestamp("lastUpdate", lastUpdate)
+	    .setInteger("code", GramJob.STATUS_FAILED)
+	    .setString("message", "Job failed - server was restarted during job execution")
+	    .executeUpdate();
+	session.getTransaction().commit();
+	session.close();
+	
+	return numUpdates;
     }
 
     /**
