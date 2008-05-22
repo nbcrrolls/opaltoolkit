@@ -37,6 +37,7 @@ import edu.sdsc.nbcr.opal.state.JobInfo;
 import edu.sdsc.nbcr.opal.state.JobOutput;
 import edu.sdsc.nbcr.opal.state.OutputFile;
 import edu.sdsc.nbcr.opal.state.HibernateUtil;
+import edu.sdsc.nbcr.opal.state.StateManagerException;
 
 import edu.sdsc.nbcr.opal.util.Util;
 
@@ -130,8 +131,8 @@ public class AppServiceImpl
 	    int numUpdates = HibernateUtil.markZombieJobs();
 
 	    logger.debug("Number of DB entries for zombie jobs cleaned up: " + numUpdates);
-	} catch (FaultType f) {
-	    logger.fatal("Caught exception while trying to clean database", f);
+	} catch (StateManagerException se) {
+	    logger.fatal("Caught exception while trying to clean database", se);
 	}
 	
 	// check if DRMAA is being used
@@ -284,7 +285,14 @@ public class AppServiceImpl
 	retrieveAppConfig();
 
 	// retrieve the status
-	StatusOutputType status = HibernateUtil.getStatus(in);
+	StatusOutputType status = null;
+
+	try {
+	    status = HibernateUtil.getStatus(in);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
 
 	long t1 = System.currentTimeMillis();
 	logger.debug("Query execution time: " + (t1-t0) + " ms");
@@ -308,7 +316,14 @@ public class AppServiceImpl
 	retrieveAppConfig();
 
 	// retrieve the outputs
-	JobOutputType outputs = HibernateUtil.getOutputs(in);
+	JobOutputType outputs = null;
+	
+	try {
+	    outputs = HibernateUtil.getOutputs(in);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
 
 	// make sure the outputs still exist
 	File test = new File(outputPrefix + File.separator + in);
@@ -446,7 +461,12 @@ public class AppServiceImpl
 	info.setClientDN(Util.getRemoteDN());
 	info.setClientIP(Util.getRemoteIP());
 	info.setServiceName(serviceName);
-	HibernateUtil.saveJobInfoInDatabase(info);
+	try {
+	    HibernateUtil.saveJobInfoInDatabase(info);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
 
 	// instantiate & initialize the job manager
 	final OpalJobManager jobManager;
@@ -463,11 +483,16 @@ public class AppServiceImpl
 	    logger.error(jme.getMessage());
 
 	    // save status in database
-	    HibernateUtil.updateJobInfoInDatabase(jobID,
-						  GramJob.STATUS_FAILED,
-						  jme.getMessage(),
-						  info.getBaseURL(),
-						  null);
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID,
+						      GramJob.STATUS_FAILED,
+						      jme.getMessage(),
+						      info.getBaseURL(),
+						      null);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
 
 	    throw new FaultType(jme.getMessage());
 	}
@@ -482,11 +507,16 @@ public class AppServiceImpl
 	    logger.error(jme.getMessage());
 
 	    // save status in database
-	    HibernateUtil.updateJobInfoInDatabase(jobID,
-						  GramJob.STATUS_FAILED,
-						  jme.getMessage(),
-						  info.getBaseURL(),
-						  null);
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID,
+						      GramJob.STATUS_FAILED,
+						      jme.getMessage(),
+						      info.getBaseURL(),
+						      null);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
 
 	    throw new FaultType(jme.getMessage());
 	}
@@ -530,11 +560,16 @@ public class AppServiceImpl
 	    logger.error(jme.getMessage());
 
 	    // save status in database
-	    HibernateUtil.updateJobInfoInDatabase(jobID,
-						  GramJob.STATUS_FAILED,
-						  jme.getMessage(),
-						  baseURL.toString(),
-						  handle);
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID,
+						      GramJob.STATUS_FAILED,
+						      jme.getMessage(),
+						      baseURL.toString(),
+						      handle);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
 
 	    throw new FaultType(jme.getMessage());
 	}
@@ -543,11 +578,16 @@ public class AppServiceImpl
 	    status.setBaseURL(baseURL);
 
 	// update status in database
-	HibernateUtil.updateJobInfoInDatabase(jobID, 
-					      status.getCode(),
-					      status.getMessage(),
-					      status.getBaseURL().toString(),
-					      handle);
+	try {
+	    HibernateUtil.updateJobInfoInDatabase(jobID, 
+						  status.getCode(),
+						  status.getMessage(),
+						  status.getBaseURL().toString(),
+						  handle);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
 
 	// if the job is still running, wait for it to finish
 	if (!((status.getCode() == GramJob.STATUS_FAILED) ||
@@ -558,11 +598,16 @@ public class AppServiceImpl
 		logger.error(jme.getMessage());
 
 		// save status in database
-		HibernateUtil.updateJobInfoInDatabase(jobID,
-						      GramJob.STATUS_FAILED,
-						      jme.getMessage(),
-						      status.getBaseURL().toString(),
-						      handle);
+		try {
+		    HibernateUtil.updateJobInfoInDatabase(jobID,
+							  GramJob.STATUS_FAILED,
+							  jme.getMessage(),
+							  status.getBaseURL().toString(),
+							  handle);
+		} catch (StateManagerException se) {
+		    logger.error(se.getMessage());
+		    throw new FaultType(se.getMessage());
+		}
 
 		throw new FaultType(jme.getMessage());
 	    }
@@ -578,11 +623,16 @@ public class AppServiceImpl
 	status.setMessage("Writing output metadata");
 
 	// update status in database
-	HibernateUtil.updateJobInfoInDatabase(jobID, 
-					      status.getCode(),
-					      status.getMessage(),
-					      status.getBaseURL().toString(),
-					      handle);
+	try {
+	    HibernateUtil.updateJobInfoInDatabase(jobID, 
+						  status.getCode(),
+						  status.getMessage(),
+						  status.getBaseURL().toString(),
+						  handle);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
 
 	// retrieve job outputs
 	// make sure the stdout and stderr exist
@@ -594,12 +644,17 @@ public class AppServiceImpl
 	    status.setMessage(msg);
 
 	    // update status in database
-	    HibernateUtil.updateJobInfoInDatabase(jobID, 
-						  status.getCode(),
-						  status.getMessage(),
-						  status.getBaseURL().toString(),
-						  handle);
-	    
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID, 
+						      status.getCode(),
+						      status.getMessage(),
+						      status.getBaseURL().toString(),
+						      handle);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
+
 	    jobTable.remove(jobID);
 	    return;
 	}
@@ -611,12 +666,17 @@ public class AppServiceImpl
 	    status.setMessage(msg);
 
 	    // update status in database
-	    HibernateUtil.updateJobInfoInDatabase(jobID, 
-						  status.getCode(),
-						  status.getMessage(),
-						  status.getBaseURL().toString(),
-						  handle);
-	    
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID, 
+						      status.getCode(),
+						      status.getMessage(),
+						      status.getBaseURL().toString(),
+						      handle);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
+
 	    jobTable.remove(jobID);
 	    return;
 	}
@@ -698,7 +758,12 @@ public class AppServiceImpl
 	    outputs.setOutputFile(outputFileObj);
 
 	    // update the outputs table
-	    HibernateUtil.saveOutputsInDatabase(jobID, outputs);
+	    try {
+		HibernateUtil.saveOutputsInDatabase(jobID, outputs);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
 	} catch (IOException e) {
 	    // log exception
 	    logger.error(e);
@@ -711,11 +776,16 @@ public class AppServiceImpl
 	    // finish up
 
 	    // update status in database
-	    HibernateUtil.updateJobInfoInDatabase(jobID, 
-						  status.getCode(),
-						  status.getMessage(),
-						  status.getBaseURL().toString(),
-						  handle);
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID, 
+						      status.getCode(),
+						      status.getMessage(),
+						      status.getBaseURL().toString(),
+						      handle);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
 
 	    jobTable.remove(jobID);
 
@@ -727,11 +797,16 @@ public class AppServiceImpl
 	status.setMessage(jobMessage);
 	
 	// update status in database
-	HibernateUtil.updateJobInfoInDatabase(jobID, 
-					      status.getCode(),
-					      status.getMessage(),
-					      status.getBaseURL().toString(),
-					      handle);
+	try {
+	    HibernateUtil.updateJobInfoInDatabase(jobID, 
+						  status.getCode(),
+						  status.getMessage(),
+						  status.getBaseURL().toString(),
+						  handle);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
 
 	// get rid of the jobManager from the jobTable
 	jobTable.remove(jobID);
