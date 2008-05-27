@@ -47,7 +47,7 @@ inputFiles.append(inputFile1)
 req._inputFile = inputFiles
 
 # Launch job, and retrieve job ID
-print "Launching remote Pdb2pqr job"
+print "Launching remote Apbs job"
 resp = appServicePort.launchJob(req)
 jobID = resp._jobID
 print "Received Job ID:", jobID
@@ -74,7 +74,7 @@ while 1:
 
 # Retrieve job outputs, if execution is successful
 if status._code == 8: # 8 = GramJob.STATUS_DONE
-    print "Retrieving Pdb2pqr output metadata: "
+    print "Retrieving Apbs output metadata: "
     resp = appServicePort.getOutputs(getOutputsRequest(jobID))
 
     # Retrieve a listing of all output files
