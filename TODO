@@ -1,10 +1,8 @@
 * Plug-ins
-  * Globus
-  * DRMAA
   * CSF4
 
 * Dashboard
-  * Migrate it to hibernate
+  * Fix the off-by-one date error
 
 * WSDL additions/improvements
   * Optional URL for retrieving input files
@@ -16,7 +14,7 @@
   * Possibility to specify a MAX wall clock time 
 
 * Additional Features
-  * Server side argument validation (based on opal.properties)
+  * Server side argument validation (based on application XML)
   * Addition of implicit files to dashboard
   * Arguments schema: how to express 1-* or 2-* multiplicity? specify the
     min but not the max?
