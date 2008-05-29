@@ -40,6 +40,7 @@ import edu.sdsc.nbcr.opal.state.HibernateUtil;
 import edu.sdsc.nbcr.opal.state.StateManagerException;
 
 import edu.sdsc.nbcr.opal.util.Util;
+import edu.sdsc.nbcr.opal.util.ArgValidator;	
 
 /**
  *
@@ -435,6 +436,33 @@ public class AppServiceImpl
 
 	// create the application input files there 
 	writeAppInput(in, outputDirName);
+
+	// validate command-line arguments, if need be
+	if (config.getValidateArgs() != null) {
+	    if (config.getValidateArgs().booleanValue()) {
+		logger.info("Validating command-line arguments");
+		
+		ArgumentsType argsDesc = config.getMetadata().getTypes();
+		if (argsDesc == null) {
+		    String msg = "Validation of arguments requested - " +
+			"but argument schema not provided within app config";
+		    logger.error(msg);
+		    throw new FaultType(msg);
+		}
+		
+		ArgValidator av = new ArgValidator(argsDesc);
+		
+		boolean success = av.validateArgList(outputDirName, 
+						     in.getArgList());
+		if (success) {
+		    logger.info("Argument validation successful");
+		} else {
+		    String msg = "Argument validation unsuccessful";
+		    logger.error(msg);
+		    throw new FaultType(msg);
+		}
+	    }
+	}
 
 	// create a new status object and save it
 	StatusOutputType status = new StatusOutputType();

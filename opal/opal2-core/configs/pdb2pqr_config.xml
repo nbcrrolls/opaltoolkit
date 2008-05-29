@@ -191,7 +191,7 @@
                 <paramType>FILE</paramType>
                 <ioType>OUTPUT</ioType>
                 <required>true</required>
-                <default>output</default>
+                <default>output.pqr</default>
                 <textDesc>The desired output name of the PQR file to be generated</textDesc>
             </param>
         </untaggedParams>
@@ -232,5 +232,6 @@
   </metadata>
   <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr-dummy.sh</binaryLocation>
   <defaultArgs></defaultArgs>
+  <validateArgs>true</validateArgs>
   <parallel>false</parallel>
 </appConfig>

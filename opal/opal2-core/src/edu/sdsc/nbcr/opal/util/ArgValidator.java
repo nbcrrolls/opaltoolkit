@@ -162,6 +162,10 @@ public class ArgValidator {
 	throws FaultType {
 	logger.info("called");
 
+	// return true if args is null
+	if (args == null)
+	    return true;
+
 	// retrieve the parameter types
 	FlagsType[] flags = null;
 	if (argDesc.getFlags() != null)
@@ -373,8 +377,10 @@ public class ArgValidator {
 		    required = untaggedParams[i].getRequired().booleanValue();
 		}
 		if ((required) && (!present.contains(id))) {
-		    logger.error("Required parameter " + id + " not found");
-		    throw new FaultType("Required parameter " + id + " not found");
+		    // since you can't entirely be sure which untagged param is missing,
+		    // throw a generic exception message
+		    logger.error("Required untagged parameter not found");
+		    throw new FaultType("Required untagged parameter not found");
 		}
 	    }
 	}
