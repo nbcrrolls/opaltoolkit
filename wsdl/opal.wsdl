@@ -229,6 +229,7 @@
 	  <xsd:element name="metadata" type="types:AppMetadataType"/>
 	  <xsd:element name="binaryLocation" type="xsd:string"/>
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
+	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
 	</xsd:sequence>
       </xsd:complexType>

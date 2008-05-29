@@ -41,7 +41,7 @@ Author:
 </description>
 ==================================================================== -->
 
-<project default="jar">
+<project name="opal2" default="jar">
 
   <property file="build.properties" />
   <property name="name" value="opal-ws" />
@@ -185,6 +185,7 @@ Author:
         <include name="asm.jar"/>
         <include name="asm-attrs.jar"/>
 	<include name="cglib-2.1.3.jar"/>
+	<include name="commons-cli-2.0.jar"/>
 	<include name="commons-collections-2.1.1.jar"/>
 	<include name="dom4j-1.6.1.jar"/>
 	<include name="hibernate3.jar"/>
