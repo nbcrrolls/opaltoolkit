@@ -16,6 +16,7 @@ import org.apache.struts.action.ActionRedirect;
 import org.apache.struts.actions.MappingDispatchAction;
 import org.apache.struts.upload.FormFile;
 
+import edu.sdsc.nbcr.opal.FaultType;
 import edu.sdsc.nbcr.opal.AppServiceLocator;
 import edu.sdsc.nbcr.opal.AppServicePortType;
 import edu.sdsc.nbcr.opal.InputFileType;
@@ -47,11 +48,10 @@ public class GetJobStatusAction extends MappingDispatchAction{
     	log.info("Action: GetJobStatusAction");
         String jobId = (String) request.getParameter("jobId");
         String serviceID = (String) request.getParameter("serviceID");
-        
+        ArrayList errors = new ArrayList();
         if ( (jobId == null)  || (serviceID == null) || (jobId.length() == 0) || (serviceID.length() == 0 ) ) {
-        	ArrayList errors = new ArrayList();
-        	if ( (jobId == null) || (jobId.length() == 0) ) log.error("Error jobId can not be retrived.");
-        	if ( (serviceID == null) || (serviceID.length() == 0) ) log.error("Error serviceID can not be retrived.");
+            if ( (jobId == null) || (jobId.length() == 0) ) log.error("Error jobId can not be retrived.");
+            if ( (serviceID == null) || (serviceID.length() == 0) ) log.error("Error serviceID can not be retrived.");
             //something went wrong return an error
             errors = new ArrayList();
             errors.add("I could not find the jobId and the serviceID");
@@ -65,10 +65,31 @@ public class GetJobStatusAction extends MappingDispatchAction{
             log.warn("the opalUrl was not found in the WEB-INF/web.xml file.\nUsing the default...");
             url = Constants.OPALDEFAULT_URL;
         }
+        StatusOutputType status= null; 
+        try {
+            AppServiceLocator asl = new AppServiceLocator();
+            AppServicePortType appServicePort = asl.getAppServicePort(new URL( url + "/" + serviceID ));
+            status = appServicePort.queryStatus(jobId);
+        }catch (FaultType e){
+            log.error("A remote error occurred while querying status.");
+            log.error("The remote error message is: " + e.getMessage1(), e);
+
+            errors.add("A remote error occured while querying status");
+            errors.add("the remote error message is: " + e.getMessage1());
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+            return mapping.findForward("Error");
+        }catch (Exception e){
+            log.error("An error occurred while querying status");
+            log.error("The error message is: " + e.getMessage(), e);
+
+            errors.add("An error occured while querying status");
+            errors.add("the error message is: " + e.getMessage());
+            errors.add("Please go back to the List of Application page and try to resubmit your job");
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+            return mapping.findForward("Error");
+        }
+
         
-        AppServiceLocator asl = new AppServiceLocator();
-        AppServicePortType appServicePort = asl.getAppServicePort(new URL( url + "/" + serviceID ));
-        StatusOutputType status = appServicePort.queryStatus(jobId);
         
         request.setAttribute("serviceID", serviceID);
         request.setAttribute("jobId",jobId);

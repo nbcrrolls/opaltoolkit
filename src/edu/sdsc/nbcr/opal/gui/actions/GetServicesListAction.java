@@ -47,9 +47,9 @@ public class GetServicesListAction extends MappingDispatchAction{
     	helper.setBaseURL(url);
     	//TODO check for exceptions, like list == null
     	SOAPBodyElement list = helper.getServiceList();
-    	if ( list == null ) return returnServiceError(mapping, request, "Impossible to get the service list from the server");
+    	if ( list == null ) return returnServiceError(mapping, request, "Unable to get the service list from the server");
     	OPALService [] servicesList = helper.parseServiceList(list.toString());
-    	if ( servicesList == null ) return returnServiceError(mapping, request, "Impossible to parse the service list from the server");
+    	if ( servicesList == null ) return returnServiceError(mapping, request, "Unable to parse the service list from the server");
     	if ( ! helper.setServiceName(servicesList) ) {
             return returnServiceError(mapping, request, "An error occurred when trying to the services names");
     	}

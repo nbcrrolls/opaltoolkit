@@ -22,6 +22,7 @@ import edu.sdsc.nbcr.opal.InputFileType;
 import edu.sdsc.nbcr.opal.JobInputType;
 import edu.sdsc.nbcr.opal.JobSubOutputType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
+import edu.sdsc.nbcr.opal.FaultType;
 import edu.sdsc.nbcr.opal.gui.common.AppMetadata;
 import edu.sdsc.nbcr.opal.gui.common.ArgFlag;
 import edu.sdsc.nbcr.opal.gui.common.ArgParam;
@@ -103,7 +104,6 @@ public class LaunchJobAction extends MappingDispatchAction{
             //that's bad!
             log.error("The command line is null!");
             errors.add("We could not built the command line from your input parameters");
-            errors.add("Please go back to the welcome page");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
@@ -136,13 +136,21 @@ public class LaunchJobAction extends MappingDispatchAction{
             if ( subOut == null ) {
                 throw new Exception("launchJob returned null");
             }
+        }catch (FaultType e){
+            log.error("A remote error occurred while submitting the job.");
+            log.error("The remote error message is: " + e.getMessage1(), e);
+            
+            errors.add("A remote error occured while submitting the job to the remote server");
+            errors.add("the remote error message is: " + e.getMessage1());
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+            return mapping.findForward("Error");
         }catch (Exception e){
             log.error("An error occurred while submitting the job.");
             log.error("The error message is: " + e.getMessage(), e);
             
             errors.add("An error occured while submitting the job to the remote server");
             errors.add("the error message is: " + e.getMessage());
-            errors.add("Please go back to the welcome page");
+            errors.add("Please go back to the List of Application page and try resubmitting the job");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
