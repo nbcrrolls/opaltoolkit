@@ -60,7 +60,7 @@ public class GetServiceListHelper {
     	org.apache.axis.client.Service service = new org.apache.axis.client.Service();
     	try { call = (Call) service.createCall(); }
     	catch (ServiceException e) {
-    		log.error("Impossible to instantiate the Call", e);
+    		log.error("Unable to instantiate the Call", e);
     		call = null;
     	}
     }
@@ -92,7 +92,7 @@ public class GetServiceListHelper {
         Object[]  params = new Object[] { new SOAPBodyElement(input) };
         try { result = (Vector) call.invoke( params ); }
         catch (Exception e) {
-        	log.error("Impossible to invoke the service, maybe the target server is down", e);
+        	log.error("Unable to invoke the service, maybe the target server is down", e);
         	return null;
         }
         if (result == null || result.isEmpty()) {

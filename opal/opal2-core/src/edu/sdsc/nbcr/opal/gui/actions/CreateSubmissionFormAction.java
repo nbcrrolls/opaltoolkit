@@ -22,6 +22,7 @@ import edu.sdsc.nbcr.opal.AppMetadataInputType;
 import edu.sdsc.nbcr.opal.AppMetadataType;
 import edu.sdsc.nbcr.opal.AppServiceLocator;
 import edu.sdsc.nbcr.opal.AppServicePortType;
+import edu.sdsc.nbcr.opal.FaultType;
 import edu.sdsc.nbcr.opal.FlagsArrayType;
 import edu.sdsc.nbcr.opal.FlagsType;
 import edu.sdsc.nbcr.opal.GroupsArrayType;
@@ -209,9 +210,14 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
             }
             else log.info("PARSER: no types found in the config file");
             log.info("PARSER: ---  Parsed sucesfully the configuration file    --\n" + app + "PARSER:         ------------        ");
+        }catch (FaultType e){
+            //some error fetching the data from the remote server
+            log.error("PARSER: Unable to get the appMetadata from the Opal server. Error: " + e.getMessage1());
+            e.printStackTrace();
+            return null;
         } catch (Exception e) {
             //some error fetching the data from the remote server
-            log.error("PARSER: Impossible to get the appMetadata from the Opal server. Error: " + e.getMessage());
+            log.error("PARSER: Unable to get the appMetadata from the Opal server. Error: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
