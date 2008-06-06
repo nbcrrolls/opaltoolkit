@@ -151,6 +151,14 @@ Author:
     </jar>
   </target>
 
+  <!-- Run junit tests -->
+  <target name="tests" depends="jar">
+    <java classname="edu.sdsc.nbcr.opal.util.Tests"
+	  fork="${javac.fork}">
+      <classpath refid="classpath" />
+    </java>
+  </target>
+
   <!-- Install opal inside the axis webapp -->
   <!-- This assumes that axis has been deployed inside tomcat, and there -->
   <!-- exists a WEB-INF directory inside it -->
