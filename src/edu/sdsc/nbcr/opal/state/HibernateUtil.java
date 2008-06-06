@@ -60,9 +60,10 @@ public class HibernateUtil {
      * Saves the job information into the hibernate database
      *
      * @param info the job information object to be saved
+     * @return true if job is saved successfully
      * @throws StateManagerException if there is an error during the database commit
      */
-    public static void saveJobInfoInDatabase(JobInfo info)
+    public static boolean saveJobInfoInDatabase(JobInfo info)
 	throws StateManagerException {
 	logger.info("called");
 	
@@ -77,6 +78,8 @@ public class HibernateUtil {
 	    logger.error(msg);
 	    throw new StateManagerException(msg);
 	}
+
+	return true;
     }
 
     /**
@@ -119,13 +122,14 @@ public class HibernateUtil {
      * @param message the status message for this job
      * @param baseURL the base URL for this job
      * @param handle the manager specific handle to communicate with the job
+     * @return number of rows updated
      * @throws StateManagerException if there is an error during the database commit
      */
-    public static void updateJobInfoInDatabase(String jobID,
-					       int code,
-					       String message,
-					       String baseURL,
-					       String handle)
+    public static int updateJobInfoInDatabase(String jobID,
+					      int code,
+					      String message,
+					      String baseURL,
+					      String handle)
 	throws StateManagerException {
 	logger.info("called");
 	logger.debug("Updating status to: " + message);
@@ -164,6 +168,8 @@ public class HibernateUtil {
 	    logger.error(msg);
 	    throw new StateManagerException(msg);
 	}
+
+	return numRows;
     }
 
     /**
@@ -171,10 +177,11 @@ public class HibernateUtil {
      *
      * @param jobID the job id for this job
      * @param outputs job outputs for this job
+     * @return true if output is saved successfully
      * @throws StateManagerException if there is an error during the database commit
      */
-    public static void saveOutputsInDatabase(String jobID,
-					     JobOutputType outputs)
+    public static boolean saveOutputsInDatabase(String jobID,
+						JobOutputType outputs)
 	throws StateManagerException {
 	logger.info("called");
 
@@ -220,6 +227,8 @@ public class HibernateUtil {
 	    logger.error(msg);
 	    throw new StateManagerException(msg);
 	}
+
+	return true;
     }
 
     /**
