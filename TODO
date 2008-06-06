@@ -19,3 +19,10 @@
   * Addition of implicit files to dashboard: LC
   * Arguments schema: how to express 1-* or 2-* multiplicity? specify the
     min but not the max? LC
+
+* Testing suite using JUnit
+  * ArgValidator: SK/LC
+  * Managers: SK
+  * AppServiceImpl (local calls): SK
+  * Dashboard: LC
+  * GUI: LC
