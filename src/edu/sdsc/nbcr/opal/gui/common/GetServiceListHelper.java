@@ -152,7 +152,16 @@ public class GetServiceListHelper {
             return null;
         }
     }
-    
+   
+
+    public OPALService [] getOpalServiceList() {
+        SOAPBodyElement list = this.getServiceList();
+        if ( list == null ) {
+            log.error("Unable to get the list of service.");
+            return null;
+        }
+        return this.parseServiceList(list.toString());
+    }
     
     /** 
      * I  check the the service node is a valid Opal service, to do this I 
