@@ -233,5 +233,6 @@
   <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr-dummy.sh</binaryLocation>
   <defaultArgs></defaultArgs>
   <validateArgs>true</validateArgs>
+  <jobManager>fork</jobManager>
   <parallel>false</parallel>
 </appConfig>

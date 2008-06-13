@@ -33,6 +33,16 @@
 	</xsd:restriction>
       </xsd:simpleType>
 
+      <!-- Type of job manager -->
+      <xsd:simpleType name="JobManagerType">
+	<xsd:restriction base="xsd:string">
+	  <xsd:enumeration value="fork"/>
+	  <xsd:enumeration value="globus"/>
+	  <xsd:enumeration value="drmaa"/>
+	  <xsd:enumeration value="csf4"/>
+	</xsd:restriction>
+      </xsd:simpleType>
+
       <!-- Applications may use simple flags as inputs (e.g. -->
       <!-- ls -al). there is no implied ordering -->
       <xsd:complexType name="FlagsType">
@@ -230,6 +240,7 @@
 	  <xsd:element name="binaryLocation" type="xsd:string"/>
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
+	  <xsd:element name="jobManager" type="types:JobManagerType" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
 	</xsd:sequence>
       </xsd:complexType>
@@ -237,7 +248,8 @@
       <xsd:complexType name="InputFileType">
 	<xsd:sequence>
 	  <xsd:element name="name" type="xsd:string"/>
-	  <xsd:element name="contents" type="xsd:base64Binary"/>
+	  <xsd:element name="contents" type="xsd:base64Binary" minOccurs="0"/>
+	  <xsd:element name="location" type="xsd:anyURI" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 

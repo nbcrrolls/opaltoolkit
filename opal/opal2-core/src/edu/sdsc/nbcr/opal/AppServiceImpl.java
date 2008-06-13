@@ -497,10 +497,23 @@ public class AppServiceImpl
 	}
 
 	// instantiate & initialize the job manager
-	final OpalJobManager jobManager;
-	if (drmaaInUse) {
-	    jobManager = new DRMAAJobManager();
+	JobManagerType jobManagerType = null;
+	if (config.getJobManager() != null) {
+	    // if the app config has a job manager type, use that
+	    jobManagerType = config.getJobManager();
+	} else if (drmaaInUse) {
+	    jobManagerType = JobManagerType.drmaa;
 	} else if (globusInUse) {
+	    jobManagerType = JobManagerType.globus;
+	} else {
+	    jobManagerType = JobManagerType.fork;
+	}
+	logger.info("Using job manager type: " + jobManagerType.getValue());
+
+	final OpalJobManager jobManager;
+	if (jobManagerType.equals(JobManagerType.drmaa)) {
+	    jobManager = new DRMAAJobManager();
+	} else if (jobManagerType.equals(JobManagerType.globus)) {
 	    jobManager = new GlobusJobManager();
 	} else { // process exec
 	    jobManager = new ForkJobManager();
@@ -914,11 +927,11 @@ public class AppServiceImpl
 		    (AppConfigType) TypeDeserializer.getValue(configFileName,
 							      new AppConfigType());;
 	    } catch (Exception e) {
-		logger.error("Can't read application configuration from XML: " +
-			     e.getMessage());
-		throw new FaultType("Can't read application configuration from XML: " +
-				    e.getMessage());
-	    }
+		logger.error(e);
+		String msg = "Can't read application configuration from XML for service: " +
+		    serviceName;
+		logger.error(msg);
+		throw new FaultType(msg);	    }
 	}
     }
 }
