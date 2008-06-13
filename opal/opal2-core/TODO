@@ -1,9 +1,6 @@
 * Plug-ins
   * CSF4: LC
 
-* Dashboard
-  * Fix the off-by-one date error: LC
-
 * WSDL additions/improvements
   * Optional URL for retrieving input files: SK
     * HTTP for now - GridFTP later
