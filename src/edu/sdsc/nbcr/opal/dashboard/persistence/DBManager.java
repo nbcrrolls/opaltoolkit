@@ -218,9 +218,18 @@ public class DBManager {
 
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-        String startDateString = formatter.format(startDate);
-        String endDateString = formatter.format(endDate);
+        //SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+        //String startDateString = formatter.format(startDate);
+        //String endDateString = formatter.format(endDate);
+        
+        //I need to add 23:59:59 hours to the endDate to make the query working
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(endDate);
+        cal.add(Calendar.HOUR , 23);
+        cal.add(Calendar.MINUTE , 59);
+        cal.add(Calendar.SECOND , 59);
+        endDate = cal.getTime();
+
         
         String query = null;
         if ( type.equals("hits") ) {
@@ -273,7 +282,7 @@ public class DBManager {
             while( itera.hasNext() ) {
                 Object [] entry = (Object []) itera.next();
                 Date date = DateHelper.parseDateWithSpaces((String) entry[0]);
-                //log.debug("For the date " + date + " we have n entries: " + ((Integer)entry[1]) );
+                log.debug("For the date " + date + " we have n entries: " + ((Integer)entry[1]) );
                 
                 while ( ! DateHelper.compareDates(previousDate, date) ){
                     //since some day can have no hits we have to put zero in the array for those days
