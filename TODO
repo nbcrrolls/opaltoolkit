@@ -8,8 +8,6 @@
   * Operations to retrieve statistics: SK
   * The <usage> tag is used improperly, it contains now the description of
     the application: LC/SK
-  * Possibility to use different submision manager for each application
-    deployed: SK/LC
   * Possibility to specify a MAX wall clock time: SK
 
 * Additional Features
