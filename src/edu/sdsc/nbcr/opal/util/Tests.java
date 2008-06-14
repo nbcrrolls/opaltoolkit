@@ -19,6 +19,7 @@ public class Tests {
     TestSuite suite= new TestSuite("All JUnit Tests for Opal2");
 
     suite.addTest(edu.sdsc.nbcr.opal.state.PackageTest.suite());
+    suite.addTest(edu.sdsc.nbcr.opal.util.PackageTest.suite());
 
     return suite;
   }
