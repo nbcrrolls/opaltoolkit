@@ -17,7 +17,6 @@
 
 * Testing suite using JUnit
   * ArgValidator: SK/LC
-  * Managers: SK
-  * AppServiceImpl (local calls): SK
+  * AppServiceImpl - Managers (local calls): SK
   * Dashboard: LC
   * GUI: LC
