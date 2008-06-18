@@ -6,7 +6,17 @@ import sys, commands, os
 AUTODOCK = '''/home/install/usr/apps/autodock-4.0.1/bin/autodock4 '''
 #insert here the location of this script
 CURRENTBIN = '''/home/apbs_user/Software/opal-bins/run_autodock.py ''';
-CURL = '''/usr/bin/wget -r -nH --cut-dirs=1 '''
+
+numdirs = -2
+
+autogrid_url = sys.argv[len(sys.argv)-1]
+autogrid_url_split = autogrid_url.split('/')
+
+for autogrid_url_substr in autogrid_url_split:
+	if len(autogrid_url_substr) > 0:
+	         numdirs = numdirs + 1
+				
+CURL = '''/usr/bin/wget -r -nH --cut-dirs=''' + repr(numdirs) + ''' '''
 
 cmd = '''ulimit -s unlimited ; ''' + AUTODOCK
 cmds = []
