@@ -155,7 +155,7 @@ public class DateHelper {
      */
     public static Date getStartDate(){
         Date toDay = new Date();
-        toDay = DateHelper.subtractDay(toDay);
+        //toDay = DateHelper.subtractDay(toDay);
         return DateHelper.subtractMonth(toDay);
     }
     
@@ -164,7 +164,8 @@ public class DateHelper {
      * 
      */
     public static Date getEndDate(){
-        return DateHelper.subtractDay(new Date());
+        //return DateHelper.subtractDay(new Date());
+        return new Date();
     }
     
     /**
