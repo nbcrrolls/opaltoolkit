@@ -1,9 +1,9 @@
 * Plug-ins
-  * CSF4: LC
+  * CSF4/GridWay: LC
 
 * WSDL additions/improvements
   * Optional URL for retrieving input files: SK
-    * HTTP for now - GridFTP later
+    * Add GridFTP support
   * Additional statistics for job to be set by client (like email address): SK
   * Operations to retrieve statistics: SK
   * The <usage> tag is used improperly, it contains now the description of
@@ -16,7 +16,6 @@
     min but not the max? LC
 
 * Testing suite using JUnit
-  * ArgValidator: SK/LC
   * AppServiceImpl - Managers (local calls): SK
   * Dashboard: LC
   * GUI: LC
