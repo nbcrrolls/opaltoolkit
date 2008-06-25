@@ -168,6 +168,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         if ( app.isArgMetadataEnable() ) {
             //build we have the configuration paramters
             if (app.getArgFlags() != null ) {
+                //let's do the flag
                 ArgFlag [] flags = app.getArgFlags();
                 for ( int i = 0; i < flags.length; i++){
                     //if ( (flags[i].getSelected() != null) && (flags[i].getSelected().equals("on")) )
@@ -176,8 +177,13 @@ public class LaunchJobAction extends MappingDispatchAction{
                 }//for
             }
             if (app.getArgParams() != null ){
+                //let's do the tag and untagged
                 ArgParam [] params = app.getArgParams();
                 String taggedParams = "";
+                String separator = app.getSeparator();
+                if ( separator == null ) { 
+                    separator =  " ";
+                }
                 String [] untaggedParams = new String[app.getNumUnttagedParams()];
                 for ( int i = 0; i < untaggedParams.length; i++ )
                     untaggedParams[i] = "";
@@ -188,9 +194,9 @@ public class LaunchJobAction extends MappingDispatchAction{
                         //tagged params
                         if ( params[i].isFileUploaded() ) {
                             //we have a file!
-                            taggedParams += " " + params[i].getTag() + " " + params[i].getFile().getFileName();
+                            taggedParams += " " + params[i].getTag() + separator + params[i].getFile().getFileName();
                         }else if ( (params[i].getSelectedValue() != null) && ( params[i].getSelectedValue().length() > 0) )
-                            taggedParams += " " + params[i].getTag() + " "  + params[i].getSelectedValue();
+                            taggedParams += " " + params[i].getTag() + separator + params[i].getSelectedValue();
                     } else {
                         //untagged parameters
                         if (params[i].isFileUploaded() ) {
