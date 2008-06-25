@@ -207,9 +207,9 @@ public class LaunchJobAction extends MappingDispatchAction{
                         //tagged params
                         if ( params[i].isFileUploaded() ) {
                             //we have a file!
-                            taggedParams += " " + params[i].getTag() + " " + params[i].getFile().getFileName();
+                            taggedParams += " " + params[i].getTag() + separator + params[i].getFile().getFileName();
                         }else if ( (params[i].getSelectedValue() != null) && ( params[i].getSelectedValue().length() > 0) )
-                            taggedParams += " " + params[i].getTag() + " "  + params[i].getSelectedValue();
+                            taggedParams += " " + params[i].getTag() + separator  + params[i].getSelectedValue();
                     } else {
                         //untagged parameters
                         if (params[i].isFileUploaded() ) {
