@@ -193,6 +193,10 @@ public class LaunchJobAction extends MappingDispatchAction{
             if (app.getArgParams() != null ){
                 ArgParam [] params = app.getArgParams();
                 String taggedParams = "";
+                String separator = app.getSeparator();
+                if ( separator == null ) {
+                    separator =  " ";
+                }
                 String [] untaggedParams = new String[app.getNumUnttagedParams()];
                 for ( int i = 0; i < untaggedParams.length; i++ )
                     untaggedParams[i] = "";
