@@ -11,6 +11,7 @@ import org.apache.axis.configuration.SimpleProvider;
 import org.apache.axis.description.TypeDesc;
 import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.MessageContext;
+import org.apache.axis.types.URI;
 
 import org.globus.gram.GramJob;
 import org.globus.axis.util.Util;
@@ -36,6 +37,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.StringWriter;
+
+import java.util.Vector;
 
 /**
  * Generic client for any Opal based Web service
@@ -86,13 +89,22 @@ public class GenericServiceClient {
 			  .withDescription("command line arguments")
 			  .hasArg()
 			  .create("a"));
-	options.addOption(OptionBuilder.withArgName("file1" + 
-						    File.pathSeparatorChar + 
-						    "file2" + 
-						    File.pathSeparatorChar + 
+	options.addOption(OptionBuilder.withArgName("url1" + 
+						    "," + 
+						    "url2" + 
+						    "," + 
 						    "..")
-			  .withDescription("input files")
-			  .withValueSeparator(File.pathSeparatorChar)
+			  .withDescription("input file urls")
+			  .withValueSeparator(',')
+			  .hasArgs(Option.UNLIMITED_VALUES)
+			  .create("u"));
+	options.addOption(OptionBuilder.withArgName("file1" + 
+						    "," + 
+						    "file2" + 
+						    "," + 
+						    "..")
+			  .withDescription("local input files")
+			  .withValueSeparator(',')
 			  .hasArgs(Option.UNLIMITED_VALUES)
 			  .create("f"));
 	options.addOption(OptionBuilder.withArgName("serverDN")
@@ -217,20 +229,56 @@ public class GenericServiceClient {
 		in.setNumProcs(new Integer(numProcs));
 	    }
 
+	    // initialize list of files
+	    Vector inputFileVector = new Vector();
+
+	    // get list of input files
 	    String[] inputFiles = line.getOptionValues("f");
 	    if (inputFiles != null) {
-		InputFileType[] infile = new InputFileType[inputFiles.length];
 		for (int i = 0; i < inputFiles.length; i++) {
 		    File f = new File(inputFiles[i]);
 		    byte[] data = new byte[(int) f.length()];
 		    FileInputStream fIn = new FileInputStream(f);
 		    fIn.read(data);
 		    fIn.close();
-		    infile[i] = new InputFileType();
-		    infile[i].setName(f.getName());
-		    infile[i].setContents(data);
+		    InputFileType infile = new InputFileType();
+		    infile.setName(f.getName());
+		    infile.setContents(data);
+		    inputFileVector.add(infile);
 		}
-		in.setInputFile(infile);
+	    }
+
+	    // get list of input files
+	    String[] inputURLs = line.getOptionValues("u");
+	    if (inputURLs != null) {
+		for (int i = 0; i < inputURLs.length; i++) {
+		    String address = inputURLs[i];
+		    int lastSlashIndex = address.lastIndexOf('/');
+		    String fileName = null;
+		    if ((lastSlashIndex >= 0) &&
+			(lastSlashIndex < address.length() - 1)) {
+			fileName = address.substring(lastSlashIndex + 1);
+		    } else {
+			System.err.println("Could not figure out local file name for " +
+					   address);
+			System.exit(1);
+		    }
+
+		    InputFileType infile = new InputFileType();
+		    infile.setName(fileName);
+		    infile.setLocation(new URI(address));
+		    inputFileVector.add(infile);
+		}
+	    }
+
+	    // add the files to the parameters
+	    int arraySize = inputFileVector.size();
+	    if (arraySize > 0) {
+		InputFileType[] infileArray = new InputFileType[arraySize];
+		for (int i = 0; i < arraySize; i++) {
+		    infileArray[i] = (InputFileType) inputFileVector.get(i);
+		}
+		in.setInputFile(infileArray);
 	    }
 
 	    // set up a non-blocking call

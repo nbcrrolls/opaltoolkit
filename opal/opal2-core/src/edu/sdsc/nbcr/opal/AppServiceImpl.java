@@ -3,7 +3,12 @@ package edu.sdsc.nbcr.opal;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
 import java.io.FileInputStream;
+
+import java.net.URL;
+import java.net.URLConnection;
 
 import java.util.Properties;
 import java.util.Hashtable;
@@ -869,11 +874,40 @@ public class AppServiceImpl
 
 	// write the input files into the working directory
 	for (int i = 0; i < inputFiles.length; i++) {
+	    // make sure the contents are supplied
+	    if ((inputFiles[i].getContents() == null) &&
+		(inputFiles[i].getLocation() == null)) {
+		String msg = "Both file contents and URL are missing - " +
+		    "one of them should be provided";
+		logger.error(msg);
+		throw new FaultType(msg);
+	    }
+
 	    try {
 		File f = new File(outputDirName + File.separator + 
 				  inputFiles[i].getName());
-		FileOutputStream out = new FileOutputStream(f);
-		out.write(inputFiles[i].getContents());
+		BufferedOutputStream out = 
+		    new BufferedOutputStream(new FileOutputStream(f));
+
+		if (inputFiles[i].getContents() != null) {
+		    out.write(inputFiles[i].getContents());
+		} else {
+		    URL url = new URL(inputFiles[i].getLocation().toString());
+
+		    // fetch the file from the URL
+		    URLConnection conn = url.openConnection();
+		    InputStream input = conn.getInputStream();
+		    byte[] buffer = new byte[1024];
+		    int numRead;
+		    long numWritten = 0;
+		    while ((numRead = input.read(buffer)) != -1) {
+			out.write(buffer, 0, numRead);
+			numWritten += numRead;
+		    }
+		    logger.debug(numWritten + " bytes written from url: " +
+				 inputFiles[i].getLocation());
+		    input.close();
+		}
 		out.close();
 	    } catch (IOException ioe) {
 		logger.error("IOException while trying to write input file: " + 
