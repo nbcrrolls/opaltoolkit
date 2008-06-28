@@ -892,23 +892,43 @@ public class AppServiceImpl
 		if (inputFiles[i].getContents() != null) {
 		    out.write(inputFiles[i].getContents());
 		} else {
-		    URL url = new URL(inputFiles[i].getLocation().toString());
-
-		    // fetch the file from the URL
-		    URLConnection conn = url.openConnection();
-		    InputStream input = conn.getInputStream();
-		    byte[] buffer = new byte[1024];
-		    int numRead;
-		    long numWritten = 0;
-		    while ((numRead = input.read(buffer)) != -1) {
-			out.write(buffer, 0, numRead);
-			numWritten += numRead;
+		    int index = inputFiles[i].getLocation().toString().indexOf(":");
+		    if (index == -1) {
+			String msg = "Can't find protocol for URL: " + 
+			    inputFiles[i].getLocation();
+			logger.error(msg);
+			throw new FaultType(msg);
 		    }
-		    logger.debug(numWritten + " bytes written from url: " +
-				 inputFiles[i].getLocation());
-		    input.close();
+
+		    String protocol = inputFiles[i].getLocation().toString().substring(0, index);
+		    logger.info("Using protocol: " + protocol);
+
+		    if (protocol.equals("http") ||
+			protocol.equals("https")) {
+			// fetch the file from the URL
+			URL url = new URL(inputFiles[i].getLocation().toString());
+			URLConnection conn = url.openConnection();
+			InputStream input = conn.getInputStream();
+			byte[] buffer = new byte[1024];
+			int numRead;
+			long numWritten = 0;
+			while ((numRead = input.read(buffer)) != -1) {
+			    out.write(buffer, 0, numRead);
+			    numWritten += numRead;
+			}
+			logger.debug(numWritten + " bytes written from url: " +
+				     inputFiles[i].getLocation());
+			input.close();
+			out.close();
+		    } else {
+			String msg = "Unsupported protocol: " + protocol;
+			logger.error(msg);
+			throw new FaultType(msg);
+		    }
 		}
-		out.close();
+	    } catch (FaultType f) {
+		// pass the exception along
+		throw f;
 	    } catch (IOException ioe) {
 		logger.error("IOException while trying to write input file: " + 
 			     ioe.getMessage());
