@@ -22,7 +22,7 @@ import org.apache.struts.upload.FormFile;
  * <li>String [] values - if it is a multiple choice param this array contains the various possibilities
  * <li>String semanticType - not used at the moment
  * <li>String textDesc - it holds the textual description of this parameters
- * <li>String selectedValue - used by strutus to put the input of the user when he submits the form
+ * <li>String selectedValue - used by strutus to put the input of the user when he submits the form, it also holds the default value if specified
  * <li>FormFile file - used by strutus to put a file if this parameter is an input file
  * </ul> 
  *  

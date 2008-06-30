@@ -222,7 +222,7 @@ public class AppMetadataParser{
         arg.setSemanticType(paramType.getSemanticType());
         arg.setValues(paramType.getValue());
         if ( paramType.getRequired() != null ) {
-                System.out.println("the param " + arg.getId() + " is required " + paramType.getRequired());
+                //System.out.println("the param " + arg.getId() + " is required " + paramType.getRequired());
                 arg.setRequired(paramType.getRequired().booleanValue());
         }
         arg.setPosition(position);
