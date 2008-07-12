@@ -18,4 +18,6 @@
 * Testing suite using JUnit
   * AppServiceImpl - Managers (local calls): SK
   * Dashboard: LC
-  * GUI: LC
+  * GUI: LC 
+
+* Clean up the dist script
