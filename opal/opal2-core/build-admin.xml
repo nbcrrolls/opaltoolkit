@@ -58,6 +58,7 @@ Author:
 
 	  <!-- exclude certain directories -->
 	  <exclude name="**/build/**"/>
+	  <exclude name="TODO"/>
 	  <exclude name="docbook/**"/>
 	  <exclude name="build-admin.xml"/>
       </fileset>
