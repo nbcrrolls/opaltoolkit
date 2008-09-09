@@ -64,6 +64,9 @@ h1 {font-size:1.5em; line-height:1.25em}
 h2 {font-size:1.3em;}
 h3 {font-size:1.2em;}
 h4 {font-size:1em}
+
+.groupTitle{ font-weight: bold; }
+
 .alignRight{float:right}
 .alignLeft{float:left}
 .medText{font-size:1em}
