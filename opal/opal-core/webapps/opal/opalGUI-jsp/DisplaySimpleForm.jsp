@@ -61,6 +61,7 @@ function showHide(layer_ref) {
 <table cellspacing="10">
 
     <tr><td>Insert command line here:</td><td><html:text property="cmdLine" size="50"/></td>
+    <tr><td>Insert number of CPU (only for parallel application):</td><td><html:text property="numCpu" size="50"/></td>
     
 
     

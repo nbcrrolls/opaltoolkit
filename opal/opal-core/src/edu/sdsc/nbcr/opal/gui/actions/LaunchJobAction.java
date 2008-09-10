@@ -22,6 +22,7 @@ import edu.sdsc.nbcr.opal.InputFileType;
 import edu.sdsc.nbcr.opal.JobInputType;
 import edu.sdsc.nbcr.opal.JobSubOutputType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
+import edu.sdsc.nbcr.opal.FaultType;
 import edu.sdsc.nbcr.opal.gui.common.AppMetadata;
 import edu.sdsc.nbcr.opal.gui.common.ArgFlag;
 import edu.sdsc.nbcr.opal.gui.common.ArgParam;
@@ -103,17 +104,36 @@ public class LaunchJobAction extends MappingDispatchAction{
             //that's bad!
             log.error("The command line is null!");
             errors.add("We could not built the command line from your input parameters");
-            errors.add("Please go back to the welcome page");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
         log.info("the submitted command line is: " + cmd);
-        //now we validate the cmd line
-        //TODO add validation
-        
+        //now we could validate the cmd line
         //let's invoke the remote opal service
         JobInputType in = new JobInputType();
         in.setArgList(cmd);
+
+
+        int numCpu = -1;
+        if ( (app.getNumCpu() != null) && (app.getNumCpu().length() >= 1) ) {
+            //let's get the number of CPUs
+            try { 
+                numCpu = Integer.parseInt( app.getNumCpu() ); 
+                if ( numCpu <= 0 ) throw new NumberFormatException();
+            }
+            catch (NumberFormatException e) {
+                log.info("the user has entered wrong number of cpu");
+                errors.add("the number of cpu is worng.");
+                errors.add("Number of cpu should be a positive integer number and not a \"" + app.getNumCpu() + "\"");
+                request.setAttribute(Constants.ERROR_MESSAGES, errors);
+                return mapping.findForward("Error");
+            }
+        }
+        //here numCpu is either -1 or a positive integer
+        if ( numCpu != -1 ) {
+            in.setNumProcs(numCpu);
+        }
+
         // preparing the input files
         InputFileType [] files = getFiles(app);
         if ( files != null ) {            
@@ -126,16 +146,32 @@ public class LaunchJobAction extends MappingDispatchAction{
         	//TODO improve this, it could be that the input file has been lost in the way
         	log.info("No file has been submitted.");
         }
-        //finally invoke opal service!
-        AppServiceLocator asl = new AppServiceLocator();
-        AppServicePortType appServicePort = asl.getAppServicePort(new URL(app.getURL()));
 
-        JobSubOutputType subOut = appServicePort.launchJob(in);
-        if ( subOut == null ) {
-        	log.error("An error occurred while submitting the job.");
-        	log.error("The JobSubOutputType is null!!");
+        //finally invoke opal service!
+        JobSubOutputType subOut = null;
+        try {
+            AppServiceLocator asl = new AppServiceLocator();
+            AppServicePortType appServicePort = asl.getAppServicePort(new URL(app.getURL()));
+
+             subOut = appServicePort.launchJob(in);
+            if ( subOut == null ) {
+                throw new Exception("launchJob returned null");
+            }
+        }catch (FaultType e){
+            log.error("A remote error occurred while submitting the job.");
+            log.error("The remote error message is: " + e.getMessage1(), e);
+
+            errors.add("A remote error occured while submitting the job to the remote server");
+            errors.add("the remote error message is: " + e.getMessage1());
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+            return mapping.findForward("Error");
+        }catch (Exception e){
+            log.error("An error occurred while submitting the job.");
+            log.error("The error message is: " + e.getMessage(), e);
+
             errors.add("An error occured while submitting the job to the remote server");
-            errors.add("Please go back to the welcome page");
+            errors.add("the error message is: " + e.getMessage());
+            errors.add("Please go back to the List of Application page and try resubmitting the job");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
