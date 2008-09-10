@@ -108,12 +108,32 @@ public class LaunchJobAction extends MappingDispatchAction{
             return mapping.findForward("Error");
         }
         log.info("the submitted command line is: " + cmd);
-        //now we validate the cmd line
-        //TODO add validation
-        
+        //now we could validate the cmd line
         //let's invoke the remote opal service
         JobInputType in = new JobInputType();
         in.setArgList(cmd);
+
+
+        int numCpu = -1;
+        if ( (app.getNumCpu() != null) && (app.getNumCpu().length() >= 1) ) {
+            //let's get the number of CPUs
+            try { 
+                numCpu = Integer.parseInt( app.getNumCpu() ); 
+                if ( numCpu <= 0 ) throw new NumberFormatException();
+            }
+            catch (NumberFormatException e) {
+                log.info("the user has entered wrong number of cpu");
+                errors.add("the number of cpu is worng.");
+                errors.add("Number of cpu should be a positive integer number and not a \"" + app.getNumCpu() + "\"");
+                request.setAttribute(Constants.ERROR_MESSAGES, errors);
+                return mapping.findForward("Error");
+            }
+        }
+        //here numCpu is either -1 or a positive integer
+        if ( numCpu != -1 ) {
+            in.setNumProcs(numCpu);
+        }
+
         // preparing the input files
         InputFileType [] files = getFiles(app);
         if ( files != null ) {            
@@ -126,12 +146,13 @@ public class LaunchJobAction extends MappingDispatchAction{
         	//TODO improve this, it could be that the input file has been lost in the way
         	log.info("No file has been submitted.");
         }
+
         //finally invoke opal service!
         JobSubOutputType subOut = null;
         try {
             AppServiceLocator asl = new AppServiceLocator();
             AppServicePortType appServicePort = asl.getAppServicePort(new URL(app.getURL()));
-    
+
              subOut = appServicePort.launchJob(in);
             if ( subOut == null ) {
                 throw new Exception("launchJob returned null");
@@ -139,7 +160,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         }catch (FaultType e){
             log.error("A remote error occurred while submitting the job.");
             log.error("The remote error message is: " + e.getMessage1(), e);
-            
+
             errors.add("A remote error occured while submitting the job to the remote server");
             errors.add("the remote error message is: " + e.getMessage1());
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
@@ -147,7 +168,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         }catch (Exception e){
             log.error("An error occurred while submitting the job.");
             log.error("The error message is: " + e.getMessage(), e);
-            
+
             errors.add("An error occured while submitting the job to the remote server");
             errors.add("the error message is: " + e.getMessage());
             errors.add("Please go back to the List of Application page and try resubmitting the job");
@@ -183,6 +204,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         if ( app.isArgMetadataEnable() ) {
             //build we have the configuration paramters
             if (app.getArgFlags() != null ) {
+                //let's do the flag
                 ArgFlag [] flags = app.getArgFlags();
                 for ( int i = 0; i < flags.length; i++){
                     //if ( (flags[i].getSelected() != null) && (flags[i].getSelected().equals("on")) )
@@ -191,10 +213,11 @@ public class LaunchJobAction extends MappingDispatchAction{
                 }//for
             }
             if (app.getArgParams() != null ){
+                //let's do the tag and untagged
                 ArgParam [] params = app.getArgParams();
                 String taggedParams = "";
                 String separator = app.getSeparator();
-                if ( separator == null ) {
+                if ( separator == null ) { 
                     separator =  " ";
                 }
                 String [] untaggedParams = new String[app.getNumUnttagedParams()];
@@ -209,7 +232,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                             //we have a file!
                             taggedParams += " " + params[i].getTag() + separator + params[i].getFile().getFileName();
                         }else if ( (params[i].getSelectedValue() != null) && ( params[i].getSelectedValue().length() > 0) )
-                            taggedParams += " " + params[i].getTag() + separator  + params[i].getSelectedValue();
+                            taggedParams += " " + params[i].getTag() + separator + params[i].getSelectedValue();
                     } else {
                         //untagged parameters
                         if (params[i].isFileUploaded() ) {
