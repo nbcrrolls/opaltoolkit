@@ -74,6 +74,13 @@ function selectElement(element, groupId){
 <html:form action="LaunchJob.do" enctype="multipart/form-data" >
 <table cellspacing="10">
 
+
+<!-- the number of cpu  -->
+  <tr>
+    <td> Insert number of CPU (only for parallel application): </td>
+    <td><nested:text name="appMetadata" property="numCpu" size="40"/></td>
+  </tr>
+
 <!--  double nested tag does not work with input field vaule so I had to use long format -->
 
 <% boolean exclusiveGroup = false; %>

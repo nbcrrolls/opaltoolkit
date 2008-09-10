@@ -50,6 +50,7 @@ public class AppMetadata extends ActionForm{
 	private String cmdLine;
 	private FormFile [] files;
 	private String jobId;
+        private String numCpu;
 	private boolean addFile;
 	
 
@@ -244,6 +245,21 @@ public class AppMetadata extends ActionForm{
      */
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    /**
+     * @return the number of CPUs 
+     */
+    public String getNumCpu(){
+        return numCpu;
+    }
+
+
+    /**
+     * @param numCpu the number of requested cpus
+     */
+    public void setNumCpu(String numCpu){
+        this.numCpu = numCpu;
     }
 
     /**
