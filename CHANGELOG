@@ -1,7 +1,11 @@
-Trunk
+Version 1.9.5
+
+    - Improved the build script
 
 - Opal Gui
     - Added the number of cpus both in the simple and in the complexin submission form. 
+
+
 
 Version 1.9.4:
 
