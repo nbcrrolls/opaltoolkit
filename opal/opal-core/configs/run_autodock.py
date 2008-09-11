@@ -1,9 +1,22 @@
 #!/usr/bin/python2
+#
+# Luca Clementi and Jane Rane
+#
+#  This script can be used to wrap the autodock command 
+#  after that autodock sintax is
+#  autodock <commands> URL
+#  where URL is a URL pointing at a opal output directory of a 
+#  autogrid run.
+#  This script take the URL away from the command line 
+#  download all the file from there and then invoke 
+#  autodock <commands>
+#
+
 
 import sys, commands, os
 
 #insert here the location of you autodock executable 
-AUTODOCK = '''/home/install/usr/apps/autodock-4.0.1/bin/autodock4 '''
+AUTODOCK = '''/home/install/usr/apps/autodock-4.0.1/bin/autodock4'''
 #insert here the location of this script
 CURRENTBIN = '''/home/apbs_user/Software/opal-bins/run_autodock.py ''';
 
@@ -18,7 +31,7 @@ for autogrid_url_substr in autogrid_url_split:
 				
 CURL = '''/usr/bin/wget -r -nH --cut-dirs=''' + repr(numdirs) + ''' '''
 
-cmd = '''ulimit -s unlimited ; ''' + AUTODOCK
+cmd = '''ulimit -s unlimited ; ''' + AUTODOCK + ''' '''
 cmds = []
 links = []
 garbage = []
