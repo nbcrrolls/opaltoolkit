@@ -1,0 +1,4 @@
+The following jars have been extracted from the Globus Toolkit 4.0.1
+distribution: 
+  - cog-axis.jar, cryptix-asn1.jar, puretls.jar, cog-jglobus.jar, 
+    cryptix.jar, cog-tomcat.jar, cryptix32.jar

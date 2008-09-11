@@ -1,0 +1,10 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata  appName="CAT">
+    <usage><![CDATA[concatenate files and print on the standard output ]]></usage>
+    <info xsd:type="xsd:string"> <![CDATA[ cat [-benstuv] [-] [file ...] ]]> </info>
+
+  </metadata>
+  <binaryLocation>/bin/cat</binaryLocation>
+  <parallel>false</parallel>
+</appConfig>

@@ -1,0 +1,8 @@
+# version number
+version = 1.9.5
+
+# location of the tomcat installation
+catalina.home = /path/to/catalina_home
+
+# port number used by the tomcat server
+tomcat.port = 8080
