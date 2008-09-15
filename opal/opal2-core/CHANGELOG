@@ -1,5 +1,14 @@
 trunk
 
+- Opal Core
+    -Modified the wsdl to add support for: 
+      - wallclock time
+      - submission system (now you can select submission system 
+        on an application basis)
+      - argument valiadation (Opal application can now activate this 
+        functionality)
+    
+
 - Opal GUI
     -Added the number of cpu input filed in the submission form CLEM
 
