@@ -16,25 +16,28 @@
       <parameter name="appConfig" value="@CONFIG_LOCATION@"/>
       <parameter name="wsdlTargetNamespace" value="http://nbcr.sdsc.edu/opal"/>
       <parameter name="wsdlServiceElement" value="AppService"/>
+      <parameter name="sendMultiRefs" value="false"/>
       <parameter name="schemaUnqualified" value="http://nbcr.sdsc.edu/opal/types"/>
       <parameter name="wsdlServicePort" value="AppServicePort"/>
       <parameter name="className" value="edu.sdsc.nbcr.opal.AppServiceImpl"/>
       <parameter name="wsdlPortType" value="AppServicePortType"/>
       <parameter name="typeMappingVersion" value="1.1"/>
-      <operation name="getAppMetadata" qname="getAppMetadata" returnQName="retNS:getAppMetadataOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:AppMetadataType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/getAppMetadata">
+      <operation name="getAppMetadata" qname="getAppMetadata" returnQName="retNS:getAppMetadataOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:AppMetadataType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/getAppMetadata" >
         <parameter qname="pns:getAppMetadataInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:AppMetadataInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
         <fault name="getAppMetadataFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
-      <operation name="getAppConfig" qname="getAppConfig" returnQName="retNS:getAppConfigOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:AppConfigType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/getAppConfig">
+      <operation name="getAppConfig" qname="getAppConfig" returnQName="retNS:getAppConfigOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:AppConfigType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/getAppConfig" >
         <parameter qname="pns:getAppConfigInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:AppConfigInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
         <fault name="getAppConfigFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
       <operation name="launchJob" qname="launchJob" returnQName="retNS:launchJobOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:JobSubOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/launchJob" >
         <parameter qname="pns:launchJobInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:JobInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
+        <parameter qname="pns:binaryAttachments" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:DataHandler" xmlns:tns="http://xml.apache.org/xml-soap"/>
         <fault name="launchJobFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
       <operation name="launchJobBlocking" qname="launchJobBlocking" returnQName="retNS:launchJobBlockingOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:BlockingOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/launchJobBlocking" >
         <parameter qname="pns:launchJobBlockingInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:JobInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
+        <parameter qname="pns:binaryAttachments" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:DataHandler" xmlns:tns="http://xml.apache.org/xml-soap"/>
         <fault name="launchJobBlockingFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
       <operation name="queryStatus" qname="queryStatus" returnQName="retNS:queryStatusOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:StatusOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/queryStatus" >
@@ -57,6 +60,14 @@
       <parameter name="scope" value="Application"/>
 
       <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal"
+        qname="ns:DataHandler"
+        type="java:javax.activation.DataHandler"
+        serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:StatusOutputType"
         type="java:edu.sdsc.nbcr.opal.StatusOutputType"
@@ -66,8 +77,24 @@
       />
       <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:AppMetadataInputType"
+        type="java:edu.sdsc.nbcr.opal.AppMetadataInputType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:ImplicitParamsArrayType"
         type="java:edu.sdsc.nbcr.opal.ImplicitParamsArrayType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:AppConfigInputType"
+        type="java:edu.sdsc.nbcr.opal.AppConfigInputType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
@@ -178,6 +205,22 @@
       />
       <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:JobManagerType"
+        type="java:edu.sdsc.nbcr.opal.JobManagerType"
+        serializer="org.apache.axis.encoding.ser.EnumSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.EnumDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:GroupsArrayType"
+        type="java:edu.sdsc.nbcr.opal.GroupsArrayType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:FlagsArrayType"
         type="java:edu.sdsc.nbcr.opal.FlagsArrayType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
@@ -194,8 +237,24 @@
       />
       <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:GroupsType"
+        type="java:edu.sdsc.nbcr.opal.GroupsType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:JobInputType"
         type="java:edu.sdsc.nbcr.opal.JobInputType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:BinaryAttachmentArrayType"
+        type="java:edu.sdsc.nbcr.opal.BinaryAttachmentArrayType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

@@ -6,7 +6,8 @@
 		  xmlns:apachesoap="http://xml.apache.org/xml-soap" 
 		  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
 		  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
-		  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+		  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 		  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
 
   <wsdl:types>
@@ -249,7 +250,15 @@
 	<xsd:sequence>
 	  <xsd:element name="name" type="xsd:string"/>
 	  <xsd:element name="contents" type="xsd:base64Binary" minOccurs="0"/>
+	  <xsd:element name="attachment" type="xsd:boolean" minOccurs="0"/>
 	  <xsd:element name="location" type="xsd:anyURI" minOccurs="0"/>
+	</xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="BinaryAttachmentArrayType">
+	<xsd:sequence>
+	  <xsd:element name="item" type="xsd:base64Binary"
+	               minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
       </xsd:complexType>
 
@@ -329,6 +338,9 @@
       <xsd:element name="launchJobInput" 
 		   type="types:JobInputType"/>
 
+      <xsd:element name="binaryAttachments" 
+		   type="types:BinaryAttachmentArrayType"/>
+
       <xsd:element name="launchJobOutput"
 		   type="types:JobSubOutputType"/>
 
@@ -385,6 +397,7 @@
 
   <wsdl:message name="launchJobRequest">
     <wsdl:part name="in" element="types:launchJobInput"/>
+    <wsdl:part name="attch" element="types:binaryAttachments"/>
   </wsdl:message>
 
   <wsdl:message name="launchJobResponse">
@@ -393,6 +406,7 @@
 
   <wsdl:message name="launchJobBlockingRequest">
     <wsdl:part name="in" element="types:launchJobBlockingInput"/>
+    <wsdl:part name="attch" element="types:binaryAttachments"/>
   </wsdl:message>
 
   <wsdl:message name="launchJobBlockingResponse">
@@ -525,7 +539,14 @@
     <wsdl:operation name="launchJob">
       <wsdlsoap:operation soapAction="http://nbcr.sdsc.edu/opal/launchJob"/>
       <wsdl:input name="launchJobRequest">
-	<wsdlsoap:body use="literal"/>
+        <mime:multipartRelated>
+	  <mime:part>
+	    <wsdlsoap:body parts="in" use="literal"/>
+	  </mime:part>
+	  <mime:part>
+	    <mime:content part="attch" type="application/binary"/>
+	  </mime:part>
+	</mime:multipartRelated>
       </wsdl:input>
       <wsdl:output name="launchJobResponse">
 	<wsdlsoap:body use="literal"/>
@@ -538,7 +559,14 @@
     <wsdl:operation name="launchJobBlocking">
       <wsdlsoap:operation soapAction="http://nbcr.sdsc.edu/opal/launchJobBlocking"/>
       <wsdl:input name="launchJobBlockingRequest">
-	<wsdlsoap:body use="literal"/>
+        <mime:multipartRelated>
+	  <mime:part>
+	    <wsdlsoap:body parts="in" use="literal"/>
+	  </mime:part>
+	  <mime:part>
+	    <mime:content part="attch" type="application/binary"/>
+	  </mime:part>
+	</mime:multipartRelated>
       </wsdl:input>
       <wsdl:output name="launchJobBlockingResponse">
 	<wsdlsoap:body use="literal"/>

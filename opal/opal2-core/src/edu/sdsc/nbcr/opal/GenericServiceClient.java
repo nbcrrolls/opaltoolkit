@@ -4,6 +4,9 @@ import java.net.URL;
 
 import javax.xml.rpc.Stub;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+
 import org.apache.axis.client.Call;
 import org.apache.axis.client.AxisClient;
 import org.apache.axis.SimpleTargetedChain;
@@ -283,7 +286,11 @@ public class GenericServiceClient {
 
 	    // set up a non-blocking call
 	    System.out.println("Making non-blocking invocation on Opal service -");
-	    JobSubOutputType subOut = appServicePort.launchJob(in);
+	    // TODO: This is a test. Fix it to use attachments for real
+	    DataHandler[] dh = new DataHandler[1];
+	    String fileName = "etc/properties";
+	    dh[0] = new DataHandler(new FileDataSource(fileName));
+	    JobSubOutputType subOut = appServicePort.launchJob(in, dh);
 	    System.out.println("Received jobID: " + subOut.getJobID());
 	    
 	    StatusOutputType status = subOut.getStatus();

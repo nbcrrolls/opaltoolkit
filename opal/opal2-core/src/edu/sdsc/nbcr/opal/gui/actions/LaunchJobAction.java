@@ -153,7 +153,8 @@ public class LaunchJobAction extends MappingDispatchAction{
             AppServiceLocator asl = new AppServiceLocator();
             AppServicePortType appServicePort = asl.getAppServicePort(new URL(app.getURL()));
 
-             subOut = appServicePort.launchJob(in);
+	    // TODO: fix this to use attachments, if need be
+	    subOut = appServicePort.launchJob(in, null);
             if ( subOut == null ) {
                 throw new Exception("launchJob returned null");
             }

@@ -7,6 +7,8 @@ import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.FileInputStream;
 
+import javax.activation.DataHandler;
+
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -215,17 +217,21 @@ public class AppServiceImpl
      * @param in the input object, as defined by the WSDL, which contains the command-line
      * arguments, list of input files in Base64 encoded form, and a the number of processes
      * for parallel jobs
+     * @param attch a list of file attachments
      * @return job submission output, as defined by the WSDL, which contains the <i>jobID</i>, 
      * and the initial job status
      * @throws FaultType if there is an error during job submission
      */
-    public JobSubOutputType launchJob(JobInputType in) 
+    public JobSubOutputType launchJob(JobInputType in, 
+				      DataHandler[] attch) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
 
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
+
+	// TODO: Write out attachments to proper location
 
 	// write the input files, and launch the job in a non-blocking fashion
 	String jobID = launchApp(in, false);
@@ -248,17 +254,21 @@ public class AppServiceImpl
      * @param in the input object, as defined by the WSDL, which contains the command-line
      * arguments, list of input files in Base64 encoded form, and a the number of processes
      * for parallel jobs
+     * @param attach the list of file attachments
      * @return job output, as defined by the WSDL, which contains the final job status
      * and output metadata
      * @throws FaultType if there is an error during job submission
      */
-    public BlockingOutputType launchJobBlocking(JobInputType in) 
+    public BlockingOutputType launchJobBlocking(JobInputType in,
+						DataHandler[] attch)  
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
 
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
+
+	// TODO: Write out attachments to proper location
 
 	// write the input files, and launch the job in a blocking fashion
 	String jobID = launchApp(in, true);
@@ -891,6 +901,7 @@ public class AppServiceImpl
 
 		if (inputFiles[i].getContents() != null) {
 		    out.write(inputFiles[i].getContents());
+		    out.close();
 		} else {
 		    int index = inputFiles[i].getLocation().toString().indexOf(":");
 		    if (index == -1) {
