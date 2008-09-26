@@ -48,6 +48,7 @@ Author:
   <property name="version" value="2.0alpha"/>
   <property name="project.home" location="." />
   <property name="lib" location="${project.home}/lib" />
+  <property name="etc" location="${project.home}/etc" />
   <property name="opal.webapp" value="opal2" />
   <property name="opal.WEB-INF" location="${project.home}/webapps/${opal.webapp}/WEB-INF" />  
   <property name="build" location="${project.home}/build" />
@@ -64,6 +65,7 @@ Author:
 
   <path id="classpath">
     <pathelement path="${lib}" />
+    <pathelement path="${etc}" />
     <fileset dir="${lib}">
       <include name="*.jar" />
     </fileset>
