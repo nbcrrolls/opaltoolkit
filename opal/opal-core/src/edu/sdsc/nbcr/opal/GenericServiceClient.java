@@ -99,6 +99,9 @@ public class GenericServiceClient {
 			  .withDescription("server DN expected - if gsi is being used")
 			  .hasArg()
 			  .create("dn"));
+	options.addOption(OptionBuilder.withArgName("noMutualAuth")
+			  .withDescription("disable mutual authentication on client side")
+			  .create("m"));
 
 	System.out.println("\nReading command line arguments");
 	CommandLineParser parser = new GnuParser();
@@ -137,7 +140,13 @@ public class GenericServiceClient {
 		httpsInUse = true;
 	    }
 	}
-	if (httpsInUse) {
+	boolean gsiInUse = httpsInUse;
+	if (line.hasOption("m")) {
+	    // if mutual auth is disabled, don't use GSI
+	    gsiInUse = false;
+	}
+
+	if (gsiInUse) {
 	    SimpleProvider provider = new SimpleProvider();	
 	    SimpleTargetedChain c = new SimpleTargetedChain(new HTTPSSender());
 	    provider.deployTransport("https", c);
@@ -151,7 +160,7 @@ public class GenericServiceClient {
 
 	// read credentials for the client
 	GSSCredential proxy = null;
-	if (httpsInUse) {
+	if (gsiInUse) {
 	    String proxyPath = System.getProperty("X509_USER_PROXY");
 	    if (proxyPath == null) {
 		System.err.println("Required property X509_USER_PROXY not set");
@@ -175,7 +184,7 @@ public class GenericServiceClient {
 	// set the GSI specific properties
 	IdentityAuthorization auth = 
 	    new IdentityAuthorization(serverDN);
-	if (httpsInUse) {
+	if (gsiInUse) {
 	    ((Stub) appServicePort)._setProperty(GSIConstants.GSI_AUTHORIZATION, 
 						 auth);
 	    ((Stub) appServicePort)._setProperty(GSIConstants.GSI_CREDENTIALS,
