@@ -108,12 +108,13 @@ package JobInputType;
     my $class = ref($invocant) || $invocant;
     my $self = {
       arglist => "",
+      numProcs => 1,
       inputFile => ""
     };
     bless($self,$class);
     return $self;
   }
-  
+
   sub setArgs {
     my $self = shift;
     $self->{arglist} = shift;
@@ -122,6 +123,16 @@ package JobInputType;
   sub getArgs {
     my $self = shift;
     $self->{arglist};
+  }
+  
+  sub setNumProcs {
+    my $self = shift;
+    $self->{numProcs} = shift;
+  }
+  
+  sub getNumProcs {
+    my $self = shift;
+    $self->{numProcs};
   }
   
   sub setInputFile {
@@ -138,6 +149,8 @@ package JobInputType;
     my $self = shift;
     $arglist = SOAP::Data->name("argList"=>$self->{arglist});
     push(@soap,$arglist);
+    $numProcs = SOAP::Data->name("numProcs"=>$self->{numProcs});
+    push(@soap,$numProcs);
     $inputfilelist = $self->{inputFile};
     foreach(@$inputfilelist) {
       $mysoap = $_->toSOAP();
