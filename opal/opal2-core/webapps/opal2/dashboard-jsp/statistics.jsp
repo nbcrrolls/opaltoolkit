@@ -17,7 +17,7 @@
 function uncheckAll(){
 
     var selectedElem = document.getElementsByName("servicesName");
-    for (i in selectedElem){
+    for (i=0; i < selectedElem.length; i++){
         selectedElem[i].checked=false;
     }//for
     
@@ -26,7 +26,7 @@ function uncheckAll(){
 function checkAll(){
 
     var selectedElem = document.getElementsByName("servicesName");
-    for (i in selectedElem){
+    for (i=0; i < selectedElem.length; i++){
         selectedElem[i].checked=true;
     }//for  
 }	
@@ -80,25 +80,25 @@ function checkAll(){
 <table width="700">
     <input type="hidden" name="command" value="statistics"/>
     <tr>
-        <td class="boxBody colColor">Start Date:</td>
-        <td class="boxBody colColor"><input type="text" name="startDate" value="<%= startDate %>"/></td>
+        <td >Start Date:</td>
+        <td ><input type="text" name="startDate" value="<%= startDate %>"/></td>
     </tr>
     <tr>
-        <td class="boxBody colColor">End Date:</td>
-        <td class="boxBody colColor"><input type="text" name="endDate" value="<%= endDate %>"/></td>
+        <td >End Date:</td>
+        <td ><input type="text" name="endDate" value="<%= endDate %>"/></td>
     </tr>
     <tr>
-        <td colspan="2" class="leftCol boxBody colColor" align="right">
+        <td colspan="2" >
         Select the service you want to display:</td>
     </tr>
     <tr>
-        <td colspan="2" class="leftCol boxBody colColor" align="right"><input type=button name="CheckAll" value="Check All" onClick="checkAll()"/> <input type=button name="UnCheckAll" value="Uncheck All" onClick="uncheckAll()"> </td>
+        <td colspan="2" ><input type=button name="CheckAll" value="Check All" onClick="checkAll()"/> <input type=button name="UnCheckAll" value="Uncheck All" onClick="uncheckAll()"> </td>
     </tr>
 <%
    for ( int i = 0; i < servicesName.length; i++ ) {
 %>
     <tr>
-        <td colspan="2" class="leftCol boxBody colColor" align="right">
+        <td colspan="2" >
         
         <% if ( DateHelper.containsString(servicesNameSelected, servicesName[i]) ) {%>
         <input checked="checked"  type="checkbox" name="servicesName" value="<%= servicesName[i] %>"  />
@@ -112,7 +112,7 @@ function checkAll(){
    }
 %>
     <tr>
-        <td colspan="2" class="leftCol boxBody colColor" align="right"><br/><input type="submit" value="Update Charts"/></td>
+        <td ><br/><input type="submit" value="Update Charts"/></td>
     </tr>
     
 </table>
