@@ -106,10 +106,19 @@ public class GenericServiceClient {
 						    "file2" + 
 						    "," + 
 						    "..")
-			  .withDescription("local input files")
+			  .withDescription("local input files as Base64 binary")
 			  .withValueSeparator(',')
 			  .hasArgs(Option.UNLIMITED_VALUES)
 			  .create("f"));
+	options.addOption(OptionBuilder.withArgName("attch1" + 
+						    "," + 
+						    "attch2" + 
+						    "," + 
+						    "..")
+			  .withDescription("local input files as a binary attachment")
+			  .withValueSeparator(',')
+			  .hasArgs(Option.UNLIMITED_VALUES)
+			  .create("b"));
 	options.addOption(OptionBuilder.withArgName("serverDN")
 			  .withDescription("server DN expected - if gsi is being used")
 			  .hasArg()
@@ -251,7 +260,7 @@ public class GenericServiceClient {
 		}
 	    }
 
-	    // get list of input files
+	    // get list of input urls
 	    String[] inputURLs = line.getOptionValues("u");
 	    if (inputURLs != null) {
 		for (int i = 0; i < inputURLs.length; i++) {
@@ -284,12 +293,18 @@ public class GenericServiceClient {
 		in.setInputFile(infileArray);
 	    }
 
+	    // get list of attachments from command-line
+	    String[] attachFiles = line.getOptionValues("b");
+	    DataHandler[] dh = null;
+	    if (attachFiles != null) {
+		dh = new DataHandler[attachFiles.length];
+		for (int i = 0; i < attachFiles.length; i++) {
+		    dh[i] = new DataHandler(new FileDataSource(attachFiles[i]));
+		}	
+	    }
+
 	    // set up a non-blocking call
 	    System.out.println("Making non-blocking invocation on Opal service -");
-	    // TODO: This is a test. Fix it to use attachments for real
-	    DataHandler[] dh = new DataHandler[1];
-	    String fileName = "etc/properties";
-	    dh[0] = new DataHandler(new FileDataSource(fileName));
 	    JobSubOutputType subOut = appServicePort.launchJob(in, dh);
 	    System.out.println("Received jobID: " + subOut.getJobID());
 	    

@@ -231,10 +231,8 @@ public class AppServiceImpl
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
-	// TODO: Write out attachments to proper location
-
 	// write the input files, and launch the job in a non-blocking fashion
-	String jobID = launchApp(in, false);
+	String jobID = launchApp(in, attch, false);
 
 	// create output object
 	JobSubOutputType output = new JobSubOutputType();
@@ -268,10 +266,8 @@ public class AppServiceImpl
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
-	// TODO: Write out attachments to proper location
-
 	// write the input files, and launch the job in a blocking fashion
-	String jobID = launchApp(in, true);
+	String jobID = launchApp(in, attch, true);
 
 	// create output object
 	BlockingOutputType output = new BlockingOutputType();
@@ -436,6 +432,7 @@ public class AppServiceImpl
     //--------------------------------------------------------------------//
 
     private String launchApp(JobInputType in,
+			     DataHandler[] attch,
 			     boolean blocking)
 	throws FaultType {
 
@@ -450,7 +447,7 @@ public class AppServiceImpl
 	}
 
 	// create the application input files there 
-	writeAppInput(in, outputDirName);
+	writeAppInput(in, attch, outputDirName);
 
 	// validate command-line arguments, if need be
 	if (config.getValidateArgs() != null) {
@@ -871,9 +868,12 @@ public class AppServiceImpl
     }
 
     private void writeAppInput(JobInputType in,
+			       DataHandler[] attch,
 			       String outputDirName) 
 	throws FaultType {
 	logger.info("called");
+
+	// TODO: Write out attachments to proper location
 
 	// retrieve the list of files
 	InputFileType[] inputFiles = in.getInputFile();
