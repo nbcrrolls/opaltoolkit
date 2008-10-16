@@ -302,10 +302,11 @@ public class GenericServiceClient {
 		    dh[i] = new DataHandler(new FileDataSource(attachFiles[i]));
 		}	
 	    }
+	    in.setBinaryAttachments(dh);
 
 	    // set up a non-blocking call
 	    System.out.println("Making non-blocking invocation on Opal service -");
-	    JobSubOutputType subOut = appServicePort.launchJob(in, dh);
+	    JobSubOutputType subOut = appServicePort.launchJob(in);
 	    System.out.println("Received jobID: " + subOut.getJobID());
 	    
 	    StatusOutputType status = subOut.getStatus();
