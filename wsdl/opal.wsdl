@@ -250,8 +250,9 @@
 	<xsd:sequence>
 	  <xsd:element name="name" type="xsd:string"/>
 	  <xsd:element name="contents" type="xsd:base64Binary" minOccurs="0"/>
-	  <xsd:element name="attachment" type="xsd:boolean" minOccurs="0"/>
 	  <xsd:element name="location" type="xsd:anyURI" minOccurs="0"/>
+          <xsd:element name="attachment" type="apachesoap:DataHandler" 
+	  	       minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 
@@ -262,8 +263,6 @@
           <xsd:element name="wallClockTime" type="xsd:nonNegativeInteger"  minOccurs="0"/>
 	  <xsd:element name="inputFile" type="types:InputFileType"
 		       minOccurs="0" maxOccurs="unbounded"/>
-          <xsd:element name="binaryAttachments" type="apachesoap:DataHandler" 
-	  	       minOccurs="0" maxOccurs="unbounded" />
 	</xsd:sequence>
       </xsd:complexType>
 

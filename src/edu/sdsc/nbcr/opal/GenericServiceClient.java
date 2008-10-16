@@ -283,6 +283,19 @@ public class GenericServiceClient {
 		}
 	    }
 
+	    // get list of attachments from command-line
+	    String[] attachFiles = line.getOptionValues("b");
+	    if (attachFiles != null) {
+		for (int i = 0; i < attachFiles.length; i++) {
+		    DataHandler dh = new DataHandler(new FileDataSource(attachFiles[i]));
+		    InputFileType infile = new InputFileType();
+		    File f = new File(attachFiles[i]);
+		    infile.setName(f.getName());
+		    infile.setAttachment(dh);
+		    inputFileVector.add(infile);
+		}	
+	    }
+
 	    // add the files to the parameters
 	    int arraySize = inputFileVector.size();
 	    if (arraySize > 0) {
@@ -292,17 +305,6 @@ public class GenericServiceClient {
 		}
 		in.setInputFile(infileArray);
 	    }
-
-	    // get list of attachments from command-line
-	    String[] attachFiles = line.getOptionValues("b");
-	    DataHandler[] dh = null;
-	    if (attachFiles != null) {
-		dh = new DataHandler[attachFiles.length];
-		for (int i = 0; i < attachFiles.length; i++) {
-		    dh[i] = new DataHandler(new FileDataSource(attachFiles[i]));
-		}	
-	    }
-	    in.setBinaryAttachments(dh);
 
 	    // set up a non-blocking call
 	    System.out.println("Making non-blocking invocation on Opal service -");
