@@ -232,7 +232,7 @@
   </metadata>
   <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr-dummy.sh</binaryLocation>
   <defaultArgs></defaultArgs>
-  <validateArgs>true</validateArgs>
+  <validateArgs>false</validateArgs>
   <jobManager>fork</jobManager>
   <parallel>false</parallel>
 </appConfig>

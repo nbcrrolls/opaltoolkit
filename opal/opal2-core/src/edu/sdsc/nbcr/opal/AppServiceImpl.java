@@ -869,8 +869,6 @@ public class AppServiceImpl
 	throws FaultType {
 	logger.info("called");
 
-	// TODO: Write out attachments to proper location
-
 	// retrieve the list of files
 	InputFileType[] inputFiles = in.getInputFile();
 	if (inputFiles == null) {
@@ -882,8 +880,9 @@ public class AppServiceImpl
 	for (int i = 0; i < inputFiles.length; i++) {
 	    // make sure the contents are supplied
 	    if ((inputFiles[i].getContents() == null) &&
-		(inputFiles[i].getLocation() == null)) {
-		String msg = "Both file contents and URL are missing - " +
+		(inputFiles[i].getLocation() == null) &&
+		(inputFiles[i].getAttachment() == null)) {
+		String msg = "File contents, URL and attachment are missing - " +
 		    "one of them should be provided";
 		logger.error(msg);
 		throw new FaultType(msg);
@@ -898,7 +897,7 @@ public class AppServiceImpl
 		if (inputFiles[i].getContents() != null) {
 		    out.write(inputFiles[i].getContents());
 		    out.close();
-		} else {
+		} else if (inputFiles[i].getLocation() != null) {
 		    int index = inputFiles[i].getLocation().toString().indexOf(":");
 		    if (index == -1) {
 			String msg = "Can't find protocol for URL: " + 
@@ -932,6 +931,11 @@ public class AppServiceImpl
 			logger.error(msg);
 			throw new FaultType(msg);
 		    }
+		} else { // it is an attachment
+		    DataHandler dh = inputFiles[i].getAttachment();
+		    logger.debug("Received attachment: " + dh.getName());
+		    dh.writeTo(out);
+		    out.close();
 		}
 	    } catch (FaultType f) {
 		// pass the exception along
