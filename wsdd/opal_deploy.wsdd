@@ -16,7 +16,6 @@
       <parameter name="appConfig" value="@CONFIG_LOCATION@"/>
       <parameter name="wsdlTargetNamespace" value="http://nbcr.sdsc.edu/opal"/>
       <parameter name="wsdlServiceElement" value="AppService"/>
-      <parameter name="sendMultiRefs" value="false"/>
       <parameter name="schemaUnqualified" value="http://nbcr.sdsc.edu/opal/types"/>
       <parameter name="wsdlServicePort" value="AppServicePort"/>
       <parameter name="className" value="edu.sdsc.nbcr.opal.AppServiceImpl"/>
@@ -32,12 +31,10 @@
       </operation>
       <operation name="launchJob" qname="launchJob" returnQName="retNS:launchJobOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:JobSubOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/launchJob" >
         <parameter qname="pns:launchJobInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:JobInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
-        <parameter qname="pns:binaryAttachments" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:DataHandler" xmlns:tns="http://xml.apache.org/xml-soap"/>
         <fault name="launchJobFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
       <operation name="launchJobBlocking" qname="launchJobBlocking" returnQName="retNS:launchJobBlockingOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:BlockingOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/launchJobBlocking" >
         <parameter qname="pns:launchJobBlockingInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:JobInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
-        <parameter qname="pns:binaryAttachments" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:DataHandler" xmlns:tns="http://xml.apache.org/xml-soap"/>
         <fault name="launchJobBlockingFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
       <operation name="queryStatus" qname="queryStatus" returnQName="retNS:queryStatusOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:StatusOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/queryStatus" >
@@ -59,14 +56,6 @@
       <parameter name="allowedMethods" value="queryStatus getOutputAsBase64ByName getAppConfig launchJobBlocking destroy getOutputs launchJob getAppMetadata"/>
       <parameter name="scope" value="Application"/>
 
-      <typeMapping
-        xmlns:ns="http://nbcr.sdsc.edu/opal"
-        qname="ns:DataHandler"
-        type="java:javax.activation.DataHandler"
-        serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory"
-        encodingStyle=""
-      />
       <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:StatusOutputType"
@@ -247,14 +236,6 @@
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:JobInputType"
         type="java:edu.sdsc.nbcr.opal.JobInputType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
-        qname="ns:BinaryAttachmentArrayType"
-        type="java:edu.sdsc.nbcr.opal.BinaryAttachmentArrayType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

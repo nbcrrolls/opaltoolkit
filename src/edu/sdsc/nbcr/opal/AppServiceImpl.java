@@ -222,8 +222,7 @@ public class AppServiceImpl
      * and the initial job status
      * @throws FaultType if there is an error during job submission
      */
-    public JobSubOutputType launchJob(JobInputType in, 
-				      DataHandler[] attch) 
+    public JobSubOutputType launchJob(JobInputType in)
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
@@ -232,7 +231,7 @@ public class AppServiceImpl
 	retrieveAppConfig();
 
 	// write the input files, and launch the job in a non-blocking fashion
-	String jobID = launchApp(in, attch, false);
+	String jobID = launchApp(in, false);
 
 	// create output object
 	JobSubOutputType output = new JobSubOutputType();
@@ -257,8 +256,7 @@ public class AppServiceImpl
      * and output metadata
      * @throws FaultType if there is an error during job submission
      */
-    public BlockingOutputType launchJobBlocking(JobInputType in,
-						DataHandler[] attch)  
+    public BlockingOutputType launchJobBlocking(JobInputType in)
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
@@ -267,7 +265,7 @@ public class AppServiceImpl
 	retrieveAppConfig();
 
 	// write the input files, and launch the job in a blocking fashion
-	String jobID = launchApp(in, attch, true);
+	String jobID = launchApp(in, true);
 
 	// create output object
 	BlockingOutputType output = new BlockingOutputType();
@@ -432,7 +430,6 @@ public class AppServiceImpl
     //--------------------------------------------------------------------//
 
     private String launchApp(JobInputType in,
-			     DataHandler[] attch,
 			     boolean blocking)
 	throws FaultType {
 
@@ -447,7 +444,7 @@ public class AppServiceImpl
 	}
 
 	// create the application input files there 
-	writeAppInput(in, attch, outputDirName);
+	writeAppInput(in, outputDirName);
 
 	// validate command-line arguments, if need be
 	if (config.getValidateArgs() != null) {
@@ -868,7 +865,6 @@ public class AppServiceImpl
     }
 
     private void writeAppInput(JobInputType in,
-			       DataHandler[] attch,
 			       String outputDirName) 
 	throws FaultType {
 	logger.info("called");
