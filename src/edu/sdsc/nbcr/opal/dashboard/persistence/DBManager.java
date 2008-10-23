@@ -282,7 +282,7 @@ public class DBManager {
             while( itera.hasNext() ) {
                 Object [] entry = (Object []) itera.next();
                 Date date = DateHelper.parseDateWithSpaces((String) entry[0]);
-                log.debug("For the date " + date + " we have n entries: " + ((Integer)entry[1]) );
+                //log.debug("For the date " + date + " we have n entries: " + ((Integer)entry[1]) );
                 
                 while ( ! DateHelper.compareDates(previousDate, date) ){
                     //since some day can have no hits we have to put zero in the array for those days
