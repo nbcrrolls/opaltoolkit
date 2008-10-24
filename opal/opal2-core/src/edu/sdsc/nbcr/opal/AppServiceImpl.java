@@ -152,6 +152,14 @@ public class AppServiceImpl
 	    Boolean.valueOf(props.getProperty("globus.use")).booleanValue();
     }
 
+    
+    /**
+     * Method to access the tomcatURL from other classes...
+     */
+    static public String getTomcatURL(){
+        return tomcatURL;
+    }
+
     /**
      * Default constructor
      *
