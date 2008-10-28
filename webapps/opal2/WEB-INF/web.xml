@@ -36,6 +36,18 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
        <url-pattern>/plotchart</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>opalServices</servlet-name>
+        <servlet-class>edu.sdsc.nbcr.opal.dashboard.servlet.OpalServices</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+       <servlet-name>opalServices</servlet-name>
+       <url-pattern>/opalServices.xml</url-pattern>
+    </servlet-mapping>
+
+
     <context-param>
        <param-name>OPAL_VERSION</param-name>
        <param-value>2.0.0</param-value>
