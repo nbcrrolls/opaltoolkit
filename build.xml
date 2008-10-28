@@ -232,6 +232,10 @@ Author:
 	<!-- jFreeChart libraries -->
         <include name="jfreechart-1.0.8.jar" />
         <include name="jcommon-1.0.12.jar" />
+
+        <!-- ROMA for Atom and RSS -->
+        <include name="rome-1.0RC1.jar" />
+        <include name="jdom-1.1.jar" />
        
       </fileset>
     </copy>
