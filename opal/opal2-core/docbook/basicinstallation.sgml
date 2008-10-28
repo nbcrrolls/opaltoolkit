@@ -56,9 +56,11 @@ requires the following packages:</para>
    set up to be able to run MPI jobs without prompting for a password.</para></listitem>
 
    <listitem><para>Postgres 8.2.4 (or higher 8.2 flavors): If you plan to
-   persist the state of the service in a database, you will need to install
+   persist the state of the service in a real database, you will need to install
    Postgres from <ulink type="http"
-   url="http://www.postgresql.org/">http://www.postgresql.org/</ulink>.</para></listitem>
+   url="http://www.postgresql.org/">http://www.postgresql.org/</ulink>. By
+   default, we use a Java-based in-memory and disk-based database (<ulink
+   url="http://hsqldb.org/">HSQLDB</ulink>)</para></listitem>
 
    <listitem><para>Scheduler Tools: One way to enable access to schedulers is via the
    <ulink type="http" url="http://www.globus.org">Globus Toolkit</ulink>. The primary
@@ -177,6 +179,14 @@ location of your Tomcat installation (i.e. $CATALINA_HOME), and
 <filename>tomcat.port</filename> to the port number that the Tomcat server is running
 on.</para> </listitem>
 
+<listitem><para>If you did not follow instructions to set up a real
+production database, modify the <filename>connection.url</filename> property
+inside <emphasis role="italics">etc/hibernate-opal.cfg.xml</emphasis> from
+<emphasis role="italics">jdbc:hsqldb:file:data/opaldb</emphasis> to
+<emphasis
+role="italics">jdbc:hsqldb:file:&lt;absolute_path_for_data_dir&gt;/opaldb</emphasis>.</para>
+</listitem>
+
 <listitem><para>Install the Opal toolkit into the Tomcat installation, by executing
 the following command:
 <screen>
@@ -192,8 +202,8 @@ and running the appropriate command (bat on Windows, sh on Unix):
 </para> </listitem>
 
 <listitem><para>Validate that Opal has been deployed correctly by clicking on <ulink type="http"
-url="http://localhost:8080/opal/happyaxis.jsp">
-http://localhost:8080/opal/happyaxis.jsp</ulink>. If you have deployed Tomcat
+url="http://localhost:8080/opal2/happyaxis.jsp">
+http://localhost:8080/opal2/happyaxis.jsp</ulink>. If you have deployed Tomcat
 on another port, you will have to change the port number above. If all the
 <emphasis role="bold">Needed Components</emphasis> are found, Axis has been deployed fine. You can
 ignore the warnings about the <emphasis role="bold">Optional Components</emphasis>.</para> </listitem>
@@ -237,13 +247,15 @@ in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
   &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/pdb2pqr.py&lt;/binaryLocation&gt;
   &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
   &lt;parallel&gt;false&lt;/parallel&gt;
+  &lt;validateArgs&gt;false&lt;/validateArgs&gt;
+  &lt;jobManager&gt;fork&lt;/jobManager&gt;
 &lt;/appConfig&gt;
 </screen>
 </para>
 
 <para>The configuration consists of a top level element <emphasis role="italics">appConfig</emphasis>,
 which contains <emphasis role="italics">metadata</emphasis>, <emphasis role="italics">binaryLocation</emphasis>, <emphasis role="italics">defaultArgs</emphasis>,
-and <emphasis role="italics">parallel</emphasis> elements. The metadata consists of <emphasis role="italics">usage</emphasis>, which
+<emphasis role="italics">parallel</emphasis>, <emphasis role="italics">validateArgs</emphasis>, and <emphasis role="italics">jobManager</emphasis> elements. The metadata consists of <emphasis role="italics">usage</emphasis>, which
 is a string specifying how the application is to be invoked, and an array
 of optional application information specified as <emphasis role="italics">info</emphasis> elements.
 It also contains an optional <emphasis role="italics">types</emphasis> element, which can ignore
@@ -253,8 +265,7 @@ specifies the location of the application binary - note that this has
 to be the location of a <emphasis role="italics">single</emphasis> executable. No arguments may be
 specified here. However, default arguments that need to be used for
 every run can be specified inside the defaultArgs element. The
-parallel element specifies if an application is parallel or not. Use
-the pdb2pqr_config.xml as a guideline to write configurations for your
+parallel element specifies if an application is parallel or not. The validateArgs and jobManager elements are optional. If set to true, the validateArgs element instructs Opal to use the optional command-line specification to validate arguments prior to execution. The jobManager element over-rides the default job manager, and can be set to fork, globus or drmaa. Use the pdb2pqr_config.xml as a guideline to write configurations for your
 particular applications.</para> </listitem>
 
 <listitem><para>Deploy the services inside Tomcat, by changing to the $OPAL_HOME
@@ -324,7 +335,7 @@ use tcsh on Unix, set your classpath by typing the following command:
 following command, which displays the resulting job id, along with the preliminary status.
 <screen>
     java edu.sdsc.nbcr.opal.GenericServiceClient \
-                 -l http://localhost:8080/opal/services/Pdb2pqrServicePort \
+                 -l http://localhost:8080/opal2/services/Pdb2pqrServicePort \
                  -r launchJob \
                  -a "--ff=amber sample.pdb output.pqr" \
                  -f samples/sample.pdb
@@ -334,7 +345,7 @@ following command, which displays the resulting job id, along with the prelimina
 <para>You can retrieve job status by running the following command:
 <screen>
     java edu.sdsc.nbcr.opal.GenericServiceClient \
-                 -l http://localhost:8080/opal/services/Pdb2pqrServicePort \
+                 -l http://localhost:8080/opal2/services/Pdb2pqrServicePort \
                  -r queryStatus \
                  -j &lt;job_id&gt;
 </screen>
@@ -343,7 +354,7 @@ following command, which displays the resulting job id, along with the prelimina
 <para>Once the job has finished executing, you can also retrieve output metadata using:
 <screen>
     java edu.sdsc.nbcr.opal.GenericServiceClient \
-                 -l http://localhost:8080/opal/services/Pdb2pqrServicePort \
+                 -l http://localhost:8080/opal2/services/Pdb2pqrServicePort \
                  -r getOutputs \
                  -j &lt;job_id&gt;
 </screen>

@@ -61,6 +61,7 @@ Author:
 	  <exclude name="TODO"/>
 	  <exclude name="docbook/**"/>
 	  <exclude name="build-admin.xml"/>
+	  <exclude name="**/python/**"/>
       </fileset>
     </copy>
 
