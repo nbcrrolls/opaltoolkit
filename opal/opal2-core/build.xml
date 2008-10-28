@@ -280,9 +280,6 @@ Author:
     <copy file="${project.home}/lib/log4j.properties" 
           todir="${tomcat.WEB-INF}/classes" />
 
-    <!-- LC tell to tomcat to reload the web application -->
-    <touch file="${tomcat.WEB-INF}/web.xml" />
-
   </target>
 
   <!-- Uninstall opal-specific stuff from inside the webapp -->
