@@ -15,6 +15,8 @@ Version 2.0alpha1
       configuration
     - Optional selection of resource provider on a per application basis
   - Added a set of JUnit tests
+  - Now the list of Opal service currently deploied can be abtained at 
+    /opal2/opalServices.xml in Atom 1.0 format
 
 - Opal GUI
     - Number of CPUs can now be specified via the submission form
