@@ -14,6 +14,7 @@ Version 2.0alpha1
     - Argument validation on a per application basis, via the application
       configuration
     - Optional selection of resource provider on a per application basis
+  - Added a set of JUnit tests
 
 - Opal GUI
     - Number of CPUs can now be specified via the submission form
