@@ -12,9 +12,9 @@ that allows the execution of deployed applications from
 within a standard browser. With version 1.9, the Opal DIG is 
 automatically deployed in the same web application along with Opal 
 toolkit and it can be reached either follwing the link on the main page 
-<ulink type="http" url="http://localhost:8080/opal/">http://servername:8080/opal/</ulink> 
-or at <ulink type="http" url="http://localhost:8080/opal/GetServicesList.do">
-http://servername:8080/opal/GetServicesList.do</ulink> .</para>
+<ulink type="http" url="http://localhost:8080/opal2/">http://servername:8080/opal2/</ulink> 
+or at <ulink type="http" url="http://localhost:8080/opal2/GetServicesList.do">
+http://servername:8080/opal2/GetServicesList.do</ulink> .</para>
 <para>
 The welcome page of the
 Opal DIG displays a list of available services. This list is

@@ -7,11 +7,11 @@ The implementation provides features such as scheduling (e.g. using
 Condor/SGE via Globus or DRMAA) and security (using GSI-based
 certificates), Furthermore, the service provides job and data management
 (by executing every job in a separate working directory), and state
-management (by storing the service state in a PostgreSQL database). The
-application developer specifies a configuration for a scientific
-application and deploys the application as a service following a small
-sequence of steps. End-users can now access this application remotely using
-the WSDL of the service.</para>
+management (by storing the service state via Hibernate into a database such
+as HSQL or PostgreSQL). The application developer specifies a configuration for a
+scientific application and deploys the application as a service following a
+small sequence of steps. End-users can now access this application remotely
+using the WSDL of the service.</para>
 
 <para>The WSDL for the service is defined inside <emphasis role="italics">wsdl/opal.wsdl</emphasis>. Stub
 generators provided by Web service toolkits are then used to generate the
@@ -29,13 +29,20 @@ can be in any language.</para>
    elements should be arbitrary XML's (specified by <filename>xsd:any</filename> tags).
    However, due to the limitations of certains toolkits in other languages
    (e.g. ZSI in Python), we specify them as Strings for now. You may embed
-   XML tags inside them using CDATA sections.</para></listitem>
+   XML tags inside them using CDATA sections. The metadata also
+   (optionally) includes the <filename>types</filename> element, which
+   describes the command-line arguments for the application, described in
+   the <xref linkend="autointerface-advancedsub"> section</para></listitem>
 
-   <listitem><para>Launch job (<filename>launchJob</filename>): This operation requires the list of
-   arguments as a string, and an array of structures representing the input
-   files. The structure contains the <emphasis role="italics">name</emphasis> of the input file and the
-   <emphasis role="italics">contents</emphasis> in Base64 encoded binary form. The operation returns a
-   Job ID that can be used to retrieve job status and outputs.</para></listitem>
+   <listitem><para>Launch job (<filename>launchJob</filename>): This
+   operation requires the list of arguments as a string, and an array of
+   structures representing the input files. The structure contains the
+   <emphasis role="italics">name</emphasis> of the input file and either
+   the <emphasis role="italics">contents</emphasis> in Base64 encoded
+   binary form or a MIME <emphasis role="italics">attachment</emphasis>, or
+   simply a <emphasis role="italics">location</emphasis> (URL) to the
+   associated file. The operation returns a Job ID that can be used to
+   retrieve job status and outputs.</para></listitem>
 
    <listitem><para>Query job status (<filename>queryStatus</filename>): This operation expects a
    Job ID to query the status of a running job. A status code, message, and

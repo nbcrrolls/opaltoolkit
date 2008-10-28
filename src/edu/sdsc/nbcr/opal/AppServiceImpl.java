@@ -1004,7 +1004,8 @@ public class AppServiceImpl
 		String msg = "Can't read application configuration from XML for service: " +
 		    serviceName;
 		logger.error(msg);
-		throw new FaultType(msg);	    }
+		throw new FaultType(msg);	    
+	    }
 	}
     }
 }
