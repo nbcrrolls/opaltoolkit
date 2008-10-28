@@ -92,13 +92,15 @@ public class OpalServices extends HttpServlet {
     public void processRequest(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         //String command = req.getParameter("command");
         //get the services list
-         OPALService [] servicesList = getServiceList(req);
-        //create the Atom feed
+        OPALService [] servicesList = getServiceList(req);
+        if (servicesList == null){
+            String msg = "Unable to get the service list from the Axis...";
+            log.error(msg);
+            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, msg);
+            return;
+        }
 
-        //Send everything to the client
-        //Set Last-Modified needed for HTTP Conditional GET
-        //res.setDateHeader("Last-Modified", depot.getLastUpdateDate().getTime());
-        //res.setContentType("application/atom+xml");
+        //let's create the feed and send it back
         try {
             SyndFeed feed = getFeed(servicesList);
             feed.setFeedType(FEED_TYPE);
@@ -110,6 +112,7 @@ public class OpalServices extends HttpServlet {
             String msg = "Unable to generate the feed...";
             log.error(msg,ex);
             res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,msg);
+            return;
         }
 
     }
@@ -120,13 +123,11 @@ public class OpalServices extends HttpServlet {
         String serverConfigFile = AxisProperties.getProperty(OPTION_SERVER_CONFIG_FILE, SERVER_CONFIG_FILE);
         Date lastUpdate = new Date((new File(serverConfigFile)).lastModified());
 
-
         SyndFeed feed = new SyndFeedImpl();
         feed.setTitle("Opal Service List");
         feed.setLink(AppServiceImpl.getTomcatURL());
         feed.setDescription("This feed lists the available services on the Opal server " + AppServiceImpl.getTomcatURL());
         feed.setPublishedDate(lastUpdate);
-
 
         List entries = new ArrayList();
         SyndEntry entry;
@@ -230,10 +231,11 @@ public class OpalServices extends HttpServlet {
         return servicesList;
     }//getServiceList
 
-    static private void returnServiceError(HttpServletRequest req, String error){
-        //TODO implement some error handling
-        log.error("Impossible to create the list of services because: " + error);
-    }
-
+//    static private void returnServiceError(HttpServletResponse res, String error){
+//        //TODO implement some error handling
+//        log.error("Impossible to create the list of services because: " + error);
+//        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+//        return;
+//    }
 
 }
