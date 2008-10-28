@@ -319,11 +319,7 @@ Author:
           unless="catalina.present"/>
 	       
     <!-- delete the opal webapp -->
-    <delete verbose="true">
-      <fileset dir="${catalina.home}/webapps">
-	<include name="${opal.webapp}"/>
-      </fileset>
-    </delete>
+    <delete verbose="true" dir="${catalina.home}/webapps/${opal.webapp}"/>
   
     <!-- delete jars required from common/lib -->
     <delete verbose="true">
