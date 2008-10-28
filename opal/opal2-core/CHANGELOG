@@ -1,17 +1,22 @@
-trunk
+Version 2.0alpha1
 
 - Opal Core
-    -Modified the wsdl to add support for: 
-      - wallclock time
-      - submission system (now you can select submission system 
-        on an application basis)
-      - argument valiadation (Opal application can now activate this 
-        functionality)
-    
+  - Complete re-design of the Opal implementation to support a plug-in
+    based model at the back-end where resource providers (Fork, Globus,
+    DRMAA) can be plugged in easily at the back-end
+  - State management with the help of Hibernate, which supports an
+    in-memory and disk-based database (HSQL DB) by default. This enables
+    the complete functionality of the Opal dashboard out of the box
+  - WSDL modifications to support
+    - MIME attachments and file URLs for inputs, in addition to legacy
+      style Base64 encoding
+    - Addition of max wall clock time in the application configuration
+    - Argument validation on a per application basis, via the application
+      configuration
+    - Optional selection of resource provider on a per application basis
 
 - Opal GUI
-    -Added the number of cpu input filed in the submission form CLEM
-
+    - Number of CPUs can now be specified via the submission form
 
 Version 1.9.3:
 
