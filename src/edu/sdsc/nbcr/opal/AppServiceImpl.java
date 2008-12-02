@@ -899,13 +899,14 @@ public class AppServiceImpl
 	    try {
 		File f = new File(outputDirName + File.separator + 
 				  inputFiles[i].getName());
-		BufferedOutputStream out = 
-		    new BufferedOutputStream(new FileOutputStream(f));
-
+                BufferedOutputStream out = null;
 		if (inputFiles[i].getContents() != null) {
+                    //it is a 'normal' file
+                    out = new BufferedOutputStream(new FileOutputStream(f));
 		    out.write(inputFiles[i].getContents());
 		    out.close();
 		} else if (inputFiles[i].getLocation() != null) {
+                    //it is a URL
 		    int index = inputFiles[i].getLocation().toString().indexOf(":");
 		    if (index == -1) {
 			String msg = "Can't find protocol for URL: " + 
@@ -913,7 +914,8 @@ public class AppServiceImpl
 			logger.error(msg);
 			throw new FaultType(msg);
 		    }
-
+                    
+                    out = new BufferedOutputStream(new FileOutputStream(f));
 		    String protocol = inputFiles[i].getLocation().toString().substring(0, index);
 		    logger.info("Using protocol: " + protocol);
 
@@ -939,11 +941,13 @@ public class AppServiceImpl
 			logger.error(msg);
 			throw new FaultType(msg);
 		    }
-		} else { // it is an attachment
+		} else { 
+                    // it is an attachment
 		    DataHandler dh = inputFiles[i].getAttachment();
 		    logger.debug("Received attachment: " + dh.getName());
-		    dh.writeTo(out);
-		    out.close();
+                    File attachFile = new File(dh.getName());
+                    logger.info("source is " + attachFile.toString() + " and dest is " + f.toString());
+                    if ( attachFile.renameTo(f) == false ) logger.info("The file wasn't moved properly!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
 		}
 	    } catch (FaultType f) {
 		// pass the exception along
