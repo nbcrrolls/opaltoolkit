@@ -208,7 +208,7 @@ public class PloterServlet extends HttpServlet
             endDate = DateHelper.parseDate(endDateStr);
         if ( (startDate == null) || (endDate == null)) {
             //no date provided let's put the default
-            log.error("No start and end date provided.");
+            log.info("No start and end date provided.");
             endDate = DateHelper.getEndDate();
             startDate = DateHelper.getStartDate();
         }
