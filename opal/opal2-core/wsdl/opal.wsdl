@@ -307,9 +307,9 @@
 
       <xsd:complexType name="JobStatisticsType">
 	<xsd:sequence>
-	  <xsd:element name="startTime" type="xsd:date" minOccurs="0"/>
-	  <xsd:element name="activationTime" type="xsd:date" minOccurs="0"/>
-	  <xsd:element name="completionTime" type="xsd:date" minOccurs="0"/>
+	  <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0"/>
+	  <xsd:element name="activationTime" type="xsd:dateTime" minOccurs="0"/>
+	  <xsd:element name="completionTime" type="xsd:dateTime" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 

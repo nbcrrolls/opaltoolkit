@@ -77,7 +77,7 @@ public class GenericServiceClient {
 	options.addOption(OptionBuilder.withArgName("operation")
 			  .isRequired()
 			  .withDescription("remote operation to invoke: [getAppMetadata|" +
-					   "launchJob|queryStatus|getOutputs|destroy]")
+					   "launchJob|queryStatus|getStatistics|getOutputs|destroy]")
 			  .hasArg()
 			  .create("r"));
 	options.addOption(OptionBuilder.withArgName("num_procs")
@@ -333,6 +333,23 @@ public class GenericServiceClient {
 			       "\tCode: " + status.getCode() + "\n" +
 			       "\tMessage: " + status.getMessage() + "\n" +
 			       "\tOutput Base URL: " + status.getBaseURL());
+
+	} else if (operation.equals("getStatistics")) {
+	    String jobID = line.getOptionValue("j");
+	    if (jobID == null) {
+		System.err.println("Required option -j not found for getStatistics operation");
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp("java edu.sdsc.nbcr.opal.GenericServiceClient", options);
+		System.exit(1);
+	    }
+
+	    System.out.println("Retrieving job statistics");
+	    JobStatisticsType stats = appServicePort.getJobStatistics(jobID);
+	    System.out.println("Statistics for job: " + 
+			       jobID + "\n" +
+			       "\tSubmission time: " + stats.getStartTime().getTime() + "\n" +
+			       "\tActivation time: " + stats.getActivationTime().getTime() + "\n" +
+			       "\tCompletion time: " + stats.getCompletionTime().getTime());
 
 	} else if (operation.equals("getOutputs")) {
 	    String jobID = line.getOptionValue("j");

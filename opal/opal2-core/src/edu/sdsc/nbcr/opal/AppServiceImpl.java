@@ -671,6 +671,8 @@ public class AppServiceImpl
 						  status.getCode(),
 						  status.getMessage(),
 						  status.getBaseURL().toString(),
+						  new Date(), // activation time
+						  null,
 						  handle);
 	} catch (StateManagerException se) {
 	    logger.error(se.getMessage());
@@ -890,6 +892,8 @@ public class AppServiceImpl
 						  status.getCode(),
 						  status.getMessage(),
 						  status.getBaseURL().toString(),
+						  null,
+						  new Date(), // completion time
 						  handle);
 	} catch (StateManagerException se) {
 	    logger.error(se.getMessage());
