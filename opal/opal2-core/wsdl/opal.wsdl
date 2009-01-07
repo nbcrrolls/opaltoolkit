@@ -304,6 +304,14 @@
 	</xsd:sequence>
       </xsd:complexType>
 
+      <xsd:complexType name="JobStatisticsType">
+	<xsd:sequence>
+	  <xsd:element name="startTime" type="xsd:date" minOccurs="0"/>
+	  <xsd:element name="activationTime" type="xsd:date" minOccurs="0"/>
+	  <xsd:element name="completionTime" type="xsd:date" minOccurs="0"/>
+	</xsd:sequence>
+      </xsd:complexType>
+
       <xsd:complexType name="BlockingOutputType">
 	<xsd:sequence>
 	  <xsd:element name="status" type="types:StatusOutputType"/>
@@ -346,6 +354,12 @@
 
       <xsd:element name="queryStatusOutput" 
 		   type="types:StatusOutputType"/>
+
+      <xsd:element name="getJobStatisticsInput" 
+		   type="xsd:string"/>
+
+      <xsd:element name="getJobStatisticsOutput" 
+		   type="types:JobStatisticsType"/>
 
       <xsd:element name="getOutputsInput" 
 		   type="xsd:string"/>
@@ -410,6 +424,14 @@
     <wsdl:part name="out" element="types:queryStatusOutput"/>
   </wsdl:message>
 
+  <wsdl:message name="getJobStatisticsRequest">
+    <wsdl:part name="in" element="types:getJobStatisticsInput"/>
+  </wsdl:message>
+
+  <wsdl:message name="getJobStatisticsResponse">
+    <wsdl:part name="out" element="types:getJobStatisticsOutput"/>
+  </wsdl:message>
+
   <wsdl:message name="getOutputsRequest">
     <wsdl:part name="in" element="types:getOutputsInput"/>
   </wsdl:message>
@@ -471,6 +493,13 @@
       <wsdl:input message="as:queryStatusRequest"/>
       <wsdl:output message="as:queryStatusResponse"/>
       <wsdl:fault name="queryStatusFault"
+		  message="as:opalFaultResponse"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="getJobStatistics">
+      <wsdl:input message="as:getJobStatisticsRequest"/>
+      <wsdl:output message="as:getJobStatisticsResponse"/>
+      <wsdl:fault name="getJobStatisticsFault"
 		  message="as:opalFaultResponse"/>
     </wsdl:operation>
 
@@ -561,6 +590,19 @@
       </wsdl:output>
       <wsdl:fault name="queryStatusFault">
 	<wsdlsoap:fault name="queryStatusFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="getJobStatistics">
+      <wsdlsoap:operation soapAction="http://nbcr.sdsc.edu/opal/getJobStatistics"/>
+      <wsdl:input name="getJobStatisticsRequest">
+	<wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getJobStatisticsResponse">
+	<wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getJobStatisticsFault">
+	<wsdlsoap:fault name="getJobStatisticsFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
 

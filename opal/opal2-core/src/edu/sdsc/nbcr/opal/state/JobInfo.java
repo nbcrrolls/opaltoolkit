@@ -25,6 +25,8 @@ public class JobInfo {
     private String baseURL;
     private String handle;
     private Date startTime;
+    private Date activationTime;
+    private Date completionTime;
     private Date lastUpdate;
     private String clientDN;
     private String clientIP;
@@ -80,6 +82,22 @@ public class JobInfo {
 
     public void setStartTime(Date startTime) {
 	this.startTime = startTime;
+    }
+
+    public Date getActivationTime() {
+	return activationTime;
+    }
+
+    public void setActivationTime(Date activationTime) {
+	this.activationTime = activationTime;
+    }
+
+    public Date getCompletionTime() {
+	return completionTime;
+    }
+
+    public void setCompletionTime(Date completionTime) {
+	this.completionTime = completionTime;
     }
 
     public Date getLastUpdate() {

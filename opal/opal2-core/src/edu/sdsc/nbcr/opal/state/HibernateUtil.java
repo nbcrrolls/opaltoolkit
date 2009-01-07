@@ -16,6 +16,7 @@ import java.util.Iterator;
 import org.globus.gram.GramJob;
 
 import edu.sdsc.nbcr.opal.StatusOutputType;
+import edu.sdsc.nbcr.opal.JobStatisticsType;
 import edu.sdsc.nbcr.opal.JobOutputType;
 import edu.sdsc.nbcr.opal.OutputFileType;
 
@@ -280,6 +281,49 @@ public class HibernateUtil {
     }
 
     /**
+     * Retrieves job statistics from the database using the jobID
+     *
+     * @param jobID the job id for this job
+     * @return the statistics for this job
+     * @throws StateManagerException if there is an error during status retrieval
+     */
+    public static JobStatisticsType getStatistics(String jobID) 
+	throws StateManagerException {
+	logger.info("called");
+
+	JobStatisticsType stats = null;
+
+	try {
+	    // retrieve job status from hibernate
+	    Session session = getSessionFactory().openSession();
+	    session.beginTransaction();
+	    List results = session.createCriteria(JobInfo.class)
+		.add(Expression.eq("jobID", jobID))
+		.list();
+	    if (results.size() == 1) {
+		JobInfo info = (JobInfo) results.get(0);
+		stats = new JobStatisticsType();
+		stats.setStartTime(info.getStartTime());
+		stats.setActivationTime(info.getActivationTime());
+		stats.setCompletionTime(info.getCompletionTime());
+	    }
+	    session.close();
+	} catch (HibernateException ex) {
+	    String msg = "Error while getting statistics from database: " + ex.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
+	
+	if (stats == null) {
+	    String msg = "Can't retrieve statistics for job: " + jobID;
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
+
+	return stats;
+    }
+
+    /**
      * Retrieves job status from the database using the jobID
      *
      * @param jobID the job id for this job
@@ -367,6 +411,8 @@ public class HibernateUtil {
 	info.setMessage("This is a test");
 	info.setBaseURL("http://localhost/test");
 	info.setStartTime(new Date());
+	info.setActivationTime(new Date());
+	info.setCompletionTime(new Date());
 	info.setLastUpdate(new Date());
 	info.setClientDN("CN=Test");
 	info.setClientIP("127.0.0.1");
@@ -404,6 +450,13 @@ public class HibernateUtil {
 			   " - {" + status.getCode() +
 			   ", " + status.getMessage() +
 			   ", " + status.getBaseURL() + "}");
+
+	System.out.println("Searching for statistics for job: " + jobID);
+	JobStatisticsType stats = getStatistics(jobID);
+	System.out.println("Job Statistics: " + jobID +
+			   " - {" + stats.getStartTime() +
+			   ", " + stats.getActivationTime() +
+			   ", " + stats.getCompletionTime() + "}");
 
 	System.out.println("Searching for job outputs for job: " + jobID);
 	outputs = getOutputs(jobID);
