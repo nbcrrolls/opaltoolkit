@@ -9,6 +9,7 @@ import junit.framework.Test;
 import java.util.Date;
 
 import edu.sdsc.nbcr.opal.StatusOutputType;
+import edu.sdsc.nbcr.opal.JobStatisticsType;
 import edu.sdsc.nbcr.opal.JobOutputType;
 import edu.sdsc.nbcr.opal.OutputFileType;
 
@@ -69,6 +70,8 @@ public class PackageTest extends TestCase {
 	info.setMessage("This is a test");
 	info.setBaseURL("http://localhost/test");
 	info.setStartTime(new Date());
+	info.setActivationTime(new Date());
+	info.setCompletionTime(new Date());
 	info.setLastUpdate(new Date());
 	info.setClientDN("CN=Test");
 	info.setClientIP("127.0.0.1");
@@ -138,6 +141,24 @@ public class PackageTest extends TestCase {
 	} catch (Exception e) {
 	    logger.error(e.getMessage());
 	    fail("Job search failed");
+	}
+    }
+
+    public void testSearchJobStats() {
+	// do some searches
+	System.out.println("Testing search for job statistics");
+	try {
+	    JobStatisticsType stats = HibernateUtil.getStatistics(jobID);
+	    assertNotNull("Search for job statistics failed",
+			  stats);
+
+	    System.out.println("Job Statistics: " + jobID +
+			       " - {" + stats.getStartTime() +
+			       ", " + stats.getActivationTime() +
+			       ", " + stats.getCompletionTime() + "}");
+	} catch (Exception e) {
+	    logger.error(e.getMessage());
+	    fail("Search for job statistics failed");
 	}
     }
 
