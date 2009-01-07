@@ -226,6 +226,7 @@
 	<xsd:sequence>
 	  <xsd:element name="usage" type="xsd:string"/>
 	  <xsd:element name="info" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+	  <xsd:element name="version" type="xsd:string" minOccurs="0" maxOccurs="1"/>
 	  <xsd:element name="types" type="types:ArgumentsType" minOccurs="0"/>
 	</xsd:sequence>
 	<xsd:attribute name="appName" type="xsd:string"/>
