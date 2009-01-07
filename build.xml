@@ -154,7 +154,7 @@ Author:
   </target>
 
   <!-- Run junit tests -->
-  <target name="tests" depends="jar">
+  <target name="tests" depends="clean, jar">
     <java classname="edu.sdsc.nbcr.opal.util.Tests"
 	  fork="${javac.fork}">
       <classpath refid="classpath" />
