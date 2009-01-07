@@ -20,6 +20,10 @@
 
         <property name="startTime" type="timestamp" column="start_time"/>
 
+        <property name="activationTime" type="timestamp" column="activation_time"/>
+
+        <property name="completionTime" type="timestamp" column="completion_time"/>
+
         <property name="lastUpdate" type="timestamp" column="last_update"/>
 
         <property name="clientDN" type="string" column="client_dn"/>

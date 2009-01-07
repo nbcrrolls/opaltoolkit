@@ -317,6 +317,36 @@ public class AppServiceImpl
 	return status;
     }
 
+    /** 
+     * Query job statistics for the given jobID
+     * 
+     * @param in the <i>jobID</i> for which to query status
+     * @return the statistics, as described by the WSDL
+     * @throws FaultType if there is an error during the status query
+     */
+    public JobStatisticsType getJobStatistics(String in) 
+	throws FaultType {
+	long t0 = System.currentTimeMillis();
+	logger.info("called for job: " + in);
+	
+	// make sure that the config has been retrieved
+	retrieveAppConfig();
+
+	// retrieve the statistics
+	JobStatisticsType stats = null;
+
+	try {
+	    stats = HibernateUtil.getStatistics(in);
+	} catch (StateManagerException se) {
+	    logger.error(se.getMessage());
+	    throw new FaultType(se.getMessage());
+	}
+
+	long t1 = System.currentTimeMillis();
+	logger.debug("Query execution time: " + (t1-t0) + " ms");
+	return stats;
+    }
+
     /**
      * Return output metadata for a particular job run
      * 
