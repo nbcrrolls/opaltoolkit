@@ -5,7 +5,6 @@
   * Optional URL for retrieving input files: SK
     * Add GridFTP support
   * Additional statistics for job to be set by client (like email address): SK
-  * Operations to retrieve statistics: SK
   * The <usage> tag is used improperly, it contains now the description of
     the application: LC/SK
   * Possibility to specify a MAX wall clock time: SK
