@@ -153,9 +153,9 @@ public class PackageTest extends TestCase {
 			  stats);
 
 	    System.out.println("Job Statistics: " + jobID +
-			       " - {" + stats.getStartTime() +
-			       ", " + stats.getActivationTime() +
-			       ", " + stats.getCompletionTime() + "}");
+			       " - {" + stats.getStartTime().getTime() +
+			       ", " + stats.getActivationTime().getTime() +
+			       ", " + stats.getCompletionTime().getTime() + "}");
 	} catch (Exception e) {
 	    logger.error(e.getMessage());
 	    fail("Search for job statistics failed");

@@ -1,6 +1,7 @@
 package edu.sdsc.nbcr.opal.state;
 
 import org.hibernate.Session;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.HibernateException;
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Expression;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Iterator;
 
@@ -133,6 +135,37 @@ public class HibernateUtil {
 					      String handle)
 	throws StateManagerException {
 	logger.info("called");
+	return updateJobInfoInDatabase(jobID,
+				       code,
+				       message,
+				       baseURL,
+				       null,
+				       null,
+				       handle);
+    }
+
+    /**
+     * Update the job info for a job already in the database
+     * 
+     * @param jobID the job id for this job
+     * @param code the status code for this job
+     * @param message the status message for this job
+     * @param baseURL the base URL for this job
+     * @param activationTime the time the job was activated, if not null
+     * @param completionTime the time the job was completed, if not null
+     * @param handle the manager specific handle to communicate with the job
+     * @return number of rows updated
+     * @throws StateManagerException if there is an error during the database commit
+     */
+    public static int updateJobInfoInDatabase(String jobID,
+					      int code,
+					      String message,
+					      String baseURL,
+					      Date activationTime,
+					      Date completionTime,
+					      String handle)
+	throws StateManagerException {
+	logger.info("called");
 	logger.debug("Updating status to: " + message);
 	
 	int numRows = 1;
@@ -140,20 +173,35 @@ public class HibernateUtil {
 	    Session session = getSessionFactory().openSession();
 	    session.beginTransaction();
 	    Date lastUpdate = new Date();
-	    numRows = session.createQuery("update JobInfo info " +
-					  "set info.lastUpdate = :lastUpdate, " +
-					  "info.code = :code, " +
-					  "info.message = :message, " +
-					  "info.baseURL = :baseURL, " +
-					  "info.handle = :handle " +
-					  "where info.jobID = '" +
-					  jobID + "'")
-		.setTimestamp("lastUpdate", lastUpdate)
+	    String queryString = "update JobInfo info " +
+		"set info.lastUpdate = :lastUpdate, " +
+		"info.code = :code, " +
+		"info.message = :message, " +
+		"info.baseURL = :baseURL, ";
+	    if (activationTime != null) {
+		queryString += "info.activationTime = :activationTime, ";
+	    }
+	    if (completionTime != null) {
+		queryString += "info.completionTime = :completionTime, ";
+	    }
+	    queryString +=
+		"info.handle = :handle " +
+		"where info.jobID = '" +
+		jobID + "'";
+
+	    Query query = session.createQuery(queryString);
+	    query.setTimestamp("lastUpdate", lastUpdate)
 		.setInteger("code", code)
 		.setString("message", message)
 		.setString("baseURL", baseURL)
-		.setString("handle", handle)
-		.executeUpdate();
+		.setString("handle", handle);
+	    if (activationTime != null) {
+		query.setTimestamp("activationTime", activationTime);
+	    }
+	    if (completionTime != null) {
+		query.setTimestamp("completionTime", completionTime);
+	    }
+	    numRows = query.executeUpdate();
 	    session.getTransaction().commit();
 	    session.close();
 	} catch (HibernateException ex) {
@@ -303,9 +351,15 @@ public class HibernateUtil {
 	    if (results.size() == 1) {
 		JobInfo info = (JobInfo) results.get(0);
 		stats = new JobStatisticsType();
-		stats.setStartTime(info.getStartTime());
-		stats.setActivationTime(info.getActivationTime());
-		stats.setCompletionTime(info.getCompletionTime());
+		Calendar startTime = Calendar.getInstance();
+		startTime.setTime(info.getStartTime());
+		stats.setStartTime(startTime);
+		Calendar activationTime = Calendar.getInstance();
+		activationTime.setTime(info.getActivationTime());
+		stats.setActivationTime(activationTime);
+		Calendar completionTime = Calendar.getInstance();
+		completionTime.setTime(info.getCompletionTime());
+		stats.setCompletionTime(completionTime);
 	    }
 	    session.close();
 	} catch (HibernateException ex) {
@@ -454,9 +508,9 @@ public class HibernateUtil {
 	System.out.println("Searching for statistics for job: " + jobID);
 	JobStatisticsType stats = getStatistics(jobID);
 	System.out.println("Job Statistics: " + jobID +
-			   " - {" + stats.getStartTime() +
-			   ", " + stats.getActivationTime() +
-			   ", " + stats.getCompletionTime() + "}");
+			   " - {" + stats.getStartTime().getTime() +
+			   ", " + stats.getActivationTime().getTime() +
+			   ", " + stats.getCompletionTime().getTime() + "}");
 
 	System.out.println("Searching for job outputs for job: " + jobID);
 	outputs = getOutputs(jobID);
