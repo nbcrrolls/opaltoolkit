@@ -9,7 +9,6 @@
   * The <usage> tag is used improperly, it contains now the description of
     the application: LC/SK
   * Possibility to specify a MAX wall clock time: SK
-  * Add a tag for the version of the application LC
 
 * Additional Features
   * Addition of implicit files to dashboard: LC 
