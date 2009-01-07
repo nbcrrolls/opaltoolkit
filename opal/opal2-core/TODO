@@ -12,9 +12,14 @@
   * Add a tag for the version of the application LC
 
 * Additional Features
-  * Addition of implicit files to dashboard: LC
+  * Addition of implicit files to dashboard: LC 
+    This will be in 2.something
   * Arguments schema: how to express 1-* or 2-* multiplicity? specify the
     min but not the max? LC
+    Checked! We can express this condition simply using only the min tag 
+    and not the max tag
+  * conditional display of parameters (a group of parameters are displayed only
+    if a flag is checked) (reuqested by the PDB guys)
 
 * Testing suite using JUnit
   * AppServiceImpl - Managers (local calls): SK
