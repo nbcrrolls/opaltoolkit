@@ -11,6 +11,7 @@ import org.ggf.drmaa.SessionFactory;
 import org.ggf.drmaa.JobTemplate;
 import org.ggf.drmaa.JobInfo;
 import org.ggf.drmaa.DrmaaException;
+import org.ggf.drmaa.UnsupportedAttributeException;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
@@ -192,7 +193,15 @@ public class DRMAAJobManager implements OpalJobManager {
 		throw new JobManagerException(msg);
 	    }
 	}
-	
+
+	// get the hard run limit
+	long hardLimit = 0;
+	if ((props.getProperty("opal.hard_limit") != null)) {
+	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit"));
+	    logger.info("All jobs have a hard limit of "  + hardLimit + " seconds");
+	}
+
+	// launch the job using the above information
 	try {
 	    logger.debug("Working directory: " + workingDir);
 	    
@@ -206,6 +215,16 @@ public class DRMAAJobManager implements OpalJobManager {
 	    jt.setWorkingDirectory(workingDir);
 	    jt.setErrorPath(":" + workingDir + "/stderr.txt");
 	    jt.setOutputPath(":" + workingDir + "/stdout.txt");
+	    if (hardLimit != 0) {
+		try { 
+		    jt.setHardRunDurationLimit(hardLimit);
+		} catch (UnsupportedAttributeException e) {
+		    String msg = "Can't set hard limit - " +
+			e.getMessage();
+		    logger.error(msg);
+		    // not fatal - continue
+		}
+	    }
 	    handle = session.runJob(jt);
 	    logger.info("DRMAA job has been submitted with id " + handle);
 	    session.deleteJobTemplate(jt);

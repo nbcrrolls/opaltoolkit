@@ -85,6 +85,9 @@ public class AppServiceImpl
     /** If globus is being used or not */
     private static boolean globusInUse;
 
+    /** The hard duration limit for job execution */
+    private static long hardLimit;
+
     // the configuration information for the application
     private String serviceName;
     private AppConfigType config;

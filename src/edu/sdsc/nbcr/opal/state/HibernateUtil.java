@@ -354,12 +354,16 @@ public class HibernateUtil {
 		Calendar startTime = Calendar.getInstance();
 		startTime.setTime(info.getStartTime());
 		stats.setStartTime(startTime);
-		Calendar activationTime = Calendar.getInstance();
-		activationTime.setTime(info.getActivationTime());
-		stats.setActivationTime(activationTime);
-		Calendar completionTime = Calendar.getInstance();
-		completionTime.setTime(info.getCompletionTime());
-		stats.setCompletionTime(completionTime);
+		if (info.getActivationTime() != null) {
+		    Calendar activationTime = Calendar.getInstance();
+		    activationTime.setTime(info.getActivationTime());
+		    stats.setActivationTime(activationTime);
+		}
+		if (info.getCompletionTime() != null) {
+		    Calendar completionTime = Calendar.getInstance();
+		    completionTime.setTime(info.getCompletionTime());
+		    stats.setCompletionTime(completionTime);
+		}
 	    }
 	    session.close();
 	} catch (HibernateException ex) {
