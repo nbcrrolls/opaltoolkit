@@ -28,7 +28,7 @@ Author:
 
   <property file="build.properties" />
   <property name="name" value="opal-ws" />
-  <property name="version" value="2.0alpha1"/>
+  <property name="version" value="2.0alpha2"/>
   <property name="project.home" location="." />
   <property name="build" location="${project.home}/build"/>
   <property name="build.dist" location="${build}/dist" />

@@ -34,3 +34,7 @@ globus.service_privkey=/Users/sriramkrishnan/certs/app_service.privkey
 opal.datalifetime=4 days
 
 
+# specify in seconds the hard limit for how long a job can run
+# only applicable if either DRMAA or Globus is being used, and if
+# the scheduler supports it
+opal.hard_limit=3600

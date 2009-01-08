@@ -125,6 +125,9 @@ properties correctly. It should look something like the following:</para>
     num.procs=1
     mpi.run=/Users/sriramkrishnan/Misc/mpich-1.2.7/bin/mpirun
 
+    # zip up input/output files, if set to true
+    # data.archive=true
+
     # location of working directory relative to $CATALINA_HOME/webapps.
     # this could be a symbolic link to another location (which should be
     # NFS mounted if this is on a cluster). if this is a symlink, copy
@@ -142,6 +145,11 @@ properties correctly. It should look something like the following:</para>
     globus.gatekeeper=localhost:2119/jobmanager-sge
     globus.service_cert=/Users/sriramkrishnan/certs/opal_service.cert.pem
     globus.service_privkey=/Users/sriramkrishnan/certs/opal_service.privkey
+
+    # specify in seconds the hard limit for how long a job can run
+    # only applicable if either DRMAA or Globus is being used, and if
+    # the scheduler supports it
+    opal.hard_limit=3600
 </screen>
 
 

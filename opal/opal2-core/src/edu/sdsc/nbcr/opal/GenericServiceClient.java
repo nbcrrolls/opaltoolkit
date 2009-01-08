@@ -347,10 +347,13 @@ public class GenericServiceClient {
 	    JobStatisticsType stats = appServicePort.getJobStatistics(jobID);
 	    System.out.println("Statistics for job: " + 
 			       jobID + "\n" +
-			       "\tSubmission time: " + stats.getStartTime().getTime() + "\n" +
-			       "\tActivation time: " + stats.getActivationTime().getTime() + "\n" +
-			       "\tCompletion time: " + stats.getCompletionTime().getTime());
-
+			       "\tSubmission time: " + stats.getStartTime().getTime());
+	    if (stats.getActivationTime() != null) {
+		System.out.println("\tActivation time: " + stats.getActivationTime().getTime());
+	    }
+	    if (stats.getCompletionTime() != null) {
+		System.out.println("\tCompletion time: " + stats.getCompletionTime().getTime());
+	    }
 	} else if (operation.equals("getOutputs")) {
 	    String jobID = line.getOptionValue("j");
 	    if (jobID == null) {

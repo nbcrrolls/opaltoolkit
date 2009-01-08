@@ -151,6 +151,14 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 		"(stdout=stdout.txt)" + 
 		"(stderr=stderr.txt)";
 	}
+
+	// set the hard run limit, if it exists
+	long hardLimit = 0;
+	if ((props.getProperty("opal.hard_limit") != null)) {
+	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit")) / 60;
+	    logger.info("All jobs have a hard limit of "  + hardLimit + " minutes");
+	    rsl += "(maxCpuTime=" + hardLimit + ")";
+	}
 	
 	// add arguments to the RSL
 	if (args != null) {
@@ -160,6 +168,7 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	    args = args.replaceAll("[\\s]+", "\" \"");
 	    rsl += "(arguments=" + args + ")";
 	}
+
 	logger.debug("RSL: " + rsl);
 
 	// get the service cert and key
