@@ -140,9 +140,17 @@ properties correctly. It should look something like the following:</para>
     drmaa.use=false
     drmaa.pe=mpich
 
-    # globus information
+    # globus information, if drmaa is not being used
     globus.use=false
-    globus.gatekeeper=localhost:2119/jobmanager-sge
+
+    # local versus remote execution
+    globus.remote=false
+
+    # gatekeeper and gridftp server
+    globus.gatekeeper=rocks-106.sdsc.edu:2119/jobmanager-sge
+    globus.gridftp_base=gsiftp://rocks-106.sdsc.edu:2811/scratch
+
+    # gsi information 
     globus.service_cert=/Users/sriramkrishnan/certs/opal_service.cert.pem
     globus.service_privkey=/Users/sriramkrishnan/certs/opal_service.privkey
 
@@ -273,7 +281,7 @@ specifies the location of the application binary - note that this has
 to be the location of a <emphasis role="italics">single</emphasis> executable. No arguments may be
 specified here. However, default arguments that need to be used for
 every run can be specified inside the defaultArgs element. The
-parallel element specifies if an application is parallel or not. The validateArgs and jobManager elements are optional. If set to true, the validateArgs element instructs Opal to use the optional command-line specification to validate arguments prior to execution. The jobManager element over-rides the default job manager, and can be set to fork, globus.local (globus on local cluster), globus.remote (globus on remote cluster) or drmaa. Use the pdb2pqr_config.xml as a guideline to write configurations for your particular applications.</para> </listitem>
+parallel element specifies if an application is parallel or not. The validateArgs and jobManager elements are optional. If set to true, the validateArgs element instructs Opal to use the optional command-line specification to validate arguments prior to execution. The jobManager element over-rides the default job manager, and can be set to fork, globusLocal (globus on local cluster), globusRemote (globus on remote cluster) or drmaa. Use the pdb2pqr_config.xml as a guideline to write configurations for your particular applications.</para> </listitem>
 
 <listitem><para>Deploy the services inside Tomcat, by changing to the $OPAL_HOME
 directory, and running the following command:
