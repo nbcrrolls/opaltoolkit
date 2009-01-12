@@ -38,6 +38,7 @@ import edu.sdsc.nbcr.opal.manager.OpalJobManager;
 import edu.sdsc.nbcr.opal.manager.ForkJobManager;
 import edu.sdsc.nbcr.opal.manager.DRMAAJobManager;
 import edu.sdsc.nbcr.opal.manager.GlobusJobManager;
+import edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager;
 import edu.sdsc.nbcr.opal.manager.JobManagerException;
 
 import edu.sdsc.nbcr.opal.state.JobInfo;
@@ -84,9 +85,7 @@ public class AppServiceImpl
 
     /** If globus is being used or not */
     private static boolean globusInUse;
-
-    /** The hard duration limit for job execution */
-    private static long hardLimit;
+    private static boolean globusRemote;
 
     // the configuration information for the application
     private String serviceName;
@@ -153,6 +152,10 @@ public class AppServiceImpl
 	// check if Globus is being used
 	globusInUse = 
 	    Boolean.valueOf(props.getProperty("globus.use")).booleanValue();
+
+	// check if Globus is to be used remotely
+	globusRemote = 
+	    Boolean.valueOf(props.getProperty("globus.remote")).booleanValue();
     }
 
     
@@ -554,7 +557,11 @@ public class AppServiceImpl
 	} else if (drmaaInUse) {
 	    jobManagerType = JobManagerType.drmaa;
 	} else if (globusInUse) {
-	    jobManagerType = JobManagerType.globus;
+	    if (!globusRemote) {
+		jobManagerType = JobManagerType.globusLocal;
+	    } else {
+		jobManagerType = JobManagerType.globusRemote;
+	    }
 	} else {
 	    jobManagerType = JobManagerType.fork;
 	}
@@ -563,8 +570,10 @@ public class AppServiceImpl
 	final OpalJobManager jobManager;
 	if (jobManagerType.equals(JobManagerType.drmaa)) {
 	    jobManager = new DRMAAJobManager();
-	} else if (jobManagerType.equals(JobManagerType.globus)) {
+	} else if (jobManagerType.equals(JobManagerType.globusLocal)) {
 	    jobManager = new GlobusJobManager();
+	} else if (jobManagerType.equals(JobManagerType.globusRemote)) {
+	    jobManager = new RemoteGlobusJobManager();
 	} else { // process exec
 	    jobManager = new ForkJobManager();
 	}
@@ -983,8 +992,14 @@ public class AppServiceImpl
 		    DataHandler dh = inputFiles[i].getAttachment();
 		    logger.debug("Received attachment: " + dh.getName());
                     File attachFile = new File(dh.getName());
-                    logger.info("source is " + attachFile.toString() + " and dest is " + f.toString());
-                    if ( attachFile.renameTo(f) == false ) logger.info("The file wasn't moved properly!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+                    logger.debug("Source is " + attachFile.toString() + 
+				" and dest is " + f.toString());
+                    if (attachFile.renameTo(f) == false) {
+			String msg = "Unable to copy attachment correctly: " +
+			    dh.getName();
+			logger.error(msg);
+			throw new FaultType(msg);
+		    }
 		}
 	    } catch (FaultType f) {
 		// pass the exception along

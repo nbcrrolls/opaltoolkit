@@ -38,7 +38,8 @@
       <xsd:simpleType name="JobManagerType">
 	<xsd:restriction base="xsd:string">
 	  <xsd:enumeration value="fork"/>
-	  <xsd:enumeration value="globus"/>
+	  <xsd:enumeration value="globusLocal"/>
+	  <xsd:enumeration value="globusRemote"/>
 	  <xsd:enumeration value="drmaa"/>
 	  <xsd:enumeration value="csf4"/>
 	</xsd:restriction>
@@ -243,6 +244,8 @@
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
 	  <xsd:element name="jobManager" type="types:JobManagerType" minOccurs="0"/>
+	  <xsd:element name="globusGatekeeper" type="xsd:anyURI" minOccurs="0"/>
+	  <xsd:element name="gridftpBase" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
 	</xsd:sequence>
       </xsd:complexType>
