@@ -4,6 +4,7 @@
 * WSDL additions/improvements
   * Add GridFTP support: SK
   * Additional statistics for job to be set by client (like email address): SK
+    * Twitter, RSS access to job metadata?
   * The <usage> tag is used improperly, it contains now the description of
     the application: LC/SK
 

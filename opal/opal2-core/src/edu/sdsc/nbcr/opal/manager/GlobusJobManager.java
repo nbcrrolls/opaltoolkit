@@ -24,15 +24,15 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
     // get an instance of a log4j logger
     private static Logger logger = Logger.getLogger(GlobusJobManager.class.getName());
 
-    private Properties props; // the container properties being passed
-    private AppConfigType config; // the application configuration
-    private StatusOutputType status; // current status
-    private String handle; // the OS specific process id for this job
-    private boolean started = false; // whether the execution has started
-    private boolean active = false; // whether the job is active already
-    private boolean destroyed = false; // whether the process was destroyed
+    protected Properties props; // the container properties being passed
+    protected AppConfigType config; // the application configuration
+    protected StatusOutputType status; // current status
+    protected String handle; // the OS specific process id for this job
+    protected boolean started = false; // whether the execution has started
+    protected boolean active = false; // whether the job is active already
+    protected boolean destroyed = false; // whether the process was destroyed
 
-    private GramJob job; // the GramJob object for this run
+    protected GramJob job; // the GramJob object for this run
 
     /**
      * Initialize the Job Manager for a particular job
@@ -187,6 +187,9 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 
 	// get the location of the Globus gatekeeper
 	String gatekeeperContact = props.getProperty("globus.gatekeeper");
+	if (config.getGlobusGatekeeper() != null) {
+	    gatekeeperContact = config.getGlobusGatekeeper().toString();
+	}
 	if (gatekeeperContact == null) {
 	    String msg = "Can't find property: globus.gatekeeper";
 	    logger.error(msg);
