@@ -4,5 +4,6 @@
     <usage><![CDATA[date [-u] mmddhhmm[[cc]yy]]]></usage>
   </metadata>
   <binaryLocation>/bin/date</binaryLocation>
+  <jobManager>globusRemote</jobManager>
   <parallel>false</parallel>
 </appConfig>

@@ -13,7 +13,6 @@ import org.globus.ftp.FileInfo;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.net.URL;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
@@ -31,7 +30,7 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
     private String workingDir;
 
     // base url for gridftp uploads
-    private URL baseURL;
+    private String gridFTPBase;
 
     // globus credential
     private GSSCredential gssCred;
@@ -70,13 +69,13 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
 	}
 
 	// create credentials from service certificate/key
-	File wd = new File(workingDir);
-	String gridFTPBase = props.getProperty("globus.gridftp_base");
+	gridFTPBase = props.getProperty("globus.gridftp_base");
 	if (config.getGridftpBase() != null) {
 	    gridFTPBase = config.getGridftpBase().toString();
 	}
 
 	String remoteDir = null;
+	File wd = new File(workingDir);
 	try {
 	    GlobusCredential globusCred = 
 		new GlobusCredential(serviceCertPath, 
@@ -85,7 +84,7 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
 		new GlobusGSSCredentialImpl(globusCred,
 					    GSSCredential.INITIATE_AND_ACCEPT);
 
-	    baseURL = new URL(gridFTPBase);	    
+	    GlobusURL baseURL = new GlobusURL(gridFTPBase);	    
 	    GridFTPClient client = new GridFTPClient(baseURL.getHost(),
 						     baseURL.getPort());
 	    
@@ -108,7 +107,6 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
 					      inputFiles[i]));
 		uc.setCredentials(gssCred);
 		
-		// TODO: test if this works
 		uc.copy();
 	    }
 	} catch (Exception e) {
@@ -134,8 +132,10 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
 	// wait for completion using the superclass
 	super.waitForCompletion();
 
-	// TODO: test if this works
+	// stage output files back
 	try {
+	    GlobusURL baseURL = new GlobusURL(gridFTPBase);
+	    
 	    GridFTPClient client = new GridFTPClient(baseURL.getHost(),
 						     baseURL.getPort());
 	    
@@ -155,7 +155,7 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
 		    String fileName = fileInfo.getName();
 		    logger.info("Staging output file: " + fileName);
 		    UrlCopy uc = new UrlCopy();
-		    uc.setSourceUrl(new GlobusURL(baseURL.toString() + "/" + 
+		    uc.setSourceUrl(new GlobusURL(gridFTPBase + "/" +
 						  wd.getName() + "/" +
 						  fileName));
 		    uc.setDestinationUrl(new GlobusURL("file:///" + workingDir + "/" +
