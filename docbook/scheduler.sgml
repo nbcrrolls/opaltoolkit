@@ -6,10 +6,11 @@ jobs to an external scheduler.</para>
 
 <para>Install a Condor or SGE pool on your compute cluster. Consult the
 appropriate documentation for the same. Note that we don't currently stage
-and input and output files from the Opal server to the submit host; hence,
-the machines should be on a shared file system, such as NFS. Also note
-that Condor doesn't support parallel execution using any recent version of
-MPI. If you plan to configure parallel execution, use SGE instead.</para>
+and input and output files from the Opal server to the submit host if you
+are planning to use DRMAA; hence, the machines should be on a shared file
+system, such as NFS. Also note that Condor doesn't support parallel
+execution using any recent version of MPI. If you plan to configure
+parallel execution, use SGE instead.</para>
 
 
 <para>Access to the schedulers is provided in one of two ways - using the
@@ -104,11 +105,19 @@ steps:</para>
 </listitem>
 
 <listitem><para>Set the following properties inside the opal.properties file:
-drmaa.use to false, globus.use to true, globus.gatekeeper to the URL for
-the Globus/Condor(SGE) gatekeeper, globus.service_cert to the location of
-the server certificate, globus.service_privkey to the location of the
+<filename>drmaa.use</filename> to false, <filename>globus.use</filename> to true, 
+<filename>globus.gatekeeper</filename> to the URL for the Globus/Condor(SGE) gatekeeper, 
+<filename>globus.service_cert</filename> to the location of
+the server certificate, <filename>globus.service_privkey</filename> to the location of the
 server's unencrypted private key. If drmaa.use is set to true or globus.use
 is set to false, then all Globus specific properties are ignored.</para></listitem>
+
+<listitem><para>By default, all Globus jobs are run on the same cluster.
+However, if you wish to run Globus jobs remotely, set the
+<filename>globus.remote</filename> property to true, and the
+<filename>globus.gridftp_base</filename> to the base URL of the location to
+stage files to. Make sure that this is a valid directory, and the app_user
+can write files can create directories in this location.</para></listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>
