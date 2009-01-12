@@ -692,31 +692,29 @@ public class AppServiceImpl
 	}
 
 	// if the job is still running, wait for it to finish
-	if (!((status.getCode() == GramJob.STATUS_FAILED) ||
-	      (status.getCode() == GramJob.STATUS_DONE))) {
+	try {
+	    status = jobManager.waitForCompletion();
+	} catch (JobManagerException jme) {
+	    logger.error(jme.getMessage());
+	    
+	    // save status in database
 	    try {
-		status = jobManager.waitForCompletion();
-	    } catch (JobManagerException jme) {
-		logger.error(jme.getMessage());
-
-		// save status in database
-		try {
-		    HibernateUtil.updateJobInfoInDatabase(jobID,
-							  GramJob.STATUS_FAILED,
-							  jme.getMessage(),
-							  status.getBaseURL().toString(),
-							  handle);
-		} catch (StateManagerException se) {
-		    logger.error(se.getMessage());
-		    throw new FaultType(se.getMessage());
-		}
-
-		throw new FaultType(jme.getMessage());
+		HibernateUtil.updateJobInfoInDatabase(jobID,
+						      GramJob.STATUS_FAILED,
+						      jme.getMessage(),
+						      status.getBaseURL().toString(),
+						      handle);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
 	    }
+	    
+	    throw new FaultType(jme.getMessage());
 	}
+
 	if (status.getBaseURL() == null)
 	    status.setBaseURL(baseURL);
-	
+    
 	// bit of a hack because execution completion does not
 	// equal completion of Web service call
 	int jobCode = status.getCode();

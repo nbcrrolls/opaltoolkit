@@ -362,6 +362,7 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	// if the status just changed to active or failed, notify sleepers
 	if (!active) {
 	    if ((code == GramJob.STATUS_ACTIVE) ||
+		(code == GramJob.STATUS_DONE) ||
 		(code == GramJob.STATUS_FAILED)) {
 		active = true;
 		synchronized(job) {
