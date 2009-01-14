@@ -48,7 +48,7 @@ your list of trusted CAs.
 <listitem><para>To enable grid-map authorization of clients, add the following XML
 fragment inside the <filename>&lt;requestFlow/&gt;</filename> element of the
 <filename>&lt;globalConfiguration/&gt;</filename> in
-$CATALINA_HOME/webapps/opal/WEB-INF/server-config.wsdd.
+$CATALINA_HOME/webapps/opal2/WEB-INF/server-config.wsdd.
 <screen>
    &lt;handler type="java:edu.sdsc.nbcr.common.GridMapAuthHandler"&gt;
     &lt;parameter name="gridmap" value="/Users/sriramkrishnan/.globus/grid-mapfile"/&gt;
