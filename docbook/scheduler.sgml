@@ -117,7 +117,10 @@ However, if you wish to run Globus jobs remotely, set the
 <filename>globus.remote</filename> property to true, and the
 <filename>globus.gridftp_base</filename> to the base URL of the location to
 stage files to. Make sure that this is a valid directory, and the app_user
-can write files can create directories in this location.</para></listitem>
+can write files can create directories in this location. It is important to notice 
+that if you specify a path with gsiftp://myhost.mydomain.com:2812/data/foo.dat if you 
+want the /data/foo.dat to be absolute you have to use double //, 
+gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>

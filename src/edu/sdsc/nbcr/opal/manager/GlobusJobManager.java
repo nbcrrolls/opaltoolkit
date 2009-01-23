@@ -157,7 +157,9 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	if ((props.getProperty("opal.hard_limit") != null)) {
 	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit")) / 60;
 	    logger.info("All jobs have a hard limit of "  + hardLimit + " minutes");
-	    rsl += "(maxCpuTime=" + hardLimit + ")";
+            //what should we use here? maxWallTime maxCpuTime or maxTime?
+            //for the moment we go for maxWallTime on most TG sites work
+	    rsl += "(maxWallTime=" + hardLimit + ")";
 	}
 	
 	// add arguments to the RSL
