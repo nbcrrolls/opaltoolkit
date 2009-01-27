@@ -35,10 +35,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import edu.sdsc.nbcr.opal.manager.OpalJobManager;
-import edu.sdsc.nbcr.opal.manager.ForkJobManager;
-import edu.sdsc.nbcr.opal.manager.DRMAAJobManager;
-import edu.sdsc.nbcr.opal.manager.GlobusJobManager;
-import edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager;
+import edu.sdsc.nbcr.opal.manager.OpalJobManagerFactory;
 import edu.sdsc.nbcr.opal.manager.JobManagerException;
 
 import edu.sdsc.nbcr.opal.state.JobInfo;
@@ -568,15 +565,26 @@ public class AppServiceImpl
 	logger.info("Using job manager type: " + jobManagerType.getValue());
 
 	final OpalJobManager jobManager;
-	if (jobManagerType.equals(JobManagerType.drmaa)) {
-	    jobManager = new DRMAAJobManager();
-	} else if (jobManagerType.equals(JobManagerType.globusLocal)) {
-	    jobManager = new GlobusJobManager();
-	} else if (jobManagerType.equals(JobManagerType.globusRemote)) {
-	    jobManager = new RemoteGlobusJobManager();
-	} else { // process exec
-	    jobManager = new ForkJobManager();
+	try {
+	    jobManager = OpalJobManagerFactory.getOpalJobManager(jobManagerType);
+	} catch (JobManagerException jme) {
+	    logger.error(jme.getMessage());
+
+	    // save status in database
+	    try {
+		HibernateUtil.updateJobInfoInDatabase(jobID,
+						      GramJob.STATUS_FAILED,
+						      jme.getMessage(),
+						      info.getBaseURL(),
+						      null);
+	    } catch (StateManagerException se) {
+		logger.error(se.getMessage());
+		throw new FaultType(se.getMessage());
+	    }
+
+	    throw new FaultType(jme.getMessage());
 	}
+
 	try {
 	    jobManager.initialize(props, config, null);
 	} catch (JobManagerException jme) {
