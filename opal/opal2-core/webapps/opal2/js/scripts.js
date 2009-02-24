@@ -49,12 +49,12 @@ function DocumentObject( strObjectID, bWithStyle )
 
 function ShowMenu( strMenu ) {
 
-	DocumentObject( 'about-subnav', true ).display = ( strMenu == "about" ) ? 'block' : 'none';
-	DocumentObject( 'metagenomics-subnav', true ).display = ( strMenu == "metagenomics" ) ? 'block' : 'none';
+	DocumentObject( 'about-subnav', true ).display = ( strMenu == "Statistics" ) ? 'block' : 'none';
+	DocumentObject( 'metagenomics-subnav', true ).display = ( strMenu == "Applications" ) ? 'block' : 'none';
 	DocumentObject( 'research-subnav', true ).display = ( strMenu == "research" ) ? 'block' : 'none';
 	DocumentObject( 'news-subnav', true ).display = ( strMenu == "news" ) ? 'block' : 'none';
 	DocumentObject( 'events-subnav', true ).display = ( strMenu == "events" ) ? 'block' : 'none';
-	DocumentObject( 'forums-subnav', true ).display = ( strMenu == "forums" ) ? 'block' : 'none';
+	DocumentObject( 'forums-subnav', true ).display = ( strMenu == "About" ) ? 'block' : 'none';
 	
 	// Clear the menu timer, if any
 	clearTimeout( g_iMenuTimer );
