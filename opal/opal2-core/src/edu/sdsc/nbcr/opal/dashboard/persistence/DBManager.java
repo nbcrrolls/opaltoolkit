@@ -242,9 +242,8 @@ public class DBManager {
                 " order by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc"; 
         }else if (type.equals("exectime") ) {
             query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), " +
-                //"sum( (lastUpdate - startTime) ) / count(*) as average " +
                 "avg( (second(last_update) - second(start_time))  + (minute(last_update) - minute(start_time)) * 60 + " +
-                "(hour(last_update) - hour(start_time))*60*60) " + 
+                "(hour(last_update) - hour(start_time)) * 3600 + (day(last_update) - day(start_time)) * 86400 ) " + 
                 " from JobInfo " +
                 " where serviceName= :service " +
                 " and startTime >= :startDate " +
