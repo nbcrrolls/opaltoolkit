@@ -230,15 +230,16 @@ public class DBManager {
         cal.add(Calendar.SECOND , 59);
         endDate = cal.getTime();
 
-        
+        //query will hold the value of the query that will be run against the
+        //DB, depending on the type value query chages
         String query = null;
         if ( type.equals("hits") ) {
             query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime))  , count(*)  " +            
                 " from JobInfo where serviceName= :service" +
                 " and startTime >= :startDate " +
                 " and startTime <= :endDate " +
-                " group by  str(year(startTime))||str(month(startTime))||str(day(startTime)) " +
-                " order by  str(year(startTime))||str(month(startTime))||str(day(startTime)) desc"; 
+                " group by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
+                " order by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc"; 
         }else if (type.equals("exectime") ) {
             query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), " +
                 //"sum( (lastUpdate - startTime) ) / count(*) as average " +
@@ -249,8 +250,8 @@ public class DBManager {
                 " and startTime >= :startDate " +
                 " and startTime <= :endDate " +
                 " and code=8 " +
-                " group by str(year(startTime))||str(month(startTime))||str(day(startTime)) " +
-                " order by str(year(startTime))||str(month(startTime))||str(day(startTime)) desc" ;
+                " group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
+                " order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc" ;
         } else if (type.equals("error") ){
             query  = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), count(*) " +
                 "from JobInfo " +
@@ -258,8 +259,8 @@ public class DBManager {
             	"and startTime >= :startDate " +
             	"and startTime <= :endDate " +
             	"and code=4 " +
-            	"group by str(year(startTime))||str(month(startTime))||str(day(startTime)) " +
-            	"order by str(year(startTime))||str(month(startTime))||str(day(startTime)) desc";   
+            	"group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
+            	"order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc";   
         }
         
         
