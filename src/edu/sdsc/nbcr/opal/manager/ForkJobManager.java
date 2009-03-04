@@ -150,7 +150,8 @@ public class ForkJobManager implements OpalJobManager {
 	}
 
 	// append arguments
-	if (args != null) {
+	if ((args != null) && (!(args.equals("")))) {
+	    logger.debug("Appending arguments: " + args);
 	    cmd += " " + args;
 	}
 	logger.debug("CMD: " + cmd);
