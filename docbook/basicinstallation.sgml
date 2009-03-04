@@ -39,13 +39,13 @@ client and server installations are as follows.</para>
 requires the following packages:</para>
 
 <orderedlist>
-   <listitem><para>Tomcat 5.0.30: Tomcat is a servlet container than can be used to
+   <listitem><para>Tomcat 5.0.X or 5.5.X: Tomcat is a servlet container than can be used to
    host our Web service implementation. Install the binary version of
    Tomcat 5.0.30 from <ulink type="http" url= "http://jakarta.apache.org/tomcat/">
    http://jakarta.apache.org/tomcat/</ulink>. A <ulink type="http"
    url="http://nbcr.net/services/downloads/jakarta-tomcat-5.0.30.tar.gz">cached
-   version</ulink> may also be downloaded alternatively. Henceforth, we will
-   refer to the location of the Tomcat installation as
+   version</ulink> may also be downloaded alternatively. Since Opal2 you can also use 
+   Tomcat 5.5.X. Henceforth, we will refer to the location of the Tomcat installation as
    <emphasis role="italics">CATALINA_HOME</emphasis>.</para></listitem>
 </orderedlist>
 
