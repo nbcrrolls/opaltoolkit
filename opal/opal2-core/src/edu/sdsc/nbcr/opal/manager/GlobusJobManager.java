@@ -163,7 +163,7 @@ public class GlobusJobManager implements OpalJobManager, GramJobListener {
 	}
 	
 	// add arguments to the RSL
-	if (args != null) {
+	if ((args != null) && (!(args.equals("")))) {
 	    // put every argument within quotes - needed by Globus if some of 
 	    // the arguments are of the form name=value
 	    args = "\"" + args + "\"";

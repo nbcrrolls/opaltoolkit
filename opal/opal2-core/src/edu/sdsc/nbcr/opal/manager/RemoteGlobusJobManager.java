@@ -110,7 +110,7 @@ public class RemoteGlobusJobManager extends GlobusJobManager {
 		uc.copy();
 	    }
 	} catch (Exception e) {
-	    String msg = "Exception while staging input files";
+	    String msg = "Exception while preparing and staging input files";
 	    logger.error(msg, e);
 	    throw new JobManagerException(msg + " - " + e.getMessage());
 	}
