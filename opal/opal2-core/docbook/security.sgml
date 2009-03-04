@@ -4,21 +4,23 @@
 <para>This chapter explains how to configure Opal in order to use GSI to autheticate clients.</para>
 
 <orderedlist>
-<listitem><para>Create a globus-based PEM server certificate and private key for the
-tomcat server.
-</para></listitem>
+  <listitem><para>Create a globus-based PEM server certificate and private key for the
+  tomcat server.
+  </para></listitem>
 
-<listitem><para>Make sure that Opal has been installed successfully. If not, do so by
-running the following command:
-<screen>
-    ant install
-</screen>
-</para></listitem>
+  <listitem><para>Make sure that Opal has been installed successfully. If not, do so by
+  running the following command:
+  <screen>
+    ant install </screen>
+  </para></listitem>
 
-<listitem><para>To enable GSI HTTPS in Tomcat, use the sample etc/server.xml provided
-(works for version 5.0.30). The following two snippets are responsible for
-enabling https:
-<screen>
+  <listitem><para>To enable GSI HTTPS in Tomcat there are two different procedures 
+  depending on your version of Tomcat. 
+  If you are using 5.0.X, you can start from the sample etc/server.xml provided
+  (works for version 5.0.30). The following two snippets are responsible for
+  enabling https:
+  <screen>
+
    &lt;Service name="Catalina"&gt;
     ...
     &lt;Connector className="org.globus.tomcat.coyote.net.HTTPSConnector"
@@ -37,66 +39,109 @@ enabling https:
       ....
     &lt;/Engine&gt;
    &lt;/Service&gt;
-</screen>
-</para>
+  </screen>
+  </para>
 
-<para>Make sure that the cert and key points correctly to the server
-certificate and key generated in Step 1, and that the cacertdir points to
-your list of trusted CAs.
-</para></listitem>
+  <para>Make sure that the cert and key points correctly to the server
+  certificate and key generated in Step 1, and that the cacertdir points to
+  your list of trusted CAs.
+  </para>
 
-<listitem><para>To enable grid-map authorization of clients, add the following XML
-fragment inside the <filename>&lt;requestFlow/&gt;</filename> element of the
-<filename>&lt;globalConfiguration/&gt;</filename> in
-$CATALINA_HOME/webapps/opal2/WEB-INF/server-config.wsdd.
-<screen>
+  <para>If you are using Tomcat 5.5.X you should modify the server.xml in 
+  the following way:
+  <orderedlist>
+    <listitem><para>Add a HTTPS Connector in the &lt;Engine name="Catalina"&gt; 
+    section of the Tomcat config file and update the parameters 
+    appropriately with your local configuration: 
+    <screen>
+
+   &lt;Service name="Catalina"&gt;
+    ...
+
+     &lt;Connector
+         className="org.globus.tomcat.coyote.net.HTTPSConnector"
+         port="8443" maxThreads="150"
+         minSpareThreads="25" maxSpareThreads="75"
+         autoFlush="true" disableUploadTimeout="true"
+         scheme="https" enableLookups="true"
+         acceptCount="10" debug="0"
+         protocolHandlerClassName="org.apache.coyote.http11.Http11Protocol"
+         socketFactory="org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory"
+         proxy="/path/to/proxy/file" cert="/path/to/certificate/file"
+         key="/path/to/private/key/file"
+         cacertdir="/path/to/ca/certificates/directory"
+         encryption="true"/&gt;
+    </screen>
+    The parameters proxy, cert, key and cacertdir should point to your local files. Furthermore, 
+    the proxy and the combination of cert and key attributes are mutually exclusive. The 
+    encryption attribute is also optional (defaults to true if not set). 
+    </para></listitem>
+
+    <listitem><para>Add a HTTPS Valve in the &lt;Engine name="Catalina" ... &gt; section of the Tomcat 
+         config file:
+    
+    <screen>
+
+    &lt;Engine name="Catalina" defaultHost="localhost" debug="0"&gt;
+      ....
+      &lt;Valve className="org.globus.tomcat.coyote.valves.HTTPSValve55"/&gt;
+      ....
+    &lt;/Engine&gt; 
+    </screen>
+    </para></listitem>
+
+  </orderedlist>
+
+  </para></listitem>
+
+  <listitem><para>To enable grid-map authorization of clients, add the following XML
+  fragment inside the <filename>&lt;requestFlow/&gt;</filename> element of the
+  <filename>&lt;globalConfiguration/&gt;</filename> in
+  $CATALINA_HOME/webapps/opal2/WEB-INF/server-config.wsdd.
+  <screen>
    &lt;handler type="java:edu.sdsc.nbcr.common.GridMapAuthHandler"&gt;
     &lt;parameter name="gridmap" value="/Users/sriramkrishnan/.globus/grid-mapfile"/&gt;
-   &lt;/handler&gt;
-</screen>
-</para>
-
-<para>Make sure that the value points to a valid grid-map file. To authorize a
-client to use the service, add an entry into the grid-map file with a
-mapping between the client's DN and a local user. Since all jobs are being
-launched as the app_user, map all client DN's to the generic app_user, e.g
-the following is an entry in a grid-map file:
-<screen>
-   "/C=US/O=nbcr/OU=sdsc/CN=app_user" app_user
-</screen>
-</para>
-
-<para>Instead, if you would like to authorize based on a list of acceptable
-CAs, then you must enable the ca-map authorization of clients. To do so,
-add the following XML fragment inside the <filename>&lt;requestFlow/&gt;</filename>
-element of the <filename>&lt;globalConfiguration/&gt;</filename> in
-$CATALINA_HOME/webapps/opal/WEB-INF/server-config.wsdd.
-<screen>
+   &lt;/handler&gt; </screen>
+  </para>
+  
+  <para>Make sure that the value points to a valid grid-map file. To authorize a
+  client to use the service, add an entry into the grid-map file with a
+  mapping between the client's DN and a local user. Since all jobs are being
+  launched as the app_user, map all client DN's to the generic app_user, e.g
+  the following is an entry in a grid-map file:
+  <screen>
+   "/C=US/O=nbcr/OU=sdsc/CN=app_user" app_user </screen>
+  </para>
+  
+  <para>Instead, if you would like to authorize based on a list of acceptable
+  CAs, then you must enable the ca-map authorization of clients. To do so,
+  add the following XML fragment inside the <filename>&lt;requestFlow/&gt;</filename>
+  element of the <filename>&lt;globalConfiguration/&gt;</filename> in
+  $CATALINA_HOME/webapps/opal/WEB-INF/server-config.wsdd.
+  <screen>
    &lt;handler type="java:edu.sdsc.nbcr.common.CAAuthHandler"&gt;
     &lt;parameter name="ca-map" value="/Users/sriramkrishnan/.globus/ca-mapfile"/&gt;
-   &lt;/handler&gt;
-</screen>
-</para>
-
-<para>Make sure that the value points to a valid ca-map file. To authorize a
-client to use the service, add an entry into the ca-map file with the DN
-for the client's CA, e.g. the following is an entry in a ca-map file:
-<screen>
-   "C=US,O=nbcr,OU=sdsc,CN=Certificate Manager" NBCR
-</screen>
-</para>
-</listitem>
-
-<listitem><para>Restart the Tomcat server for the configurations to take effect.</para></listitem>
-
-<listitem><para>Create a globus-based PEM certificate for the client, and create a
-limited-lifetime proxy by performing a "grid-proxy-init". Before invoking
-the client, make sure that the X509_USER_PROXY system property is set
-correctly to the location of the generated proxy. Also make sure that both
-the client and the server trust each others' CA's (by adding entries into
-the .globus/certificates and /etc/grid-security/certificates directories
-respectively, if need be). The GenericServiceClient class shows how the user
-credentials can be set inside a client stub in order to enable GSI HTTPS.</para></listitem>
+   &lt;/handler&gt; </screen>
+  </para>
+  
+  <para>Make sure that the value points to a valid ca-map file. To authorize a
+  client to use the service, add an entry into the ca-map file with the DN
+  for the client's CA, e.g. the following is an entry in a ca-map file:
+  <screen>
+   "C=US,O=nbcr,OU=sdsc,CN=Certificate Manager" NBCR </screen>
+  </para></listitem>
+  
+  <listitem><para>Restart the Tomcat server for the configurations to take effect.</para></listitem>
+  
+  <listitem><para>Create a globus-based PEM certificate for the client, and create a
+  limited-lifetime proxy by performing a "grid-proxy-init". Before invoking
+  the client, make sure that the X509_USER_PROXY system property is set
+  correctly to the location of the generated proxy. Also make sure that both
+  the client and the server trust each others' CA's (by adding entries into
+  the .globus/certificates and /etc/grid-security/certificates directories
+  respectively, if need be). The GenericServiceClient class shows how the user
+  credentials can be set inside a client stub in order to enable GSI HTTPS.
+  </para></listitem>
 </orderedlist>
 
 </chapter>
