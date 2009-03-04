@@ -58,5 +58,8 @@ if (opalService.getDescription() != null ) {  %>
 </nested:iterate>
 </ul>
 <p style="font-size: smaller">*: a customized submission form is avaiable for this application</p>
+<br/>
+For an Atom feed of the available services <a href="opalServices.xml"><img src="images/feed-icon.png"/> click here</a>.
+
 <jsp:include page="footer.jsp"></jsp:include>
 
