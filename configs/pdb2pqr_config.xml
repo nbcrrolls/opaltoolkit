@@ -1,8 +1,10 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- metadata about the application being wrapped -->
   <metadata appName="PDB2PQR">
-    <usage><![CDATA[PDB2PQR is a Python software package that automates many of the common tasks of preparing structures for continuum electrostatics calculations, providing a platform-independent utility for converting protein files in PDB format to PQR format]]></usage>
-    <info xsd:type="xsd:string">
+    <usage>python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}</usage>
+    <info><![CDATA[PDB2PQR is a Python software package that automates many of the common tasks of preparing structures for continuum electrostatics calculations, providing a platform-independent utility for converting protein files in PDB format to PQR format]]></info>
+    <info>
     <![CDATA[
          python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
  
@@ -62,7 +64,8 @@
          
     ]]>
     </info>
-
+    
+    <!-- information about command-line arguments -->
     <types> 
         <!-- list of flags -->
         <flags>
@@ -195,6 +198,8 @@
                 <textDesc>The desired output name of the PQR file to be generated</textDesc>
             </param>
         </untaggedParams>
+
+        <!-- grouping of parameters -->
         <groups>
           <group>
             <name>inputParam</name>
@@ -230,9 +235,19 @@
     </types>
 
   </metadata>
-  <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr-dummy.sh</binaryLocation>
-  <defaultArgs></defaultArgs>
+
+  <!-- location of execution on the server -->
+  <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr.sh</binaryLocation>
+  
+  <!-- list of default arguments -->
+  <defaultArgs>--verbose</defaultArgs>
+
+  <!-- whether to validate command-line arguments using type information above -->
   <validateArgs>false</validateArgs>
-  <jobManager>fork</jobManager>
+
+  <!-- overrule default job manager, if need be -->
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
+
+  <!-- whether this application is serial or parallel -->
   <parallel>false</parallel>
 </appConfig>
