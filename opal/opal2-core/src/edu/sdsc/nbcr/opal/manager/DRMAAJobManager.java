@@ -163,7 +163,7 @@ public class DRMAAJobManager implements OpalJobManager {
 		" -machinefile $TMPDIR/machines" +
 		" -np " + numProcs + " " +
 		config.getBinaryLocation();
-	    if (args != null) {
+	    if ((args != null) && (!(args.equals("")))) {
 		args = newArgs + " " + args;
 	    } else {
 		args = newArgs;
@@ -180,7 +180,11 @@ public class DRMAAJobManager implements OpalJobManager {
 	    logger.debug("CMD: " + cmd + " " + args);
 	    
 	    // construct the args array
-	    argsArray = args.split(" ");
+	    if (!args.equals("")) {
+		argsArray = args.split(" ");
+	    } else {
+		argsArray = new String[] {};
+	    }
 	}
 
 	// get the parallel environment being used
@@ -261,7 +265,10 @@ public class DRMAAJobManager implements OpalJobManager {
 
 	// poll till status is RUNNING
 	try {
-	    while (session.getJobProgramStatus(handle) != Session.RUNNING) {
+	    while ((session.getJobProgramStatus(handle) == Session.QUEUED_ACTIVE) ||
+		   (session.getJobProgramStatus(handle) == Session.SYSTEM_ON_HOLD) ||
+		   (session.getJobProgramStatus(handle) == Session.USER_ON_HOLD) ||
+		   (session.getJobProgramStatus(handle) == Session.USER_SYSTEM_ON_HOLD)) {
 		try {
 		    // sleep for 3 seconds
 		    Thread.sleep(3000);
