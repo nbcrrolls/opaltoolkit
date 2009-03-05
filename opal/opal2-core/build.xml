@@ -45,7 +45,6 @@ Author:
 
   <property file="build.properties" />
   <property name="name" value="opal-ws" />
-  <property name="version" value="2.0alpha2"/>
   <property name="project.home" location="." />
   <property name="lib" location="${project.home}/lib" />
   <property name="etc" location="${project.home}/etc" />
