@@ -206,14 +206,6 @@
       />
       <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
-        qname="ns:JobManagerType"
-        type="java:edu.sdsc.nbcr.opal.JobManagerType"
-        serializer="org.apache.axis.encoding.ser.EnumSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.EnumDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:GroupsArrayType"
         type="java:edu.sdsc.nbcr.opal.GroupsArrayType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
