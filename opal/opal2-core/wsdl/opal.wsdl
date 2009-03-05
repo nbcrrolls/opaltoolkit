@@ -34,17 +34,6 @@
 	</xsd:restriction>
       </xsd:simpleType>
 
-      <!-- Type of job manager -->
-      <xsd:simpleType name="JobManagerType">
-	<xsd:restriction base="xsd:string">
-	  <xsd:enumeration value="fork"/>
-	  <xsd:enumeration value="globusLocal"/>
-	  <xsd:enumeration value="globusRemote"/>
-	  <xsd:enumeration value="drmaa"/>
-	  <xsd:enumeration value="csf4"/>
-	</xsd:restriction>
-      </xsd:simpleType>
-
       <!-- Applications may use simple flags as inputs (e.g. -->
       <!-- ls -al). there is no implied ordering -->
       <xsd:complexType name="FlagsType">
@@ -243,7 +232,7 @@
 	  <xsd:element name="binaryLocation" type="xsd:string"/>
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
-	  <xsd:element name="jobManager" type="types:JobManagerType" minOccurs="0"/>
+	  <xsd:element name="jobManagerFQCN" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="globusGatekeeper" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="gridftpBase" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
