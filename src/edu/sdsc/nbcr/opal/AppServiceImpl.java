@@ -77,12 +77,8 @@ public class AppServiceImpl
      */
     private static Hashtable jobTable = new Hashtable();
 
-    /** if DRMAA is being used or not */
-    private static boolean drmaaInUse;
-
-    /** If globus is being used or not */
-    private static boolean globusInUse;
-    private static boolean globusRemote;
+    /** The fully qualified class name of the job manager */
+    private static String jobManagerFQCN;
 
     // the configuration information for the application
     private String serviceName;
@@ -141,18 +137,12 @@ public class AppServiceImpl
 	} catch (StateManagerException se) {
 	    logger.fatal("Caught exception while trying to clean database", se);
 	}
-	
-	// check if DRMAA is being used
-	drmaaInUse =
-	    Boolean.valueOf(props.getProperty("drmaa.use")).booleanValue();
 
-	// check if Globus is being used
-	globusInUse = 
-	    Boolean.valueOf(props.getProperty("globus.use")).booleanValue();
-
-	// check if Globus is to be used remotely
-	globusRemote = 
-	    Boolean.valueOf(props.getProperty("globus.remote")).booleanValue();
+	// get the FQCN for the job manager
+	jobManagerFQCN = props.getProperty("opal.jobmanager");
+	if (jobManagerFQCN == null) {
+	    logger.fatal("Required property not set - opal.jobmanager");
+	}
     }
 
     
@@ -547,26 +537,16 @@ public class AppServiceImpl
 	}
 
 	// instantiate & initialize the job manager
-	JobManagerType jobManagerType = null;
-	if (config.getJobManager() != null) {
-	    // if the app config has a job manager type, use that
-	    jobManagerType = config.getJobManager();
-	} else if (drmaaInUse) {
-	    jobManagerType = JobManagerType.drmaa;
-	} else if (globusInUse) {
-	    if (!globusRemote) {
-		jobManagerType = JobManagerType.globusLocal;
-	    } else {
-		jobManagerType = JobManagerType.globusRemote;
-	    }
-	} else {
-	    jobManagerType = JobManagerType.fork;
-	}
-	logger.info("Using job manager type: " + jobManagerType.getValue());
+	String jobManagerFQCNLocal = jobManagerFQCN;
+	if (config.getJobManagerFQCN() != null) {
+	    // if the app config has a job manager FQCN, use that
+	    jobManagerFQCNLocal = config.getJobManagerFQCN();
+	} 
+	logger.info("Using job manager class: " + jobManagerFQCNLocal);
 
 	final OpalJobManager jobManager;
 	try {
-	    jobManager = OpalJobManagerFactory.getOpalJobManager(jobManagerType);
+	    jobManager = OpalJobManagerFactory.getOpalJobManager(jobManagerFQCNLocal);
 	} catch (JobManagerException jme) {
 	    logger.error(jme.getMessage());
 
