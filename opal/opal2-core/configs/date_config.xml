@@ -4,6 +4,7 @@
     <usage><![CDATA[date [-u] mmddhhmm[[cc]yy]]]></usage>
   </metadata>
   <binaryLocation>/bin/date</binaryLocation>
-  <jobManager>globusRemote</jobManager>
+  <defaultArgs></defaultArgs>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
   <parallel>false</parallel>
 </appConfig>
