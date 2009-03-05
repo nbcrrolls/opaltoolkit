@@ -18,23 +18,37 @@ mpi.run=/path/to/your/mpi
 # modify the opal.xml accordingly
 # working.dir=opal-jobs
 
-
-# drmma information
-drmaa.use=false
-drmaa.pe=mpich
-
-# globus information, if drmaa is not being used
-globus.use=false
-globus.gatekeeper=ws.nbcr.net:2119/jobmanager-sge
-globus.service_cert=/Users/sriramkrishnan/certs/app_service.cert.pem
-globus.service_privkey=/Users/sriramkrishnan/certs/app_service.privkey
-
-
 # use this key to display how long to save user data on server
 opal.datalifetime=4 days
-
 
 # specify in seconds the hard limit for how long a job can run
 # only applicable if either DRMAA or Globus is being used, and if
 # the scheduler supports it
 opal.hard_limit=3600
+
+# full qualified class name (FQCN) of the job manager being used
+opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
+
+## BEGIN: information for the DRMAA job manager
+## ------------------------------------------------
+# the parallel environment (PE) being used by DRMAA
+drmaa.pe=mpich
+## ------------------------------------------------
+## END: information for the DRMAA job manager
+
+## BEGIN: information for the Globus job managers
+## ------------------------------------------------ 
+# url for the globus gatekeeper
+globus.gatekeeper=host:2119/jobmanager-sge
+
+# gsi information 
+globus.service_cert=/path/to/your/globus/cert
+globus.service_privkey=/path/to/your/globus/key
+
+# base url for gridftp server, used by remote Globus job manager
+# make sure that this directory actually exists on remote server
+# use "//" to indicate absolute path, else it is interpreted as relative
+# to home directory
+globus.gridftp_base=gsiftp://host:2811/working_dir
+## ------------------------------------------------
+## END: information for the Globus job manager
