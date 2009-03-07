@@ -9,6 +9,7 @@
 <!ENTITY scheduler SYSTEM "scheduler.sgml">
 <!ENTITY security SYSTEM "security.sgml">
 <!ENTITY opalGUI SYSTEM "opalGUI.sgml">
+<!ENTITY feedback SYSTEM "feedback.sgml">
 <!ENTITY faq SYSTEM "faq.sgml">
 ]>
 
@@ -95,7 +96,8 @@ to install and configure it.
 &database;
 &scheduler;
 &security;
-&opalGUI;<!-- 
+&opalGUI;
+&feedback;<!-- 
 &faq; -->
 
 </book>

@@ -29,9 +29,9 @@
 	       acceptCount="100" clientAuth="true"
 	       debug="3" scheme="https"
                autoFlush="true" encryption="true"
-	       cert="/Users/sriramkrishnan/certs/app_service.cert.pem"
-	       key="/Users/sriramkrishnan/certs/app_service.privkey"
-	       cacertdir="/Users/sriramkrishnan/.globus/certificates" /&gt;
+               cert="/path/to/certificate/file"
+               key="/path/to/private/key/file"
+               cacertdir="/path/to/ca/certificates/directory" /&gt;
     ...
     &lt;Engine name="Catalina" defaultHost="localhost" debug="0"&gt;
       ....
@@ -49,11 +49,8 @@
 
   <para>If you are using Tomcat 5.5.X you should modify the server.xml in 
   the following way:
-  <orderedlist>
-    <listitem><para>Add a HTTPS Connector in the &lt;Engine name="Catalina"&gt; 
-    section of the Tomcat config file and update the parameters 
-    appropriately with your local configuration: 
-    <screen>
+
+  <screen>
 
    &lt;Service name="Catalina"&gt;
     ...
@@ -71,28 +68,21 @@
          key="/path/to/private/key/file"
          cacertdir="/path/to/ca/certificates/directory"
          encryption="true"/&gt;
-    </screen>
-    The parameters proxy, cert, key and cacertdir should point to your local files. Furthermore, 
-    the proxy and the combination of cert and key attributes are mutually exclusive. The 
-    encryption attribute is also optional (defaults to true if not set). 
-    </para></listitem>
 
-    <listitem><para>Add a HTTPS Valve in the &lt;Engine name="Catalina" ... &gt; section of the Tomcat 
-         config file:
-    
-    <screen>
-
-    &lt;Engine name="Catalina" defaultHost="localhost" debug="0"&gt;
+     ...
+     &lt;Engine name="Catalina" defaultHost="localhost" debug="0"&gt;
       ....
       &lt;Valve className="org.globus.tomcat.coyote.valves.HTTPSValve55"/&gt;
       ....
-    &lt;/Engine&gt; 
-    </screen>
+     &lt;/Engine&gt; 
+   </screen>
+   </para>
+
+    <para>The parameters proxy, cert, key and cacertdir should point to your
+    local files. Furthermore, if you are using a proxy, do not use the
+    cert/key combination - in other words, they are mutually exclusive. The
+    encryption attribute is also optional (defaults to true if not set).
     </para></listitem>
-
-  </orderedlist>
-
-  </para></listitem>
 
   <listitem><para>To enable grid-map authorization of clients, add the following XML
   fragment inside the <filename>&lt;requestFlow/&gt;</filename> element of the
@@ -100,7 +90,7 @@
   $CATALINA_HOME/webapps/opal2/WEB-INF/server-config.wsdd.
   <screen>
    &lt;handler type="java:edu.sdsc.nbcr.common.GridMapAuthHandler"&gt;
-    &lt;parameter name="gridmap" value="/Users/sriramkrishnan/.globus/grid-mapfile"/&gt;
+    &lt;parameter name="gridmap" value="/path/to/grid-mapfile"/&gt;
    &lt;/handler&gt; </screen>
   </para>
   
@@ -120,7 +110,7 @@
   $CATALINA_HOME/webapps/opal/WEB-INF/server-config.wsdd.
   <screen>
    &lt;handler type="java:edu.sdsc.nbcr.common.CAAuthHandler"&gt;
-    &lt;parameter name="ca-map" value="/Users/sriramkrishnan/.globus/ca-mapfile"/&gt;
+    &lt;parameter name="ca-map" value="/path/to/ca-mapfile"/&gt;
    &lt;/handler&gt; </screen>
   </para>
   
@@ -136,11 +126,23 @@
   <listitem><para>Create a globus-based PEM certificate for the client, and create a
   limited-lifetime proxy by performing a "grid-proxy-init". Before invoking
   the client, make sure that the X509_USER_PROXY system property is set
-  correctly to the location of the generated proxy. Also make sure that both
-  the client and the server trust each others' CA's (by adding entries into
-  the .globus/certificates and /etc/grid-security/certificates directories
-  respectively, if need be). The GenericServiceClient class shows how the user
-  credentials can be set inside a client stub in order to enable GSI HTTPS.
+  correctly to the location of the generated proxy. You may launch a job
+  using GSI HTTPS as follows:
+
+  <screen>
+    java -DX509_USER_PROXY=$X509_USER_PROXY edu.sdsc.nbcr.opal.GenericServiceClient \
+                 -l https://localhost:8443/opal2/services/Pdb2pqrServicePort \
+                 -r launchJob \
+                 -a "--ff=amber sample.pdb output.pqr" \
+                 -f samples/sample.pdb
+  </screen>
+  </para>
+
+  <para>You may need to ensure that both the client and the server trust
+  each others' CA's (by adding entries into the .globus/certificates and
+  /etc/grid-security/certificates directories respectively, if need be).
+  The GenericServiceClient class shows how the user credentials can be set
+  programmatically inside a client stub in order to enable GSI HTTPS.
   </para></listitem>
 </orderedlist>
 

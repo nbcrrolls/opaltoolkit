@@ -1,23 +1,23 @@
-<chapter id="scheduler" xreflabel="Setting up scheduler support for Opal">
-<title>Setting up scheduler support for Opal</title>
+<chapter id="scheduler" xreflabel="Scheduler Support Using Job Managers">
+<title>Scheduler Support Using Job Managers</title>
 
-<para>In this chapter is described how to configure Opal so that it submit 
-jobs to an external scheduler.</para>
+<para>In this chapter, we describe how to configure Opal so that it can
+submit jobs to an external scheduler, using the various job managers
+provided. We also provide a brief introduction on how to write your own job
+manager, if need be.</para>
 
-<para>Install a Condor or SGE pool on your compute cluster. Consult the
-appropriate documentation for the same. Note that we don't currently stage
-and input and output files from the Opal server to the submit host if you
-are planning to use DRMAA; hence, the machines should be on a shared file
-system, such as NFS. Also note that Condor doesn't support parallel
-execution using any recent version of MPI. If you plan to configure
-parallel execution, use SGE instead.</para>
+<para>The prerequisite to this section is that you have a scheduler such as
+Condor or SGE installed on your compute cluster. Please consult the
+appropriate documentation for the respective installation. By default,
+access to the schedulers is provided in one of two ways - using the DRMAA
+API, or the Globus Toolkit. In practice, it is probably easier to set up
+access via DRMAA if your scheduler supports the same.</para>
 
-
-<para>Access to the schedulers is provided in one of two ways - using the
-DRMAA API, or the Globus Toolkit. Depending upon your setup, follow one of
-the following two sets of steps. In practice, it is probably easier to set
-up access via DRMAA if your scheduler supports the same.</para>
-
+<para>Note that we do not stage input and output files from the Opal server
+to the submit host if DRMAA is being used; hence, the machines should be on
+a shared file system for DRMAA. Also note that Condor doesn't support
+parallel execution using any recent version of MPI. If you plan to
+configure parallel execution, use SGE instead.</para>
 
 <section id="drmaa-scheduler" xreflabel="DRMAA Setup">
 <title>DRMAA Setup</title>
@@ -28,10 +28,12 @@ Also ensure that <emphasis role="italics">libdrmaa.so</emphasis> is in your libr
  the LD_LIBRARY_PATH environment variable). We have only tested job
  submissions to SGE 6.x.</para></listitem>
 
-<listitem><para>Set the following properties inside the opal.properties file:
-drmaa.use to true, and drmaa.pe to the name of the parallel environment
-(PE) to be used to submit parallel jobs. You can ignore drmaa.pe if you do
-not plan on supporting parallel jobs. </para></listitem>
+<listitem><para>Set the following properties inside the opal.properties
+file: <filename>opal.jobmanager</filename> to
+<filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename>, and
+<filename>drmaa.pe</filename> to the name of the parallel environment (PE)
+to be used to submit parallel jobs. You can ignore drmaa.pe if you do not
+plan on supporting parallel jobs. </para></listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>
@@ -85,10 +87,11 @@ steps:</para>
   scheduling purposes. You will have to add an entry into the grid-mapfile
   of the Globus installation (usually inside the /etc/grid-security
   directory) to authorize the service to launch jobs as follows:
-  <filename>"/C=US/O=grid-devel/OU=sdsc/CN=app_service" app_user</filename>. Replace
-  the value within quotes with the DN for the app_service.cert.pem. You can
-  get the DN by running: <filename>grid-cert-info -subject -file
-  app_service.cert.pem</filename>.</para>
+  <filename>"/C=US/O=grid-devel/OU=sdsc/CN=app_service"
+  app_user</filename>. Replace the value within quotes with the DN for the
+  app_service.cert.pem. You can get the DN by running:
+  <filename>grid-cert-info -subject -file app_service.cert.pem</filename>.
+  The app_user is the Unix user running the Tomcat server hosting Opal.</para>
 
   <para>You may also have to add the CA cert and signing policy of the above
   certificate into the list of trusted certificates for the Globus
@@ -104,22 +107,25 @@ steps:</para>
 </orderedlist>
 </listitem>
 
-<listitem><para>Set the following properties inside the opal.properties file:
-<filename>drmaa.use</filename> to false, <filename>globus.use</filename> to true, 
-<filename>globus.gatekeeper</filename> to the URL for the Globus/Condor(SGE) gatekeeper, 
-<filename>globus.service_cert</filename> to the location of
-the server certificate, <filename>globus.service_privkey</filename> to the location of the
-server's unencrypted private key. If drmaa.use is set to true or globus.use
-is set to false, then all Globus specific properties are ignored.</para></listitem>
+<listitem><para>Set the following properties inside the opal.properties
+file: <filename>globus.gatekeeper</filename> to the URL for the Globus
+gatekeeper, <filename>globus.service_cert</filename> to the location of the
+server certificate, and <filename>globus.service_privkey</filename> to the
+location of the server's unencrypted private key.</para></listitem>
 
-<listitem><para>By default, all Globus jobs are run on the same cluster.
-However, if you wish to run Globus jobs remotely, set the
-<filename>globus.remote</filename> property to true, and the
+<listitem><para>If you would like to submit Globus jobs to a local cluster,
+then set the property <filename>opal.jobmanager</filename> to
+<filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>, and if it
+is to a remote cluster, then set it to
+<filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename>. If
+you are using the remote Globus job manager, set the
 <filename>globus.gridftp_base</filename> to the base URL of the location to
-stage files to. Make sure that this is a valid directory, and the app_user
-can write files can create directories in this location. It is important to notice 
-that if you specify a path with gsiftp://myhost.mydomain.com:2812/data/foo.dat if you 
-want the /data/foo.dat to be absolute you have to use double //, 
+stage files to. Make sure that this is a valid directory, and that the
+app_user can write files can create directories in this location. It is
+important to notice that if you specify a path with
+gsiftp://myhost.mydomain.com:2812/data/foo.dat, the location 'data/foo.dat'
+will be relative to the remote home directory. To point to absolute paths,
+you have to use double slashes (//), e.g.
 gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
@@ -131,6 +137,16 @@ gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
 
 <listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
 </orderedlist>
+
+</section>
+
+<section id="jobmanager-howto" xreflabel="Writing Your Own Job Manager">
+<title>Writing Your Own Job Manager</title>
+
+<para>If the job managers provided by the Opal toolkit are not sufficient
+for your purposes, you can write your own job managers to submit jobs to
+your favorite scheduler. This section presents a brief tutorial on how to
+do so.</para>
 
 </section>
 </chapter>

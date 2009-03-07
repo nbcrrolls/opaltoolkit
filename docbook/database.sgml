@@ -1,5 +1,5 @@
-<chapter id="database" xreflabel="Opal State Database Installation Instruction">
-<title>Opal State Database Installation Instruction</title>
+<chapter id="database" xreflabel="Opal State Database Installation">
+<title>Opal State Database Installation</title>
 
 <para>By default, Opal stores its state into an in-memory <ulink
 type="http" url="http://hsqldb.org/">HSQL</ulink> database, so it should

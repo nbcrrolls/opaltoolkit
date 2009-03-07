@@ -39,14 +39,17 @@ client and server installations are as follows.</para>
 requires the following packages:</para>
 
 <orderedlist>
-   <listitem><para>Tomcat 5.0.X or 5.5.X: Tomcat is a servlet container than can be used to
-   host our Web service implementation. Install the binary version of
-   Tomcat 5.0.30 from <ulink type="http" url= "http://jakarta.apache.org/tomcat/">
-   http://jakarta.apache.org/tomcat/</ulink>. A <ulink type="http"
+   <listitem><para>Tomcat: Tomcat is a servlet container than can be used
+   to host Opal Web services. Opal can be deployed inside Tomcat versions
+   5.0.30 and 5.5.X. A <ulink type="http"
    url="http://nbcr.net/services/downloads/jakarta-tomcat-5.0.30.tar.gz">cached
-   version</ulink> may also be downloaded alternatively. Since Opal2 you can also use 
-   Tomcat 5.5.X. Henceforth, we will refer to the location of the Tomcat installation as
-   <emphasis role="italics">CATALINA_HOME</emphasis>.</para></listitem>
+   version</ulink> of 5.0.30 may be used, or you may install the binary
+   version of Tomcat 5.5.X from <ulink type="http" url=
+   "http://jakarta.apache.org/tomcat/">
+   http://jakarta.apache.org/tomcat/</ulink>. Henceforth, for the purposes
+   of this reference guide, we will refer to the location of the Tomcat
+   installation as <emphasis
+   role="italics">CATALINA_HOME</emphasis>.</para></listitem>
 </orderedlist>
 
 <para>The following packages are optional:</para>
@@ -91,8 +94,9 @@ requires the following packages:</para>
 <title>Installation</title>
 
 
-<para>Download the source distribution for installation from <ulink type="http"
-url="http://sourceforge.net/project/showfiles.php?group_id=211778&amp;package_id=255867">
+<para>Download the source distribution of Opal2 for installation from
+<ulink type="http"
+url="http://sourceforge.net/project/showfiles.php?group_id=211778&amp;package_id=297015">
 here</ulink>, if you don't have the appropriate version already.</para>
 
 <para>Extract the downloaded tarball using the GNU tar utility (or other
@@ -114,7 +118,6 @@ all the sources are expanded. Henceforth, we refer to this directory as
 <listitem><para>Edit $OPAL_HOME/etc/opal.properties to configure the static container
 properties correctly. It should look something like the following:</para>
 
-
 <screen>
     # the base URL for the tomcat installation 
     # this is required since Java can't figure out the IP 
@@ -123,7 +126,7 @@ properties correctly. It should look something like the following:</para>
 
     # parallel parameters
     num.procs=1
-    mpi.run=/Users/sriramkrishnan/Misc/mpich-1.2.7/bin/mpirun
+    mpi.run=/path/to/your/mpi
 
     # zip up input/output files, if set to true
     # data.archive=true
@@ -134,38 +137,51 @@ properties correctly. It should look something like the following:</para>
     # etc/opal.xml to $CATALINA_HOME/conf/Catalina/localhost/opal.xml. if
     # the name of the symlink is changed to something other than "opal-jobs", 
     # modify the opal.xml accordingly
-    # working.dir=opal
+    # working.dir=opal-jobs
 
-    # drmma information
-    drmaa.use=false
-    drmaa.pe=mpich
-
-    # globus information, if drmaa is not being used
-    globus.use=false
-
-    # local versus remote execution
-    globus.remote=false
-
-    # gatekeeper and gridftp server
-    globus.gatekeeper=rocks-106.sdsc.edu:2119/jobmanager-sge
-    globus.gridftp_base=gsiftp://rocks-106.sdsc.edu:2811/scratch
-
-    # gsi information 
-    globus.service_cert=/Users/sriramkrishnan/certs/opal_service.cert.pem
-    globus.service_privkey=/Users/sriramkrishnan/certs/opal_service.privkey
+    # use this key to display how long to save user data on server
+    opal.datalifetime=4 days
 
     # specify in seconds the hard limit for how long a job can run
     # only applicable if either DRMAA or Globus is being used, and if
     # the scheduler supports it
     opal.hard_limit=3600
+
+    # full qualified class name (FQCN) of the job manager being used
+    opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
+
+    ## BEGIN: information for the DRMAA job manager
+    ## ------------------------------------------------
+    # the parallel environment (PE) being used by DRMAA
+    drmaa.pe=mpich
+    ## ------------------------------------------------
+    ## END: information for the DRMAA job manager
+
+    ## BEGIN: information for the Globus job managers
+    ## ------------------------------------------------ 
+    # url for the globus gatekeeper
+    globus.gatekeeper=host:2119/jobmanager-sge
+
+    # gsi information 
+    globus.service_cert=/path/to/your/globus/cert
+    globus.service_privkey=/path/to/your/globus/key
+
+    # base url for gridftp server, used by remote Globus job manager
+    # make sure that this directory actually exists on remote server
+    # use "//" to indicate absolute path, else it is interpreted as relative
+    # to home directory
+    globus.gridftp_base=gsiftp://host:2811/working_dir
+    ## ------------------------------------------------
+    ## END: information for the Globus job manager
 </screen>
 
 
 <para>Set the <filename>tomcat.url</filename> to the correct
-<filename>http://ip-address:port</filename> of the server. If the service will wrap a
-parallel application, set the <filename>num.procs</filename> to the number of
-processors available, and the <filename>mpi.run</filename> to the location of the
-mpirun on your host. </para>
+<filename>http://ip-address:port</filename> of the server. If the Opal
+installation will support parallel applications, set the
+<filename>num.procs</filename> to the number of processors available, and
+the <filename>mpi.run</filename> to the location of the mpirun on your
+host. </para>
 
 <para>By default, all new working directories for job executions are created
 inside the $CATALINA_HOME/webapps/ROOT directory. You may wish to change
@@ -176,7 +192,7 @@ commands:
 <screen>
     cp $OPAL_HOME/etc/opal.xml $CATALINA_HOME/conf/Catalina/localhost/ 
     cd $CATALINA_HOME/webapps 
-    ln -s /path/to/working_dir/on/nfs opal
+    ln -s /path/to/working_dir/on/nfs opal-jobs
 </screen>
 </para>
 
@@ -264,24 +280,45 @@ in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
   &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
   &lt;parallel&gt;false&lt;/parallel&gt;
   &lt;validateArgs&gt;false&lt;/validateArgs&gt;
-  &lt;jobManager&gt;fork&lt;/jobManager&gt;
+  &lt;jobManagerFQCN&gt;edu.sdsc.nbcr.opal.manager.ForkJobManager&lt;/jobManagerFQCN&gt;
 &lt;/appConfig&gt;
 </screen>
 </para>
 
-<para>The configuration consists of a top level element <emphasis role="italics">appConfig</emphasis>,
-which contains <emphasis role="italics">metadata</emphasis>, <emphasis role="italics">binaryLocation</emphasis>, <emphasis role="italics">defaultArgs</emphasis>,
-<emphasis role="italics">parallel</emphasis>, <emphasis role="italics">validateArgs</emphasis>, and <emphasis role="italics">jobManager</emphasis> elements. The metadata consists of <emphasis role="italics">usage</emphasis>, which
-is a string specifying how the application is to be invoked, and an array
-of optional application information specified as <emphasis role="italics">info</emphasis> elements.
-It also contains an optional <emphasis role="italics">types</emphasis> element, which can ignore
-for now. In the above file, the various options that can be used with
-the application are specified within the metadata. The binaryLocation
-specifies the location of the application binary - note that this has
-to be the location of a <emphasis role="italics">single</emphasis> executable. No arguments may be
-specified here. However, default arguments that need to be used for
-every run can be specified inside the defaultArgs element. The
-parallel element specifies if an application is parallel or not. The validateArgs and jobManager elements are optional. If set to true, the validateArgs element instructs Opal to use the optional command-line specification to validate arguments prior to execution. The jobManager element over-rides the default job manager, and can be set to fork, globusLocal (globus on local cluster), globusRemote (globus on remote cluster) or drmaa. Use the pdb2pqr_config.xml as a guideline to write configurations for your particular applications.</para> </listitem>
+<para>The configuration consists of a top level element <emphasis
+role="italics">appConfig</emphasis>, which contains <emphasis
+role="italics">metadata</emphasis>, <emphasis
+role="italics">binaryLocation</emphasis>, <emphasis
+role="italics">defaultArgs</emphasis>, <emphasis
+role="italics">parallel</emphasis>, <emphasis
+role="italics">validateArgs</emphasis>, and <emphasis
+role="italics">jobManagerFQCN</emphasis> elements. The metadata consists of
+<emphasis role="italics">usage</emphasis>, which is a string specifying how
+the application is to be invoked, and an array of optional application
+information specified as <emphasis role="italics">info</emphasis> elements.
+It also contains an optional <emphasis role="italics">types</emphasis>
+element, which we can ignore for now. In the above file, the various
+options that can be used with the application are specified within the
+metadata. The binaryLocation specifies the location of the application
+binary - note that this has to be the location of a <emphasis
+role="italics">single</emphasis> executable. No arguments may be specified
+here. However, default arguments that need to be used for every run can be
+specified inside the defaultArgs element. The parallel element specifies if
+an application is parallel or not. The validateArgs and jobManagerFQCN
+elements are optional. If set to true, the validateArgs element instructs
+Opal to use the optional command-line specification to validate arguments
+prior to execution. The jobManagerFQCN element over-rides the default job
+manager, and can be set to the fully qualified classname of an Opal job
+manager. By default, the FQCNs for job managers provided by Opal are
+<filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename> (for basic
+fork/system exec),
+<filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> (for
+DRMAA), <filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>
+(for Globus on a local cluster), and
+<filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename> (for
+Globus job submissions to a remote cluster). Use the pdb2pqr_config.xml as
+a guideline to write configurations for your particular
+applications.</para> </listitem>
 
 <listitem><para>Deploy the services inside Tomcat, by changing to the $OPAL_HOME
 directory, and running the following command:
