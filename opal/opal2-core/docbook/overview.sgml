@@ -32,7 +32,7 @@ can be in any language.</para>
    XML tags inside them using CDATA sections. The metadata also
    (optionally) includes the <filename>types</filename> element, which
    describes the command-line arguments for the application, described in
-   the <xref linkend="autointerface-advancedsub"> section</para></listitem>
+   the <xref linkend="opalGUI-advancedsub"> section</para></listitem>
 
    <listitem><para>Launch job (<filename>launchJob</filename>): This
    operation requires the list of arguments as a string, and an array of
@@ -63,6 +63,11 @@ can be in any language.</para>
    <listitem><para>Destroy job (<filename>destroy</filename>): This operation destroys a running
    job identified by a Job ID.</para></listitem>
 
+   <listitem><para>Get job statistics
+   (<filename>getJobStatistics</filename>): This operation returns basic
+   job statistics including start time, activation time and completion time
+   for a given Job ID.</para></listitem>
+
    <listitem><para>Launch blocking job (<filename>launchJobBlocking</filename>): This operation
    requires the list of arguments as a string, and an array of structures
    representing the input files. The structure contains the <emphasis role="italics">name</emphasis> of
@@ -71,18 +76,5 @@ can be in any language.</para>
    job outputs (as described above) as the response. This operation may
    only be appropriate for jobs that are not long running.</para></listitem>
 </orderedlist>
-
-<section id="Feedback" xreflabel="Feedback">
-<title>Feedback</title>
-
-
-<para>Please use the Opal Toolkit <ulink type="http"
-url="http://sourceforge.net/tracker/?group_id=211778">Tracker</ulink> on
-Sourceforge to report bugs and feature requests, and the NBCR Web Services
-User Forum (<ulink type="http" url="https://nbcr.net/forum/viewforum.php?f=13">WSUF</ulink>)
-for general comments and feedback.</para>
-
-</section>
-
 
 </chapter>

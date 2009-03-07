@@ -10,7 +10,7 @@ echo "Keeping working directories for" $n "days"
 # clean up old directories
 echo "Cleaning up old working directories"
 cd $CATALINA_HOME/webapps/ROOT
-dirs=`find . -type d -mtime +$n -print | egrep "apbs|gamess|app" | wc -l`
+dirs=`find . -type d -mtime +$n -print | egrep "app" | wc -l`
 echo "Number of old directories to delete:" $dirs
-rm -rf `find . -type d -mtime +$n -print | egrep "apbs|gamess|app"`
+rm -rf `find . -type d -mtime +$n -print | egrep "app"`
 echo "Done"
