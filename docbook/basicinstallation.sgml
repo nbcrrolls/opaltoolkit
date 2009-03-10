@@ -71,7 +71,7 @@ requires the following packages:</para>
    using GRAM via the Globus gatekeeper. In addition, jobmanager plugins
    must be available for the particular scheduler that you have installed.
    In other words, GRAM clients must be able to submit jobs to your
-   scheduler via the Globus gatekeeper. We have used Globus version 3.2.1
+   scheduler via the Globus gatekeeper. We have used Globus version 4.0.X
    for our development and testing, but you may use any other version as
    long as the above requirements are met. </para>
 
