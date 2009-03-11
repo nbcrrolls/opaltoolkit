@@ -263,7 +263,7 @@ Author:
 	<include name="jgss.jar" />
 
         <!-- log4j jar -->
-        <include name="log4j-1_2_8.jar" />
+        <include name="log4j-1.2.8.jar" />
       </fileset>
     </copy>
 
