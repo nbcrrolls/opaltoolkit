@@ -149,6 +149,9 @@ properties correctly. It should look something like the following:</para>
 
     # full qualified class name (FQCN) of the job manager being used
     opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
+    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.DRMAAJobManager
+    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.GlobusJobManager
+    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager
 
     ## BEGIN: information for the DRMAA job manager
     ## ------------------------------------------------
@@ -297,19 +300,23 @@ role="italics">jobManagerFQCN</emphasis> elements. The metadata consists of
 the application is to be invoked, and an array of optional application
 information specified as <emphasis role="italics">info</emphasis> elements.
 It also contains an optional <emphasis role="italics">types</emphasis>
-element, which we can ignore for now. In the above file, the various
-options that can be used with the application are specified within the
-metadata. The binaryLocation specifies the location of the application
-binary - note that this has to be the location of a <emphasis
+element, which we can ignore for now (more information about the types
+element can be found from our <xref linkend="opalgui-advancedsub"> page).
+In the above file, the various options that can be used with the
+application are specified within the metadata.</para>
+
+<para>The binaryLocation specifies the location of the application binary -
+note that this has to be the location of a <emphasis
 role="italics">single</emphasis> executable. No arguments may be specified
 here. However, default arguments that need to be used for every run can be
 specified inside the defaultArgs element. The parallel element specifies if
 an application is parallel or not. The validateArgs and jobManagerFQCN
 elements are optional. If set to true, the validateArgs element instructs
-Opal to use the optional command-line specification to validate arguments
-prior to execution. The jobManagerFQCN element over-rides the default job
-manager, and can be set to the fully qualified classname of an Opal job
-manager. By default, the FQCNs for job managers provided by Opal are
+Opal to use the optional command-line specification (within types) to
+validate arguments prior to execution. The jobManagerFQCN element
+over-rides the default job manager, and can be set to the fully qualified
+classname of an Opal job manager. By default, the FQCNs for job managers
+provided by Opal are
 <filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename> (for basic
 fork/system exec),
 <filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> (for
