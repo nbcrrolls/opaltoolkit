@@ -356,7 +356,7 @@ Author:
   <!-- Build the javadocs for the Opal classes -->
   <path id="src.path.list">
     <pathelement path="src"/>
-<!--     <pathelement path="${build.generated}"/> -->
+    <pathelement path="${build.generated}"/>
   </path>
   <target name="api-docs" depends="compile">
     <mkdir dir="${docs}" />
