@@ -239,8 +239,8 @@ public class DBManager {
                 " and startTime >= :startDate " +
                 " and startTime <= :endDate " +
                 " and code=4 " +
-                " group by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-                " order by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc"; 
+                " group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
+                " order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc"; 
         }else if (type.equals("exectime") ) {
             query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), " +
                 "avg( (second(last_update) - second(start_time))  + (minute(last_update) - minute(start_time)) * 60 + " +
@@ -279,7 +279,7 @@ public class DBManager {
             //    Object [] entry = (Object []) itera.next();
             //    log.info("the rsults are: " + (String) entry[0] + ",  " + (Integer)entry[1] );
             //}
-            itera = result.iterator(); 
+            //itera = result.iterator(); 
             double [] values = new double[numberOfDays+1];
             int counter = numberOfDays;
             Date previousDate =  DateHelper.subtractDay(endDate);//we are gonna start from the current date (today)
