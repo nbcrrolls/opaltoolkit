@@ -12,6 +12,7 @@ import javax.activation.DataHandler;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.StringTokenizer;
 import java.util.Properties;
 import java.util.Hashtable;
 
@@ -476,6 +477,30 @@ public class AppServiceImpl
 
 	// create the application input files there 
 	writeAppInput(in, outputDirName);
+
+	// make sure that the arguments don't refer to any parent directories
+	String args = in.getArgList();
+	if (args != null) {
+	    StringTokenizer argTokens = new StringTokenizer(args);
+	    while (argTokens.hasMoreTokens()) {
+		String next = argTokens.nextToken();
+		// must not begin with "/" or "~"
+		if (next.startsWith(File.separator) ||
+		    (next.startsWith("~"))) {
+		    String msg = "Arguments are not allowed to begin with: " +
+			File.separator + " or " + "~";
+		    logger.error(msg);
+		    throw new FaultType(msg);
+		}
+
+		// must not include ".."
+		if (next.indexOf("..") != -1) {
+		    String msg = "Arguments are not allowed to include: ..";
+		    logger.error(msg);
+		    throw new FaultType(msg);
+		}
+	    }
+	}
 
 	// validate command-line arguments, if need be
 	if (config.getValidateArgs() != null) {
