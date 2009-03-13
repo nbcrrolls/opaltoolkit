@@ -238,8 +238,9 @@ public class DBManager {
                 " from JobInfo where serviceName= :service" +
                 " and startTime >= :startDate " +
                 " and startTime <= :endDate " +
+                " and code=4 " +
                 " group by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-                " order by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc"; 
+                " order by  str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc"; 
         }else if (type.equals("exectime") ) {
             query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), " +
                 "avg( (second(last_update) - second(start_time))  + (minute(last_update) - minute(start_time)) * 60 + " +
@@ -250,7 +251,7 @@ public class DBManager {
                 " and startTime <= :endDate " +
                 " and code=8 " +
                 " group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-                " order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc" ;
+                " order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc" ;
         } else if (type.equals("error") ){
             query  = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), count(*) " +
                 "from JobInfo " +
@@ -259,7 +260,7 @@ public class DBManager {
             	"and startTime <= :endDate " +
             	"and code=4 " +
             	"group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-            	"order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) desc";   
+            	"order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc ";   
         }
         
         
@@ -274,10 +275,14 @@ public class DBManager {
             Iterator itera = result.iterator();
             log.info("Going to get the " + type + " for the service: " + service + 
                     "\nRunning the following query: " + queryStat.getQueryString());
-            
+            //while (itera.hasNext()){
+            //    Object [] entry = (Object []) itera.next();
+            //    log.info("the rsults are: " + (String) entry[0] + ",  " + (Integer)entry[1] );
+            //}
+            itera = result.iterator(); 
             double [] values = new double[numberOfDays+1];
             int counter = numberOfDays;
-            Date previousDate =  endDate;//we are gonna start from the current date (today)
+            Date previousDate =  DateHelper.subtractDay(endDate);//we are gonna start from the current date (today)
             //now we have put the data from the result of the query into the return array
             while( itera.hasNext() ) {
                 Object [] entry = (Object []) itera.next();
@@ -286,13 +291,13 @@ public class DBManager {
                 
                 while ( ! DateHelper.compareDates(previousDate, date) ){
                     //since some day can have no hits we have to put zero in the array for those days
+                    if ( counter == -1 ) {
+                        break;
+                    }
                     values[counter] = 0;
                     log.trace("Inserting a zero for date: " + previousDate + " on position: " + counter);
                     counter--;
                     previousDate = DateHelper.subtractDay(previousDate);
-                    if ( counter == -1 ) {
-                        break;
-                    }
                 }//if
                 if ( counter == -1 ) {
                     break;

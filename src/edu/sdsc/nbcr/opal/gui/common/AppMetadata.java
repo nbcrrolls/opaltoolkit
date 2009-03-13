@@ -84,6 +84,22 @@ public class AppMetadata extends ActionForm{
         }
         else return true;
     }
+
+
+    /**
+     * It tells you if the current instance of the AppMetadata
+     * is from Opal 2.x or an Opal 1.X instance
+     * 
+     * @return true is we have a complex submission form
+     * 
+     */
+    public boolean isOpal2() {
+        if ( URL.contains("opal2") ) {
+            return true;
+        }
+        else return false;
+    }
+
     
     /**
      * a string representation of the current AppMetadata
