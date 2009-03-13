@@ -88,7 +88,8 @@ public class AppMetadata extends ActionForm{
 
     /**
      * It tells you if the current instance of the AppMetadata
-     * is from Opal 2.x or an Opal 1.X instance
+     * is from Opal 2.x or an Opal 1.X instance 
+     * (Used by Kepler!! do not delete)
      * 
      * @return true is we have a complex submission form
      * 
