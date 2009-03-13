@@ -401,6 +401,12 @@ following command, which displays the resulting job id, along with the prelimina
 </screen>
 </para>
 
+<para>
+If your arguments contain characters like "-", you will have to put your
+whole set of arguments within quotes ("") and remove the space after the
+"-a" above.
+</para>
+
 <para>You can retrieve job status by running the following command:
 <screen>
     java edu.sdsc.nbcr.opal.GenericServiceClient \
