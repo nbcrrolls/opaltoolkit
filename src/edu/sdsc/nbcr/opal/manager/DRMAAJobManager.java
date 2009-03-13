@@ -181,7 +181,7 @@ public class DRMAAJobManager implements OpalJobManager {
 	    
 	    // construct the args array
 	    if (!args.equals("")) {
-		argsArray = args.split(" ");
+		argsArray = args.split("[\\s]+");
 	    } else {
 		argsArray = new String[] {};
 	    }
