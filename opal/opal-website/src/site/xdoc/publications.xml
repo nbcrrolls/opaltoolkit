@@ -7,7 +7,7 @@
     <section name="Publications">
       <p> Publications &amp; Reports: </p>
       <ul>
-        <li><b>Design and Evaluation of Opal2: A Toolkit for Scientiﬁc Software as a Service.</b> Sriram Krishnan, Luca Clementi, Jingyuan Ren, Philip Papadopoulos and Wilfred Li. Submitted to ICWS 2009, IEEE International Conference on Web Services, 2009. (<a href="publications/opal2_icws.pdf">pdf</a>)</li>
+        <li><b>Design and Evaluation of Opal2: A Toolkit for Scientific Software as a Service.</b> Sriram Krishnan, Luca Clementi, Jingyuan Ren, Philip Papadopoulos and Wilfred Li. Submitted to ICWS 2009, IEEE International Conference on Web Services, 2009. (<a href="publications/opal2_icws.pdf">pdf</a>)</li>
         <li><b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b> Luca Clementi, Zhaohui Ding, Sriram Krishnan, Xiaohui Wei, Peter W. Arzberger, and Wilfred Li. GCE07, Grid Computing Environments Workshop (Supercomputing 2007), November 2007. <a href="http://www.collab-ogce.org/gce07/index.php/Main_Page">Conference Website</a></li>
         <li><b>Opal: Simple Web Services Wrappers for Scientific Applications.</b> Sriram Krishnan, Brent Stearn, Karan Bhatia, Kim K. Baldridge, Wilfred Li, and Peter Arzberger. In proceedings of ICWS 2006, IEEE International Conference on Web Services, September 2006 (<a href="publications/SDSC-TR-2006-5-opal.pdf">pdf</a>)</li>
         <li><b>An End-to-end Web Services-based Infrastructure for Biomedical Applications.</b> Sriram Krishnan, Kim Baldridge, Jerry Greenberg, Brent Stearn, and Karan Bhatia. In proceedings of Grid 2005, 6th IEEE/ACM International Workshop on Grid Computing, November 2005 (<a href="publications/grid2005.pdf">pdf</a>)</li>
