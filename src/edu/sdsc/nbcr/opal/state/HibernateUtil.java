@@ -97,12 +97,14 @@ public class HibernateUtil {
 	    session.beginTransaction();
 	    Date lastUpdate = new Date();
 	    int numUpdates = session.createQuery("update JobInfo info " +
-						 "set info.lastUpdate = :lastUpdate, " +
+						 "set info.lastUpdateDate = :lastUpdateDate, " +
+                         "info.lastUpdateTime = :lastUpdateTime, " + 
 						 "info.code = :code, " +
 						 "info.message = :message " +
 						 "where info.code != " + GramJob.STATUS_DONE + 
 						 "and info.code != " + GramJob.STATUS_FAILED)
-		.setTimestamp("lastUpdate", lastUpdate)
+		.setDate("lastUpdateDate", lastUpdate)
+        .setTime("lastUpdateTime", lastUpdate)
 		.setInteger("code", GramJob.STATUS_FAILED)
 		.setString("message", "Job failed - server was restarted during job execution")
 		.executeUpdate();
@@ -174,7 +176,8 @@ public class HibernateUtil {
 	    session.beginTransaction();
 	    Date lastUpdate = new Date();
 	    String queryString = "update JobInfo info " +
-		"set info.lastUpdate = :lastUpdate, " +
+		"set info.lastUpdateDate = :lastUpdateDate, " +
+        "info.lastUpdateTime = :lastUpdateTime, " + 
 		"info.code = :code, " +
 		"info.message = :message, " +
 		"info.baseURL = :baseURL, ";
@@ -190,7 +193,8 @@ public class HibernateUtil {
 		jobID + "'";
 
 	    Query query = session.createQuery(queryString);
-	    query.setTimestamp("lastUpdate", lastUpdate)
+	    query.setDate("lastUpdateDate", lastUpdate)
+        .setTime("lastUpdateTime", lastUpdate)
 		.setInteger("code", code)
 		.setString("message", message)
 		.setString("baseURL", baseURL)
@@ -352,7 +356,8 @@ public class HibernateUtil {
 		JobInfo info = (JobInfo) results.get(0);
 		stats = new JobStatisticsType();
 		Calendar startTime = Calendar.getInstance();
-		startTime.setTime(info.getStartTime());
+        //TODO check that this works!!!!!
+		startTime.setTime(new Date( info.getStartTimeTime().getTime() +  info.getStartTimeDate().getTime() ));
 		stats.setStartTime(startTime);
 		if (info.getActivationTime() != null) {
 		    Calendar activationTime = Calendar.getInstance();
@@ -462,16 +467,19 @@ public class HibernateUtil {
         Session session = getSessionFactory().openSession();
 
 	// initialize info
+    Date nowDate = new Date();
 	JobInfo info = new JobInfo();
 	String jobID = "app" + System.currentTimeMillis();
 	info.setJobID(jobID);
 	info.setCode(0);
 	info.setMessage("This is a test");
 	info.setBaseURL("http://localhost/test");
-	info.setStartTime(new Date());
-	info.setActivationTime(new Date());
-	info.setCompletionTime(new Date());
-	info.setLastUpdate(new Date());
+	info.setStartTimeTime(new java.sql.Time(nowDate.getTime()));
+    info.setStartTimeDate(new java.sql.Date(nowDate.getTime()));
+	info.setActivationTime(nowDate);
+	info.setCompletionTime(nowDate);
+	info.setLastUpdateTime(new java.sql.Time(nowDate.getTime()));
+	info.setLastUpdateDate(new java.sql.Date(nowDate.getTime()));
 	info.setClientDN("CN=Test");
 	info.setClientIP("127.0.0.1");
 	info.setServiceName("Command-line");

@@ -209,9 +209,11 @@ public class OpalInfoServlet extends HttpServlet {
             //Begin and end date
             String startDateStr = req.getParameter("startDate");
             String endDateStr = req.getParameter("endDate");
-            if ( (DateHelper.parseDate(startDateStr) == null) ||
-                (DateHelper.parseDate(endDateStr) == null) ) {
-                //we do not have start and and date
+            try { 
+              DateHelper.parseDate(startDateStr);
+              DateHelper.parseDate(endDateStr);
+            } catch (java.text.ParseException e) {
+                // the user typed some crap let's use the default
                 endDateStr = DateHelper.formatDate( DateHelper.getEndDate() );
                 startDateStr = DateHelper.formatDate( DateHelper.getStartDate() );
             }

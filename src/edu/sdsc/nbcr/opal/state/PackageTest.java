@@ -69,10 +69,13 @@ public class PackageTest extends TestCase {
 	info.setCode(0);
 	info.setMessage("This is a test");
 	info.setBaseURL("http://localhost/test");
-	info.setStartTime(new Date());
-	info.setActivationTime(new Date());
-	info.setCompletionTime(new Date());
-	info.setLastUpdate(new Date());
+	Date currentDate = new Date();
+    info.setStartTimeDate(new java.sql.Date( currentDate.getTime() ) );
+    info.setStartTimeTime(new java.sql.Time( currentDate.getTime() ) );
+    info.setActivationTime(currentDate);
+    info.setCompletionTime(currentDate);
+    info.setLastUpdateTime(new java.sql.Time(currentDate.getTime()));
+    info.setLastUpdateDate(new java.sql.Date(currentDate.getTime()));
 	info.setClientDN("CN=Test");
 	info.setClientIP("127.0.0.1");
 	info.setServiceName("Command-line");

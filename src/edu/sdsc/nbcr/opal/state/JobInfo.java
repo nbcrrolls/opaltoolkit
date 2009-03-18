@@ -24,10 +24,12 @@ public class JobInfo {
     private String message;
     private String baseURL;
     private String handle;
-    private Date startTime;
+    private java.sql.Date startTimeDate;
+    private java.sql.Time startTimeTime;
     private Date activationTime;
     private Date completionTime;
-    private Date lastUpdate;
+    private java.sql.Date lastUpdateDate;
+    private java.sql.Time lastUpdateTime;
     private String clientDN;
     private String clientIP;
     private String serviceName;
@@ -76,12 +78,20 @@ public class JobInfo {
 	this.handle = handle;
     }
 
-    public Date getStartTime() {
-	return startTime;
+    public java.sql.Date getStartTimeDate() {
+	return startTimeDate;
     }
 
-    public void setStartTime(Date startTime) {
-	this.startTime = startTime;
+    public void setStartTimeDate(java.sql.Date startTime) {
+	this.startTimeDate = startTime;
+    }
+
+    public java.sql.Time getStartTimeTime() {
+	return startTimeTime;
+    }
+
+    public void setStartTimeTime(java.sql.Time startTime) {
+	this.startTimeTime = startTime;
     }
 
     public Date getActivationTime() {
@@ -100,12 +110,20 @@ public class JobInfo {
 	this.completionTime = completionTime;
     }
 
-    public Date getLastUpdate() {
-	return lastUpdate;
+    public java.sql.Date getLastUpdateDate() {
+	return lastUpdateDate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
-	this.lastUpdate = lastUpdate;
+    public void setLastUpdateDate(java.sql.Date lastUpdate) {
+	this.lastUpdateDate = lastUpdate;
+    }
+
+    public java.sql.Time getLastUpdateTime() {
+	return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(java.sql.Time lastUpdate) {
+	this.lastUpdateTime = lastUpdate;
     }
 
     public String getClientDN() {
