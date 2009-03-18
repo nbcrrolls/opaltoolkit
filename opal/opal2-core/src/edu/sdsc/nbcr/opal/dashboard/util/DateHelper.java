@@ -59,16 +59,11 @@ public class DateHelper {
      * @param date the string to be parsed
      * @return the date parsed
      */
-    public static Date parseDate(String date){
-        if ( date == null) return null;
+    public static Date parseDate(String date) throws java.text.ParseException {
+        if ( date == null) throw new java.text.ParseException("null is not a valid value", 1);
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy", Locale.US);
         Date returnDate = null;
-        try {
-            returnDate = formatter.parse(date);
-        }
-        catch (Exception e){
-            log.error("Impossible to parse date: " + date, e );
-        }
+        returnDate = formatter.parse(date);
         return returnDate;
     }
     

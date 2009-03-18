@@ -4,8 +4,11 @@ package edu.sdsc.nbcr.opal.dashboard.persistence;
 
 
 import org.hibernate.classic.Session;
+import org.hibernate.SQLQuery;
 import org.hibernate.Query;
+import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
+import org.hibernate.impl.SessionFactoryImpl;
 import java.util.List;
 
 import java.sql.Connection;
@@ -49,16 +52,6 @@ public class DBManager {
 
     //new hiberante stuff
     private Session session = null;
-
-
-    /**
-
-     */
-    //private Connection conn = null;
-    //private String databaseUrl = null;
-    //private String driver = null;
-    //private String dbUserName = null;
-    //private String dbPassword = null;
     private String error = null;
     
     /**
@@ -89,26 +82,6 @@ public class DBManager {
         return driver;
     }
 
-    /**
-     * @return username used to connect to the DB
-     * not used anymore
-    public String getDbUserName() {
-        return dbUserName;
-    }
-     */
-
-    /**
-     * See the top of the page for the usage of the various input parameters 
-     * 
-     */
-   /* public DBManager( String databaseUrl, String driver, String dbUserName, String dbPassword) {
-        super();
-
-        this.databaseUrl = databaseUrl;
-        this.driver = driver;
-        this.dbUserName = dbUserName;
-        this.dbPassword = dbPassword;
-    }  */
     
     /**
      * default constructor
@@ -123,7 +96,7 @@ public class DBManager {
      */
     public boolean init() {
         session = edu.sdsc.nbcr.opal.state.HibernateUtil.getSessionFactory().openSession();
-	return true ;
+        return true ;
     }
     
     /**
@@ -134,17 +107,6 @@ public class DBManager {
         if ( session != null ) return true;
         else return false;
     }
-
-    /**
-     * Close the connection with the db
-     * @throws java.sql.SQLException
-    public void close() throws java.sql.SQLException{
-        if (isConnected()) {
-            conn.close();
-        }
-        
-    }
-     */
 
 
     /**
@@ -218,59 +180,53 @@ public class DBManager {
 
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
-        //SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-        //String startDateString = formatter.format(startDate);
-        //String endDateString = formatter.format(endDate);
-        
-        //I need to add 23:59:59 hours to the endDate to make the query working
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(endDate);
-        cal.add(Calendar.HOUR , 23);
-        cal.add(Calendar.MINUTE , 59);
-        cal.add(Calendar.SECOND , 59);
-        endDate = cal.getTime();
+        java.sql.Date  endDateSQL = new java.sql.Date(endDate.getTime());
+        java.sql.Date startDateSQL = new java.sql.Date(startDate.getTime());
 
         //query will hold the value of the query that will be run against the
         //DB, depending on the type value query chages
+        Query queryStat = null; 
         String query = null;
         if ( type.equals("hits") ) {
-            query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime))  , count(*)  " +            
-                " from JobInfo where serviceName= :service" +
-                " and startTime >= :startDate " +
-                " and startTime <= :endDate " +
-                " and code=4 " +
-                " group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-                " order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc"; 
+            query = "select jobInfo.startTimeDate, count(*)  " +            
+                " from JobInfo jobInfo where jobInfo.serviceName = :service" +
+                " and jobInfo.startTimeDate >= :startDate " +
+                " and jobInfo.startTimeDate <= :endDate " +
+                " and jobInfo.code=8 " +
+                " group by jobInfo.startTimeDate " +
+                " order by jobInfo.startTimeDate desc"; 
+            queryStat = session.createQuery(query);
         }else if (type.equals("exectime") ) {
-            query = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), " +
-                "avg( (second(last_update) - second(start_time))  + (minute(last_update) - minute(start_time)) * 60 + " +
-                "(hour(last_update) - hour(start_time)) * 3600 + (day(last_update) - day(start_time)) * 86400 ) " + 
-                " from JobInfo " +
-                " where serviceName= :service " +
-                " and startTime >= :startDate " +
-                " and startTime <= :endDate " +
-                " and code=8 " +
-                " group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-                " order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc" ;
+            query = getQueryExectime();
+            if ( query != null ) {
+                SQLQuery sqlQuery = session.createSQLQuery(query);
+                sqlQuery.addScalar("date", Hibernate.DATE);
+                sqlQuery.addScalar("average", Hibernate.DOUBLE);
+                queryStat = sqlQuery;
+            }else {
+                //the database in use is not supported
+                queryStat = session.getNamedQuery("exectime"); 
+            }
+
         } else if (type.equals("error") ){
-            query  = "select str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)), count(*) " +
-                "from JobInfo " +
-            	"where serviceName= :service " +
-            	"and startTime >= :startDate " +
-            	"and startTime <= :endDate " +
-            	"and code=4 " +
-            	"group by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) " +
-            	"order by str(year(startTime))||' '||str(month(startTime))||' '||str(day(startTime)) asc ";   
+            query  = "select jobInfo.startTimeDate, count(*) " +
+                "from JobInfo jobInfo " +
+            	"where jobInfo.serviceName = :service " +
+            	"and jobInfo.startTimeDate >= :startDate " +
+            	"and jobInfo.startTimeDate <= :endDate " +
+            	"and jobInfo.code=4 " +
+            	"group by jobInfo.startTimeDate " +
+            	"order by jobInfo.startTimeDate desc ";   
+            queryStat = session.createQuery(query);
         }
         
         
         //going to execute the query
         if ( ! isConnected() ) return null;
         try {
-             Query queryStat = session.createQuery(query)
-                .setString("service", service)
-                .setTimestamp("startDate", startDate)
-                .setTimestamp("endDate", endDate);
+            queryStat.setString("service", service)
+                .setDate("startDate", startDateSQL)
+                .setDate("endDate", endDateSQL);
             List result = queryStat.list();
             Iterator itera = result.iterator();
             log.info("Going to get the " + type + " for the service: " + service + 
@@ -282,34 +238,34 @@ public class DBManager {
             //itera = result.iterator(); 
             double [] values = new double[numberOfDays+1];
             int counter = numberOfDays;
-            Date previousDate =  DateHelper.subtractDay(endDate);//we are gonna start from the current date (today)
+            //we are gonna start from the end date going backward
+            //currentDate represent the date pointed by values[counter]
+            //Date currentDate =  DateHelper.subtractDay(endDate);
+            Date currentDate = endDate;
             //now we have put the data from the result of the query into the return array
             while( itera.hasNext() ) {
                 Object [] entry = (Object []) itera.next();
-                Date date = DateHelper.parseDateWithSpaces((String) entry[0]);
+                java.sql.Date date = (java.sql.Date) entry[0];
                 //log.debug("For the date " + date + " we have n entries: " + ((Integer)entry[1]) );
                 
-                while ( ! DateHelper.compareDates(previousDate, date) ){
+                while ( ! DateHelper.compareDates(currentDate, date) ){
                     //since some day can have no hits we have to put zero in the array for those days
                     if ( counter == -1 ) {
                         break;
                     }
                     values[counter] = 0;
-                    log.trace("Inserting a zero for date: " + previousDate + " on position: " + counter);
+                    log.trace("Inserting a zero for date: " + currentDate + " on position: " + counter);
                     counter--;
-                    previousDate = DateHelper.subtractDay(previousDate);
+                    currentDate = DateHelper.subtractDay(currentDate);
                 }//if
                 if ( counter == -1 ) {
                     break;
                 }
                 //we don't have a gap!
                 if (type.equals("hits") ) {
-                    values[counter] = ((Integer)entry[1]).doubleValue(); 
+                    values[counter] = ((Long)entry[1]).doubleValue(); 
                 }else if ( type.equals("exectime") ) {
-                    //PGInterval pginterval =  (PGInterval)rs.getObject("average");
-                    //double interval =  pginterval.getSeconds() + pginterval.getMinutes() * 60 + pginterval.getHours() * 60 * 60 + 
-                    //pginterval.getDays() * 24 * 60 * 60 + pginterval.getMonths() * 30 * 24 * 60 * 60;
-                    values[counter] = ((Float)entry[1]).doubleValue();
+                    values[counter] = ((Double)entry[1]).doubleValue();
                 }else if ( type.equals("error") ) {
                     values[counter] = (double) ((Integer)entry[1]).doubleValue(); 
                 }
@@ -317,7 +273,7 @@ public class DBManager {
                 //decrease the counter
                 counter--;
                 //and decrease the date
-                previousDate = DateHelper.subtractDay(previousDate);
+                currentDate = DateHelper.subtractDay(currentDate);
                 
             }//while
             //everything went fine, let's log and return 
@@ -368,9 +324,45 @@ public class DBManager {
             "code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
             "serviceName='" + service + "' ";
         
-        Integer ret = (Integer) session.createQuery(query).uniqueResult();
+        Long ret = (Long) session.createQuery(query).uniqueResult();
         log.debug("getRunningJobs for service: " + service + " returning:" + ret); 
         return ret.intValue();
+    }
+
+    /**
+     * this function return the proper query based on the Datebase in use
+     * it looks at the current dialect
+     *
+     * it returns null if the current dialect is not supported 
+     *
+     */
+    private String getQueryExectime(){
+        String query = null;
+        String queryTail = " from job_info jobInfo " +
+                " where jobInfo.service_name = :service " +
+                " and jobInfo.start_time_date >= :startDate " +
+                " and jobInfo.start_time_date <= :endDate " +
+                " and jobInfo.code=8 " +
+                " group by jobInfo.start_time_date " + 
+                " order by jobInfo.start_time_date desc" ;
+        //getting the dialect
+        SessionFactoryImpl factoryimpl = (SessionFactoryImpl) session.getSessionFactory();
+        String dialect = factoryimpl.getDialect().getClass().getName();
+        log.info("The dialect in use is: " + dialect);
+        if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
+            //this is HSQL
+            query = "select jobInfo.start_time_date as date, " +
+                " avg( datediff('ss', jobInfo.start_time_date, jobInfo.last_update_date) + " +
+                " datediff('ss', jobInfo.start_time_time, jobInfo.last_update_time) ) as average " + queryTail; 
+        }else if (dialect.equals("org.hibernate.dialect.PostgreSQLDialect")){
+            //this is postgress
+            query = "select jobInfo.start_time_date as date, " +
+                //number of day 
+                " avg( ( last_update_date - start_time_date ) * 86400 + " +
+                //plus number of seconds (epoch returns seconds!)
+                " extract(epoch from ( last_update_time - start_time_time))) as average " + queryTail; 
+        }
+        return query;
     }
 
 }

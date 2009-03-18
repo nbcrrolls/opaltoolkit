@@ -549,8 +549,11 @@ public class AppServiceImpl
 	info.setCode(status.getCode());
 	info.setMessage(status.getMessage());
 	info.setBaseURL(status.getBaseURL().toString());
-	info.setStartTime(new Date());
-	info.setLastUpdate(new Date());
+    Date currentDate = new Date();
+    info.setStartTimeDate(new java.sql.Date(currentDate.getTime()));
+    info.setStartTimeTime(new java.sql.Time(currentDate.getTime()));
+	info.setLastUpdateDate(new java.sql.Date(currentDate.getTime()));
+    info.setLastUpdateTime(new java.sql.Time(currentDate.getTime()));
 	info.setClientDN(Util.getRemoteDN());
 	info.setClientIP(Util.getRemoteIP());
 	info.setServiceName(serviceName);
