@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 import org.globus.gram.GramJob;
 
@@ -356,17 +357,20 @@ public class HibernateUtil {
 		JobInfo info = (JobInfo) results.get(0);
 		stats = new JobStatisticsType();
 		Calendar startTime = Calendar.getInstance();
-        //TODO check that this works!!!!!
-		startTime.setTime(new Date( info.getStartTimeTime().getTime() +  info.getStartTimeDate().getTime() ));
+        //we need to reset the TimeZone lost in the database
+        TimeZone tz = TimeZone.getDefault();
+        //long dateOffset = tz.getOffset( (new Date()).getTime() ); this doesn't work if there is daylightsaving
+        long dateOffsetRaw = tz.getRawOffset();
+		startTime.setTimeInMillis( info.getStartTimeTime().getTime() +  info.getStartTimeDate().getTime() + dateOffsetRaw);
 		stats.setStartTime(startTime);
-		if (info.getActivationTime() != null) {
+		if ( (info.getActivationTimeTime() != null) && (info.getActivationTimeDate() != null) ) {
 		    Calendar activationTime = Calendar.getInstance();
-		    activationTime.setTime(info.getActivationTime());
+            activationTime.setTimeInMillis(info.getActivationTimeTime().getTime() +  info.getActivationTimeDate().getTime() + dateOffsetRaw);
 		    stats.setActivationTime(activationTime);
 		}
-		if (info.getCompletionTime() != null) {
+		if ((info.getCompletionTimeTime() != null) && (info.getCompletionTimeDate() != null)) {
 		    Calendar completionTime = Calendar.getInstance();
-		    completionTime.setTime(info.getCompletionTime());
+		    completionTime.setTimeInMillis(info.getCompletionTimeTime().getTime() +  info.getCompletionTimeDate().getTime() + dateOffsetRaw);
 		    stats.setCompletionTime(completionTime);
 		}
 	    }
@@ -476,8 +480,10 @@ public class HibernateUtil {
 	info.setBaseURL("http://localhost/test");
 	info.setStartTimeTime(new java.sql.Time(nowDate.getTime()));
     info.setStartTimeDate(new java.sql.Date(nowDate.getTime()));
-	info.setActivationTime(nowDate);
-	info.setCompletionTime(nowDate);
+	info.setActivationTimeTime(new java.sql.Time(nowDate.getTime()));
+	info.setActivationTimeDate(new java.sql.Date(nowDate.getTime()));
+	info.setCompletionTimeTime(new java.sql.Time(nowDate.getTime()));
+	info.setCompletionTimeDate(new java.sql.Date(nowDate.getTime()));
 	info.setLastUpdateTime(new java.sql.Time(nowDate.getTime()));
 	info.setLastUpdateDate(new java.sql.Date(nowDate.getTime()));
 	info.setClientDN("CN=Test");

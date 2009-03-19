@@ -72,8 +72,10 @@ public class PackageTest extends TestCase {
 	Date currentDate = new Date();
     info.setStartTimeDate(new java.sql.Date( currentDate.getTime() ) );
     info.setStartTimeTime(new java.sql.Time( currentDate.getTime() ) );
-    info.setActivationTime(currentDate);
-    info.setCompletionTime(currentDate);
+    info.setActivationTimeDate(new java.sql.Date( currentDate.getTime() ) );
+    info.setActivationTimeTime(new java.sql.Time( currentDate.getTime() ) );
+    info.setCompletionTimeDate(new java.sql.Date( currentDate.getTime() ) );
+    info.setCompletionTimeTime(new java.sql.Time( currentDate.getTime() ) );
     info.setLastUpdateTime(new java.sql.Time(currentDate.getTime()));
     info.setLastUpdateDate(new java.sql.Date(currentDate.getTime()));
 	info.setClientDN("CN=Test");
