@@ -99,13 +99,13 @@ public class HibernateUtil {
 	    Date lastUpdate = new Date();
 	    int numUpdates = session.createQuery("update JobInfo info " +
 						 "set info.lastUpdateDate = :lastUpdateDate, " +
-                         "info.lastUpdateTime = :lastUpdateTime, " + 
+						 "info.lastUpdateTime = :lastUpdateTime, " + 
 						 "info.code = :code, " +
 						 "info.message = :message " +
 						 "where info.code != " + GramJob.STATUS_DONE + 
 						 "and info.code != " + GramJob.STATUS_FAILED)
 		.setDate("lastUpdateDate", lastUpdate)
-        .setTime("lastUpdateTime", lastUpdate)
+		.setTime("lastUpdateTime", lastUpdate)
 		.setInteger("code", GramJob.STATUS_FAILED)
 		.setString("message", "Job failed - server was restarted during job execution")
 		.executeUpdate();
@@ -178,17 +178,17 @@ public class HibernateUtil {
 	    Date lastUpdate = new Date();
 	    String queryString = "update JobInfo info " +
 		"set info.lastUpdateDate = :lastUpdateDate, " +
-        "info.lastUpdateTime = :lastUpdateTime, " + 
+		"info.lastUpdateTime = :lastUpdateTime, " + 
 		"info.code = :code, " +
 		"info.message = :message, " +
 		"info.baseURL = :baseURL, ";
 	    if (activationTime != null) {
 		queryString += "info.activationTimeTime = :activationTimeTime, ";
-        queryString += "info.activationTimeDate = :activationTimeDate, ";
+		queryString += "info.activationTimeDate = :activationTimeDate, ";
 	    }
 	    if (completionTime != null) {
 		queryString += "info.completionTimeTime = :completionTimeTime, ";
-        queryString += "info.completionTimeDate = :completionTimeDate, ";
+		queryString += "info.completionTimeDate = :completionTimeDate, ";
 	    }
 	    queryString +=
 		"info.handle = :handle " +
@@ -197,7 +197,7 @@ public class HibernateUtil {
 
 	    Query query = session.createQuery(queryString);
 	    query.setDate("lastUpdateDate", lastUpdate)
-        .setTime("lastUpdateTime", lastUpdate)
+		.setTime("lastUpdateTime", lastUpdate)
 		.setInteger("code", code)
 		.setString("message", message)
 		.setString("baseURL", baseURL)
@@ -361,20 +361,28 @@ public class HibernateUtil {
 		JobInfo info = (JobInfo) results.get(0);
 		stats = new JobStatisticsType();
 		Calendar startTime = Calendar.getInstance();
-        //we need to reset the TimeZone lost in the database
-        TimeZone tz = TimeZone.getDefault();
-        //long dateOffset = tz.getOffset( (new Date()).getTime() ); this doesn't work if there is daylightsaving
-        long dateOffsetRaw = tz.getRawOffset();
-		startTime.setTimeInMillis( info.getStartTimeTime().getTime() +  info.getStartTimeDate().getTime() + dateOffsetRaw);
+		//we need to reset the TimeZone lost in the database
+		TimeZone tz = TimeZone.getDefault();
+		//long dateOffset = tz.getOffset( (new Date()).getTime() ); this doesn't work if there is daylightsaving
+		long dateOffsetRaw = tz.getRawOffset();
+		startTime.setTimeInMillis( info.getStartTimeTime().getTime() +  
+					   info.getStartTimeDate().getTime() + 
+					   dateOffsetRaw);
 		stats.setStartTime(startTime);
-		if ( (info.getActivationTimeTime() != null) && (info.getActivationTimeDate() != null) ) {
+		if ( (info.getActivationTimeTime() != null) && 
+		     (info.getActivationTimeDate() != null) ) {
 		    Calendar activationTime = Calendar.getInstance();
-            activationTime.setTimeInMillis(info.getActivationTimeTime().getTime() +  info.getActivationTimeDate().getTime() + dateOffsetRaw);
+		    activationTime.setTimeInMillis(info.getActivationTimeTime().getTime() +  
+						   info.getActivationTimeDate().getTime() + 
+						   dateOffsetRaw);
 		    stats.setActivationTime(activationTime);
 		}
-		if ((info.getCompletionTimeTime() != null) && (info.getCompletionTimeDate() != null)) {
+		if ((info.getCompletionTimeTime() != null) && 
+		    (info.getCompletionTimeDate() != null)) {
 		    Calendar completionTime = Calendar.getInstance();
-		    completionTime.setTimeInMillis(info.getCompletionTimeTime().getTime() +  info.getCompletionTimeDate().getTime() + dateOffsetRaw);
+		    completionTime.setTimeInMillis(info.getCompletionTimeTime().getTime() +  
+						   info.getCompletionTimeDate().getTime() + 
+						   dateOffsetRaw);
 		    stats.setCompletionTime(completionTime);
 		}
 	    }
@@ -475,7 +483,7 @@ public class HibernateUtil {
         Session session = getSessionFactory().openSession();
 
 	// initialize info
-    Date nowDate = new Date();
+	Date nowDate = new Date();
 	JobInfo info = new JobInfo();
 	String jobID = "app" + System.currentTimeMillis();
 	info.setJobID(jobID);
@@ -483,7 +491,7 @@ public class HibernateUtil {
 	info.setMessage("This is a test");
 	info.setBaseURL("http://localhost/test");
 	info.setStartTimeTime(new java.sql.Time(nowDate.getTime()));
-    info.setStartTimeDate(new java.sql.Date(nowDate.getTime()));
+	info.setStartTimeDate(new java.sql.Date(nowDate.getTime()));
 	info.setActivationTimeTime(new java.sql.Time(nowDate.getTime()));
 	info.setActivationTimeDate(new java.sql.Date(nowDate.getTime()));
 	info.setCompletionTimeTime(new java.sql.Time(nowDate.getTime()));
