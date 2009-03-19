@@ -26,8 +26,10 @@ public class JobInfo {
     private String handle;
     private java.sql.Date startTimeDate;
     private java.sql.Time startTimeTime;
-    private Date activationTime;
-    private Date completionTime;
+    private java.sql.Date activationTimeDate;
+    private java.sql.Time activationTimeTime;
+    private java.sql.Date completionTimeDate;
+    private java.sql.Time completionTimeTime;
     private java.sql.Date lastUpdateDate;
     private java.sql.Time lastUpdateTime;
     private String clientDN;
@@ -94,20 +96,36 @@ public class JobInfo {
 	this.startTimeTime = startTime;
     }
 
-    public Date getActivationTime() {
-	return activationTime;
+    public java.sql.Date getActivationTimeDate() {
+	return activationTimeDate;
     }
 
-    public void setActivationTime(Date activationTime) {
-	this.activationTime = activationTime;
+    public void setActivationTimeDate(java.sql.Date activationTime) {
+	this.activationTimeDate = activationTime;
+    }
+    
+    public java.sql.Time getActivationTimeTime() {
+      return activationTimeTime;
     }
 
-    public Date getCompletionTime() {
-	return completionTime;
+    public void setActivationTimeTime(java.sql.Time activationTime) {
+	this.activationTimeTime = activationTime;
     }
 
-    public void setCompletionTime(Date completionTime) {
-	this.completionTime = completionTime;
+    public java.sql.Date getCompletionTimeDate() {
+	return completionTimeDate;
+    }
+
+    public void setCompletionTimeDate(java.sql.Date completionTime) {
+	this.completionTimeDate = completionTime;
+    }
+
+    public java.sql.Time getCompletionTimeTime() {
+	return completionTimeTime;
+    }
+
+    public void setCompletionTimeTime(java.sql.Time completionTime) {
+	this.completionTimeTime = completionTime;
     }
 
     public java.sql.Date getLastUpdateDate() {
