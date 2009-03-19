@@ -105,7 +105,7 @@ public class JobInfo {
     }
     
     public java.sql.Time getActivationTimeTime() {
-      return activationTimeTime;
+	return activationTimeTime;
     }
 
     public void setActivationTimeTime(java.sql.Time activationTime) {
