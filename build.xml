@@ -196,6 +196,7 @@ Author:
         <include name="slf4j-log4j12-1.5.2.jar"/>
         <include name="javassist-3.4.GA.jar"/>
         <include name="hibernate3.jar"/>
+        <include name="jta-1.1.jar"/>
         <!--  hibernate specific END -->
         <include name="cglib-2.1.3.jar"/>
         <include name="commons-cli-2.0.jar"/>
@@ -203,7 +204,6 @@ Author:
         <include name="commons-collections-3.1.jar"/>
         <include name="dom4j-1.6.1.jar"/>
         <include name="hsqldb.jar"/>
-        <include name="jta.jar"/>
       </fileset>
     </copy>
 
@@ -267,7 +267,7 @@ Author:
 	<include name="jgss.jar" />
 
         <!-- log4j jar -->
-        <include name="log4j-1.2.8.jar" />
+        <include name="log4j-1.2.15.jar" />
       </fileset>
     </copy>
 
