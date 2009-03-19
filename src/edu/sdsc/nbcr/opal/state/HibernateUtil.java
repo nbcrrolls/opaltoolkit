@@ -183,10 +183,12 @@ public class HibernateUtil {
 		"info.message = :message, " +
 		"info.baseURL = :baseURL, ";
 	    if (activationTime != null) {
-		queryString += "info.activationTime = :activationTime, ";
+		queryString += "info.activationTimeTime = :activationTimeTime, ";
+        queryString += "info.activationTimeDate = :activationTimeDate, ";
 	    }
 	    if (completionTime != null) {
-		queryString += "info.completionTime = :completionTime, ";
+		queryString += "info.completionTimeTime = :completionTimeTime, ";
+        queryString += "info.completionTimeDate = :completionTimeDate, ";
 	    }
 	    queryString +=
 		"info.handle = :handle " +
@@ -201,10 +203,12 @@ public class HibernateUtil {
 		.setString("baseURL", baseURL)
 		.setString("handle", handle);
 	    if (activationTime != null) {
-		query.setTimestamp("activationTime", activationTime);
+		query.setDate("activationTimeDate", activationTime);
+		query.setTime("activationTimeTime", activationTime);
 	    }
 	    if (completionTime != null) {
-		query.setTimestamp("completionTime", completionTime);
+		query.setDate("completionTimeDate", completionTime);
+		query.setTime("completionTimeTime", completionTime);
 	    }
 	    numRows = query.executeUpdate();
 	    session.getTransaction().commit();

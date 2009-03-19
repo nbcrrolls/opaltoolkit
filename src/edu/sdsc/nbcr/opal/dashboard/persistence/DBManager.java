@@ -267,7 +267,7 @@ public class DBManager {
                 }else if ( type.equals("exectime") ) {
                     values[counter] = ((Double)entry[1]).doubleValue();
                 }else if ( type.equals("error") ) {
-                    values[counter] = (double) ((Integer)entry[1]).doubleValue(); 
+                    values[counter] = (double) ((Long)entry[1]).doubleValue(); 
                 }
                 log.trace("Inserting the value " + values[counter] + " for date: " + date + " on position: " + counter);
                 //decrease the counter
