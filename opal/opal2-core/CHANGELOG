@@ -1,3 +1,18 @@
+
+Version 2.0:
+- Opal Core
+  - upgraded the hiberate to 3.3.1 and all its dependecies
+  - upgraded log4j
+  - changed the schema of the Database, splitting the Timestamp into two field
+    Date and Time
+  
+- Opal Dashboard
+  - fixed several bugs in the generation of the charts
+
+
+Version 2.0RC1
+   - several bug fixes from the alpha
+
 Version 2.0alpha1
 
 - Opal Core
