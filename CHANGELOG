@@ -17,6 +17,7 @@ Version 2.0RC1
    - modified opal.properties to use Java reflection for instantiation of
      Opal job managers
    - developer guide for Opal plugins
+   - added support for Tomcat 5.5.X and updated giude
 
 Version 2.0alpha1
 
