@@ -13,6 +13,10 @@ Version 2.0:
 
 Version 2.0RC1
    - several bug fixes from the alpha
+   - added getStatistics operation to wsdl and service implementation
+   - modified opal.properties to use Java reflection for instantiation of
+     Opal job managers
+   - developer guide for Opal plugins
 
 Version 2.0alpha1
 
