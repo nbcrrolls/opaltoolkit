@@ -51,11 +51,8 @@ public class OpalInfoServlet extends HttpServlet {
     private String opalBuildDateCommand = "uname -a";
     private String opalWebsite = null;
     private String opalDocumentation = null;
-    private Boolean drmaa = Boolean.FALSE; 
-    //TODO improve handling of unconnected DB
+    private String opalJobManager = null;
     private Boolean dbUsed = Boolean.FALSE;
-    private Boolean globus = Boolean.FALSE;
-    private String globusGatekeeper = null;
     private DBManager dbManager = null;
     
 
@@ -94,52 +91,15 @@ public class OpalInfoServlet extends HttpServlet {
         
         
         //getting some more informations
-        if ( props.getProperty("drmaa.use") != null ) {
-            if ( props.getProperty("drmaa.use").equals("true") ) 
-                drmaa = Boolean.TRUE;
-        }
-        if ( props.getProperty("globus.use") != null ) {
-            if ( props.getProperty("globus.use").equals("true") ) 
-                globus = Boolean.TRUE;
-        }
-        if ( globus.booleanValue() == true ) {
-            globusGatekeeper = props.getProperty("globus.gatekeeper");
+        if ( props.getProperty("opal.jobmanager") != null ) {
+            opalJobManager = props.getProperty("opal.jobmanager");
         }
         if (props.getProperty("opal.datalifetime") != null) {
             opalDataLifetime = props.getProperty("opal.datalifetime");
         } else opalDataLifetime = null;
         
         
-/*        if (props.getProperty("database.use") != null) {
-            if ( props.getProperty("database.use").equals("true") ) {
-                dbUsed = Boolean.TRUE;
-                initialized = true;
-            } else {
-                //no DB connection, useless to go on 
-                dbManager = new DBManager();
-                initialized = false; 
-                return ;
-            }
-        }
-        if (props.getProperty("database.url") != null) {
-            databaseUrl = props.getProperty("database.url");
-        }
-        if (props.getProperty("database.user") != null) {
-            dbUserName = props.getProperty("database.user");
-        }
-        if (props.getProperty("database.passwd") != null) {
-            dbPassword = props.getProperty("database.passwd");
-        }
-        if ( initialized ) {
-            // connect to database
-            System.out.println("Initializing database connection... to " + databaseUrl);
-            if ( dbManager.init() ) {
-                initialized = true;
-                config.getServletContext().setAttribute("dbManager", dbManager);
-            }
-            else initialized = false;
-        }//if
-	*/
+        //not necessary anymore we use hibernate
         dbManager = new DBManager();
         dbManager.init();
         config.getServletContext().setAttribute("dbManager", dbManager);
@@ -254,9 +214,8 @@ public class OpalInfoServlet extends HttpServlet {
             //req.setAttribute("dbURL", dbManager.getDatabaseUrl());
             //req.setAttribute("dbUsername", dbManager.getDbUserName());
             req.setAttribute("dbDriver", dbManager.getDriver());
-            req.setAttribute("drmaa", drmaa);
-            req.setAttribute("globus", globus);
-            req.setAttribute("globusGatekeeper", globusGatekeeper);
+            
+            req.setAttribute("submissionSystem", opalJobManager );
             req.setAttribute("opalDataLifetime", opalDataLifetime);
             
             dispatcher = getServletContext().getRequestDispatcher(SUMMARY_JSP);
