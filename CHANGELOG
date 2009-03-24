@@ -8,6 +8,7 @@ Version 2.0:
   
 - Opal Dashboard
   - fixed several bugs in the generation of the charts
+  - fixed some bugs in the status page of the dashboard
 
 
 Version 2.0RC1
