@@ -14,7 +14,7 @@ public class JobInfo {
 
     // get an instance of the log4j Logger
     private static Logger logger =
-	Logger.getLogger(JobInfo.class.getName());
+        Logger.getLogger(JobInfo.class.getName());
 
     // the jobID for this job
     private String jobID;
@@ -41,131 +41,131 @@ public class JobInfo {
 
     // getter and setter methods
     public String getJobID() {
-	return jobID;
+        return jobID;
     }
 
     public void setJobID(String jobID) {
-	this.jobID = jobID;
+        this.jobID = jobID;
     }
 
     public int getCode() {
-	return code;
+        return code;
     }
 
     public void setCode(int code) {
-	this.code = code;
+        this.code = code;
     }
 
     public String getMessage() {
-	return message;
+        return message;
     }
 
     public void setMessage(String message) {
-	this.message = message;
+        this.message = message;
     }
 
     public String getBaseURL() {
-	return baseURL;
+        return baseURL;
     }
 
     public void setBaseURL(String baseURL) {
-	this.baseURL = baseURL;
+        this.baseURL = baseURL;
     }
 
     public String getHandle() {
-	return handle;
+        return handle;
     }
 
     public void setHandle(String handle) {
-	this.handle = handle;
+        this.handle = handle;
     }
 
     public java.sql.Date getStartTimeDate() {
-	return startTimeDate;
+        return startTimeDate;
     }
 
     public void setStartTimeDate(java.sql.Date startTime) {
-	this.startTimeDate = startTime;
+        this.startTimeDate = startTime;
     }
 
     public java.sql.Time getStartTimeTime() {
-	return startTimeTime;
+        return startTimeTime;
     }
 
     public void setStartTimeTime(java.sql.Time startTime) {
-	this.startTimeTime = startTime;
+        this.startTimeTime = startTime;
     }
 
     public java.sql.Date getActivationTimeDate() {
-	return activationTimeDate;
+        return activationTimeDate;
     }
 
     public void setActivationTimeDate(java.sql.Date activationTime) {
-	this.activationTimeDate = activationTime;
+        this.activationTimeDate = activationTime;
     }
-    
+
     public java.sql.Time getActivationTimeTime() {
-	return activationTimeTime;
+        return activationTimeTime;
     }
 
     public void setActivationTimeTime(java.sql.Time activationTime) {
-	this.activationTimeTime = activationTime;
+        this.activationTimeTime = activationTime;
     }
 
     public java.sql.Date getCompletionTimeDate() {
-	return completionTimeDate;
+        return completionTimeDate;
     }
 
     public void setCompletionTimeDate(java.sql.Date completionTime) {
-	this.completionTimeDate = completionTime;
+        this.completionTimeDate = completionTime;
     }
 
     public java.sql.Time getCompletionTimeTime() {
-	return completionTimeTime;
+        return completionTimeTime;
     }
 
     public void setCompletionTimeTime(java.sql.Time completionTime) {
-	this.completionTimeTime = completionTime;
+        this.completionTimeTime = completionTime;
     }
 
     public java.sql.Date getLastUpdateDate() {
-	return lastUpdateDate;
+        return lastUpdateDate;
     }
 
     public void setLastUpdateDate(java.sql.Date lastUpdate) {
-	this.lastUpdateDate = lastUpdate;
+        this.lastUpdateDate = lastUpdate;
     }
 
     public java.sql.Time getLastUpdateTime() {
-	return lastUpdateTime;
+        return lastUpdateTime;
     }
 
     public void setLastUpdateTime(java.sql.Time lastUpdate) {
-	this.lastUpdateTime = lastUpdate;
+        this.lastUpdateTime = lastUpdate;
     }
 
     public String getClientDN() {
-	return clientDN;
+        return clientDN;
     }
 
     public void setClientDN(String clientDN) {
-	this.clientDN = clientDN;
+        this.clientDN = clientDN;
     }
 
     public String getClientIP() {
-	return clientIP;
+        return clientIP;
     }
 
     public void setClientIP(String clientIP) {
-	this.clientIP = clientIP;
+        this.clientIP = clientIP;
     }
 
-	
+
     public String getServiceName() {
-	return serviceName;
+        return serviceName;
     }
 
     public void setServiceName(String serviceName) {
-	this.serviceName = serviceName;
+        this.serviceName = serviceName;
     }
 }

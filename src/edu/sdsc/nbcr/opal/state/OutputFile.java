@@ -19,8 +19,8 @@ public class OutputFile {
 
     // get an instance of the log4j Logger
     private static Logger logger =
-	Logger.getLogger(OutputFile.class.getName());
-    
+        Logger.getLogger(OutputFile.class.getName());
+
     // primary key
     private long id;
 
@@ -35,34 +35,34 @@ public class OutputFile {
 
     // getter and setter methods
     public long getId() {
-	return id;
+        return id;
     }
 
     public void setId(long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public JobInfo getJob() {
-	return job;
+        return job;
     }
 
     public void setJob(JobInfo job) {
-	this.job = job;
+        this.job = job;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getUrl() {
-	return url;
+        return url;
     }
 
     public void setUrl(String url) {
-	this.url = url;
+        this.url = url;
     }
 }

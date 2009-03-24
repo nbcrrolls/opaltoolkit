@@ -19,7 +19,7 @@ public class JobOutput {
 
     // get an instance of the log4j Logger
     private static Logger logger =
-	Logger.getLogger(JobOutput.class.getName());
+        Logger.getLogger(JobOutput.class.getName());
 
     // primary key
     private long id;
@@ -35,34 +35,34 @@ public class JobOutput {
 
     // getter and setter methods
     public long getId() {
-	return id;
+        return id;
     }
 
     public void setId(long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public JobInfo getJob() {
-	return job;
+        return job;
     }
 
     public void setJob(JobInfo job) {
-	this.job = job;
+        this.job = job;
     }
 
     public String getStdOut() {
-	return stdOut;
+        return stdOut;
     }
 
     public void setStdOut(String stdOut) {
-	this.stdOut = stdOut;
+        this.stdOut = stdOut;
     }
 
     public String getStdErr() {
-	return stdErr;
+        return stdErr;
     }
 
     public void setStdErr(String stdErr) {
-	this.stdErr = stdErr;
+        this.stdErr = stdErr;
     }
 }
