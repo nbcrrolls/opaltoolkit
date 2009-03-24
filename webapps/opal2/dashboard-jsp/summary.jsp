@@ -24,18 +24,8 @@
    String dbDriver = (String) request.getAttribute("dbDriver");
    String opalWebsite = (String) request.getAttribute("opalWebsite");
    String opalDocumentation = (String) request.getAttribute("opalDocumentation");
-   Boolean drmaa = (Boolean) request.getAttribute("drmaa");
-   Boolean globus = (Boolean) request.getAttribute("globus");
-   String globusGatekeeper = (String) request.getAttribute("globusGatekeeper");
 
-   String submissionSystem = null;
-   if (drmaa.booleanValue() == true) {
-       submissionSystem = "DRMAA on localscheduler";
-   }else if (globus.booleanValue() == true ) {
-       submissionSystem = "Globus Gatekeeper";
-   } else {
-       submissionSystem = "Fork on local system";
-   }
+   String submissionSystem = (String) request.getAttribute("submissionSystem");
    
    String opalDataLifetime = (String) request.getAttribute("opalDataLifetime");
    
@@ -125,14 +115,8 @@
         <td class="boxBody colColor">Submission system:</td>
         <td class="boxBody colColor"><%= submissionSystem %></td>
     </tr>
-    <% if ( globus.booleanValue() == true) { %>
-    <tr>
-        <td class="boxBody colColor">Gatekeeper address:</td>
-        <td class="boxBody colColor"><%= globusGatekeeper %></td>
-    </tr>    
-    <% } %>
 
-    <% if ( (opalDataLifetime != null) && (opalDataLifetime.length() > 1) ) { %>
+<% if ( (opalDataLifetime != null) && (opalDataLifetime.length() > 1) ) { %>
     <tr>
         <td class="boxBody colColor">User data lifetime:</td>
         <td class="boxBody colColor"><%= opalDataLifetime %></td>
