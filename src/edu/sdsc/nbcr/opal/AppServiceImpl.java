@@ -148,10 +148,18 @@ public class AppServiceImpl
 
     
     /**
-     * Method to access the tomcatURL from other classes...
+     * Method to access the tomcat base URL from other classes...
      */
-    static public String getTomcatURL(){
-        return tomcatURL;
+    static public String getOpalBaseURL(){
+        try {
+            //I need to remove the possible output direcotry 
+            java.net.URI uri = new java.net.URI(tomcatURL);
+            //there's a better way to do this but for now it works
+            return uri.resolve("/").toString() + "opal2";
+        }catch (Exception e ){
+            //this should never happen
+            return null;
+        }
     }
 
     /**
