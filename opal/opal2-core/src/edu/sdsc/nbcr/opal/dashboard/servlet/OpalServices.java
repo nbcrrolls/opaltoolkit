@@ -125,8 +125,8 @@ public class OpalServices extends HttpServlet {
 
         SyndFeed feed = new SyndFeedImpl();
         feed.setTitle("Opal Service List");
-        feed.setLink(AppServiceImpl.getTomcatURL());
-        feed.setDescription("This feed lists the available services on the Opal server " + AppServiceImpl.getTomcatURL());
+        feed.setLink(AppServiceImpl.getOpalBaseURL());
+        feed.setDescription("This feed lists the available services on the Opal server " + AppServiceImpl.getOpalBaseURL());
         feed.setPublishedDate(lastUpdate);
 
         List entries = new ArrayList();
@@ -156,8 +156,8 @@ public class OpalServices extends HttpServlet {
      */
     private OPALService [] getServiceList(HttpServletRequest req){
         //the base URL of the axis services 
-        //TODO get this value from the axis engine...
-        String baseEndpointURL = AppServiceImpl.getTomcatURL() + "opal2/services/";
+        //TODO get this value from the axis engine...getOpalBaseURL
+        String baseEndpointURL = AppServiceImpl.getOpalBaseURL() + "/services/";
         AxisEngine engine = null;
         Iterator i;
         try { 
