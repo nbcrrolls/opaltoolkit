@@ -25,7 +25,7 @@
         </ul>
         <li>Opal 1.5</li>
         <ul>
-          <li><a href="docs/1.5/index.html">Opal Toolkit Documentation</a>: Official Opal guide for version.</li>
+          <li><a href="docs/1.5.1/index.html">Opal Toolkit Documentation</a>: Official Opal guide for version.</li>
         </ul> 
 <!--
         <li><a href="docs/index.html">Installation Guide</a>: This is the main 
@@ -53,7 +53,6 @@
       </p>
       <ul>
         <li><a href="tutorials/opal-tutorial.ppt">Opal Core tutorial</a>: this tutorial explains how to set up Opal server and how to deploy some applications on it</li>
-        <li><a href="">Opal Java client tutorial</a>: this tutorial explains how to use Opal Java command line and API (work in progres!!).</li>
       </ul>
 
     </section>
