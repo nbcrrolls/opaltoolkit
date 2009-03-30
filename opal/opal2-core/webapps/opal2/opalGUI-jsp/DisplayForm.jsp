@@ -106,11 +106,11 @@ function selectElement(element, groupId){
 	                <% testCond = true; %>
 	                <td colspan="2"> 
 	                    <!-- BEGIN radio box for exclusive group -->
-                        <logic:equal value="true" name="appMetadata" property="<%="groups[" + indexGroup + "].exclusive"%>">
+                        <logic:equal value="true" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].exclusive\"%>">
                         <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>', 'group<%=indexGroup%>')"/>
                         </logic:equal>
                         <!-- END radio box -->
-	                <nested:checkbox name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" /><nested:write  filter="false" name="param" property="textDesc"/>
+	                <nested:checkbox name="appMetadata" styleClass="<%=\"group\" + indexGroup%>" property="<%=\"groups[\" + indexGroup + \"].argParams[\" + indexParam + \"].selectedValue\"%>" /><nested:write  filter="false" name="param" property="textDesc"/>
                     <nested:equal value="true" name="param" property="required">*</nested:equal>
 	                </td>
 	            </nested:equal>
@@ -119,26 +119,26 @@ function selectElement(element, groupId){
 	                <% testCond = true; %>
 	                <td>
 	                    <!-- BEGIN radio box for exclusive group -->
-    	                <logic:equal value="true" name="appMetadata" property="<%="groups[" + indexGroup + "].exclusive"%>">
+    	                <logic:equal value="true" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].exclusive\"%>">
     	                <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].file"%>', 'group<%=indexGroup%>')" /> 
     	                </logic:equal>
     	                <!-- END radio box -->
 	                <nested:write  filter="false" name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td>
-	                <td><nested:file name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].file"%>" size="30"/></td>
+	                <td><nested:file name="appMetadata" styleClass="<%=\"group\" + indexGroup%>" property="<%=\"groups[\" + indexGroup + \"].argParams[\" + indexParam + \"].file\"%>" size="30"/></td>
 	            </nested:equal></nested:equal>
 	            <nested:equal value="STRING" name="param" property="type"> <nested:notEmpty name="param" property="values">
 		            <!-- we have radio button -->
 	                <% testCond = true; %>
 	               <td>
 	                   <!-- BEGIN radio box for exclusive group -->
-	                   <logic:equal value="true" name="appMetadata" property="<%="groups[" + indexGroup + "].exclusive"%>">
+	                   <logic:equal value="true" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].exclusive\"%>">
 	                   <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>', 'group<%=indexGroup%>')"/> 
 	                   </logic:equal>
 	                   <!-- END radio box -->
 	               <nested:write  filter="false" name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td><td>
 	               <nested:iterate id="valueRadio" name="param" property="values" >
 	                   <br/>
-	                   <html:radio name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" value="<%= valueRadio.toString() %>"/>
+	                   <html:radio name="appMetadata" styleClass="<%=\"group\" + indexGroup%>" property="<%=\"groups[\" + indexGroup + \"].argParams[\" + indexParam + \"].selectedValue\"%>" value="<%= valueRadio.toString() %>"/>
 	                   <%= valueRadio.toString() %>
 	               </nested:iterate>
 	               </td>
@@ -148,12 +148,12 @@ function selectElement(element, groupId){
 		            <!-- this is a normal text box -->
 	               <td>
 	                   <!-- BEGIN radio box for exclusive group -->
-	                   <logic:equal value="true" name="appMetadata" property="<%="groups[" + indexGroup + "].exclusive"%>">
+	                   <logic:equal value="true" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].exclusive\"%>">
 	                   <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>', 'group<%=indexGroup%>')"/> 
 	                   </logic:equal>
 	                   <!-- END radio box -->
 	               <nested:write  filter="false" name="param" property="textDesc"/><nested:equal value="true" name="param" property="required">*</nested:equal></td>
-	               <td><nested:text name="appMetadata" styleClass="<%="group" + indexGroup%>" property="<%="groups[" + indexGroup + "].argParams[" + indexParam + "].selectedValue"%>" size="40"/></td> 
+	               <td><nested:text name="appMetadata" styleClass="<%=\"group\" + indexGroup%>" property="<%=\"groups[\" + indexGroup + \"].argParams[\" + indexParam + \"].selectedValue\"%>" size="40"/></td> 
 	            <% } %>            
 	            <% testCond = false; %>
 	        </tr>
@@ -166,11 +166,11 @@ function selectElement(element, groupId){
 	        <tr>
 	            <td colspan="2">
 	               <!-- BEGIN radio box for exclusive group -->
-	               <logic:equal value="true" name="appMetadata" property="<%="groups[" + indexGroup + "].exclusive"%>">
+	               <logic:equal value="true" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].exclusive\"%>">
 	               <input type="radio" name="unused" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argFlags[" + indexFlag + "].selected"%>', 'group<%=indexGroup%>')"/>
 	               </logic:equal>
 	               <!-- END radio box -->
-	            <nested:checkbox styleClass="<%="group" + indexGroup%>" name="appMetadata" property="<%="groups[" + indexGroup + "].argFlags[" + indexFlag + "].selected"%>" /> <nested:write filter="false" name="flag" property="textDesc"/></td>
+	            <nested:checkbox styleClass="<%=\"group\" + indexGroup%>" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].argFlags[\" + indexFlag + \"].selected\"%>" /> <nested:write filter="false" name="flag" property="textDesc"/></td>
 	        </tr>
 	    </nested:iterate></logic:notEmpty>
 	    <!-- END flag -->
