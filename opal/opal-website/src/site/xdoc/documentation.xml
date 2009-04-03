@@ -11,6 +11,18 @@
         information on Opal.
       </p>
       <ul>
+        <li>Opal 2.0</li>
+        <ul>
+          <li><a href="docs/2.0/index.html"> Opal Toolkit Reference Guide</a>: This is the main 
+            reference documentation for Opal Toolkit.</li>
+          <li><a href="docs/2.0/api/index.html">Opal Toolkit API documentation</a>:Javadoc of Opal 
+            core package.</li>
+<!-- TODO         <li><a href="docs/2.0/opal-py-index.html">Opal Toolkit Python Reference Guide</a>:This is the main 
+            reference documentation for the Opal Toolkit Python client APIs</li>
+          <li><a href="docs/2.0/opal-perl-index.html">Opal Toolkit Perl Reference Guide</a>:This is the main 
+            reference documentation for the Opal Toolkit Perl client APIs</li>   -->
+
+        </ul>
         <li>Opal 1.9</li>
         <ul>
           <li><a href="docs/1.9/index.html"> Opal Toolkit Reference Guide</a>: This is the main 

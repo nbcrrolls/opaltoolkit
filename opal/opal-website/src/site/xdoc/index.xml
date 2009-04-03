@@ -41,6 +41,19 @@
       </ul>
     </section>
     <section name="News">
+        <h1>Opal2 is released</h1>
+        <p>We are pleased to announce the availability of the offical release of Oapl Version 2.0.  
+        Opal2 is a complete redesign of Opal 1.x with many new features:
+        <ul>
+            <li>new resource managers can now easily be added using a plug-in based model</li>
+            <li>State management is now provided via Hibernate</li>
+            <li>the dashboard will work out of the box using the in-memory HSQL database</li>
+            <li>WSDL improvements include support for unlimited input file size 
+            (SOAP with Attachment), URLs for application inputs, and retrieval of job statistics
+            </li>
+        </ul>
+        </p>
+
         <iframe src="http://sourceforge.net/export/projnews.php?group_id=211778&amp;limit=20&amp;flat=1&amp;show_summaries=1"
                  width="100%" frameborder="0" height="400" />
     </section>
