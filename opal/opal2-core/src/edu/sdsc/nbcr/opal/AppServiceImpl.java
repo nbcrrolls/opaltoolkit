@@ -227,7 +227,6 @@ public class AppServiceImpl
      * @param in the input object, as defined by the WSDL, which contains the command-line
      * arguments, list of input files in Base64 encoded form, and a the number of processes
      * for parallel jobs
-     * @param attch a list of file attachments
      * @return job submission output, as defined by the WSDL, which contains the <i>jobID</i>, 
      * and the initial job status
      * @throws FaultType if there is an error during job submission
@@ -261,7 +260,6 @@ public class AppServiceImpl
      * @param in the input object, as defined by the WSDL, which contains the command-line
      * arguments, list of input files in Base64 encoded form, and a the number of processes
      * for parallel jobs
-     * @param attach the list of file attachments
      * @return job output, as defined by the WSDL, which contains the final job status
      * and output metadata
      * @throws FaultType if there is an error during job submission
