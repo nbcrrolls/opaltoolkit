@@ -254,7 +254,7 @@ of the main servlet:
 </para><para>
 And make sure that the "param-name" is set to true:
 <screen>
-            &lt;param-name&gt;listing&lt;/param-name&gt; 
+            &lt;param-name&gt;listings&lt;/param-name&gt; 
             &lt;param-value&gt;true&lt;/param-value&gt;
 </screen>
 </para></listitem>
