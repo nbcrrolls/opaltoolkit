@@ -229,6 +229,36 @@ the following command:
 </screen>
 </para> </listitem>
 
+<listitem><para>If you are using Tomcat 5.5.X, you have to enable directory listing to properly 
+display jobs outputs. For this look in the file $CATALINA_HOME/conf/web.xml for the definition 
+of the main servlet:
+<screen>
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;default&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;
+          org.apache.catalina.servlets.DefaultServlet
+        &lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;debug&lt;/param-name&gt;
+            &lt;param-value&gt;0&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;listings&lt;/param-name&gt;
+            &lt;param-value&gt;false&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+
+</screen>
+</para><para>
+And make sure that the "param-name" is set to true:
+<screen>
+            &lt;param-name&gt;listing&lt;/param-name&gt; 
+            &lt;param-value&gt;true&lt;/param-value&gt;
+</screen>
+</para></listitem>
+
 <listitem><para>Run the Tomcat server by changing to the $CATALINA_HOME/bin directory,
 and running the appropriate command (bat on Windows, sh on Unix):
 <screen>
