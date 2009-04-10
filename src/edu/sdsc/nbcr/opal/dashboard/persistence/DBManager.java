@@ -51,21 +51,45 @@ public class DBManager {
     protected static Log log = LogFactory.getLog(DBManager.class.getName());
 
     //new hiberante stuff
-    private Session session = null;
+    //private Session session = null; this should not be here!!
     private String error = null;
+    private String driver = null;
+    private String dialect = null;
+    private SessionFactory sessionFactory = null;
     
     /**
      * 
      * @return the database URL
      */
-    public String getDatabaseUrl() {
-        String driver = null;
+//    public String getDatabaseUrl() {
+//        String driver = null;
+//        try {
+//            driver = session.connection().getMetaData().getURL();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return driver;
+//    }
+
+    
+    /**
+     * default constructor
+     */
+    public DBManager(){
+        sessionFactory = edu.sdsc.nbcr.opal.state.HibernateUtil.getSessionFactory();
+        driver = null;
         try {
-            driver = session.connection().getMetaData().getURL();
+            //maybe not the best way to find the driver name, but I couldn't
+            //find a better one
+            Session session = sessionFactory.openSession();
+            driver = session.connection().getMetaData().getDriverName();
+            session.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return driver;
+        //getting the dialect
+        SessionFactoryImpl factoryimpl = (SessionFactoryImpl) sessionFactory;
+        dialect = factoryimpl.getDialect().getClass().getName();
     }
 
     /**
@@ -73,29 +97,24 @@ public class DBManager {
      * @return the string representing the driver
      */
     public String getDriver() {
-        String driver = null;
-        try {
-            driver = session.connection().getMetaData().getDriverName();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return driver;
     }
 
-    
+
     /**
-     * default constructor
+     * 
+     * @return the string representing the driver
      */
-    public DBManager(){
-        session = null;
+    public String getDialect() {
+        return dialect;
     }
-    
+
+
     /**
      * This function has to be called to initialized the connection to the DB
      * @return true if everything went OK
      */
     public boolean init() {
-        session = edu.sdsc.nbcr.opal.state.HibernateUtil.getSessionFactory().openSession();
         return true ;
     }
     
@@ -104,8 +123,7 @@ public class DBManager {
      * @return true if the connection to the DB is valid
      */
     public boolean isConnected(){
-        if ( session != null ) return true;
-        else return false;
+        return true;
     }
 
 
@@ -119,8 +137,10 @@ public class DBManager {
      * 
      */
     public String [] getServicesList(){
+        Session session = sessionFactory.openSession();
         List serviceList = session.createQuery(
             "select serviceName from JobInfo group by serviceName ").list();
+        session.close();
         Iterator itera = serviceList.iterator();
         return (String []) serviceList.toArray(new String[serviceList.size()]);
     }
@@ -178,6 +198,7 @@ public class DBManager {
      */
     public double [] getResultsTimeseries(Date startDate, Date endDate, String service, String type){
 
+        Session session = sessionFactory.openSession();
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
         java.sql.Date  endDateSQL = new java.sql.Date(endDate.getTime());
@@ -222,7 +243,6 @@ public class DBManager {
         
         
         //going to execute the query
-        if ( ! isConnected() ) return null;
         try {
             queryStat.setString("service", service)
                 .setDate("startDate", startDateSQL)
@@ -281,9 +301,13 @@ public class DBManager {
             for ( counter = 0; counter < values.length; counter++)
                 str += values[counter] + ", ";
             log.info("The query on " + type + " with service " + service + " is returning values: " + str); 
+            session.close();
             return values;
         }catch (Exception e ) {
             log.error("Error while querying for the " + type + " with service " + service + " : " + e.getMessage(), e);
+            if ( session.isConnected() ) {
+                session.close();
+            }
             return null;
         }
         //return null;
@@ -323,8 +347,10 @@ public class DBManager {
             "(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
             "code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
             "serviceName='" + service + "' ";
-        
+
+        Session session = sessionFactory.openSession();
         Long ret = (Long) session.createQuery(query).uniqueResult();
+        session.close();
         log.debug("getRunningJobs for service: " + service + " returning:" + ret); 
         return ret.intValue();
     }
@@ -346,8 +372,7 @@ public class DBManager {
                 " group by jobInfo.start_time_date " + 
                 " order by jobInfo.start_time_date desc" ;
         //getting the dialect
-        SessionFactoryImpl factoryimpl = (SessionFactoryImpl) session.getSessionFactory();
-        String dialect = factoryimpl.getDialect().getClass().getName();
+        String dialect = getDialect();
         log.info("The dialect in use is: " + dialect);
         if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
             //this is HSQL
