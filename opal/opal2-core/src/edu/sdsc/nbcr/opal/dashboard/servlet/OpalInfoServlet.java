@@ -101,7 +101,6 @@ public class OpalInfoServlet extends HttpServlet {
         
         //not necessary anymore we use hibernate
         dbManager = new DBManager();
-        dbManager.init();
         config.getServletContext().setAttribute("dbManager", dbManager);
         initialized = true;
         
