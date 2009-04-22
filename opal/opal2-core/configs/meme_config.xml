@@ -45,6 +45,6 @@
     ]]>
     </info>
   </metadata>
-  <binaryLocation>/Users/sriramkrishnan/Projects/meme354/bin/meme</binaryLocation>
+  <binaryLocation>/usr/local/various/meme_3.5.7_binaries/bin/meme</binaryLocation>
   <parallel>false</parallel>
 </appConfig>
