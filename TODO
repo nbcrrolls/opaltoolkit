@@ -24,6 +24,7 @@
   * Display additional statistics on the dashboard - average load, queue
     time: LC
     * May also need to provide programmatic access
+  * get the version of Opal 
 
 * Testing suite using JUnit
   * AppServiceImpl - Managers (local calls): SK
