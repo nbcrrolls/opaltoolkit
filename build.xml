@@ -386,7 +386,14 @@ Author:
     <available file="${appConfig}"
                type="file" 
                property="appConfig.present" />
-    <fail message="System property &lt;appConfig&gt; not set properly" unless="appConfig.present"/>
+    <fail message="System property &lt;appConfig&gt; does not point to a valid file" unless="appConfig.present"/>
+
+    <condition property="appVersion"
+	       value="">
+      <not>
+        <isset property="appVersion" />
+      </not>
+    </condition>
 
     <echo message="Deploying service: ${serviceName}"/>
 
@@ -395,6 +402,7 @@ Author:
     <java classname="edu.sdsc.nbcr.opal.util.Deploy">
       <sysproperty key="appConfig" value="${appConfig}"/>
       <sysproperty key="serviceName" value="${serviceName}"/>
+      <sysproperty key="appVersion" value="${appVersion}"/>
       <sysproperty key="wsddTemplate" value="${project.home}/wsdd/opal_deploy.wsdd" />
       <sysproperty key="wsddFinal" value="${build.generated}/${serviceName}_deploy.wsdd" />
       <classpath refid="classpath" />
@@ -415,10 +423,18 @@ Author:
   <target name="undeploy" depends="jar">
     <echo message="Undeploying service: ${serviceName}"/>
 
+    <condition property="appVersion"
+	       value="">
+      <not>
+        <isset property="appVersion" />
+      </not>
+    </condition>
+
     <!-- generate WSDD for undeploying -->
     <delete file="${build.generated}/${serviceName}_undeploy.wsdd"/>
     <java classname="edu.sdsc.nbcr.opal.util.Undeploy">
       <sysproperty key="serviceName" value="${serviceName}"/>
+      <sysproperty key="appVersion" value="${appVersion}"/>
       <sysproperty key="wsddTemplate" value="${project.home}/wsdd/opal_undeploy.wsdd" />
       <sysproperty key="wsddFinal" value="${build.generated}/${serviceName}_undeploy.wsdd" />
       <classpath refid="classpath" />
