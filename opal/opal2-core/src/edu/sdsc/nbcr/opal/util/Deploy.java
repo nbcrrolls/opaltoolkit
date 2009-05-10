@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import edu.sdsc.nbcr.opal.AppConfigType;
+import edu.sdsc.nbcr.common.TypeDeserializer;
+
 /**
  *
  * Utility class for deployment of Opal services
@@ -33,6 +36,8 @@ public class Deploy {
      * <br><i>wsddFinal</i>: the target location for the generated WSDD
      */
     public static void main(String[] args) throws Exception {
+
+	// get the location of the application configuration
 	String appConfig = System.getProperty("appConfig");
 	if (appConfig == null) {
 	    logger.error("System property appConfig not set!");
@@ -41,6 +46,7 @@ public class Deploy {
 	    logger.info("Property appConfig set to: " + appConfig);
 	}
 
+	// get the service name
 	String serviceName = System.getProperty("serviceName");
 	if (serviceName == null) {
 	    logger.error("System property serviceName not set!");
@@ -49,6 +55,19 @@ public class Deploy {
 	    logger.info("Property serviceName set to: " + serviceName);
 	}
 
+	// get the version number - optional
+	String userVersion = System.getProperty("appVersion");
+	if (userVersion.equals("")) {
+	    userVersion = null;
+	}
+
+	if (userVersion == null) {
+	    logger.info("Version number not supplied by user");
+	} else {
+	    logger.info("Property appVersion set to: " + userVersion);
+	}
+
+	// location of the WSDD template - supplied by build.xml
 	String wsddTemplate = System.getProperty("wsddTemplate");
 	if (wsddTemplate == null) {
 	    logger.error("System property wsddTemplate not set!");
@@ -57,6 +76,14 @@ public class Deploy {
 	    logger.info("Property wsddTemplate set to: " + wsddTemplate);
 	}
 
+	// check to make sure that the WSDD template exists
+	File f = new File(wsddTemplate);
+	if (!f.exists()) {
+	    logger.error("WSDD template file " + wsddTemplate + " does not exist");
+	    System.exit(1);
+	}
+
+	// location of final WSDD - also supplied by build.xml
 	String wsddFinal = System.getProperty("wsddFinal");
 	if (wsddFinal == null) {
 	    logger.error("System property wsddFinal not set!");
@@ -65,12 +92,56 @@ public class Deploy {
 	    logger.info("Property wsddFinal set to: " + wsddFinal);
 	}
 
-	File f = new File(wsddTemplate);
-	if (!f.exists()) {
-	    logger.error("WSDD template file " + wsddTemplate + " does not exist");
+	// check to make sure that the application configuration exists
+	File configFile = new File(appConfig);
+	if (!configFile.exists()) {
+	    logger.error("Application configuration file " + 
+			 appConfig + " does not exist");
+	}
+
+	// check to make sure that the file points to valid application
+	// configuration
+	AppConfigType config = null;
+	try {
+	    config = 
+		(AppConfigType) TypeDeserializer.getValue(appConfig,
+							  new AppConfigType());;
+
+	} catch (Exception e) {
+	    logger.error(e);
+	    String msg = "Can't read application configuration from: " +
+		appConfig;
+	    logger.error(msg);
 	    System.exit(1);
 	}
 
+	// get the version number from the application configuration
+	String configVersion = null;
+	if (config.getMetadata() != null) {
+	    configVersion = config.getMetadata().getVersion();
+	}
+
+	if ((configVersion != null) && (userVersion != null)) {
+	    if (!configVersion.equals(userVersion)) {
+		logger.error("Version number supplied by user doesn't match " +
+			     "with version number in appConfig file");
+		System.exit(1);
+	    }
+	}
+
+	// set the final version number
+	String finalVersion = userVersion;
+	if (finalVersion == null) {
+	    finalVersion = configVersion;
+	}
+
+	// set the final service name
+	if (finalVersion != null) {
+	    serviceName += "_" + finalVersion;
+	}
+	logger.error("Service name used for deployment: " + serviceName);
+
+	// replace SERVICE_NAME with actual service name
 	byte[] data = new byte[(int) f.length()];
 	FileInputStream fIn = new FileInputStream(f);
 	fIn.read(data);
@@ -79,12 +150,7 @@ public class Deploy {
 	String finalData = templateData.replaceAll("@SERVICE_NAME@", 
 						   serviceName);
 
-	File configFile = new File(appConfig);
-	if (!configFile.exists()) {
-	    logger.error("Application configuration file " + 
-			 appConfig + " does not exist");
-	}
-
+	// set the location of the config file
 	String configLoc = configFile.getAbsolutePath().replace('\\', '/');
 	finalData = finalData.replaceAll("@CONFIG_LOCATION@",
 					 configLoc);

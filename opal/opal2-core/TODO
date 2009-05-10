@@ -20,7 +20,6 @@
     and not the max tag
   * conditional display of parameters (a group of parameters are displayed only
     if a flag is checked) (reuqested by the PDB guys)
-  * add a -Dversion argument to ant deploy/undeploy: SK
   * Display additional statistics on the dashboard - average load, queue
     time: LC
     * May also need to provide programmatic access

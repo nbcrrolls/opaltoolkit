@@ -33,6 +33,8 @@ public class Undeploy {
      */
 
     public static void main(String[] args) throws Exception {
+
+	// get the service name
 	String serviceName = System.getProperty("serviceName");
 	if (serviceName == null) {
 	    logger.error("System property serviceName not set!");
@@ -41,6 +43,19 @@ public class Undeploy {
 	    logger.info("Property serviceName set to: " + serviceName);
 	}
 
+	// get the version number - optional
+	String version = System.getProperty("appVersion");
+	if (version.equals("")) {
+	    version = null;
+	}
+
+	if (version == null) {
+	    logger.info("Version number not supplied by user");
+	} else {
+	    logger.info("Property appVersion set to: " + version);
+	}
+
+	// get the WSDD template
 	String wsddTemplate = System.getProperty("wsddTemplate");
 	if (wsddTemplate == null) {
 	    logger.error("System property wsddTemplate not set!");
@@ -49,6 +64,7 @@ public class Undeploy {
 	    logger.info("Property wsddTemplate set to: " + wsddTemplate);
 	}
 
+	// get the location of final WSDD
 	String wsddFinal = System.getProperty("wsddFinal");
 	if (wsddFinal == null) {
 	    logger.error("System property wsddFinal not set!");
@@ -57,12 +73,20 @@ public class Undeploy {
 	    logger.info("Property wsddFinal set to: " + wsddFinal);
 	}
 
+	// check to see if WSDD template exists
 	File f = new File(wsddTemplate);
 	if (!f.exists()) {
 	    logger.error("WSDD template file " + wsddTemplate + " does not exist");
 	    System.exit(1);
 	}
 
+	// set the final service name
+	if (version != null) {
+	    serviceName += "_" + version;
+	}
+	logger.error("Service name used for undeployment: " + serviceName);
+
+	// write out the final WSDD file
 	byte[] data = new byte[(int) f.length()];
 	FileInputStream fIn = new FileInputStream(f);
 	fIn.read(data);
