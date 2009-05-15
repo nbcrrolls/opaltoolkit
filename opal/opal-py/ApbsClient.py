@@ -1,3 +1,7 @@
+#!/usr/bin/python
+#this example invoke APBS service on ws.nbcr.net and it uses SOAP attachments 
+#to upload input files on the server
+
 import sys
 import time
 import httplib
@@ -13,12 +17,12 @@ from ZSI.TC import String
 proto = "http"
 
 # Host and port for remote services
-baseURL = proto + "://ws.nbcr.net:8080/"
+baseURL = proto + "://ws.nbcr.net/"
 
 # Retrieve a reference to the AppServicePort
 appLocator = AppServiceLocator()
 appServicePort = appLocator.getAppServicePort(
-    baseURL + "opal/services/ApbsOpalService")
+    baseURL + "opal2/services/APBS_1.1.0")
 	
 # Set up remote job launch
 req = launchJobRequest()
@@ -30,18 +34,20 @@ req._argList = "apbs.in"
 inputFiles = []
 inputFile0 = ns0.InputFileType_Def('inputFile')
 inputFile0._name = 'apbs.in'
-sampleFile0 = open("etc/apbs.in", "r")
-sampleFileString0 = sampleFile0.read()
-sampleFile0.close()
-inputFile0._contents = sampleFileString0
+#sampleFile0 = open("etc/apbs.in", "r")
+#inputFile0._contents = sampleFile0.read()
+#sampleFile0.close()
+#To send an attachment use the _attachment instead of the _contents
+inputFile0._attachment = open("etc/apbs.in", "r")
 inputFiles.append(inputFile0)
 
 inputFile1 = ns0.InputFileType_Def('inputFile')
 inputFile1._name = 'ion.xml'
-sampleFile1 = open("etc/ion.xml", "r")
-sampleFileString1 = sampleFile1.read()
-sampleFile1.close()
-inputFile1._contents = sampleFileString1
+#sampleFile1 = open("etc/ion.xml", "r")
+#inputFile1._contents = sampleFile1.read()
+#sampleFile1.close()
+#To send attachment use the _attachment instead of the _contents
+inputFile1._attachment = open("etc/ion.xml", "r")
 inputFiles.append(inputFile1)
 
 req._inputFile = inputFiles
