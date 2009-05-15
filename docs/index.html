@@ -31,16 +31,28 @@ as you have the following packages installed.
    have a Python installation on your local machine. Add the Python bin
    directory to your environment variable PATH.</li>
    
-   <li><p>ZSI 2.1_a1: ZSI is a SOAP and Web services toolkit for
-   Python. Download ZSI from <a
-   href="http://sourceforge.net/project/showfiles.php?group_id=26590&package_id=30660">SourceForge</a>.
+   <li><p>ZSI 2.1_a2: ZSI is a SOAP and Web services toolkit for
+   Python. If you want to use SOAP attachment you need to use the ZSI
+	 included with this distribution (zsi-2.1_a2.tar.gz). This version 
+	 has some patch which allows to send SOAP attachment if you don&#8217;t 
+	 need SOAP attachment you can use the ZSI 2.1_a1 that can be downloaded at 
+	 <a href="http://sourceforge.net/project/showfiles.php?group_id=26590&package_id=30660">SourceForge</a>.
+	 The ZSI version included with this distribution can also be obtained with
+	 SVN using:
+	 <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000">
+	 <pre class="SCREEN">
+   svn co --revision 1490 https://pywebsvcs.svn.sourceforge.net/svnroot/pywebsvcs/trunk/zsi </pre>
+	 </FONT></TD></TR>
+	 </TABLE>
+
    If you are installing on a Unix platform, you would need to use a sudo
-   or root shell. Change to the ZSI-2.1-a1/ directory that is extracted from
+   or root shell. Change to the ZSI-2.1-a1/ or ZSI-2.1-a2/ directory that is extracted from
    the tarball, and execute the following command:
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
-       python setup.py install</pre>
+   python setup.py install</pre>
    </FONT></TD></TR>
    </TABLE>
 
@@ -53,7 +65,7 @@ as you have the following packages installed.
    Henceforth, we will refer to this location as <i>WSDL2PY_HOME</i>.
 
    <p><i>Opal will not work with any other version of ZSI. Please ensure
-   that you are using ZSI version 2.1-a1.</i>.
+   that you are using ZSI version 2.1-a1 or 2.1-a2 (revision 1490).</i>.
 </ol>
 
 <h2>3. Installation</h2>
@@ -74,11 +86,22 @@ as follows:
 
 <p>This should create a new directory called opal-py-$VERSION/ where all
 the sources are expanded. Henceforth, we will call this directory
-<i>OPAL_PY_HOME</i>.
+<i>OPAL_PY_HOME</i>. 
 </li>
 
-<li><p>Generate the stubs from the WSDL file with the following command inside
-the $OPAL_PY_HOME directory:
+<li><p>If you are using the included ZSI version 2.1-a2 you can skip the next
+step and go directly at 4. Runnning the Client.</p></li>
+
+<li><p>Remove the included stubs inside the $OPAL_PY_HOME directory with the
+following command:</p>
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000"
+   <pre class="SCREEN">
+   rm AppService_*</pre>
+   </FONT></TD></TR>
+   </TABLE>
+	 <p>Generate the stubs from the WSDL file with the following command inside
+	 the $OPAL_PY_HOME directory:</p>
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">

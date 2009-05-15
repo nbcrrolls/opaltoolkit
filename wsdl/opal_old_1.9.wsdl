@@ -6,8 +6,7 @@
 		  xmlns:apachesoap="http://xml.apache.org/xml-soap" 
 		  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
 		  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
-		  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
-		  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 		  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
 
   <wsdl:types>
@@ -42,6 +41,7 @@
 	  <xsd:element name="id" type="xsd:string"/>
 
 	  <!-- name of flag listing one at a time (e.g. -a, -l) -->
+	  <!-- or a regular expression representing a combination -->
 	  <xsd:element name="tag" type="xsd:string"/>
 	  
 	  <!-- what is the default value for this flag  -->
@@ -61,7 +61,7 @@
 	  <!-- for referencing this parameter later -->
 	  <xsd:element name="id" type="xsd:string"/>
 	  
-	  <!-- tags that refer to the parameter (e.g. -p, -o, etc) -->
+	  <!-- tags or expressions that refer to the parameter (e.g. -p, -o, etc) -->
 	  <!-- optional for unnamed (non-tagged) parameters -->
 	  <xsd:element name="tag" type="xsd:string" minOccurs="0"/>
 	  
@@ -216,7 +216,6 @@
 	<xsd:sequence>
 	  <xsd:element name="usage" type="xsd:string"/>
 	  <xsd:element name="info" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
-	  <xsd:element name="version" type="xsd:string" minOccurs="0" maxOccurs="1"/>
 	  <xsd:element name="types" type="types:ArgumentsType" minOccurs="0"/>
 	</xsd:sequence>
 	<xsd:attribute name="appName" type="xsd:string"/>
@@ -231,10 +230,6 @@
 	  <xsd:element name="metadata" type="types:AppMetadataType"/>
 	  <xsd:element name="binaryLocation" type="xsd:string"/>
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
-	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
-	  <xsd:element name="jobManagerFQCN" type="xsd:string" minOccurs="0"/>
-	  <xsd:element name="globusGatekeeper" type="xsd:anyURI" minOccurs="0"/>
-	  <xsd:element name="gridftpBase" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
 	</xsd:sequence>
       </xsd:complexType>
@@ -242,10 +237,7 @@
       <xsd:complexType name="InputFileType">
 	<xsd:sequence>
 	  <xsd:element name="name" type="xsd:string"/>
-	  <xsd:element name="contents" type="xsd:base64Binary" minOccurs="0"/>
-	  <xsd:element name="location" type="xsd:anyURI" minOccurs="0"/>
-          <xsd:element name="attachment" type="apachesoap:DataHandler" 
-	  	       minOccurs="0"/>
+	  <xsd:element name="contents" type="xsd:base64Binary"/>
 	</xsd:sequence>
       </xsd:complexType>
 
@@ -253,7 +245,6 @@
 	<xsd:sequence>
 	  <xsd:element name="argList" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="numProcs" type="xsd:int" minOccurs="0"/>
-          <xsd:element name="wallClockTime" type="xsd:nonNegativeInteger"  minOccurs="0"/>
 	  <xsd:element name="inputFile" type="types:InputFileType"
 		       minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
@@ -294,14 +285,6 @@
 	  <xsd:element name="stdErr" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="outputFile" type="types:OutputFileType"
 		       minOccurs="0" maxOccurs="unbounded"/>
-	</xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:complexType name="JobStatisticsType">
-	<xsd:sequence>
-	  <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0"/>
-	  <xsd:element name="activationTime" type="xsd:dateTime" minOccurs="0"/>
-	  <xsd:element name="completionTime" type="xsd:dateTime" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 
@@ -347,12 +330,6 @@
 
       <xsd:element name="queryStatusOutput" 
 		   type="types:StatusOutputType"/>
-
-      <xsd:element name="getJobStatisticsInput" 
-		   type="xsd:string"/>
-
-      <xsd:element name="getJobStatisticsOutput" 
-		   type="types:JobStatisticsType"/>
 
       <xsd:element name="getOutputsInput" 
 		   type="xsd:string"/>
@@ -417,14 +394,6 @@
     <wsdl:part name="out" element="types:queryStatusOutput"/>
   </wsdl:message>
 
-  <wsdl:message name="getJobStatisticsRequest">
-    <wsdl:part name="in" element="types:getJobStatisticsInput"/>
-  </wsdl:message>
-
-  <wsdl:message name="getJobStatisticsResponse">
-    <wsdl:part name="out" element="types:getJobStatisticsOutput"/>
-  </wsdl:message>
-
   <wsdl:message name="getOutputsRequest">
     <wsdl:part name="in" element="types:getOutputsInput"/>
   </wsdl:message>
@@ -486,13 +455,6 @@
       <wsdl:input message="as:queryStatusRequest"/>
       <wsdl:output message="as:queryStatusResponse"/>
       <wsdl:fault name="queryStatusFault"
-		  message="as:opalFaultResponse"/>
-    </wsdl:operation>
-
-    <wsdl:operation name="getJobStatistics">
-      <wsdl:input message="as:getJobStatisticsRequest"/>
-      <wsdl:output message="as:getJobStatisticsResponse"/>
-      <wsdl:fault name="getJobStatisticsFault"
 		  message="as:opalFaultResponse"/>
     </wsdl:operation>
 
@@ -583,19 +545,6 @@
       </wsdl:output>
       <wsdl:fault name="queryStatusFault">
 	<wsdlsoap:fault name="queryStatusFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-
-    <wsdl:operation name="getJobStatistics">
-      <wsdlsoap:operation soapAction="http://nbcr.sdsc.edu/opal/getJobStatistics"/>
-      <wsdl:input name="getJobStatisticsRequest">
-	<wsdlsoap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getJobStatisticsResponse">
-	<wsdlsoap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="getJobStatisticsFault">
-	<wsdlsoap:fault name="getJobStatisticsFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
 
