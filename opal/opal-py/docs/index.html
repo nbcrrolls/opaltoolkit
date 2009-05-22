@@ -6,7 +6,7 @@
 <!-- <body text="black" link="darkblue" vlink="black" link="black" -->
 <!-- bgcolor="white"> -->
 <body>
-<h1>Python Opal Web Service Client: Version 1.9.3</h1>
+<h1>Python Opal Web Service Client: Version 2.0.0</h1>
 
 <hr/>
 
@@ -33,15 +33,34 @@ as you have the following packages installed.
    
    <li><p>ZSI 2.1_a2: ZSI is a SOAP and Web services toolkit for
    Python. If you want to use SOAP attachment you need to use the ZSI
-	 included with this distribution (zsi-2.1_a2.tar.gz). This version 
+	 included with this distribution (ZSI-2.1_a2-py2.6.egg). This version 
 	 has some patch which allows to send SOAP attachment if you don&#8217;t 
 	 need SOAP attachment you can use the ZSI 2.1_a1 that can be downloaded at 
 	 <a href="http://sourceforge.net/project/showfiles.php?group_id=26590&package_id=30660">SourceForge</a>.
 	 The ZSI version included with this distribution can also be obtained with
 	 SVN using <i>svn co --revision 1490 https://pywebsvcs.svn.sourceforge.net/svnroot/pywebsvcs/trunk/zsi</i>.
 
-   If you are installing on a Unix platform, you would need to use a sudo
-   or root shell. Change to the ZSI-2.1-a1/ or ZSI-2.1-a2/ directory that is extracted from
+    If you want to use the ZSI shipped with this distribution you have to 
+    to include in your
+    PYTHONPATH environmental variable the the ZSI-2.1_a2-py2.6.egg file.
+    If you are using BASH shell on Unix you can execute:
+    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+    <TR><TD><FONT COLOR="#000000">
+    <pre class="SCREEN">
+    export PYTHONPATH=&lt;/path/to/ZSI-2.1_a2-py2.6.egg&gt;:$PYTHONPATH</pre>
+    </FONT></TD></TR>
+    </TABLE>
+    On c shell you have to execute:
+    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+    <TR><TD><FONT COLOR="#000000">
+    <pre class="SCREEN">
+    set PYTHONPATH=&lt;/path/to/ZSI-2.1_a2-py2.6.egg&gt;:${PYTHONPATH}</pre>
+    </FONT></TD></TR>
+    </TABLE>
+
+
+   If you want to use ZSI 2.1_a1 from SourceForge on a Unix platform, you would need to use a sudo
+   or root shell. Change to the ZSI-2.1-a1/ or directory that is extracted from
    the tarball, and execute the following command:
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000">
@@ -59,14 +78,14 @@ as you have the following packages installed.
    Henceforth, we will refer to this location as <i>WSDL2PY_HOME</i>.
 
    <p><i>Opal will not work with any other version of ZSI. Please ensure
-   that you are using ZSI version 2.1-a1 or 2.1-a2 (revision 1490).</i>.
+   that you are using ZSI version 2.1-a1 or the included 2.1-a2 (revision 1490).</i>.
 </ol>
 
 <h2>3. Installation</h2>
 
 <ol TYPE="1">
 <li><p>Download the Python source distribution for installation from <a
-href="https://sourceforge.net/project/showfiles.php?group_id=211778">here</a>,
+href="http://sourceforge.net/project/showfiles.php?group_id=211778">here</a>,
 if you don't have the appropriate version already.
 
 <p>Expand the tarball that you have downloaded using the GNU tar utility,
@@ -83,8 +102,8 @@ the sources are expanded. Henceforth, we will call this directory
 <i>OPAL_PY_HOME</i>. 
 </li>
 
-<li><p>If you are using the included ZSI version 2.1-a2 you can skip the next
-step and go directly at 4. Runnning the Client.</p></li>
+<li><p><b>If you are using the included ZSI version 2.1-a2 you can skip the next
+step and go directly at 4. Runnning the Client.</b></p></li>
 
 <li><p>Remove the included stubs inside the $OPAL_PY_HOME directory with the
 following command:</p>
@@ -132,9 +151,9 @@ $OPAL_PY_HOME directory.
    </FONT></TD></TR>
    </TABLE>
 
-<p>By default, the client uses the Web service running on
-http://ws.nbcr.net:8080. To change this location, modify the URL inside
-Pdb2pqrClient.py.
+<p>By default, the client uses the Web service running on <a
+href="http://ws.nbcr.net">http://ws.nbcr.net</a>. To change this location,
+modify the URL inside Pdb2pqrClient.py.
 
 <h2>5. Developers Guide</h2>
 <p>To use Opal with the python libraries you have to make sure that 
