@@ -8,7 +8,7 @@ mkdir opal-py-$VERSION
 
 # copy dummy client, README, LICENSE, XSD, and WSDL into the temp directory
 echo "Copying sources into temporary directory"
-cp -r Pdb2pqrClient.py ApbsClient.py AppService_* zsi-2.1_a2.tar.gz ZSI-2.1_a2-py2.6.egg LICENSE README CHANGELOG docs etc wsdl opal-py-$VERSION/
+cp -r Pdb2pqrClient.py ApbsClient.py AppService_* LICENSE README CHANGELOG docs etc wsdl prereqs opal-py-$VERSION/
 rm -rf `find opal-py-$VERSION -name ".svn"`
 
 # create a tarball

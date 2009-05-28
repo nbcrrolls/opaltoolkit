@@ -29,56 +29,7 @@ as you have the following packages installed.
    <li><p>Python 2.3 or higher: Download and install Python from <a
    href="http://www.python.org/">http://www.python.org/</a>, if you don't
    have a Python installation on your local machine. Add the Python bin
-   directory to your environment variable PATH.</li>
-   
-   <li><p>ZSI 2.1_a2: ZSI is a SOAP and Web services toolkit for
-   Python. If you want to use SOAP attachment you need to use the ZSI
-	 included with this distribution (ZSI-2.1_a2-py2.6.egg). This version 
-	 has some patch which allows to send SOAP attachment if you don&#8217;t 
-	 need SOAP attachment you can use the ZSI 2.1_a1 that can be downloaded at 
-	 <a href="http://sourceforge.net/project/showfiles.php?group_id=26590&package_id=30660">SourceForge</a>.
-	 The ZSI version included with this distribution can also be obtained with
-	 SVN using <i>svn co --revision 1490 https://pywebsvcs.svn.sourceforge.net/svnroot/pywebsvcs/trunk/zsi</i>.
-
-    If you want to use the ZSI shipped with this distribution you have to 
-    to include in your
-    PYTHONPATH environmental variable the the ZSI-2.1_a2-py2.6.egg file.
-    If you are using BASH shell on Unix you can execute:
-    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-    <TR><TD><FONT COLOR="#000000">
-    <pre class="SCREEN">
-    export PYTHONPATH=&lt;/path/to/ZSI-2.1_a2-py2.6.egg&gt;:$PYTHONPATH</pre>
-    </FONT></TD></TR>
-    </TABLE>
-    On c shell you have to execute:
-    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-    <TR><TD><FONT COLOR="#000000">
-    <pre class="SCREEN">
-    set PYTHONPATH=&lt;/path/to/ZSI-2.1_a2-py2.6.egg&gt;:${PYTHONPATH}</pre>
-    </FONT></TD></TR>
-    </TABLE>
-
-
-   If you want to use ZSI 2.1_a1 from SourceForge on a Unix platform, you would need to use a sudo
-   or root shell. Change to the ZSI-2.1-a1/ or directory that is extracted from
-   the tarball, and execute the following command:
-   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000">
-   <pre class="SCREEN">
-   python setup.py install</pre>
-   </FONT></TD></TR>
-   </TABLE>
-
-   <p>Note the location where the ZSI package is installed. In particular,
-   note the location of the <i>wsdl2py</i> script that we need to use in
-   the future. Typically, the packages are installed inside the Python
-   installation. On Windows, wsdl2py typically resides inside
-   $PYTHON_HOME/scripts, where PYTHON_HOME represents the location of the
-   Python installation. On Unix, it is usually inside $PYTHON_HOME/bin.
-   Henceforth, we will refer to this location as <i>WSDL2PY_HOME</i>.
-
-   <p><i>Opal will not work with any other version of ZSI. Please ensure
-   that you are using ZSI version 2.1-a1 or the included 2.1-a2 (revision 1490).</i>.
+   directory to your environment variable PATH.</li>   
 </ol>
 
 <h2>3. Installation</h2>
@@ -89,7 +40,8 @@ href="http://sourceforge.net/project/showfiles.php?group_id=211778">here</a>,
 if you don't have the appropriate version already.
 
 <p>Expand the tarball that you have downloaded using the GNU tar utility,
-as follows:
+as follows:</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
@@ -102,18 +54,65 @@ the sources are expanded. Henceforth, we will call this directory
 <i>OPAL_PY_HOME</i>. 
 </li>
 
-<li><p><b>If you are using the included ZSI version 2.1-a2 you can skip the next
-step and go directly at 4. Runnning the Client.</b></p></li>
+<li><p>Install ZSI version 2.1_a2 that is part of this distribution. ZSI is
+   a SOAP and Web services toolkit for Python. The ZSI version included
+   with this distribution can also be obtained from the SourceForge SVN
+   using <i>svn co --revision 1490
+   https://pywebsvcs.svn.sourceforge.net/svnroot/pywebsvcs/trunk/zsi</i>.
+   To use the Opal clients, you only need the <i>egg</i> version of the ZSI
+   installation from the <i>prereqs</i> directory. However, if you need a
+   full installation of ZSI (which is useful for features such as code
+   regeneration from WSDL), you may install it from the tarball provided in
+   the same directory. You can do either of the above as follows.
 
-<li><p>Remove the included stubs inside the $OPAL_PY_HOME directory with the
-following command:</p>
+   <p>To access the functionality of ZSI, you may simply add the ZSI-2.1_a2-py2.6.egg file to your PYTHONPATH. If you are using a bash shell on Unix, you can execute:</p>
+
+    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+    <TR><TD><FONT COLOR="#000000">
+    <pre class="SCREEN">
+    export PYTHONPATH=$OPAL_PY_HOME/prereqs/ZSI-2.1_a2-py2.6.egg:$PYTHONPATH</pre>
+    </FONT></TD></TR>
+    </TABLE>
+
+    <p>If you are using a tcsh shell, you can execute:</p>
+
+    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+    <TR><TD><FONT COLOR="#000000">
+    <pre class="SCREEN">
+    setenv PYTHONPATH=$OPAL_PY_HOME/prereqs/ZSI-2.1_a2-py2.6.egg:${PYTHONPATH}</pre>
+    </FONT></TD></TR>
+    </TABLE>
+
+    <p>If you wish to install the full version of ZSI, you would need to
+    use a sudo or root shell on Unix. Expand the prereqs/zsi-2.1_a2.tar.gz
+    tarball, change to the directory that is extracted from it, and execute
+    the following command:</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
-   rm AppService_*</pre>
+   python setup.py install</pre>
    </FONT></TD></TR>
    </TABLE>
-	 <p>Generate the stubs from the WSDL file with the following command inside
+
+   <p>Note the location where the ZSI package is installed. In particular,
+   note the location of the <i>wsdl2py</i> script that we may need to use
+   in the future for code generation. Typically, the packages are installed
+   inside the Python installation. On Windows, wsdl2py typically resides
+   inside $PYTHON_HOME/scripts, where PYTHON_HOME represents the location
+   of the Python installation. On Unix, it is usually inside
+   $PYTHON_HOME/bin.
+
+   <p><i>Opal will not work with any other version of ZSI. Please ensure
+   that you are using the versions shipped with this installation of Opal.</i>
+</li>
+
+<li><p>OPTIONAL: If you wish to regenerate the client-side stubs, you can
+do so by using the Opal WSDL. However, you must have a full ZSI
+installation done manually as described above. Most users can use the
+pre-shipped stubs, and skip this step.
+
+<p>To generate the stubs from the WSDL file, run the following command inside
 	 the $OPAL_PY_HOME directory:</p>
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
@@ -122,7 +121,7 @@ following command:</p>
    </FONT></TD></TR>
    </TABLE>
 
-<p>This generates two useful files - AppService_client.py and
+<p>This generates two relevant files - AppService_client.py and
 AppService_types.py. The former contains the stubs required to
 communicate with the remote Web service, while the latter contains the
 types defined in the WSDL for the service.
@@ -131,19 +130,20 @@ types defined in the WSDL for the service.
 
 <h2>4. Running the Client</h2>
 
-<p>A sample Opal client is shown in $OPAL_PY_HOME/Pdb2pqrClient.py. It shows how to
-retrieve a reference to a remote Web service port, set parameters, and
-invoke remote operations. To launch the remote PDB2PQR service, the argument
-string (<tt>--ff=amber sample.pdb sample.pqr</tt>) and the list of
-input files (<tt>etc/sample.pdb</tt>) are sent over. The service returns a
-<tt>jobID</tt> that is used later to query for status and retrieve
-locations of the output files. Alternatively, the service can also be
-invoked in a <em>blocking</em> fashion, where the client blocks until the
-remote execution is complete, and the outputs are returned as a response to
-the same invocation.
+<p>A sample Opal client is provided in $OPAL_PY_HOME/Pdb2pqrClient.py. It
+shows how to retrieve a reference to a remote Web service port, set
+parameters, and invoke remote operations. To launch the remote PDB2PQR
+service, the argument string (<tt>--ff=amber sample.pdb sample.pqr</tt>)
+and the list of input files (<tt>etc/sample.pdb</tt>) are sent over. The
+service returns a <tt>jobID</tt> that is used later to query for status and
+retrieve locations of the output files. Alternatively, the service can also
+be invoked in a <em>blocking</em> fashion, where the client blocks until
+the remote execution is complete, and the outputs are returned as a
+response to the same invocation.
 
 <p>To run the client, you can run the following command from inside the
-$OPAL_PY_HOME directory.
+$OPAL_PY_HOME directory.</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
@@ -153,20 +153,22 @@ $OPAL_PY_HOME directory.
 
 <p>By default, the client uses the Web service running on <a
 href="http://ws.nbcr.net">http://ws.nbcr.net</a>. To change this location,
-modify the URL inside Pdb2pqrClient.py.
+modify the URL inside Pdb2pqrClient.py. Also note that this client uses the
+SOAP Base64 encoding to upload input files - to use MIME attachments for
+input uploads, please follow the Developers Guide below.
 
 <h2>5. Developers Guide</h2>
-<p>To use Opal with the python libraries you have to make sure that 
-the ZSI is installed properly (as indicated above) and the stubs
-(AppService_client.py AppService_types.py)
-are in your python path.
-In this section we provide some code snippet showing the main steps 
-for invoking a Opal job.
-First it is necessary to create a AppServicePort type, as shown below. 
-<i>url</i> should point to the Opal application you want to invoke. 
-If you get errors in these first lines of code probably the python 
-interpreter can not find the stubs (AppService_client.py and 
-AppService_types.py).
+
+<p>To use Opal with the python libraries you have to make sure that the ZSI
+is installed properly (as indicated above) and the stubs
+(AppService_client.py AppService_types.py) are in your Python path. In this
+section we provide some code snippets showing the main steps for invoking a
+Opal service. First it is necessary to retrieve a reference to an
+AppServicePort type, as shown below. The <i>url</i> should point to the
+Opal application you want to invoke. If you get an error in these first
+lines of code, it is probably because the Python interpreter can not find
+the stubs (AppService_client.py and AppService_types.py).</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
@@ -177,8 +179,10 @@ appLocator = AppService_client.AppServiceLocator()
 appServicePort = appLocator.getAppServicePort(url)</pre>
    </FONT></TD></TR>
    </TABLE>
-<p>The second step to launch Opal job is to create the request message 
-as shown in the next section. </p>
+
+<p>The second step to launch a job via Opal is to create the request message 
+as follows.</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
@@ -186,7 +190,9 @@ as shown in the next section. </p>
 req = AppService_client.launchJobRequest()
 req._argList = "put the command line here"
 req._numProcs = numberOfProcessors
+
 #loading two files
+# first file
 inputFile1 = ns0.InputFileType_Def(&#8217;inputFile&#8217;)
 inputFile1._name = "fileName1"
 infile = open("/some/path/fileName1", "r")
@@ -202,42 +208,47 @@ inputFiles = [inputFile1, inputFile2]
 req._inputFile = inputFile</pre>
    </FONT></TD></TR>
    </TABLE>
-<p>Finally the client can invoke the remote application and 
-wait for it's termination. In this example we present a polling 
-approach to determine when the execution of the application is 
-finished, it is also possible to use the 
-<i>req.launchJobBlocking(req)</i> which does not return till
+
+<p>Finally the client can invoke the remote application and wait for it's
+termination. In this example, we present a polling approach to determine
+when the execution of the application is finished. Alternatively, t is also
+possible to use the <i>req.launchJobBlocking(req)</i> which blocks until
 the end of the application.
 </p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
-#invoking and waiting for the end
+#launch a remote job
 resp = appServicePort.launchJob(req)
 jobID = resp._jobID
 code = resp._status._code
+
+#wait till error (code 4) or completion (code 8)
 while(code!=4 and code!=8):
-		#sleep or wait
-		code = appServicePort.queryStatus(AppService_client.queryStatusRequest(jobID))._code
+    #sleep or wait
+    code = appServicePort.queryStatus(AppService_client.queryStatusRequest(jobID))._code
+
+#check job status for successful execution
 if(status==8):
     #Job completed successfully
-		resp = appServicePort.getOutputs(AppService_client.getOutputsRequest(jobID))
-		#resp._stdOut  contains URL to stdout
-		#resp._stdErr  contains URL to stderr 
-		#resp._outputFile   contains a list of URL with all the other output
+        resp = appServicePort.getOutputs(AppService_client.getOutputsRequest(jobID))
+	#resp._stdOut  contains URL to stdout
+	#resp._stdErr  contains URL to stderr 
+	#resp._outputFile   contains a list of URL with all the other output
 else:
     #Job died or something else went wrong</pre>
    </FONT></TD></TR>
    </TABLE>
-
 </p>
 
 <h3>5.1 Attachment</h3>
 
 <p>To send input files using MIME Attachment when creating the request
 the client should use the <i>_attachment</i> property of the InputFileType
-instead of the <i>_content</i>. Below an example of setting up an input file with 
-attachment, for a full working example see ApbsClient.py.
+instead of the <i>_content</i>. Below is an example of setting up an input file with 
+an attachment. For a full working example see ApbsClient.py.</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
@@ -246,7 +257,8 @@ inputFile1._name = 'ion.xml'
 inputFile1._attachment = open("etc/ion.xml", "r") </pre>
    </FONT></TD></TR>
    </TABLE>
-The client should just pass a pointer to the file, and not the content 
+
+<p>The client should just pass a pointer to the file, and not the content 
 as in the previous example.
 
 <h3>5.2 Security</h3>
@@ -254,13 +266,14 @@ as in the previous example.
 <p>The Opal Web service can be optionally set up to accept connections
 using GSI-based HTTPS documentation for instructions). The following
 snippet of code from Pdb2pqrClient.py shows how to access a secure Opal
-service from Python.
+service from Python.</p>
+
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
 # set the locations for the X509 certificate and key
-cert = "/Users/sriramkrishnan/certs/apbs_service.cert.pem"
-key = "/Users/sriramkrishnan/certs/apbs_service.privkey"
+cert = "location of X509 certificate"
+key = "location of unencrypted private key"
 ...
     # example of ssl invocation
     appServicePort = appLocator.getAppServicePortType(
