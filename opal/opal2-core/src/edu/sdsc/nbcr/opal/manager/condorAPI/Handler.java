@@ -1,4 +1,4 @@
-package condorAPI;
+package edu.sdsc.nbcr.opal.manager.condorAPI;
 
 /**
  * Interface for event handlers.

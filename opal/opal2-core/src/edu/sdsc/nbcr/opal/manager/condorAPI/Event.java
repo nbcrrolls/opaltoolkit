@@ -1,7 +1,7 @@
-package condorAPI;
+package edu.sdsc.nbcr.opal.manager.condorAPI;
 
 import condor.classad.*;
-import condorAPI.event.*;
+import edu.sdsc.nbcr.opal.manager.condorAPI.event.*;
 import java.text.*;
 import java.util.*;
 

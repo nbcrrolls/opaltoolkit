@@ -1,5 +1,5 @@
-package condorAPI.event;
-import condorAPI.*;
+package edu.sdsc.nbcr.opal.manager.condorAPI.event;
+import edu.sdsc.nbcr.opal.manager.condorAPI.*;
 import java.util.regex.*;
 
 public class CpuUsage{
