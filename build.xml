@@ -240,6 +240,8 @@ Author:
         <include name="rome-1.0RC1.jar" />
         <include name="jdom-1.1.jar" />
        
+	<!-- condor ClassAd jar -->
+	<include name="classad.jar" />
       </fileset>
     </copy>
 

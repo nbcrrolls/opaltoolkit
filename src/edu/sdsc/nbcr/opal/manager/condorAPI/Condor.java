@@ -17,7 +17,7 @@ public class Condor implements Runnable{
   static final String CONDOR_STATUS     = "condor_status";
   static final String CONDOR_Q          = "condor_q";
   static final String CONDOR_RESCHEDULE = "condor_reschedule";
-  static final String CONDOR_DEFAULT_LOG = "log";
+  static final String CONDOR_DEFAULT_LOG = "condor.log";
   static final int    CONDOR_DEFAULT_INTERVAL = 5;
 
   static boolean debug = false;
@@ -36,13 +36,6 @@ public class Condor implements Runnable{
    */
   public static void setDebug(boolean debug){
 	Condor.debug = debug;
-  }
-
-  /**
-   * Creates a condor instance
-   */
-  public Condor(){
-	setLogFile(CONDOR_DEFAULT_LOG, CONDOR_DEFAULT_INTERVAL);
   }
 
   /**
