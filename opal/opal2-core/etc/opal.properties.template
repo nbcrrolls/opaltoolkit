@@ -30,6 +30,7 @@ opal.hard_limit=3600
 opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
 # opal.jobmanager=edu.sdsc.nbcr.opal.manager.DRMAAJobManager
 # opal.jobmanager=edu.sdsc.nbcr.opal.manager.GlobusJobManager
+# opal.jobmanager=edu.sdsc.nbcr.opal.manager.CondorJobManager
 # opal.jobmanager=edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager
 
 ## BEGIN: information for the DRMAA job manager
