@@ -260,6 +260,10 @@ public class DBManager {
             while( rs.next() ) {
                 Date date = rs.getDate("to_date");
                 while ( ! DateHelper.compareDates(previousDate, date) ){
+                    if ( counter == -1) {
+                        log.debug("Series has been filled up with zeros for service: " + service); 
+                        break;
+                    }
                     //since some day can have no hits we have to put zero in the array for those days
                     values[counter] = 0;
                     log.trace("Inserting a zero for date: " + previousDate + " on position: " + counter);
@@ -267,7 +271,7 @@ public class DBManager {
                     previousDate = DateHelper.subtractDay(previousDate);
                 }//if
                 if ( counter == -1) {
-                    log.debug("Series has been filled up with zeros for service: " + service); 
+                    log.debug("Series has been filled up for service: " + service); 
                     break;
                 }
                 //we don't have a gap!
