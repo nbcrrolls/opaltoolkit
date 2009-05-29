@@ -25,7 +25,8 @@ SRCDIR=../opal-core/docs/
 mkdir -p $DESTDIR
 cp -r $SRCDIR* $DESTDIR
 # opal-py
-cp ../opal-py/docs/index.html $DESTDIR/opal-py-index.html
+#cp ../opal-py/docs/index.html $DESTDIR/opal-py-index.html
+#not needed anymore now it's commited in the web site svn
 # opal-perl
 cp ../opal-perl/docs/index.html $DESTDIR/opal-perl-index.html
 
