@@ -6,11 +6,11 @@ import org.globus.gram.GramJob;
 
 import org.apache.log4j.Logger;
 
-import condorAPI.Condor;
-import condorAPI.Job;
-import condorAPI.Cluster;
-import condorAPI.JobDescription;
-import condorAPI.CondorException;
+import edu.sdsc.nbcr.opal.manager.condorAPI.Condor;
+import edu.sdsc.nbcr.opal.manager.condorAPI.Job;
+import edu.sdsc.nbcr.opal.manager.condorAPI.Cluster;
+import edu.sdsc.nbcr.opal.manager.condorAPI.JobDescription;
+import edu.sdsc.nbcr.opal.manager.condorAPI.CondorException;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
@@ -175,12 +175,11 @@ public class CondorJobManager implements OpalJobManager {
 	}
 
 	// get the hard run limit
-	// TODO: not sure yet how to do this
-// 	long hardLimit = 0;
-// 	if ((props.getProperty("opal.hard_limit") != null)) {
-// 	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit"));
-// 	    logger.info("All jobs have a hard limit of "  + hardLimit + " seconds");
-// 	}
+	long hardLimit = 0;
+	if ((props.getProperty("opal.hard_limit") != null)) {
+	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit"));
+	    logger.info("All jobs have a hard limit of "  + hardLimit + " seconds");
+	}
 
 	// launch the job using the above information
 	try {
@@ -188,25 +187,21 @@ public class CondorJobManager implements OpalJobManager {
 
 	    // create a JobDescription object in the code
 	    JobDescription jd = new JobDescription();
-	    jd.addAttribute("executable", cmd);
 	    jd.addAttribute("universe", "vanilla");
-	    jd.addAttribute("output", workingDir + "/stdout.txt");
-	    jd.addAttribute("error", workingDir + "/stderr.txt");
+	    jd.addAttribute("executable", cmd);
 	    jd.addAttribute("arguments", args);
 	    jd.addAttribute("initialdir", workingDir);
+	    jd.addAttribute("output", workingDir + "/stdout.txt");
+	    jd.addAttribute("error", workingDir + "/stderr.txt");
 	    // TODO: add all input files as "input"
+	    // only required if files need to be staged
 	    jd.addQueue();
 
-// 	    if (hardLimit != 0) {
-// 		try { 
-// 		    jt.setHardRunDurationLimit(hardLimit);
-// 		} catch (UnsupportedAttributeException e) {
-// 		    String msg = "Can't set hard limit - " +
-// 			e.getMessage();
-// 		    logger.error(msg);
-// 		    // not fatal - continue
-// 		}
-// 	    }
+	    if (hardLimit != 0) {
+		String msg = "Condor job manager does not support hard limits";
+		logger.error(msg);
+		// not fatal - continue
+	    }
 
 	    Cluster cluster = condor.submit(jd);
 	    job = cluster.getJob(0);
@@ -286,11 +281,9 @@ public class CondorJobManager implements OpalJobManager {
 	}
 
 	// update status
-	// TODO: need to update condorAPI to return status
-	// int exitValue = jobInfo.getExitStatus();
-	int exitValue = 0;
+	int exitValue = job.getStatus();
 
-	if (exitValue == 0) {
+	if (exitValue == Job.COMPLETED) {
 	    status.setCode(GramJob.STATUS_DONE);
 	    status.setMessage("Execution complete - " + 
 			      "check outputs to verify successful execution");
