@@ -193,6 +193,9 @@ public class CondorJobManager implements OpalJobManager {
 	    jd.addAttribute("initialdir", workingDir);
 	    jd.addAttribute("output", workingDir + "/stdout.txt");
 	    jd.addAttribute("error", workingDir + "/stderr.txt");
+	    condor.setLogFile(workingDir + "/condor.log",
+			      5);
+
 	    // TODO: add all input files as "input"
 	    // only required if files need to be staged
 	    jd.addQueue();
