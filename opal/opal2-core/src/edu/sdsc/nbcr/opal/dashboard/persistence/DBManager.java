@@ -1,4 +1,8 @@
-
+/**
+ * Luca Clementi 
+ * 
+ * this class provide a set of APIs that abstract from the data persistency layer
+ */
 
 package edu.sdsc.nbcr.opal.dashboard.persistence;
 
@@ -10,6 +14,9 @@ import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.impl.SessionFactoryImpl;
 import java.util.List;
+import java.util.HashSet;
+import java.text.NumberFormat;
+import java.util.Arrays;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,10 +43,8 @@ import edu.sdsc.nbcr.opal.dashboard.util.DateHelper;
  * 
  * The following attributes are part of this class:
  * <ul>
- * <li>databaseUrl is the url used to connect to the DB
+ * <li>dialect is the dialect used by Hibernate
  * <li>dirver is the name of the java driver to be used to connect to the db
- * <li>dbUserName the user name to use to connect to the db
- * <li>dpPassword the password to use for connecting to the db
  * </ul>
  * 
  * @author clem
@@ -57,20 +62,6 @@ public class DBManager {
     private String dialect = null;
     private SessionFactory sessionFactory = null;
     
-    /**
-     * 
-     * @return the database URL
-     */
-//    public String getDatabaseUrl() {
-//        String driver = null;
-//        try {
-//            driver = session.connection().getMetaData().getURL();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return driver;
-//    }
-
     
     /**
      * default constructor
@@ -103,7 +94,7 @@ public class DBManager {
 
     /**
      * 
-     * @return the string representing the driver
+     * @return the string representing the dialect used by Hibernate
      */
     public String getDialect() {
         return dialect;
@@ -132,19 +123,43 @@ public class DBManager {
      * 
      * The service has to be called at least once in order to be retrieved 
      * by the client.
+     *
+     * Now (since Opal 2.1) it returns an ordered array of strings, and it 
+     * collapses multiple applications name with difference version numbers.
      * 
      * @return an Array of strings containing the list of services
      * 
      */
     public String [] getServicesList(){
+        String baseName = null;
         Session session = sessionFactory.openSession();
         List serviceList = session.createQuery(
             "select serviceName from JobInfo group by serviceName ").list();
         session.close();
         Iterator itera = serviceList.iterator();
-        return (String []) serviceList.toArray(new String[serviceList.size()]);
+        HashSet returnList = new HashSet();
+        for (;itera.hasNext();){
+            String fullName = (String) itera.next();
+            String [] splitName = fullName.split("_");
+            String version = splitName[splitName.length - 1];
+            if (isVersion(version) && (version.length() < fullName.length() ) ){
+                //the last part of the name is a version
+                int endIndex = fullName.length() - version.length() - 1;
+                baseName = fullName.substring(0, endIndex);
+            } else {
+                //Old legacy name no version
+                baseName = fullName;
+            }
+            returnList.add(baseName);
+        }
+        String [] returnArray = (String []) returnList.toArray(new String[returnList.size()]);
+        Arrays.sort(returnArray);
+        return returnArray;
     }
     
+
+
+
 
     /**
      * Legacy function it is here only for backward compatibility, it uses the getResultsTimeseries
@@ -210,7 +225,7 @@ public class DBManager {
         String query = null;
         if ( type.equals("hits") ) {
             query = "select jobInfo.startTimeDate, count(*)  " +            
-                " from JobInfo jobInfo where jobInfo.serviceName = :service" +
+                " from JobInfo jobInfo where jobInfo.serviceName like :service" +
                 " and jobInfo.startTimeDate >= :startDate " +
                 " and jobInfo.startTimeDate <= :endDate " +
                 " and jobInfo.code=8 " +
@@ -232,7 +247,7 @@ public class DBManager {
         } else if (type.equals("error") ){
             query  = "select jobInfo.startTimeDate, count(*) " +
                 "from JobInfo jobInfo " +
-            	"where jobInfo.serviceName = :service " +
+            	"where jobInfo.serviceName like :service " +
             	"and jobInfo.startTimeDate >= :startDate " +
             	"and jobInfo.startTimeDate <= :endDate " +
             	"and jobInfo.code=4 " +
@@ -244,7 +259,7 @@ public class DBManager {
         
         //going to execute the query
         try {
-            queryStat.setString("service", service)
+            queryStat.setString("service", service + "%")
                 .setDate("startDate", startDateSQL)
                 .setDate("endDate", endDateSQL);
             List result = queryStat.list();
@@ -324,29 +339,10 @@ public class DBManager {
         //a job is running if its status is 
         //STATUS_PENDING STATUS_ACTIVE STATUS_STAGE_IN STATUS_STAGE_OUT
         //1 2 64 128
-        /*
-        int number = -1;
-        String query = " select count(job_id) from job_status where " +
-        		"(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
-        		"code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
-        		"service_name='" + service + "' ;";
-        if ( ! isConnected() ) return -1;
-        try {
-            Statement sql = conn.createStatement();
-            ResultSet rs = sql.executeQuery(query);
-            
-            if ( rs.next() ){ //something wrong happen
-                number = rs.getInt("count");
-            }
-        }catch ( Exception e) {
-            log.error("Nasty error happen while query the Data Base: " + e.getMessage(), e);
-            return -1;
-        }*/
-        
         String query = " select count(jobID) from JobInfo where " +
             "(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
             "code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
-            "serviceName='" + service + "' ";
+            "serviceName like '" + service + "%' ";
 
         Session session = sessionFactory.openSession();
         Long ret = (Long) session.createQuery(query).uniqueResult();
@@ -354,6 +350,23 @@ public class DBManager {
         log.debug("getRunningJobs for service: " + service + " returning:" + ret); 
         return ret.intValue();
     }
+
+
+    /**
+     * this function returns true if the input string versionNumber
+     * represent a valid version number
+     *
+     */
+    public boolean isVersion(String versionNumber){
+        String [] numbers = versionNumber.split(".");
+        NumberFormat numberFormat = NumberFormat.getInstance();//   new NumberFormat();
+        for ( int i = 0; i < numbers.length; i++) {
+            try { numberFormat.parse(numbers[i]); }
+            catch (Exception e) { return false; }
+        }//for
+        return true;
+    }//isVersion
+
 
     /**
      * this function return the proper query based on the Datebase in use
@@ -365,7 +378,7 @@ public class DBManager {
     private String getQueryExectime(){
         String query = null;
         String queryTail = " from job_info jobInfo " +
-                " where jobInfo.service_name = :service " +
+                " where jobInfo.service_name like :service " +
                 " and jobInfo.start_time_date >= :startDate " +
                 " and jobInfo.start_time_date <= :endDate " +
                 " and jobInfo.code=8 " +
