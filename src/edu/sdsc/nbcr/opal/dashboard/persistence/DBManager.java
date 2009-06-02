@@ -61,12 +61,14 @@ public class DBManager {
     private String driver = null;
     private String dialect = null;
     private SessionFactory sessionFactory = null;
+    private boolean isConnected = true;
     
     
     /**
      * default constructor
      */
     public DBManager(){
+        isConnected = true;
         sessionFactory = edu.sdsc.nbcr.opal.state.HibernateUtil.getSessionFactory();
         driver = null;
         try {
@@ -76,6 +78,8 @@ public class DBManager {
             driver = session.connection().getMetaData().getDriverName();
             session.close();
         } catch (Exception e) {
+            //we have no connection to the DB
+            isConnected = false;
             e.printStackTrace();
         }
         //getting the dialect
@@ -114,7 +118,21 @@ public class DBManager {
      * @return true if the connection to the DB is valid
      */
     public boolean isConnected(){
-        return true;
+        if (isConnected == true) 
+            return true;
+        try {
+            //maybe not the best way to find the driver name, but I couldn't
+            //find a better one
+            Session session = sessionFactory.openSession();
+            driver = session.connection().getMetaData().getDriverName();
+            session.close();
+            isConnected = true;
+        } catch (Exception e) {
+            //we have no connection to the DB
+            isConnected = false;
+            e.printStackTrace();
+        }
+        return isConnected;
     }
 
 
