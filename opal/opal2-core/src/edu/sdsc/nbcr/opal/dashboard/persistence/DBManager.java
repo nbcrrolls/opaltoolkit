@@ -234,6 +234,10 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         //creating the query
         int numberOfDays = DateHelper.getOffsetDays(endDate, startDate);
+        if (numberOfDays < 0 ){
+            log.error("The start date is later than the end date.");
+            return null;
+        }
         java.sql.Date  endDateSQL = new java.sql.Date(endDate.getTime());
         java.sql.Date startDateSQL = new java.sql.Date(startDate.getTime());
 
