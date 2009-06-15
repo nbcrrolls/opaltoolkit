@@ -9,6 +9,7 @@
   * The <usage> tag is used improperly, it contains now the description of
     the application: LC/SK
   * launchJob should allow the user to specify the wallclock
+  * upgrade DRMAA  
   * REST support - look at Axis2: SK
 
 * Additional Features
