@@ -144,7 +144,10 @@ properties correctly. It should look something like the following:</para>
 
     # specify in seconds the hard limit for how long a job can run
     # only applicable if either DRMAA or Globus is being used, and if
-    # the scheduler supports it
+    # the scheduler supports it (some old version of SGE ignore the 
+    # parameter)
+    # Please be aware that your application will be killed by the scheduler 
+    # once it reaches the specified limit (in same case without any log)
     opal.hard_limit=3600
 
     # full qualified class name (FQCN) of the job manager being used
