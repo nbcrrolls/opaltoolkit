@@ -20,7 +20,7 @@ public class Tests {
 
     suite.addTest(edu.sdsc.nbcr.opal.state.PackageTest.suite());
     suite.addTest(edu.sdsc.nbcr.opal.util.PackageTest.suite());
-    suite.addTest(edu.sdsc.nbcr.opal.dashboard.util.PackageTest.suite());
+    // suite.addTest(edu.sdsc.nbcr.opal.dashboard.util.PackageTest.suite());
 
     return suite;
   }

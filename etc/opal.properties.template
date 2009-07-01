@@ -59,3 +59,10 @@ globus.service_privkey=/path/to/your/globus/key
 globus.gridftp_base=gsiftp://host:2811/working_dir
 ## ------------------------------------------------
 ## END: information for the Globus job manager
+
+## BEGIN: information for the Condor job manager
+## ------------------------------------------------
+# the script used by Condor to launch MPI jobs
+mpi.script=/opt/condor/etc/examples/mp1script
+## ------------------------------------------------
+## END: information for the Condor job manager
