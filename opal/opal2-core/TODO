@@ -1,6 +1,6 @@
 * Plug-ins
-  * Condor: SK
   * CSF4/GridWay: LC
+  * EC2 MapReduce plugin: SK
 
 * WSDL additions/improvements
   * Add GridFTP support: SK

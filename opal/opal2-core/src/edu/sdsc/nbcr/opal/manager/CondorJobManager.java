@@ -126,46 +126,37 @@ public class CondorJobManager implements OpalJobManager {
 	String cmd = null;
 
 	if (config.isParallel()) {
-	    String msg = "Parallel Condor jobs not supported in this version";
-	    logger.error(msg);
-	    throw new JobManagerException(msg);
-// 	    // make sure enough processors are present for the job
-// 	    if (numProcs == null) {
-// 		String msg = "Number of processes unspecified for parallel job";
-// 		logger.error(msg);
-// 		throw new JobManagerException(msg);
-// 	    } else if (numProcs.intValue() > systemProcs) {
-// 		String msg = "Processors required - " + numProcs +
-// 		    ", available - " + systemProcs;
-// 		logger.error(msg);
-// 		throw new JobManagerException(msg);
-// 	    }
+	    // make sure enough processors are present for the job
+	    if (numProcs == null) {
+		String msg = "Number of processes unspecified for parallel job";
+		logger.error(msg);
+		throw new JobManagerException(msg);
+	    } else if (numProcs.intValue() > systemProcs) {
+		String msg = "Processors required - " + numProcs +
+		    ", available - " + systemProcs;
+		logger.error(msg);
+		throw new JobManagerException(msg);
+	    }
 
-// 	    // check if the mpi.run property is set
-// 	    String mpiRun = props.getProperty("mpi.run");
-// 	    if (mpiRun == null) {
-// 		String msg = "Can't find property mpi.run for running parallel job";
-// 		logger.error(msg);
-// 		throw new JobManagerException(msg);
-// 	    }
+	    // check if the mpi.script property is set
+	    String mpiScript = props.getProperty("mpi.script");
+	    if (mpiScript == null) {
+		String msg = "Can't find property mpi.script for running parallel job";
+		logger.error(msg);
+		throw new JobManagerException(msg);
+	    }
 
-// 	    // create command string and arguments for parallel run
-// 	    cmd = "/bin/sh";
+	    // create command string and arguments for parallel run
+	    cmd = mpiScript;
 	    
-// 	    // append arguments - needs to be this way to locate machinefile
-// 	    String newArgs = mpiRun + 
-// 		" -machinefile $TMPDIR/machines" +
-// 		" -np " + numProcs + " " +
-// 		config.getBinaryLocation();
-// 	    if ((args != null) && (!(args.equals("")))) {
-// 		args = newArgs + " " + args;
-// 	    } else {
-// 		args = newArgs;
-// 	    }
-// 	    logger.debug("CMD: " + args);
-	    
-// 	    // construct the args array
-// 	    argsArray = new String[] {"-c", args};
+	    // append arguments - needs to be this way to locate machinefile
+	    String newArgs = config.getBinaryLocation();
+	    if ((args != null) && (!(args.equals("")))) {
+		args = newArgs + " " + args;
+	    } else {
+		args = newArgs;
+	    }
+	    logger.debug("CMD: " + cmd + " " + args);
 	} else {
 	    // create command string and arguments for serial run
 	    cmd = config.getBinaryLocation();
@@ -187,12 +178,20 @@ public class CondorJobManager implements OpalJobManager {
 
 	    // create a JobDescription object in the code
 	    JobDescription jd = new JobDescription();
-	    jd.addAttribute("universe", "vanilla");
+	    if (config.isParallel()) {
+		jd.addAttribute("universe", "parallel");
+		jd.addAttribute("machine_count", Integer.toString(numProcs));
+		jd.addAttribute("transfer_input_files", config.getBinaryLocation());
+	    } else {
+		jd.addAttribute("universe", "vanilla");
+	    }
 	    jd.addAttribute("executable", cmd);
 	    jd.addAttribute("arguments", args);
 	    jd.addAttribute("initialdir", workingDir);
 	    jd.addAttribute("output", workingDir + "/stdout.txt");
 	    jd.addAttribute("error", workingDir + "/stderr.txt");
+	    jd.addAttribute("should_transfer_files", "yes");
+	    jd.addAttribute("when_to_transfer_output", "on_exit");
 	    condor.setLogFile(workingDir + "/condor.log",
 			      5);
 
