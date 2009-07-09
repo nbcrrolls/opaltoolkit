@@ -4,32 +4,34 @@
 ## You should modify these parameters
 
 # script directory path on local machine
-shome="/opt/OpalCheck"
+shome="/home/opaluser/opal/OpalCheck_namd_mirume"
 
 # notify
-email="yourname@somewhere"
+email="your_name@somedomain.com"
 # email even if opal is running fine
-email_if_good="no"
+email_if_good="yes"
 log="$shome/check_opal.log"
 
 # local opal installation
-#opal_home="/home/opaluser/opal/opal-ws-2.0beta"
-opal_home="/opt/opal"
+opal_home="/home/opaluser/opal/opal-ws-2.0beta"
 
 # remote opal service info
 opal_host="mirume.nbcr.net"
 opal_version="2"                      
-opal_service="Pdb2pqrOpalService"
+opal_service="namd2"
 
 # opal job
-args="--verbose --ff=AMBER 1a1p.pdb output.pqr"
+args="free_eq2.namd"
+# num of CPUS, use empty string if serial job
+ncpu="2"
 # input files with absolute paths, separated with commas with no space 
-input_files="/opt/OpalCheck/1a1p.pdb"
+input_files="$shome/A.inpcrd,$shome/command,$shome/free_eq2.namd.sge,$shome/free_eq.restart.vel,$shome/rsl.namd,$shome/A.prmtop,$shome/free_eq2.namd,$shome/free_eq.restart.coor,$shome/free_eq.restart.xsc"
+
 # expect output files, separated with commas
-output_files="output.pqr,stdout.txt"
+output_files="stdout.txt"
 # report time-out error if job is not completed in the time frame
 # in seconds
-timeout=3600
+timeout=36000
 
 #---------------------------------------------------------------------------
 
@@ -47,10 +49,17 @@ fi
 
 service_link="$full_opal_host$link_middle$opal_service"
 
+if test -z $ncpu; then
+  parallel=""
+else
+  parallel="-n $ncpu"
+fi
+
 launch_cmd="java edu.sdsc.nbcr.opal.GenericServiceClient \
 -l $service_link \
 -r launchJob \
 -a $args \
+$parallel \
 -f \"$input_files\""
 
 cd $opal_home
@@ -68,6 +77,7 @@ java edu.sdsc.nbcr.opal.GenericServiceClient \
 -l $service_link \
 -r launchJob \
 -a "$args" \
+$parallel \
 -f "$input_files" >& $shome/tmp
 
 ls $shome/tmp > /dev/null
@@ -81,7 +91,7 @@ if test -z $output_url; then
   echo "--------------------------------------------------------------" >> $shome/email.txt
   cat $shome/tmp >> $shome/email.txt
 
-  mailx -s "Opal on $opal_host Failed" $email < $shome/email.txt
+  mailx -s "Opal $opal_service on $opal_host Failed" $email < $shome/email.txt
   cat $shome/email.txt >> $log
   rm -f $shome/tmp
   exit 0
@@ -148,28 +158,28 @@ elif test $job_done = 8; then
    
   echo "Job on remote server $opal_host completed sucessfully according to status code." >> $shome/email.txt
 elif test $job_done = -2; then
-  echo "Job on remote server $opal_host not completed after $timeout seconds." >> $shome/email.txt
+  echo "Job on remote server $opal_host not completed after $timeout seconds.  This job is currently still running." >> $shome/email.txt
 fi
 
 echo "Visit $output_url for the output of" >> $shome/email.txt
 echo "$launch_cmd" >> $shome/email.txt
 
 if test $job_done = 4; then
-  mailx -s "Opal on $opal_host Failed" $email < $shome/email.txt
+  mailx -s "Opal $opal_service on $opal_host Failed" $email < $shome/email.txt
   cat $shome/email.txt >> $log
 elif test $job_done = 8; then
   if test $expect_found = "false"; then
-    mailx -s "Opal Job on $opal_host Completed with Missing Outputs" $email < $shome/email.txt
+    mailx -s "Opal $opal_service Job on $opal_host Completed with Missing Outputs" $email < $shome/email.txt
     cat $shome/email.txt >> $log
     exit
   fi
 
   if test $email_if_good = "yes"; then
-    mailx -s "Opal on $opal_host Running Successfully" $email < $shome/email.txt
+    mailx -s "Opal $opal_service on $opal_host Running Successfully" $email < $shome/email.txt
     cat $shome/email.txt >> $log
   fi
 elif test $job_done = -2; then
-  mailx -s "Opal on $opal_host Timed Out" $email < $shome/email.txt
+  mailx -s "Opal $opal_service on $opal_host Timed Out" $email < $shome/email.txt
   cat $shome/email.txt >> $log
 fi
 
