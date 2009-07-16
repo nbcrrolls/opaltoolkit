@@ -1,6 +1,7 @@
 package edu.sdsc.nbcr.opal.manager;
 
 import java.util.Properties;
+import java.io.File;
 
 import org.globus.gram.GramJob;
 
@@ -181,7 +182,6 @@ public class CondorJobManager implements OpalJobManager {
 	    if (config.isParallel()) {
 		jd.addAttribute("universe", "parallel");
 		jd.addAttribute("machine_count", Integer.toString(numProcs));
-		jd.addAttribute("transfer_input_files", config.getBinaryLocation());
 	    } else {
 		jd.addAttribute("universe", "vanilla");
 	    }
@@ -195,8 +195,20 @@ public class CondorJobManager implements OpalJobManager {
 	    condor.setLogFile(workingDir + "/condor.log",
 			      5);
 
-	    // TODO: add all input files as "input"
-	    // only required if files need to be staged
+	    // transfer all input files - this way the compute nodes don't
+	    // have to be on NFS
+	    jd.addAttribute("transfer_input_files", config.getBinaryLocation());
+	    File wd = new File(workingDir);
+	    String[] wdFiles = wd.list();
+	    if (wdFiles != null) {
+		for (int i = 0; i < wdFiles.length; i++) {
+		    jd.addAttribute("transfer_input_files", 
+				    workingDir + 
+				    File.separator + 
+				    wdFiles[i]);
+		}
+	    }
+
 	    jd.addQueue();
 
 	    if (hardLimit != 0) {
