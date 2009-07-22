@@ -2,8 +2,7 @@
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <!-- metadata about the application being wrapped -->
   <metadata appName="PDB2PQR">
-    <usage>python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}</usage>
-    <info><![CDATA[PDB2PQR is a Python software package that automates many of the common tasks of preparing structures for continuum electrostatics calculations, providing a platform-independent utility for converting protein files in PDB format to PQR format]]></info>
+    <usage>PDB2PQR is a Python software package that automates many of the common tasks of preparing structures for continuum electrostatics calculations, providing a platform-independent utility for converting protein files in PDB format to PQR format.</usage>
     <info>
     <![CDATA[
          python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
