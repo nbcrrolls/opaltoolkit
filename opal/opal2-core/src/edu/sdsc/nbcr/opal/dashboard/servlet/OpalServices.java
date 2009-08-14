@@ -92,7 +92,7 @@ public class OpalServices extends HttpServlet {
     public void processRequest(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         //String command = req.getParameter("command");
         //get the services list
-        OPALService [] servicesList = getServiceList(req);
+        OPALService [] servicesList = getServiceList(res);
         if (servicesList == null){
             String msg = "Unable to get the service list from the Axis...";
             log.error(msg);
@@ -154,7 +154,32 @@ public class OpalServices extends HttpServlet {
     /**
      * this function return a list of the Opal services currently deployed...
      */
-    private OPALService [] getServiceList(HttpServletRequest req){
+    private OPALService [] getServiceList(HttpServletResponse res){
+        GetServiceListHelper helper = new GetServiceListHelper();
+        helper.setBaseURL("http://localhost:8080/opal2/services");
+        //TODO check for exceptions, like list == null
+        SOAPBodyElement list = helper.getServiceList();
+        if ( list == null ) {
+            returnServiceError(res, "Unable to get the service list from the server");
+            return null;
+        }
+        OPALService [] servicesList = helper.parseServiceList(list.toString());
+        if ( servicesList == null ) {
+            returnServiceError(res, "Unable to parse the service list from the server");
+            return null;
+        }
+        if ( ! helper.setServiceName(servicesList) ) {
+            returnServiceError(res, "An error occurred when trying to the services names");
+            return null;
+        }
+        return servicesList;
+    /*
+        This code doesn't work. For some weird reason Axis cache the list 
+        of services and doesn't update then dinamically when new services 
+        are deployed or undeployed.... :-(
+
+        So Im forced to rollback to the AdminService for getting the list of services
+
         //the base URL of the axis services 
         //TODO get this value from the axis engine...getOpalBaseURL
         String baseEndpointURL = AppServiceImpl.getOpalBaseURL() + "/services/";
@@ -229,13 +254,17 @@ public class OpalServices extends HttpServlet {
         OPALService [] servicesList =(OPALService []) services.toArray(new OPALService [services.size()]);
 
         return servicesList;
+        */
     }//getServiceList
 
-//    static private void returnServiceError(HttpServletResponse res, String error){
-//        //TODO implement some error handling
-//        log.error("Impossible to create the list of services because: " + error);
-//        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-//        return;
-//    }
+    static private void returnServiceError(HttpServletResponse res, String error){
+        //TODO implement some error handling
+        log.error("Unable to create the service list: " + error);
+        try { res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR ); }
+        catch (Exception e) {
+            log.error("Unable to return the error page.", e);
+        }
+        return;
+    }
 
 }

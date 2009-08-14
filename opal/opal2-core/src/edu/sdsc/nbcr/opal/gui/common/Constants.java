@@ -11,7 +11,7 @@ public class Constants {
 	/**
 	 * default URL for axis admin service
 	 */
-	public static final String OPALDEFAULT_URL = "http://localhost:8080/axis/services";
+	public static final String OPALDEFAULT_URL = "http://localhost:8080/opal2/services";
 
     
     /**
