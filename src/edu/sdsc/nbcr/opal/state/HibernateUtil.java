@@ -39,13 +39,17 @@ public class HibernateUtil {
     private static Logger logger = 
         Logger.getLogger(HibernateUtil.class.getName());
 
-    private static final SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory = null;
+    //default for the hiberante configuration file 
+    private static String confFile = "hibernate-opal.cfg.xml";
 
-    static {
+    private static SessionFactory buildSessionFactory()  {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = 
-                new Configuration().configure("hibernate-opal.cfg.xml").buildSessionFactory();
+            Configuration conf = new Configuration();
+            conf = conf.configure(confFile);
+            SessionFactory sessionFactoryTemp = conf.buildSessionFactory();
+            return sessionFactoryTemp;
         } catch (HibernateException ex) {
             // Make sure you log the exception, as it might be swallowed
             logger.error("Initial SessionFactory creation failed." + ex);
@@ -54,9 +58,20 @@ public class HibernateUtil {
     }
 
     /**
+     * Set the configuration file path for hibernate
+     */
+    public static void setConfFile(String conf){
+        confFile = conf;
+    }
+
+    /**
      * Return a hibernate session factory loaded from the configuration
      */
     public static SessionFactory getSessionFactory() {
+        if ( sessionFactory == null ) {
+            //let's initialize the sessionFactory
+            sessionFactory = buildSessionFactory();
+        }
         return sessionFactory;
     }
 
