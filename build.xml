@@ -207,13 +207,18 @@ Author:
       </fileset>
     </copy>
 
+    <copy tofile="${project.home}/etc/hibernate-opal.cfg.xml.tmp" file="${project.home}/etc/hibernate-opal.cfg.xml" />
+    <!-- let's modify hibernate-opal.cfg.xml before moving it to tomcat -->
+    <replace file="${project.home}/etc/hibernate-opal.cfg.xml.tmp" token="%BASEPATH%" value="${tomcat.WEB-INF}/"/>
+    <move file="${project.home}/etc/hibernate-opal.cfg.xml.tmp" tofile="${tomcat.WEB-INF}/classes/hibernate-opal.cfg.xml"/>
+
     <copy todir="${tomcat.WEB-INF}/classes">
       <fileset dir="${project.home}/etc/">
         <!-- hibernate configs -->
-        <include name="hibernate-opal.cfg.xml"/>
         <include name="OpalState.hbm.xml"/>
       </fileset>
     </copy>
+
 
     <!-- copy over other jar files required into WEB-INF/lib -->
     <copy todir="${tomcat.WEB-INF}/lib">
