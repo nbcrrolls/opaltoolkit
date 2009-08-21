@@ -33,7 +33,13 @@ String jobId = (String)request.getAttribute("jobId");
 </head>
 
 <body>
+<div class="mainBody">
+
+
+<jsp:include page="../include-jsp/header.jsp"/>
 <jsp:include page="header.jsp"/>
+
+
 <br/>
     <h2>Submission results for <%= serviceID %></h2>
 <br/>

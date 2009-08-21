@@ -52,7 +52,14 @@ function showHide(layer_ref) {
 </head>
 
 <body>
+<div class="mainBody">
+
+
+
+<jsp:include page="../include-jsp/header.jsp"/>
 <jsp:include page="header.jsp"/>
+
+
 <br/>
     <h2>Submission form for <bean:write name="appMetadata" property="serviceName" /></h2>
 <br/>
