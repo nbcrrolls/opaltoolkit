@@ -32,7 +32,7 @@ function checkAll(){
 }	
 
 	</script>
-	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
+	<script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
 </head>
 
 <% 

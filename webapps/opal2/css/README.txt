@@ -1,18 +1,4 @@
-This css are used by the opalGUI.
-
-base.css
-default.css
-general.css
-page.css
-portlet.css
-README.txt
-tab.css
-tags.css
-ui.css
-window.css
-
-
-
-Clem
-
+ext-all.css          EXT3 CSS
+feed-viewer.css      my css for list of services   
+style.css            CSS used by all the pages
 
