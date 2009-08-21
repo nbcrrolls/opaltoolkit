@@ -9,7 +9,7 @@
 	<title>Opal Server Deployment Information</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  	<link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
-	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
+	<script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
 </head>
 
 <% 

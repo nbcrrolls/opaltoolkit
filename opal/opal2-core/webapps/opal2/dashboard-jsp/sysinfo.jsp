@@ -11,7 +11,7 @@
  	<link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
 	<script language="javascript" type="text/javascript" >
 	</script>
-	<script src="js/scripts.js" language="javascript" type="text/javascript" ></script> 
+	<script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
 </head>
 
 <% 
