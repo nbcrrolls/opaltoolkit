@@ -28,9 +28,15 @@
     <script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script>
 
   </head>
+
   <body>
+  <div class="mainBody">
+
+
+    <jsp:include page="../include-jsp/header.jsp"/>
     <jsp:include page="header.jsp"/>
-    
+
+
     <h3>An unexpected error has occured</h3>
     <logic:present name="<%=Constants.ERROR_MESSAGES%>">
         <ul>

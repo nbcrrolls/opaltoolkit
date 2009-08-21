@@ -27,11 +27,10 @@
 
 
 <!-- [headerInclude] -->
-<%@ include file="header.jsp" %>
+<%@ include file="../include-jsp/header.jsp" %>
 
 <!-- [/headerInclude] -->
 
-<!-- BEGIN Body -->
 <table border="0" cellpadding="0" cellspacing="0" width="950" class="boxContainer" align="center">
 <tr>
 <td width="15" height="15" class="boxTopLeft colColor"></td>
@@ -42,6 +41,10 @@
 <tr>
 <td class="boxLeft colColor"><br /></td>
 <td colspan="3" class="colColor">
+
+<!-- add content here... -->
+
+
 
 <!-- add content here... -->
 

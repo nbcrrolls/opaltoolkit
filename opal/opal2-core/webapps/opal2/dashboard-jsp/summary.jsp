@@ -35,7 +35,7 @@
 <div class="mainBody">
 
 <!-- [headerInclude] -->
-<%@ include file="header.jsp" %>
+<%@ include file="../include-jsp/header.jsp" %>
 
 <!-- [/headerInclude] -->
 

@@ -34,7 +34,12 @@
 
 </head>
 <body>
+<div class="mainBody">
+
+<jsp:include page="../include-jsp/header.jsp"></jsp:include>
 <jsp:include page="header.jsp"></jsp:include>
+
+
 <h2>List of Applications:</h2>
 <p>Click on one of the applications to get a submission form</p>
 
