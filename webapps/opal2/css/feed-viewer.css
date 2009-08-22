@@ -30,7 +30,7 @@ html, body {
 }
 .x-grid3-td-title .topic {
     padding-left:20px;
-    background:transparent url(images/post.gif) no-repeat 0 2px;
+    background:transparent url(../images/default/tree/leaf.gif) no-repeat 0 2px;
 }
 .x-grid3-td-title .x-grid3-cell-inner {
     white-space:normal;
