@@ -11,6 +11,7 @@
 	<meta name="keywords" content="enter, keywords, here" />
 	<meta name="description" content="enter keywords here" />
  	<link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
+    <link href="css/style-maintag.css" media="all" rel="stylesheet" type="text/css" />
 	<script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
 
 </head>
