@@ -52,6 +52,8 @@ public class GetServiceListHelper {
     protected static Log log = LogFactory.getLog(GetServiceListHelper.class.getName());
     protected Call call;
     private String baseURL;
+    private String basePrivateURL;
+    private String basePublicURL;
 	
     /**
      * default constructor
@@ -73,7 +75,7 @@ public class GetServiceListHelper {
     		//something went wrong
     		return null;
     	}
-        call.setTargetEndpointAddress( baseURL + "/AdminService" );
+        call.setTargetEndpointAddress( basePrivateURL + "/AdminService" );
         //call.setUsername( "");
         //call.setPassword( password );
         //if(transportName != null && !transportName.equals("")) {
@@ -139,7 +141,7 @@ public class GetServiceListHelper {
                     NamedNodeMap attributes = node.getAttributes();
                     String serviceName = attributes.getNamedItem("name").getNodeValue();
                     OPALService service = new OPALService();
-                    service.setURL(baseURL + "/" + serviceName);
+                    service.setURL(basePublicURL + "/" + serviceName);
                     service.setServiceID(serviceName);
                     list.add(service);
                     log.info("added -> " + service);
@@ -237,7 +239,8 @@ public class GetServiceListHelper {
      */
     public static void main(String [] argv){
     	GetServiceListHelper servicelist = new GetServiceListHelper();
-    	servicelist.setBaseURL("http://localhost:8080/axis/services");
+    	servicelist.setBasePrivateURL("http://localhost:8080/axis/services");
+        servicelist.setBasePublicURL("http://localhost:8080/axis/services");
     	SOAPBodyElement list = servicelist.getServiceList();
 
     	System.out.println("the result was: " + list.toString());
@@ -249,13 +252,22 @@ public class GetServiceListHelper {
     	
     }
     
-    
-    public void setBaseURL(String url){
-    	baseURL = url;
+    /**
+     * This function set the private URL which is the URL used 
+     * to query axis. This has to be localhost or Axis won't 
+     * allow the connection.
+     */
+    public void setBasePrivateURL(String url){
+    	basePrivateURL = url;
+    }
+
+    /**
+     * This function set the Pubblic URL used to create the service 
+     * URL when reporting the list of services.
+     * Here there should be the pubblic IP address
+     */
+    public void setBasePublicURL(String url){
+        basePublicURL = url;
     }
  
-    public String getBaseURL(){
-    	return baseURL;
-    }
-	
 }

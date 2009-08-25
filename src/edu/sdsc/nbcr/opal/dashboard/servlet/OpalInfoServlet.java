@@ -40,6 +40,7 @@ public class OpalInfoServlet extends HttpServlet {
     private static final String SYSINFO_JSP = "/dashboard-jsp/sysinfo.jsp";
     private static final String DOC_JSP = "/dashboard-jsp/documentation.jsp";
     private static final String CONTACTUS_JSP = "/dashboard-jsp/contactus.jsp";
+    private static final String SERVICELIST_JSP = "/dashboard-jsp/serviceList.jsp";
     
     //private static final String ERROR_JSP = "/dashboard-jsp/error.jsp";
     //this is used only when the DB is not available
@@ -52,6 +53,7 @@ public class OpalInfoServlet extends HttpServlet {
     private String opalWebsite = null;
     private String opalDocumentation = null;
     private String opalJobManager = null;
+    private static String tomcatUrl = null;
     private Boolean dbUsed = Boolean.FALSE;
     private DBManager dbManager = null;
     
@@ -98,7 +100,9 @@ public class OpalInfoServlet extends HttpServlet {
             opalDataLifetime = props.getProperty("opal.datalifetime");
         } else opalDataLifetime = null;
         
-        
+        if (props.getProperty("tomcat.url") != null ) {
+            tomcatUrl = props.getProperty("tomcat.url");
+        }
         //not necessary anymore we use hibernate
         dbManager = new DBManager();
         config.getServletContext().setAttribute("dbManager", dbManager);
@@ -201,6 +205,10 @@ public class OpalInfoServlet extends HttpServlet {
             req.setAttribute("opalWebsite", opalWebsite);
             dispatcher = getServletContext().getRequestDispatcher(CONTACTUS_JSP);
             dispatcher.forward(req, res);
+        } else if ("serviceList".equals(command)) {
+            req.setAttribute("tomcatUrl", tomcatUrl);
+            dispatcher = getServletContext().getRequestDispatcher(SERVICELIST_JSP);
+            dispatcher.forward(req, res);
         } else {
             // need to gather a bunch of information regarding the opal
             // installation
@@ -258,6 +266,10 @@ public class OpalInfoServlet extends HttpServlet {
 
     public String getBuildDate() {
         return exec (opalBuildDateCommand, "error, unable to determine build date");
+    }
+
+    public static String getTomcatUrl(){
+        return tomcatUrl;
     }
 	
     public void destroy() {

@@ -24,7 +24,7 @@
     onmouseover="FP_swapImg(1,1,/*id*/'img2',/*url*/'images/MainNav/userinfo_on.jpg'); ShowMenu('about');" 
     onmouseout="FP_swapImgRestore(); ReturnSelected(currentMenu);" /></a></td>
     <td width="237">
-    <a href="GetServicesList.do"><img src="images/MainNav/sysinfo_off.jpg" alt="Applications" name="img3" width="237" height="13" border="0" id="img3" 
+    <a href="dashboard?command=serviceList"><img src="images/MainNav/sysinfo_off.jpg" alt="Applications" name="img3" width="237" height="13" border="0" id="img3" 
     onmouseover="FP_swapImg(1,1,/*id*/'img3',/*url*/'images/MainNav/sysinfo_on.jpg'); ShowMenu('metagenomics');" 
     onmouseout="FP_swapImgRestore(); ReturnSelected(currentMenu);" /></a></td>
     <td width="238">
