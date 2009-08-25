@@ -80,18 +80,18 @@ Ext.onReady(function(){
             { id: 'title', header: "Service Name (Click for submission form)", dataIndex: 'title', sortable:true, renderer: formatTitle, width: 894 },
 //            { header: "Web Service URL" ,dataIndex: 'link', sortable: true, renderer: formatURL, width: 294 }
         ],
-        stripeRows: false,
+        stripeRows: true,
 //        autoExpandColumn: 'title',
         foreceFit: true
-
     });
+
 
     //the search box
     var trigger = new Ext.form.TriggerField({
                 triggerClass : 'button-search-trigger',
                 dlgWidth : 200,
                 dlgHeight : 100,
-                });
+    });
 
     trigger.onTriggerClick = function(){
         var serachTerms = trigger.getValue();
