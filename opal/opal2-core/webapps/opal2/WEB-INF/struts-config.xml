@@ -54,14 +54,6 @@
                 forward="/{1}.jsp">
         </action> -->
 
-        <!-- Display welcome page -->
-        <action path="/GetServicesList"
-                type="edu.sdsc.nbcr.opal.gui.actions.GetServicesListAction"
-                scope="request">
-                <forward name="DisplayServicesList" path="/opalGUI-jsp/DisplayServicesList.jsp" redirect="false"/>
-                
-        </action>
-
 
         <!-- Process a user logon -->
         <action path="/CreateSubmissionForm"

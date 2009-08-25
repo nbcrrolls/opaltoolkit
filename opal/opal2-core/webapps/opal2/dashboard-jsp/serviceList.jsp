@@ -15,12 +15,12 @@
     limitations under the License.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
-<%@page import="edu.sdsc.nbcr.opal.gui.common.OPALService"%>
 
+
+<%
+String tomcatUrl = (String) request.getAttribute("tomcatUrl");
+
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -45,8 +45,8 @@ Ext.onReady(function(){
 
     //format the title
     function formatTitle(value, p, record) {
-        hostName = "localhost:8080";
-        submissionFormLink = "http://" + hostName + "/opal2/CreateSubmissionForm.do?serviceURL=http%3A%2F%2Flocalhost%3A8080%2Fopal2%2Fservices%2F"
+        hostName = "<%=tomcatUrl%>";//"http://localhost:8080";
+        submissionFormLink = hostName + "/opal2/CreateSubmissionForm.do?serviceURL=http%3A%2F%2Flocalhost%3A8080%2Fopal2%2Fservices%2F"
         URLarray = record.data.link.split("/");
         serviceName = URLarray[URLarray.length - 1];
         submissionFormLink = submissionFormLink + serviceName;
@@ -80,7 +80,7 @@ Ext.onReady(function(){
             { id: 'title', header: "Service Name (Click for submission form)", dataIndex: 'title', sortable:true, renderer: formatTitle, width: 894 },
 //            { header: "Web Service URL" ,dataIndex: 'link', sortable: true, renderer: formatURL, width: 294 }
         ],
-        stripeRows: true,
+//        stripeRows: true,
 //        autoExpandColumn: 'title',
         foreceFit: true
     });
@@ -101,12 +101,12 @@ Ext.onReady(function(){
 
     var panel = new Ext.Panel({
         applyTo: 'feed-viewer',
-        title:'Opal Services',
-        height:500,
+//        title:'Opal Services',
 //        autoHeight: true,
+//        autoScroll:true,
+        height:500,
         width:900,
         layout:'fit',
-//        autoScroll:true,
         items: grid,
         tbar: [
             'Search: ',
@@ -132,17 +132,51 @@ Ext.onReady(function(){
 <div class="mainBody">
 
 <jsp:include page="../include-jsp/header.jsp"></jsp:include>
-<jsp:include page="header.jsp"></jsp:include>
+
+<!-- BEGIN Body -->
+<table border="0" cellpadding="0" cellspacing="0" width="950" class="boxContainer" align="center">
+<tr>
+<td width="15" height="15" class="boxTopLeft colColor"></td>
+<td class="leftCol boxTop colColor"></td>
+<td class="boxTop colColor"></td><td class="rightCol boxTop colColor"></td>
+<td width="15" class="boxTopRight colColor"></td>
+</tr>
+<tr>
+<td class="boxLeft colColor"><br /></td>
+<td colspan="3" class="colColor">
+
+
 
 
 <h2>List of Applications:</h2>
 
-
-<div id="feed-viewer"></div>
-
+<div style="margin-left: auto; margin-right: auto" id="feed-viewer"></div>
 <p style="font-size: smaller">*: a customized submission form is avaiable for this application</p>
 <br/>
 For an Atom feed of the available services <a href="opalServices.xml"><img src="images/feed-icon.png"/> click here</a>.
 
-<jsp:include page="footer.jsp"></jsp:include>
+
+</td>
+
+<td class="boxRight colColor"><br /></td>
+</tr>
+<tr>
+<td width="15" height="15" class="boxBottomLeft colColor"></td>
+<td class="leftCol boxBottom colColor"><br /></td>
+<td class="boxBottom colColor"><br /></td><td class="rightCol boxBottom colColor"><br /></td>
+<td width="15" class="boxBottomRight colColor"></td>
+</tr>
+</table>
+<!-- END Body -->
+
+<br />
+
+<!-- BEGIN Footer -->
+
+<!-- END Footer -->
+</div>
+</body>
+</html>
+
+
 

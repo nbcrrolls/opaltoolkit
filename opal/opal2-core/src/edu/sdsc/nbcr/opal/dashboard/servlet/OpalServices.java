@@ -10,6 +10,7 @@ package edu.sdsc.nbcr.opal.dashboard.servlet;
 
 import java.io.IOException;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -38,6 +39,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
 import edu.sdsc.nbcr.opal.gui.common.GetServiceListHelper;
+import edu.sdsc.nbcr.opal.gui.common.Constants;
 import edu.sdsc.nbcr.opal.gui.common.OPALService;
 import edu.sdsc.nbcr.opal.AppServiceImpl;
 import edu.sdsc.nbcr.opal.AppConfigType;
@@ -155,9 +157,29 @@ public class OpalServices extends HttpServlet {
      * this function return a list of the Opal services currently deployed...
      */
     private OPALService [] getServiceList(HttpServletResponse res){
+        String url = getServletContext().getInitParameter("opalUrl");
+        if ( url == null ) {
+            log.warn("the opalUrl was not found in the WEB-INF/web.xml file.\nUsing the default...");
+            url = Constants.OPALDEFAULT_URL;
+        }
         GetServiceListHelper helper = new GetServiceListHelper();
-        helper.setBaseURL("http://localhost:8080/opal2/services");
-        //TODO check for exceptions, like list == null
+        helper.setBasePrivateURL(url);
+
+        String publicUrl = null;
+        String tomcatUrl = null;
+        tomcatUrl = OpalInfoServlet.getTomcatUrl();
+        URL tempURL = null;
+        try {tempURL = new URL(url);}
+        catch (Exception e){ 
+            
+        }
+
+        if ( (tempURL != null) && (tomcatUrl != null)){
+            helper.setBasePublicURL(tomcatUrl + tempURL.getFile());
+        }else{
+            helper.setBasePublicURL(url);
+        }
+
         SOAPBodyElement list = helper.getServiceList();
         if ( list == null ) {
             returnServiceError(res, "Unable to get the service list from the server");
