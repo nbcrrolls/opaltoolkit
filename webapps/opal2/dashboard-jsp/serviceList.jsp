@@ -77,11 +77,11 @@ Ext.onReady(function(){
     grid = new Ext.grid.GridPanel({
         store: store,
         columns: [
-            { id: 'title', header: "Service Name (Click for submission form)", dataIndex: 'title', sortable:true, renderer: formatTitle, width: 894 },
-//            { header: "Web Service URL" ,dataIndex: 'link', sortable: true, renderer: formatURL, width: 294 }
+            { id: 'title', header: "Service Name (Click for submission form)", dataIndex: 'title', sortable:true, renderer: formatTitle, width: 894 }
+            //{ header: "Web Service URL" ,dataIndex: 'link', sortable: true, renderer: formatURL, width: 294 }
         ],
-//        stripeRows: true,
-//        autoExpandColumn: 'title',
+        //stripeRows: true,
+        //autoExpandColumn: 'title',
         foreceFit: true
     });
 
@@ -90,7 +90,7 @@ Ext.onReady(function(){
     var trigger = new Ext.form.TriggerField({
                 triggerClass : 'button-search-trigger',
                 dlgWidth : 200,
-                dlgHeight : 100,
+                dlgHeight : 100
     });
 
     trigger.onTriggerClick = function(){
@@ -101,9 +101,9 @@ Ext.onReady(function(){
 
     var panel = new Ext.Panel({
         applyTo: 'feed-viewer',
-//        title:'Opal Services',
-//        autoHeight: true,
-//        autoScroll:true,
+        //title:'Opal Services',
+        //autoHeight: true,
+        //autoScroll:true,
         height:500,
         width:900,
         layout:'fit',
@@ -113,7 +113,6 @@ Ext.onReady(function(){
             ' ',
             trigger
         ]
-//http://extjs.com/forum/showthread.php?t=3613
     });
 
     panel.render('feed-viewer');
