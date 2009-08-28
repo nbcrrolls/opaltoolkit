@@ -86,8 +86,8 @@ Ext.onReady(function(){
     });
 
 
-    //the search box
-    var trigger = new Ext.form.TriggerField({
+    //the search box with the trigger 
+    /*var trigger = new Ext.form.TriggerField({
                 triggerClass : 'button-search-trigger',
                 dlgWidth : 200,
                 dlgHeight : 100
@@ -96,7 +96,26 @@ Ext.onReady(function(){
     trigger.onTriggerClick = function(){
         var serachTerms = trigger.getValue();
         store.filter("summary",  serachTerms, true, false);
+    };*/
+
+
+
+    function filterTree(e){
+        var text = e.target.value;
+        store.filter("summary", text, true, false);
     };
+
+    var searchBox =  new Ext.form.TextField({
+        width: 200,
+        emptyText:'Type keywords here',
+        listeners:{
+            render: function(f){
+                f.el.on('keydown', filterTree, f, {buffer: 350});
+            }
+        }
+    });
+
+ 
 
 
     var panel = new Ext.Panel({
@@ -111,7 +130,7 @@ Ext.onReady(function(){
         tbar: [
             'Search: ',
             ' ',
-            trigger
+            searchBox
         ]
     });
 
