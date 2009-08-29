@@ -30,7 +30,7 @@ String tomcatUrl = (String) request.getAttribute("tomcatUrl");
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <link rel="stylesheet" type="text/css" href="css/ext-all.css" />
-    <link rel="stylesheet" type="text/css" href="css/feed-viewer.css" />
+    <link rel="stylesheet" type="text/css" href="css/feed-viewer.css" /> 
 
     <link href="css/style.css"  rel="stylesheet" type="text/css" />  
     
@@ -43,9 +43,11 @@ String tomcatUrl = (String) request.getAttribute("tomcatUrl");
 
 Ext.onReady(function(){
 
+    Ext.BLANK_IMAGE_URL = 'images/default/s.gif';
+
     //format the title
     function formatTitle(value, p, record) {
-        hostName = "<%=tomcatUrl%>";//"http://localhost:8080";
+        hostName = "<%=tomcatUrl%>";
         submissionFormLink = hostName + "/opal2/CreateSubmissionForm.do?serviceURL=http%3A%2F%2Flocalhost%3A8080%2Fopal2%2Fservices%2F"
         URLarray = record.data.link.split("/");
         serviceName = URLarray[URLarray.length - 1];
@@ -82,7 +84,8 @@ Ext.onReady(function(){
         ],
         //stripeRows: true,
         //autoExpandColumn: 'title',
-        foreceFit: true
+        //foreceFit: true,
+        autoHeight: true
     });
 
 
@@ -119,12 +122,14 @@ Ext.onReady(function(){
 
 
     var panel = new Ext.Panel({
-        applyTo: 'feed-viewer',
+        //applyTo: 'feed-viewer',
         //title:'Opal Services',
         //autoHeight: true,
-        //autoScroll:true,
-        height:500,
+        autoScroll:true,
+        //height:500,
         width:900,
+        autoHeight: true,
+        //autoWidth: true,
         layout:'fit',
         items: grid,
         tbar: [
@@ -145,7 +150,6 @@ Ext.onReady(function(){
 
 </head>
 <body>
-<div id="header"><div style="float:right;margin:5px;" class="x-small-editor"></div></div>
 
 <div class="mainBody">
 
@@ -168,7 +172,12 @@ Ext.onReady(function(){
 
 <h2>List of Applications:</h2>
 
-<div style="margin-left: auto; margin-right: auto" id="feed-viewer"></div>
+<br/>
+<div id="containing-div" >
+<div id="feed-viewer" style="margin-left: auto; margin-right: auto; width: 900px"></div>
+</div>
+<br/>
+
 <p style="font-size: smaller">*: a customized submission form is avaiable for this application</p>
 <br/>
 For an Atom feed of the available services <a href="opalServices.xml"><img src="images/feed-icon.png"/> click here</a>.
