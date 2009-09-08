@@ -1,6 +1,7 @@
 package edu.sdsc.nbcr.opal.manager;
 
 import java.util.Properties;
+import java.util.List;
 
 import org.globus.gram.GramJob;
 
@@ -215,7 +216,7 @@ public class DRMAAJobManager implements OpalJobManager {
 		jt.setNativeSpecification(nativeSpec);
 	    }
 	    jt.setRemoteCommand(cmd);
-	    jt.setArgs(argsArray);
+	    // jt.setArgs(argsArray);
 	    jt.setWorkingDirectory(workingDir);
 	    jt.setErrorPath(":" + workingDir + "/stderr.txt");
 	    jt.setOutputPath(":" + workingDir + "/stdout.txt");

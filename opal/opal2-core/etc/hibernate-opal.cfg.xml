@@ -24,7 +24,15 @@
         -->
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <!--<property name="connection.pool_size">1</property>-->
+
+        <!-- JDBC connection pool (use c3p0) -->
+        <property name="c3p0.min_size">1</property>
+        <property name="c3p0.max_size">20</property>
+        <property name="c3p0.timeout">1800</property>
+        <property name="c3p0.max_statements">50</property>
+        <property name="c3p0.idle_test_period">1800</property>
+        <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
 
         <!-- Enable Hibernate's automatic session context management -->
         <property name="current_session_context_class">thread</property>
