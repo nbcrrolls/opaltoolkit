@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.HibernateException;
 
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 
 import org.apache.log4j.Logger;
 
@@ -254,7 +254,7 @@ public class HibernateUtil {
 
                 // retrieve the job info object
                 List results = session.createCriteria(JobInfo.class)
-                    .add(Expression.eq("jobID", jobID))
+                    .add(Restrictions.eq("jobID", jobID))
                     .list();
                 if (results.size() != 1) {
                     session.close();
@@ -312,7 +312,7 @@ public class HibernateUtil {
                 Session session = getSessionFactory().openSession();
                 session.beginTransaction();
                 List results = session.createCriteria(JobInfo.class)
-                    .add(Expression.eq("jobID", jobID))
+                    .add(Restrictions.eq("jobID", jobID))
                     .list();
                 if (results.size() == 1) {
                     JobInfo info = (JobInfo) results.get(0);
@@ -360,7 +360,7 @@ public class HibernateUtil {
                 Session session = getSessionFactory().openSession();
                 session.beginTransaction();
                 List results = session.createCriteria(JobInfo.class)
-                    .add(Expression.eq("jobID", jobID))
+                    .add(Restrictions.eq("jobID", jobID))
                     .list();
                 if (results.size() == 1) {
                     JobInfo info = (JobInfo) results.get(0);

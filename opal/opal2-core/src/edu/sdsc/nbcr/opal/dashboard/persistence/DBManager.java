@@ -13,6 +13,7 @@ import org.hibernate.Query;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.engine.SessionFactoryImplementor;
 import java.util.List;
 import java.util.HashSet;
 import java.text.NumberFormat;
@@ -75,7 +76,10 @@ public class DBManager {
             //maybe not the best way to find the driver name, but I couldn't
             //find a better one
             Session session = sessionFactory.openSession();
+	    // note: depcreated, will have to fix before hibernate upgrade
             driver = session.connection().getMetaData().getDriverName();
+	    // 	    driver = ((SessionFactoryImplementor) sessionFactory).
+	    // 		getConnectionProvider().getConnection().getMetaData().getDriverName();
             session.close();
         } catch (Exception e) {
             //we have no connection to the DB
@@ -124,7 +128,10 @@ public class DBManager {
             //maybe not the best way to find the driver name, but I couldn't
             //find a better one
             Session session = sessionFactory.openSession();
+	    // note: deprecated, will have to fix if hibernate is upgraded
             driver = session.connection().getMetaData().getDriverName();
+// 	    driver = ((SessionFactoryImplementor) sessionFactory).
+// 		getConnectionProvider().getConnection().getMetaData().getDriverName();
             session.close();
             isConnected = true;
         } catch (Exception e) {
