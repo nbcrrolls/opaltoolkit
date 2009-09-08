@@ -423,6 +423,7 @@ public class DBManager {
                 " extract(epoch from ( last_update_time - start_time_time))) as average " + queryTail; 
         }else if (dialect.equals("org.hibernate.dialect.MySQLDialect")){
             //this is MySQL
+	    //contributed by Anthony Bretaudeau
             query = "select jobInfo.start_time_date as date, " +
                 //number of day 
                 " avg( ( last_update_date - start_time_date ) * 86400 + " +
