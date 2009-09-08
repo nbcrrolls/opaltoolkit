@@ -230,9 +230,10 @@ Author:
     <copy todir="${tomcat.WEB-INF}/lib">
       <fileset dir="${lib}">
         <!-- postgres jdbc jar -->
-        <!-- <include name="postgresql-8_0_309_jdbc3.jar" />  -->
-        <!-- LC updated the jdbc driver   -->
         <include name="postgresql-8.2-506.jdbc3.jar" />
+
+        <!-- mysql jdbc jar -->
+        <include name="mysql-connector-java-5.1.0-bin.jar" />
 
         <!-- drmaa jar -->
         <include name="drmaa.jar" />
