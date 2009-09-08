@@ -126,16 +126,16 @@ Author:
     <!-- Compile the opal service generated java files -->
     <javac srcdir="${build.generated}" 
            destdir="${build.classes}" 
-	   debug="${debug}" 
+	   debug="${debug}"
 	   fork="${javac.fork}">
-       <classpath refid="classpath" />
-       <include name="edu/sdsc/nbcr/opal/*.java" />
+      <classpath refid="classpath" />
+      <include name="edu/sdsc/nbcr/opal/*.java" />
     </javac>
 
     <!-- Compile the opal service handwritten java files -->
     <javac srcdir="${project.home}/src" 
            destdir="${build.classes}" 
-	   debug="${debug}" 
+	   debug="${debug}"
 	   fork="${javac.fork}">
       <classpath refid="classpath" />
       <include name="edu/sdsc/nbcr/opal/**/*.java" />
