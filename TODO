@@ -11,6 +11,7 @@
   * launchJob should allow the user to specify the wallclock
   * upgrade DRMAA  
   * REST support - look at Axis2: SK
+  * Support for array jobs
 
 * Additional Features
   * Addition of implicit files to dashboard: LC 
@@ -19,12 +20,13 @@
     min but not the max? LC
     Checked! We can express this condition simply using only the min tag 
     and not the max tag
-  * conditional display of parameters (a group of parameters are displayed only
+  * Conditional display of parameters (a group of parameters are displayed only
     if a flag is checked) (reuqested by the PDB guys)
   * Display additional statistics on the dashboard - average load, queue
     time: LC
     * May also need to provide programmatic access
-  * get the version of Opal 
+  * Get the version of Opal 
+  * Login and security for dashboard
 
 * Testing suite using JUnit
   * AppServiceImpl - Managers (local calls): SK
