@@ -140,6 +140,49 @@ gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
 
 </section>
 
+<section id="csf-scheduler" xreflabel="CSF Setup">
+<title>CSF Setup</title>
+
+<orderedlist>
+<listitem><para>In the opal.properties
+file, set <filename>opal.jobmanager</filename> to
+<filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename>.
+</para></listitem>
+<listitem><para>
+In the opal.properties
+file, set <filename>csf4.workingDir</filename> 
+to the appropriate directory on your system.
+</para></listitem>
+<listitem><para>
+If you have already sourced 
+<filename>$GLOBUS_LOCATION/etc/globus-user-env.sh</filename> and
+<filename>$GLOBUS_LOCATION/etc/globus-devel-env.sh</filename>,
+then execute
+<screen>
+export CLASSPATH=""
+</screen>
+</para></listitem>
+<listitem><para>
+Reinstall Opal by running the following command:
+<screen>
+ant install
+</screen>
+</para></listitem>
+<listitem><para>
+Execute the following
+<screen>
+source $GLOBUS_LOCATION/etc/globus-user-env.sh
+source $GLOBUS_LOCATION/etc/globus-devel-env.sh
+export CSF_CLASSPATH=$CLASSPATH
+</screen>
+</para></listitem>
+<listitem><para>
+Restart Tomcat for changes to take effect.
+</para></listitem>
+</orderedlist>
+
+</section>
+
 <section id="jobmanager-howto" xreflabel="Writing Your Own Job Manager">
 <title>Writing Your Own Job Manager</title>
 
