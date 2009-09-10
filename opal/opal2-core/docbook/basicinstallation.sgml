@@ -424,7 +424,7 @@ the $OPAL_HOME directory.
 etc/classpath.bat|(c)sh script depending on the OS/shell you use - e.g. if you
 use tcsh on Unix, set your classpath by typing the following command:
 <screen>
-    source etc/classpath.csh
+    source etc/classpath.sh
 </screen>
 </para>
 
