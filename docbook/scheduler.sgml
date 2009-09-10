@@ -151,7 +151,8 @@ file, set <filename>opal.jobmanager</filename> to
 <listitem><para>
 In the opal.properties
 file, set <filename>csf4.workingDir</filename> 
-to the appropriate directory on your system.
+to the remote CSF4 working directory that is under the remote 
+user home directory.
 </para></listitem>
 <listitem><para>
 If you have already sourced 
