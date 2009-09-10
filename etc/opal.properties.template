@@ -64,6 +64,7 @@ globus.gridftp_base=gsiftp://host:2811/working_dir
 ## BEGIN: information for the CSF job manager
 ## ------------------------------------------------
 # CSF working directory
+# This is the remote directory under the remote user's home directory
 csf4.workingDir=opal_runs
 ## ------------------------------------------------
 ## END: information for the CSF job manager
