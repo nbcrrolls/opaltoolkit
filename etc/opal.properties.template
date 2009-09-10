@@ -60,6 +60,13 @@ globus.gridftp_base=gsiftp://host:2811/working_dir
 ## ------------------------------------------------
 ## END: information for the Globus job manager
 
+## BEGIN: information for the CSF job manager
+## ------------------------------------------------
+# CSF working directory
+csf4.workingDir=opal_runs
+## ------------------------------------------------
+## END: information for the CSF job manager
+
 ## BEGIN: information for the Condor job manager
 ## ------------------------------------------------
 # the script used by Condor to launch MPI jobs
