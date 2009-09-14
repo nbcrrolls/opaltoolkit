@@ -60,9 +60,9 @@ public class GetJobStatusAction extends MappingDispatchAction{
             return mapping.findForward("Error");
         }//if */
         
-        String url = getServlet().getServletContext().getInitParameter("opalUrl");
+        String url = getServlet().getServletContext().getInitParameter("OPAL_URL");
         if ( url == null ) {
-            log.warn("the opalUrl was not found in the WEB-INF/web.xml file.\nUsing the default...");
+            log.warn("the OPAL_URL was not found in the WEB-INF/web.xml file.\nUsing the default...");
             url = Constants.OPALDEFAULT_URL;
         }
         StatusOutputType status= null; 

@@ -19,7 +19,7 @@
 
 <%
 String tomcatUrl = (String) request.getAttribute("tomcatUrl");
-
+String opalUrl = (String) request.getAttribute("opalUrl");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -48,7 +48,8 @@ Ext.onReady(function(){
     //format the title
     function formatTitle(value, p, record) {
         hostName = "<%=tomcatUrl%>";
-        submissionFormLink = hostName + "/opal2/CreateSubmissionForm.do?serviceURL=http%3A%2F%2Flocalhost%3A8080%2Fopal2%2Fservices%2F"
+        submissionFormLink = hostName + "/opal2/CreateSubmissionForm.do?serviceURL=" + "<%=opalUrl%>" + "%2F"
+
         URLarray = record.data.link.split("/");
         serviceName = URLarray[URLarray.length - 1];
         submissionFormLink = submissionFormLink + serviceName;
