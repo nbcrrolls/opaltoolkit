@@ -1,4 +1,4 @@
-// GamaInfoServlet.java
+// OpalInfoServlet.java
 //
 // Servlet that implements the opal dashboard
 //
@@ -54,6 +54,7 @@ public class OpalInfoServlet extends HttpServlet {
     private String opalDocumentation = null;
     private String opalJobManager = null;
     private static String tomcatUrl = null;
+    private String opalUrl = null;
     private Boolean dbUsed = Boolean.FALSE;
     private DBManager dbManager = null;
     
@@ -67,6 +68,7 @@ public class OpalInfoServlet extends HttpServlet {
             opalUptimeCommand = config.getServletContext().getInitParameter("OPAL_UPTIME_COMMAND");
             opalWebsite = config.getServletContext().getInitParameter("OPAL_WEB_SITE");
             opalDocumentation = config.getServletContext().getInitParameter("OPAL_DOC");
+            opalUrl = config.getServletContext().getInitParameter("OPAL_URL");
         } catch (Exception e) {
             e.printStackTrace();
             log.error("An error occurred while initializing the OpalInfoServlet, impossible to load web.xml: " + e.getMessage());
@@ -207,6 +209,7 @@ public class OpalInfoServlet extends HttpServlet {
             dispatcher.forward(req, res);
         } else if ("serviceList".equals(command)) {
             req.setAttribute("tomcatUrl", tomcatUrl);
+	    req.setAttribute("opalUrl", opalUrl);
             dispatcher = getServletContext().getRequestDispatcher(SERVICELIST_JSP);
             dispatcher.forward(req, res);
         } else {
