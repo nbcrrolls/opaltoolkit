@@ -3,15 +3,15 @@
 
 <para>The Opal toolkit provides a mechanism to wrap up existing scientific
 applications rapidly as Web services, and expose them to various clients.
-The implementation provides features such as scheduling (e.g. using
-Condor/SGE via Globus or DRMAA) and security (using GSI-based
-certificates), Furthermore, the service provides job and data management
-(by executing every job in a separate working directory), and state
-management (by storing the service state via Hibernate into a database such
-as HSQL or PostgreSQL). The application developer specifies a configuration for a
-scientific application and deploys the application as a service following a
-small sequence of steps. End-users can now access this application remotely
-using the WSDL of the service.</para>
+The implementation provides features such as scheduling (e.g. using Condor
+and SGE via Globus or DRMAA) and security (using GSI-based certificates),
+Furthermore, the service provides job and data management (by executing
+every job in a separate working directory), and state management (by
+storing the service state via Hibernate into a database such as HSQL,
+PostgreSQL or MySQL). The application developer specifies a configuration
+for a scientific application and deploys the application as a service
+following a small sequence of steps. End-users can now access this
+application remotely using the WSDL of the service.</para>
 
 <para>The WSDL for the service is defined inside <emphasis role="italics">wsdl/opal.wsdl</emphasis>. Stub
 generators provided by Web service toolkits are then used to generate the

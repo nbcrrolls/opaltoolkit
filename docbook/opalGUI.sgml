@@ -26,11 +26,12 @@ The Opal dashboard provides the following features:</para>
         created dynamically based on user inputs, such as a time range and
         particular services of interest.</para></listitem>
         <listitem><para>List of Applications: This provides a list of all
-        the installed applications. Users can click on the applications to
-        access submission forms. An Atom feed for the list of applications
-        is also available.</para></listitem>
-        <listitem><para>Information: This provides relevant information
-        about Opal such as documentation, funding sources, etc.</para></listitem>
+        the installed applications. Users can search for applications based
+        on specified metadata, and click on the applications to access
+        submission forms. An Atom feed for the list of applications is also
+        available.</para></listitem> <listitem><para>Information: This
+        provides relevant information about Opal such as documentation,
+        funding sources, etc.</para></listitem>
 </itemizedlist>
 
 <para> The list of installed applications is generated dynamically by
@@ -61,7 +62,7 @@ display to the user only the symple submission form.</para>
 
 </section>
 
-<section id="opalGUI-advancedsub" xreflabel="Advanced submission Form">
+<section id="opalGUI-advancedsub" xreflabel="Advanced Submission Form">
 <title>Advanced submission Form</title>
 
 <para> It is possible to add an optional element called 'types', in the
