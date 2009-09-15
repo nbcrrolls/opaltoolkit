@@ -58,33 +58,40 @@ requires the following packages:</para>
    a version of MPI. You will also need to make sure that your SSH keys are
    set up to be able to run MPI jobs without prompting for a password.</para></listitem>
 
-   <listitem><para>Postgres 8.2.4 (or higher 8.2 flavors): If you plan to
-   persist the state of the service in a real database, you will need to install
-   Postgres from <ulink type="http"
-   url="http://www.postgresql.org/">http://www.postgresql.org/</ulink>. By
+   <listitem><para>RDBMS: By
    default, we use a Java-based in-memory and disk-based database (<ulink
-   url="http://hsqldb.org/">HSQLDB</ulink>)</para></listitem>
+   url="http://hsqldb.org/">HSQLDB</ulink>) to persist the state of the
+   services. For production use, we recommend using a real database such as
+   <ulink type="http"
+   url="http://www.postgresql.org/">Postgres</ulink> (version 8.2.4 or
+   higher 8.2 flavors) or <ulink type="http"
+   url="http://dev.mysql.com/downloads/">MySQL</ulink> (tested with version
+   5.1.38).</para></listitem>
 
-   <listitem><para>Scheduler Tools: One way to enable access to schedulers is via the
-   <ulink type="http" url="http://www.globus.org">Globus Toolkit</ulink>. The primary
-   requirement is that clients must be able to launch jobs on your resource
-   using GRAM via the Globus gatekeeper. In addition, jobmanager plugins
-   must be available for the particular scheduler that you have installed.
-   In other words, GRAM clients must be able to submit jobs to your
-   scheduler via the Globus gatekeeper. We have used Globus version 4.0.X
-   for our development and testing, but you may use any other version as
-   long as the above requirements are met. </para>
+   <listitem><para>Scheduler Tools: One way to enable access to schedulers
+   is via the <ulink type="http" url="http://www.globus.org">Globus
+   Toolkit</ulink>. The primary requirement is the Opal user must be able
+   to launch jobs on your resources using GRAM via the Globus gatekeeper.
+   In addition, Globus jobmanagers must be available for the particular
+   scheduler that you have installed. We are using Globus version 4.0.X for
+   our development and testing, but you may use any other version as long
+   as the above requirements are met. We have tested <ulink type="http"
+   url="http://www.cs.wisc.edu/condor">Condor</ulink> for serial jobs only,
+   and <ulink type="http"
+   url="http://gridengine.sunsource.net/">SGE</ulink> for serial as well as
+   parallel jobs. Globus jobmanager plugins are available for both of the
+   above, and must be installed if you plan to use either of them.</para>
 
-   <para>We have used <ulink type="http" url="http://www.cs.wisc.edu/condor">Condor</ulink> for
-   serial jobs only, and <ulink type="http" url="http://gridengine.sunsource.net/">SGE</ulink>
-   for serial as well as parallel jobs. Globus jobmanager plugins are
-   available for both of the above, and must be installed if you plan to
-   use either of them.</para>
+   <para>Another alternative to access schedulers is via the <ulink
+   type="http" url="http://drmaa.org/">DRMAA</ulink> API. The Opal services
+   can submit jobs to schedulers as long as they support the DRMAA API. We
+   have only tested job submits to SGE via DRMAA.</para>
 
-   <para>Another alternative to access schedulers is via the <ulink type="http"
-   url="http://drmaa.org/">DRMAA</ulink> API. The Web services can submit jobs
-   to schedulers as long as they support the DRMAA API. We have only tested
-   job submits to SGE via DRMAA.</para></listitem>
+   <para>Finally, from the version 2.1 release of the Opal toolkit, we are
+   supporting the Community Scheduler Framework (<ulink type="http"
+   url="http://www.globus.org/toolkit/docs/4.0/contributions/csf/">CSF4</ulink>)
+   for scheduling jobs across multiple clusters.</para>
+</listitem>
 </orderedlist>
 </section>
 </section>
@@ -155,6 +162,8 @@ properties correctly. It should look something like the following:</para>
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.DRMAAJobManager
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.GlobusJobManager
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager
+    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CondorJobManager
+    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CSFJobManager
 
     ## BEGIN: information for the DRMAA job manager
     ## ------------------------------------------------
@@ -179,6 +188,21 @@ properties correctly. It should look something like the following:</para>
     globus.gridftp_base=gsiftp://host:2811/working_dir
     ## ------------------------------------------------
     ## END: information for the Globus job manager
+
+    ## BEGIN: information for the CSF job manager
+    ## ------------------------------------------------
+    # CSF working directory
+    # This is the remote directory under the remote user's home directory
+    csf4.workingDir=opal_runs
+    ## ------------------------------------------------
+    ## END: information for the CSF job manager
+
+    ## BEGIN: information for the Condor job manager
+    ## ------------------------------------------------
+    # the script used by Condor to launch MPI jobs
+    mpi.script=/opt/condor/etc/examples/mp1script
+    ## ------------------------------------------------
+    ## END: information for the Condor job manager
 </screen>
 
 
@@ -217,14 +241,6 @@ location of your Tomcat installation (i.e. $CATALINA_HOME), and
 <filename>tomcat.port</filename> to the port number that the Tomcat server is running
 on.</para> </listitem>
 
-<listitem><para>If you did not follow instructions to set up a real
-production database, modify the <filename>connection.url</filename> property
-inside <emphasis role="italics">etc/hibernate-opal.cfg.xml</emphasis> from
-<emphasis role="italics">jdbc:hsqldb:file:data/opaldb</emphasis> to
-<emphasis
-role="italics">jdbc:hsqldb:file:&lt;absolute_path_for_data_dir&gt;/opaldb</emphasis>.</para>
-</listitem>
-
 <listitem><para>Install the Opal toolkit into the Tomcat installation, by executing
 the following command:
 <screen>
@@ -255,7 +271,7 @@ of the main servlet:
 
 </screen>
 </para><para>
-And make sure that the "param-name" is set to true:
+And make sure that the "param-name" is set to true as follows:
 <screen>
             &lt;param-name&gt;listings&lt;/param-name&gt; 
             &lt;param-value&gt;true&lt;/param-value&gt;
@@ -354,9 +370,13 @@ provided by Opal are
 fork/system exec),
 <filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> (for
 DRMAA), <filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>
-(for Globus on a local cluster), and
+(for Globus on a local cluster),
 <filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename> (for
-Globus job submissions to a remote cluster). Use the pdb2pqr_config.xml as
+Globus job submissions to a remote cluster), 
+<filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> (for 
+submitting jobs directly to Condor) and 
+<filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename> (for using the 
+Community Scheduler Framework). Use the pdb2pqr_config.xml as
 a guideline to write configurations for your particular
 applications.</para> </listitem>
 

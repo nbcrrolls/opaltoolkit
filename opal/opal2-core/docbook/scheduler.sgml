@@ -7,22 +7,16 @@ provided. We also provide a brief introduction on how to write your own job
 manager, if need be.</para>
 
 <para>The prerequisite to this section is that you have a scheduler such as
-Condor or SGE installed on your compute cluster. Please consult the
-appropriate documentation for the respective installation. By default,
-access to the schedulers is provided in one of two ways - using the DRMAA
-API, or the Globus Toolkit. Starting with release 3.1, we are also
-supporting the Community Scheduler Framework (CSF4). In practice, it is
-probably easier to set up access via DRMAA if your scheduler supports the
-same.</para>
-
-<para>Note that we do not stage input and output files from the Opal server
-to the submit host if DRMAA is being used; hence, the machines should be on
-a shared file system for DRMAA. Also note that Condor doesn't support
-parallel execution using any recent version of MPI. If you plan to
-configure parallel execution, use SGE instead.</para>
+Condor or SGE installed on your compute cluster. Access to schedulers is
+provided in a number of ways - in particular, via the DRMAA API and the
+Globus Toolkit. Starting with release 3.1, we support Condor natively
+without using DRMAA or Globus, and also the Community Scheduler Framework
+(CSF4) for scheduling jobs across multiple clusters. Please consult the
+appropriate documentation for the installation of these scheduler
+tools.</para>
 
 <section id="drmaa-scheduler" xreflabel="DRMAA Setup">
-<title>DRMAA Setup</title>
+<title>Using DRMAA</title>
 
 <orderedlist>
 <listitem><para>Ensure that your scheduler supports job submission via the DRMAA API.
@@ -46,11 +40,14 @@ plan on supporting parallel jobs. </para></listitem>
 
 <listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
 
+<listitem><para>Note that we do not stage input and output files from the Opal server
+to the submit host if DRMAA is being used; hence, the machines should be on
+a shared file system for the DRMAA job manager to work correctly.</para></listitem>
 </orderedlist>
 </section>
 
 <section id="globus-scheduler" xreflabel="Globus Setup">
-<title>Globus Setup</title>
+<title>Using Globus</title>
 
 <orderedlist>
 <listitem><para>Install Globus (especially the Globus gatekeeper) on the head node of
@@ -142,8 +139,42 @@ gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
 
 </section>
 
+<section id="condor-scheduler" xreflabel="Condor Setup">
+<title>Using Condor</title>
+
+<orderedlist>
+<listitem><para>Ensure that you have a working Condor pool by following the
+Condor <ulink type="http"
+url="http://www.cs.wisc.edu/condor/manual/v7.3/">manual</ulink>. In
+particular, verify that you can submit and monitor jobs from the
+command-line with commands such as <filename>condor_submit</filename>,
+<filename>condor_status</filename>, etc., and that these commands are in the
+Opal user's PATH.</para></listitem>
+
+<listitem><para>Set the following properties inside the opal.properties
+file: <filename>opal.jobmanager</filename> to
+<filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename>, and
+<filename>mpi.script</filename> to the script used by Condor to submit
+parallel jobs. You can ignore mpi.script if you do not plan on supporting
+parallel jobs. </para></listitem>
+
+<listitem><para>Reinstall Opal by running the following command:
+<screen>
+    ant install
+</screen>
+</para>
+</listitem>
+
+<listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
+
+<listitem><para>Note that we have not tested advanced Condor features such
+as flocking and Condor-G.</para></listitem>
+</orderedlist>
+
+</section>
+
 <section id="csf4-scheduler" xreflabel="CSF Setup">
-<title>CSF4 Setup</title>
+<title>Using CSF4</title>
 
 <orderedlist>
 <listitem><para>In the opal.properties

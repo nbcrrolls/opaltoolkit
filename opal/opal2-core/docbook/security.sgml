@@ -4,9 +4,9 @@
 <para>This chapter explains how to configure Opal in order to use GSI to autheticate clients.</para>
 
 <orderedlist>
-  <listitem><para>Create a globus-based PEM server certificate and private key for the
-  tomcat server.
-  </para></listitem>
+  <listitem><para>Create a globus-based PEM server certificate and
+  unencrypted private key for the tomcat server (consult the documentation
+  of your CA software to help you with this step). </para></listitem>
 
   <listitem><para>Make sure that Opal has been installed successfully. If not, do so by
   running the following command:
@@ -17,7 +17,7 @@
   <listitem><para>To enable GSI HTTPS in Tomcat there are two different procedures 
   depending on your version of Tomcat. 
   If you are using 5.0.X, you can start from the sample etc/server.xml provided
-  (works for version 5.0.30). The following two snippets are responsible for
+  (works for version 5.0.30). The following snippets are responsible for
   enabling https:
   <screen>
 
@@ -144,6 +144,11 @@
   The GenericServiceClient class shows how the user credentials can be set
   programmatically inside a client stub in order to enable GSI HTTPS.
   </para></listitem>
+
+  <listitem><para>Note that the Opal dashboard may not function correctly
+  when GSI-based mutual authentication is being used. We will address this
+  in future releases of Opal.</para></listitem>
+
 </orderedlist>
 
 </chapter>
