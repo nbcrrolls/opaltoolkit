@@ -176,6 +176,34 @@ as flocking and Condor-G.</para></listitem>
 <section id="csf4-scheduler" xreflabel="CSF Setup">
 <title>Using CSF4</title>
 
+<para>
+The CSF plugin requires a valid proxy from the user who starts Tomcat.
+</para>
+
+<para>
+This sample script <filename>newcert.sh</filename> gets the 
+certificate from the proxy.
+<screen>
+#!/bin/bash
+
+export GLOBUS_LOCATION=/opt/gt4
+. $GLOBUS_LOCATION/etc/globus-user-env.sh
+. $GLOBUS_LOCATION/globus-devel-env.sh
+
+echo $password | $GLOBUS_LOCATION/bin/myproxy-logon -s myproxy.teragrid.org -S &amp;&gt; logfile.log
+echo running `date`&gt;&gt;logfile.log
+</screen>
+</para>
+
+<para>
+You may add the above script to crontab to run 
+<filename>newcert.sh</filename> at the beginning
+of every hour.
+<screen>
+0 * * * * $path_to_newcert_sh
+</screen>
+</para>
+
 <orderedlist>
 <listitem><para>In the opal.properties
 file, set <filename>opal.jobmanager</filename> to
