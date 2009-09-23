@@ -145,11 +145,13 @@ gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
 <orderedlist>
 <listitem><para>Ensure that you have a working Condor pool by following the
 Condor <ulink type="http"
-url="http://www.cs.wisc.edu/condor/manual/v7.3/">manual</ulink>. In
-particular, verify that you can submit and monitor jobs from the
-command-line with commands such as <filename>condor_submit</filename>,
-<filename>condor_status</filename>, etc., and that these commands are in the
-Opal user's PATH.</para></listitem>
+url="http://www.cs.wisc.edu/condor/manual/v7.0.5/">manual</ulink>. We have
+tested with version 7.0.5, but we expect that it will work with most recent
+Condor versions. In particular, verify that you can submit and monitor jobs
+from the command-line with commands such as
+<filename>condor_submit</filename>, <filename>condor_status</filename>,
+etc., and that these commands are in the Opal user's
+PATH.</para></listitem>
 
 <listitem><para>Set the following properties inside the opal.properties
 file: <filename>opal.jobmanager</filename> to
