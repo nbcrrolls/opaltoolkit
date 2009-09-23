@@ -1,3 +1,16 @@
+Version 2.1
+- Improved Ajax-based dashboard that enables searching applications by
+their metadata
+- Use of C3P0 for providing production-level connection pooling for state
+management, and addition of support for MySQL database back-end
+(contributed by Anthony Bretaudeau)
+- Addition of two new job managers - for Condor and the Community Scheduler
+Framework (CSF4)
+- Updated user guide consistent with all new features
+- Bug fixes include removal of hardcoding of opal url in the dashboard
+code, and fixing the default HSQL configuration to write data to within the
+opal2 webapp
+
 Version 2.0.1
 - Opal Dashboard
   - Applications are now grouped with their name 
