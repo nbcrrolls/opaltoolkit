@@ -19,7 +19,7 @@ import edu.sdsc.nbcr.opal.StatusOutputType;
 
 /**
  *
- * Implementation of an Opal Job Manager using Process fork
+ * Implementation of an Opal Job Manager using CSF4
  */
 public class CSFJobManager implements OpalJobManager {
 

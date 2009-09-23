@@ -18,7 +18,7 @@ import edu.sdsc.nbcr.opal.StatusOutputType;
 
 /**
  *
- * Implementation of an Opal Job Manager using DRMAA
+ * Implementation of an Opal Job Manager using Condor
  */
 public class CondorJobManager implements OpalJobManager {
 
@@ -28,7 +28,7 @@ public class CondorJobManager implements OpalJobManager {
     private Properties props; // the container properties being passed
     private AppConfigType config; // the application configuration
     private StatusOutputType status; // current status
-    private String handle; // the DRMAA job id for this submission
+    private String handle; // the Condor job id for this submission
     private boolean started = false; // whether the execution has started
     private volatile boolean done = false; // whether the execution is complete
 
@@ -123,7 +123,7 @@ public class CondorJobManager implements OpalJobManager {
 	}
 
 
-	// launch executable using DRMAA
+	// launch executable using Condor
 	String cmd = null;
 
 	if (config.isParallel()) {
