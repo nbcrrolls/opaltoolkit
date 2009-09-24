@@ -1,9 +1,10 @@
-<appendix id="proxy_script" xreflabel="proxy_script">
+<appendix id="proxy-script" xreflabel="proxy-script">
 <title>Script for Generating Proxy</title>
 
 <para>
 This sample script <filename>newcert.sh</filename> gets the 
-certificate from the proxy.
+certificate from the proxy. This is useful if the Opal job managers are
+configured to use a proxy to submit jobs on behalf of the user.
 <screen>
 #!/bin/bash
 
