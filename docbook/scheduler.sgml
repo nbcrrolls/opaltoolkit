@@ -212,14 +212,20 @@ file, set <filename>opal.jobmanager</filename> to
 <filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename>.
 </para></listitem>
 <listitem><para>
-Create a working directory on all machines that CSF4 will be scheduling jobs to. Make sure this directory has the same name on all resources. In the opal.properties
-file, set <filename>csf4.workingDir</filename> to the relative path of this working directory with respect to the home directory of the CSF4 user.
+Create an Opal directory on all machines that CSF4 will be scheduling
+jobs to. The Opal job manager requires these directories to have the 
+same name on all resources.
+In <filename>opal.properties</filename>, set 
+<filename>csf4.workingDir</filename> to the relative path of this 
+working directory with respect to the home directory of the CSF4 user.
 </para></listitem>
 <listitem><para>
 If you have already sourced 
 <filename>$GLOBUS_LOCATION/etc/globus-user-env.sh</filename> and
 <filename>$GLOBUS_LOCATION/etc/globus-devel-env.sh</filename>,
-unset the CLASSPATH by executing the following command:
+then you need to unset the CLASSPATH.  This is because there are 
+jar conflicts between the library files used by gt4 and the library
+files used by Opal.  The command below unsets the CLASSPATH.
 <screen>
 export CLASSPATH=""
 </screen>
