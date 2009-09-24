@@ -243,6 +243,20 @@ Restart Tomcat for changes to take effect.
 </para></listitem>
 </orderedlist>
 
+<para>
+In your application configuration files, the <filename>binaryLocation</filename>
+element needs to be of the form <filename>$APPNAME:$BINARY</filename>.
+For example,
+<screen>
+&lt;binaryLocation&gt;PDB2PQR:pdb2pqr.py&lt;/binaryLocation&gt;
+</screen>
+</para>
+
+<para>
+This is because CSF4 can figure out the exact path of the application
+on a particular resource using the <filename>$APPNAME</filename>.
+</para>
+
 </section>
 
 <section id="jobmanager-howto" xreflabel="Writing Your Own Job Manager">
