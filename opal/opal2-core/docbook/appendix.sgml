@@ -1,0 +1,30 @@
+<appendix id="proxy_script" xreflabel="proxy_script">
+<title>Script for Generating Proxy</title>
+
+<para>
+This sample script <filename>newcert.sh</filename> gets the 
+certificate from the proxy.
+<screen>
+#!/bin/bash
+
+export GLOBUS_LOCATION=/opt/gt4
+. $GLOBUS_LOCATION/etc/globus-user-env.sh
+. $GLOBUS_LOCATION/globus-devel-env.sh
+
+echo $password | $GLOBUS_LOCATION/bin/myproxy-logon -s myproxy.teragrid.org -S &amp;&gt; logfile.log
+echo running `date`&gt;&gt;logfile.log
+</screen>
+</para>
+
+<para>
+You may add the above script to crontab to run 
+<filename>newcert.sh</filename> at the beginning
+of every hour.
+<screen>
+0 * * * * $path_to_newcert_sh
+</screen>
+</para>
+
+</appendix>
+
+
