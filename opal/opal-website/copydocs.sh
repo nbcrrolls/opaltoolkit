@@ -33,7 +33,7 @@ cp ../opal-perl/docs/index.html $DESTDIR/opal-perl-index.html
 
 
 
-VERSION=2.0
+VERSION=2.X
 
 echo ---
 echo Generating the documentation for Opal $VERSION
@@ -60,4 +60,4 @@ cp -r $SRCDIR* $DESTDIR
 # opal-py
 cp ../opal-py/docs/index.html $DESTDIR/opal-py-index.html
 # opal-perl
-cp ../opal-perl/docs/index.html $DESTDIR/opal-perl-index.html
+# cp ../opal-perl/docs/index.html $DESTDIR/opal-perl-index.html
