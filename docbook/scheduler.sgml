@@ -181,7 +181,7 @@ as flocking and Condor-G.</para></listitem>
 <orderedlist>
 <listitem><para>
 The CSF plugin requires a valid proxy from the user who starts Tomcat.
-Please see <link linkend='proxy_script'>Appendix on proxy scripts</link> 
+Please see <link linkend='proxy-script'>Appendix on proxy scripts</link> 
 for a sample script to generate proxy.
 </para></listitem>
 <listitem><para>In the opal.properties
