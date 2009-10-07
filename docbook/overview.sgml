@@ -77,4 +77,9 @@ can be in any language.</para>
    only be appropriate for jobs that are not long running.</para></listitem>
 </orderedlist>
 
+<para>
+Please see <ulink url="http://www.nbcr.net/software/opal/deployment.html">here</ulink>
+for some Opal use cases.
+</para>
+
 </chapter>
