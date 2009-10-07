@@ -178,6 +178,21 @@ as flocking and Condor-G.</para></listitem>
 <section id="csf4-scheduler" xreflabel="CSF Setup">
 <title>Using CSF4</title>
 
+<para>
+The <ulink url="http://sourceforge.net/projects/gcsf/"> 
+Community Scheduler Framework (CSF)</ulink> is a set of Grid Services, 
+implemented using the Globus Toolkit, which provides an environment 
+for the development of metaschedulers that can dispatch jobs to 
+resource managers such as LSF, SGE, PBS and Condor.
+</para>
+
+<para>
+The Opal CSF plugin has been tested with CSF 4.0.5.1.
+You can download CSF 4.0.5.1 as well as its documentation from
+<ulink url="http://sourceforge.net/projects/gcsf/files/">
+the CSF Source Forge download page</ulink>. 
+</para>
+
 <orderedlist>
 <listitem><para>
 The CSF plugin requires a valid proxy from the user who starts Tomcat.
