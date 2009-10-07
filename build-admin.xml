@@ -131,7 +131,7 @@ Author:
     <copy todir="${doc.dest}/images">
       <fileset dir="${doc.src}/images">
 	  <!-- include everything -->
-	  <exclude name="**"/>
+<!--	  <exclude name="**"/> -->
       </fileset>
     </copy>
     <copy todir="${doc.dest}">
