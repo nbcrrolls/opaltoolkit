@@ -4,7 +4,10 @@
 <para>
 This sample script <filename>newcert.sh</filename> gets the 
 certificate from the proxy. This is useful if the Opal job managers are
-configured to use a proxy to submit jobs on behalf of the user.
+configured to use a proxy to submit jobs on behalf of the user.  Notice
+that the <command>-t 168</command> means that the certificate will be 
+valid for 168 hours or 7 days.  The default certificate life time is
+only 12 hours.
 <screen>
 #!/bin/bash
 
@@ -12,7 +15,7 @@ export GLOBUS_LOCATION=/opt/gt4
 . $GLOBUS_LOCATION/etc/globus-user-env.sh
 . $GLOBUS_LOCATION/globus-devel-env.sh
 
-echo $password | $GLOBUS_LOCATION/bin/myproxy-logon -s myproxy.teragrid.org -S &amp;&gt; logfile.log
+echo $password | $GLOBUS_LOCATION/bin/myproxy-logon -t 168 -s myproxy.teragrid.org -S &amp;&gt; logfile.log
 echo running `date`&gt;&gt;logfile.log
 </screen>
 </para>
