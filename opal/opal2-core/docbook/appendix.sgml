@@ -17,6 +17,8 @@ export GLOBUS_LOCATION=/opt/gt4
 
 echo $password | $GLOBUS_LOCATION/bin/myproxy-logon -t 168 -s myproxy.teragrid.org -S &amp;&gt; logfile.log
 echo running `date`&gt;&gt;logfile.log
+
+cat logfile.log &gt;&gt; get_cert.log
 </screen>
 </para>
 
