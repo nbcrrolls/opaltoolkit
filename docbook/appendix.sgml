@@ -4,7 +4,7 @@
 <para>
 This sample script <filename>newcert.sh</filename> gets the 
 certificate from the proxy. This is useful if the Opal job managers are
-configured to use a proxy to submit jobs on behalf of the user.  Notice
+configured to use a proxy to submit jobs on behalf of the user.  Note
 that the <command>-t 168</command> means that the certificate will be 
 valid for 168 hours or 7 days.  The default certificate life time is
 only 12 hours.
