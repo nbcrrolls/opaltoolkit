@@ -1,23 +1,6 @@
 <?xml version="1.0"?>
 <document>
   <body>
-    <section name="News">
-        <h1>Opal2 is released</h1>
-        <p>We are pleased to announce the availability of the official release of Opal Version 2.0.  
-        Opal2 is a complete redesign of Opal 1.x with many new features:
-        <ul>
-            <li>New resource managers can now easily be added using a plug-in based model</li>
-            <li>The status database has now better performances</li>
-            <li>The dashboard will work out of the box using the in-memory HSQL database</li>
-            <li>WSDL improvements include support for unlimited input file size 
-            (SOAP with Attachment), URLs for application inputs, and retrieval of job statistics
-            </li>
-        </ul>
-        </p>
-
-        <iframe src="http://sourceforge.net/export/projnews.php?group_id=211778&amp;limit=20&amp;flat=1&amp;show_summaries=1"
-                 width="100%" frameborder="0" height="400" > </iframe>
-    </section>
     <section name="About Opal Toolkit">
       <p>
  The Grid-based infrastructure enables large-scale scientific applications
@@ -39,7 +22,17 @@
  scheduling, standards-based Grid security and data management in an
  easy-to-use and configurable manner.
       </p>
-      <h1>Why Opal?</h1>
+    </section>
+
+    <section name="News">
+
+        <iframe src="http://sourceforge.net/export/projnews.php?group_id=211778&amp;limit=20&amp;flat=1&amp;show_summaries=1"
+                 width="100%" frameborder="0" height="400" > </iframe>
+    </section>
+
+    <section name="Why Opal?">
+
+      <p>The salient features of Opal are as follows:
       <ul>
 	<li>Opal enables deployment of scientific applications as Web
         services without having to write a single line of Web services code</li>
@@ -56,8 +49,9 @@
         (Java, Python, Perl, JavaScript) and plaforms (Windows, various
         Unix flavors)</li>
       </ul>
-      
-      <h1>So why use Opal, and not just Globus GRAM to launch remote jobs?</h1>
+      </p>
+
+      <p>So why use Opal, and not just Globus GRAM to launch remote jobs? Here are some reasons.
       <ul>
       <li>Deploying an application as an Opal service is very easy, and can be
       achieved under a couple of hours. It can often be done much faster
@@ -92,9 +86,10 @@
       the outputs when the execution is complete.</li>
       <li>Users don't have to be concerned with the schedulers being used at
       the back-end. The service is configured to use a scheduler supported
-      by Globus (e.g. Condor, SGE) - the users are oblivious to this. In
+      by Globus (e.g. Condor, SGE) - the users are oblivious to this. Services
+      also be configured to use other back-ends such as DRMAA. In
       the traditional approach, users would have to submit to a particular
-      scheduler using an appropriate URL.</li>
+      scheduler, and be mindful of what back-end is being used.</li>
       <li>Since the applications are exposed via a SOAP API, clients can be
       easily written in a variety of languages, and accessed from different
       platforms. Clients are shielded from any changes that happen at the
@@ -105,9 +100,8 @@
       PMV toolkit. Furthermore, workflow toolkits like Kepler can be used
       to orchestrate complex scientific pipelines based on Opal Web
       services.</li>
-    </ul>
-
-
+      </ul>
+      </p>
 
     </section>
   </body>

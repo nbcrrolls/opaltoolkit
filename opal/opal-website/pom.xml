@@ -80,6 +80,12 @@
       <organization>San Diego Supercomputer Center</organization>
       <organizationUrl>http://sdsc.edu/</organizationUrl>
     </contributor>
+    <contributor>
+      <name>Anthony Bretaudeau</name>
+      <email>anthony.bretaudeau AT irisa.fr</email>
+      <organization>IRISA</organization>
+      <organizationUrl>http://irisa.fr/</organizationUrl>
+    </contributor>
   </contributors>
 
   <!-- -END-  developers and contributors  -->

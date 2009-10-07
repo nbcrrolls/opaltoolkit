@@ -7,7 +7,7 @@
     <section name="Opal deployment">
       <p>The Opal toolkit has been used to deploy several scientific applications as Web services, 
       such as Autodock, PDB2PQR, MEME, Continuity, Blast, APBS, Babel, etc.  </p>
-      <p>Below a list of deployed services running Opal (to be added to this list e-mail clem A T sdsc.edu):</p>
+      <p>Below a list of deployed services running Opal (to be added to this list e-mail admin A T nbcr.net):</p>
       <ul>
         <li><a href="http://ws.nbcr.net:8080/opal/GetServicesList.do">ws.nbcr.net</a></li>
       </ul>
@@ -15,13 +15,18 @@
     <section name="Applications that use Opal services">
       <p>List of applications that use the Opal Toolkit for access to remote scientific applications:</p>
       <ul>
-        <li><a href="http://gemstone.mozdev.org/"><b>Gemstone:</b></a> Many of the web services developed using the Opal toolkit are available for access via Gemstone, which is a Mozilla Firefox-based rich client framework.</li>
-        <li><a href="http://www.scripps.edu/~sanner/python/pmv/index.html"><b>PMV:</b></a> The Python Molecular Viewer uses the Opal toolkit to access Viper database and APBS web services hosted by NBCR.</li>
+
+        <li><a href="http://mgltools.scripps.edu"><b>MGLTools:</b></a> The MGLTools suite can access Opal-based Web services on remote clusters to help with visualization and analysis of molecular structures.</li>
         <li><a href="http://kepler-project.org/"><b>Kepler:</b></a> The Kepler workflow management software distributes workflow examples which couple Opal-based web services for MEME and MAST.</li>
-        <li><a href="https://nbcr.net:8443/worksphere/start/"><b>My WorkSphere:</b></a> The NBCR portal uses the Opal toolkit to rapidly expose applications, such as MEME, as portlets.</li>
         <li><a href="http://meme.nbcr.net/"><b>MEME Web Submission Form:</b></a> This provides a Web interface to launch MEME jobs on NBCR resources, exposed as Opal services.</li>
         <li><a href="http://nbcr.net/pdb2pqr/"><b>PDB2PQR Web Submission Form:</b></a> This provides a Web interface to launch PDB2PQR jobs on NBCR resources, also exposed as Opal services</li>
+<!--
+        <li><a href="https://nbcr.net:8443/worksphere/start/"><b>My WorkSphere:</b></a> The NBCR portal uses the Opal toolkit to rapidly expose applications, such as MEME, as portlets.</li>
+-->
+        <li><a href="http://gemstone.mozdev.org/"><b>Gemstone:</b></a> Many of the web services developed using the Opal toolkit are available for access via Gemstone, which is a Mozilla Firefox-based rich client framework.</li>
+<!--
         <li><a href="http://camera.calit2.net/"><b>Camera Labs:</b></a> Camera Labs is using Opal to expose bioinformatics applications, such as Blast, as Web services.</li>
+-->
       </ul>
     </section>
   </body>
