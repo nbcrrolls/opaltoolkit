@@ -1,6 +1,12 @@
+* Upcoming Opal 2.2 release
+  * DRMAA upgrade
+  * PBS support (with or without DRMAA)
+  * WSDL generation - Anthony's update
+  * Security for Opal dashboard
+
 * Plug-ins
-  * Condor Plug-in - testing with RENCI Condor pool
-  * EC2 MapReduce plugin
+  * Testing of Condor plug-in on RENCI's Condor pool
+  * Hadoop/EC2 MapReduce plugin
 
 * WSDL additions/improvements
   * Add GridFTP support
@@ -9,9 +15,9 @@
   * The <usage> tag is used improperly, it contains now the description of
     the application
   * launchJob should allow the user to specify the wallclock
-  * upgrade DRMAA  
-  * REST support - look at Axis2
+  * REST support - and upgrade to Axis2
   * Support for array jobs
+  * Support for hadoop jobs
 
 * Additional Features
   * Addition of implicit files to dashboard 
@@ -26,6 +32,5 @@
     time
     * May also need to provide programmatic access
   * Get the version of Opal 
-  * Login and security for dashboard
   * Parameterize port numbers for dashboard
 
