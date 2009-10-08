@@ -11,6 +11,7 @@
 <!ENTITY opalGUI SYSTEM "opalGUI.sgml">
 <!ENTITY feedback SYSTEM "feedback.sgml">
 <!ENTITY faq SYSTEM "faq.sgml">
+<!ENTITY acknowledge SYSTEM "acknowledge.sgml">
 <!ENTITY appendix SYSTEM "appendix.sgml">
 ]>
 
@@ -22,11 +23,13 @@
 	</title>
 
          <subtitle>
+<!--
                  <inlinemediaobject> 
                          <imageobject> 
                          <imagedata fileref="images/nbcr_logo.png"> 
                          </imageobject> 
                  </inlinemediaobject> 
+-->
          </subtitle>
 
         <edition> Reference Guide for the Opal Toolkit version &version; </edition>
@@ -100,6 +103,7 @@ to install and configure it.
 &opalGUI;
 &feedback;<!-- 
 &faq; -->
+&acknowledge;
 &appendix
 
 </book>
