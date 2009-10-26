@@ -226,133 +226,137 @@ public class ArgValidator {
 
 	// split the arguments
 	args = args.trim();
-	String[] argList = args.split("[\\s]+");
 
-	// now validate the individual arguments
-	int index = 0;
-	int untaggedIndex = 0;
-	boolean untagged = false;
+	// if not empty
 	HashSet present = new HashSet();
+	if (!args.equals("")) {
+	    String[] argList = args.split("[\\s]+");
 
-	while (index < argList.length) {
-	    String current = argList[index];
+	    // now validate the individual arguments
+	    int index = 0;
+	    int untaggedIndex = 0;
+	    boolean untagged = false;
+	    
+	    while (index < argList.length) {
+		String current = argList[index];
 
-	    logger.debug("args[" + index + "]: " + current);
-
-	    // check if this is a valid flag
-	    if ((flags != null) && (!untagged)) {
-		if (flagsTable.containsKey(current)) {
-		    logger.debug("Argument " + current + " matches flag");
-		    Id id = ((FlagsType) flagsTable.get(current)).getId();
-		    present.add(id);
-		    index++;
-		    continue;
-		}
-	    }
-
-	    // check if this is a valid tagged parameter
-	    if ((taggedParams != null) && (!untagged)) {
-		if (taggedParamsTable.containsKey(current)) { 
-		    logger.debug("Tag " + current + " matches tagged parameter");
-
-		    // check the validity of the parameter value
-		    index++;
-		    if (index == argList.length) {
-			String msg = "Too few arguments, can't find value for tag: " +
-			    current;
-			logger.error(msg);
-			throw new FaultType(msg);
+		logger.debug("args[" + index + "]: " + current);
+		
+		// check if this is a valid flag
+		if ((flags != null) && (!untagged)) {
+		    if (flagsTable.containsKey(current)) {
+			logger.debug("Argument " + current + " matches flag");
+			Id id = ((FlagsType) flagsTable.get(current)).getId();
+			present.add(id);
+			index++;
+			continue;
 		    }
-
-		    String tag = current;
-		    ParamsType taggedParam = (ParamsType) taggedParamsTable.get(tag);
-		    current = argList[index];
-		    logger.debug("Received value: " + current + " for tag: " + tag);
-			
-		    // check with enumerated values, if they exist
-		    validateParamType(current, taggedParam, workingDir);
-
-		    present.add(taggedParam.getId());
-		    index++;
-		    continue;
 		}
-	    }
 
-	    // check if this is an untagged parameter in correct order
-	    // since order matters, check only with the current untagged param
-	    if (untaggedParams != null) {
-		if (untaggedIndex < untaggedParams.length) {
-		    // now looking at untagged parameters
-		    untagged = true;
+		// check if this is a valid tagged parameter
+		if ((taggedParams != null) && (!untagged)) {
+		    if (taggedParamsTable.containsKey(current)) { 
+			logger.debug("Tag " + current + " matches tagged parameter");
 
-		    Id id = untaggedParams[untaggedIndex].getId();
-		    
-		    // figure out if this parameter belongs to a group
-		    GroupsType group = null;
-		    if (groupMap.containsKey(id.toString())) {
-			String groupName = (String) groupMap.get(id.toString());
-			logger.debug("Found group: " + groupName + " for param: " + id);
-
-			group = (GroupsType) groupTable.get(groupName);
-			if (group == null) {
-			    logger.error("Can't find group in hash table: " + groupName);
-			    throw new FaultType("Can't find group in hash table: " + groupName);
+			// check the validity of the parameter value
+			index++;
+			if (index == argList.length) {
+			    String msg = "Too few arguments, can't find value for tag: " +
+				current;
+			    logger.error(msg);
+			    throw new FaultType(msg);
 			}
+			
+			String tag = current;
+			ParamsType taggedParam = (ParamsType) taggedParamsTable.get(tag);
+			current = argList[index];
+			logger.debug("Received value: " + current + " for tag: " + tag);
+			
+			// check with enumerated values, if they exist
+			validateParamType(current, taggedParam, workingDir);
+
+			present.add(taggedParam.getId());
+			index++;
+			continue;
 		    }
+		}
 
-		    // if this is part of a group of mutually exclusive untagged parameters,
-		    // skip the validation step because it is impossible to figure out
-		    // which one of the untagged params this one is
-		    if (group != null) {
-			if (group.getExclusive() != null) {
-			    if (group.getExclusive()) {
-				String elemString = group.getElements().toString();
-				String[] elemIDs = elemString.split("[\\s]+");
-				int size = 0;
-				for (int i = 0; i < elemIDs.length; i++) {
-				    if (untaggedParamsTable.containsKey(elemIDs[i])) {
-					size++;
+		// check if this is an untagged parameter in correct order
+		// since order matters, check only with the current untagged param
+		if (untaggedParams != null) {
+		    if (untaggedIndex < untaggedParams.length) {
+			// now looking at untagged parameters
+			untagged = true;
+
+			Id id = untaggedParams[untaggedIndex].getId();
+		    
+			// figure out if this parameter belongs to a group
+			GroupsType group = null;
+			if (groupMap.containsKey(id.toString())) {
+			    String groupName = (String) groupMap.get(id.toString());
+			    logger.debug("Found group: " + groupName + " for param: " + id);
+
+			    group = (GroupsType) groupTable.get(groupName);
+			    if (group == null) {
+				logger.error("Can't find group in hash table: " + groupName);
+				throw new FaultType("Can't find group in hash table: " + groupName);
+			    }
+			}
+
+			// if this is part of a group of mutually exclusive untagged parameters,
+			// skip the validation step because it is impossible to figure out
+			// which one of the untagged params this one is
+			if (group != null) {
+			    if (group.getExclusive() != null) {
+				if (group.getExclusive()) {
+				    String elemString = group.getElements().toString();
+				    String[] elemIDs = elemString.split("[\\s]+");
+				    int size = 0;
+				    for (int i = 0; i < elemIDs.length; i++) {
+					if (untaggedParamsTable.containsKey(elemIDs[i])) {
+					    size++;
+					}
 				    }
-				}
 
-				// increment the indices, and continue
-				if (size > 1) {
-				    logger.debug("Skipping validation of untagged param: " + current);
-				    logger.debug("Number of params to skip in exclusive group: " + size);
-				    untaggedIndex += size;
-				    index++;
-				    continue;
+				    // increment the indices, and continue
+				    if (size > 1) {
+					logger.debug("Skipping validation of untagged param: " + current);
+					logger.debug("Number of params to skip in exclusive group: " + size);
+					untaggedIndex += size;
+					index++;
+					continue;
+				    }
 				}
 			    }
 			}
+
+			// if it is not part of an exclusive group, validate as usual
+			logger.debug("Checking if " + current + " is a valid untagged parameter" +
+				     " for id: " + id);
+			
+			// check with enumerated values, if they exist
+			validateParamType(current, untaggedParams[untaggedIndex], workingDir);
+			
+			// if this is the right type and/or matches list of possible values,
+			// there is a match for an untagged parameter
+			logger.debug(current + " is a valid untagged parameter for id: " + id);
+			present.add(id);
+			
+			// set up for next iteration
+			untaggedIndex++;
+			index++;
+			continue;
+		    } else {
+			String msg = "Ran out of untagged paramters to check against";
+			logger.error(msg);
+			throw new FaultType(msg);
 		    }
-
-		    // if it is not part of an exclusive group, validate as usual
-		    logger.debug("Checking if " + current + " is a valid untagged parameter" +
-				 " for id: " + id);
-
-		    // check with enumerated values, if they exist
-		    validateParamType(current, untaggedParams[untaggedIndex], workingDir);
-		    
-		    // if this is the right type and/or matches list of possible values,
-		    // there is a match for an untagged parameter
-		    logger.debug(current + " is a valid untagged parameter for id: " + id);
-		    present.add(id);
-
-		    // set up for next iteration
-		    untaggedIndex++;
-		    index++;
-		    continue;
-		} else {
-		    String msg = "Ran out of untagged paramters to check against";
-		    logger.error(msg);
-		    throw new FaultType(msg);
 		}
+		
+		// something went wrong if we got here
+		logger.error("No match found for argument: " + current);
+		throw new FaultType("No match found for argument: " + current);
 	    }
-
-	    // something went wrong if we got here
-	    logger.error("No match found for argument: " + current);
-	    throw new FaultType("No match found for argument: " + current);
 	}
 
 	// check if all required arguments are present
@@ -442,7 +446,7 @@ public class ArgValidator {
 	if (argDesc.getImplicitParams() != null)
 	    params = argDesc.getImplicitParams().getParam();
 	if (params == null) {
-	    logger.debug("No implicit parameters to verify against");
+	    logger.error("No implicit parameters to verify against");
 	    return true;
 	}
 
