@@ -167,7 +167,7 @@ public class ArgValidator {
 	    return true;
 
 	// retrieve the parameter types
-	FlagsType[] flags = null;
+	FlagsType[] flags = new FlagsType[]{};
 	if (argDesc.getFlags() != null)
 	    flags = argDesc.getFlags().getFlag();
 	// table for flags
@@ -176,7 +176,7 @@ public class ArgValidator {
 	    flagsTable.put(flags[i].getTag(), flags[i]);
 	}
 
-	ParamsType[] taggedParams = null;
+	ParamsType[] taggedParams = new ParamsType[]{};
 	if (argDesc.getTaggedParams() != null)
 	    taggedParams = argDesc.getTaggedParams().getParam();
 	// table for taggedParams
@@ -185,7 +185,7 @@ public class ArgValidator {
 	    taggedParamsTable.put(taggedParams[i].getTag(), taggedParams[i]);
 	}
 
-	ParamsType[] untaggedParams = null;
+	ParamsType[] untaggedParams = new ParamsType[]{};
 	if (argDesc.getUntaggedParams() != null)
 	    untaggedParams = argDesc.getUntaggedParams().getParam();
 	// table for untaggedParams
@@ -194,7 +194,7 @@ public class ArgValidator {
 	    untaggedParamsTable.put(untaggedParams[i].getId().toString(), untaggedParams[i]);
 	}
 
-	GroupsType[] groups = null;
+	GroupsType[] groups = new GroupsType[]{};
 	if (argDesc.getGroups() != null)
 	    groups = argDesc.getGroups().getGroup();
 	// table for the groups
