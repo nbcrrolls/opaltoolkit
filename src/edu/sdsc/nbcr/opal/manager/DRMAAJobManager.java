@@ -1,6 +1,7 @@
 package edu.sdsc.nbcr.opal.manager;
 
 import java.util.Properties;
+import java.util.Arrays;
 import java.util.List;
 
 import org.globus.gram.GramJob;
@@ -216,7 +217,7 @@ public class DRMAAJobManager implements OpalJobManager {
 		jt.setNativeSpecification(nativeSpec);
 	    }
 	    jt.setRemoteCommand(cmd);
-	    // jt.setArgs(argsArray);
+	    jt.setArgs(Arrays.asList(argsArray));
 	    jt.setWorkingDirectory(workingDir);
 	    jt.setErrorPath(":" + workingDir + "/stderr.txt");
 	    jt.setOutputPath(":" + workingDir + "/stdout.txt");
@@ -319,7 +320,14 @@ public class DRMAAJobManager implements OpalJobManager {
 	}
 
 	// update status
-	int exitValue = jobInfo.getExitStatus();
+	int exitValue;
+	try {
+	  exitValue = jobInfo.getExitStatus();
+	}
+	catch (DrmaaException e) {
+	    logger.error("Can't get exit value from DRMAA - setting it to 100");
+	    exitValue = 100;
+	}
 
 	if (exitValue == 0) {
 	    status.setCode(GramJob.STATUS_DONE);

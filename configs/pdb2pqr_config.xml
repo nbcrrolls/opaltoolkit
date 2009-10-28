@@ -242,7 +242,7 @@
   <defaultArgs>--verbose</defaultArgs>
 
   <!-- whether to validate command-line arguments using type information above -->
-  <validateArgs>false</validateArgs>
+  <validateArgs>true</validateArgs>
 
   <!-- overrule default job manager, if need be -->
   <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
