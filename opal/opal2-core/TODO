@@ -1,5 +1,6 @@
 * Upcoming Opal 2.2 release
   * DRMAA upgrade
+  * Support for DB2 for state monitoring
   * PBS support (with or without DRMAA)
   * WSDL generation - Anthony's update
   * Security for Opal dashboard
