@@ -235,6 +235,9 @@ Author:
         <!-- mysql jdbc jar -->
         <include name="mysql-connector-java-5.1.8-bin.jar" />
 
+        <!-- db2 jdbc jar -->
+        <include name="db2jcc.jar" />
+
         <!-- drmaa jar -->
         <include name="drmaa.jar" />
 
