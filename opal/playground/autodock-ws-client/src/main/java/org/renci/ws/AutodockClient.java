@@ -8,6 +8,7 @@ import static org.apache.axis2.transport.http.HTTPConstants.SO_TIMEOUT;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -43,11 +44,13 @@ public class AutodockClient implements Runnable {
     private String password;
     private String dpfFile;
     private String mapZipFile;
+    private String outputDir;
 
     public AutodockClient(String username,
 			  String password,
 			  String dpfFile,
-			  String mapZipFile) {
+			  String mapZipFile,
+			  String outputDir) {
         super();
 
 	// initialize variables
@@ -55,6 +58,7 @@ public class AutodockClient implements Runnable {
 	this.password = password;
 	this.dpfFile = dpfFile;
 	this.mapZipFile = mapZipFile;
+	this.outputDir = outputDir;
     }
 
     /*
@@ -119,7 +123,25 @@ public class AutodockClient implements Runnable {
             ServiceClient sender = new ServiceClient();
             sender.setOptions(options);
             OMElement resultsElement = sender.sendReceive(applicationService);
-            System.out.println("resultsElement.toString() = " + resultsElement.toString());
+
+	    OMElement returnElement = resultsElement.getFirstElement();
+	    
+	    OMElement responseElement = returnElement.getFirstElement();
+	  
+	    Iterator<OMElement> childElements = responseElement.getChildElements();
+
+	    while (childElements.hasNext()) {
+
+		OMElement e = childElements.next();
+		File f = new File(outputDir, e.getLocalName());
+		try {
+		    FileUtils.writeStringToFile(f, e.getText());
+		} catch (IOException e1) {
+		    e1.printStackTrace();
+		}
+	    }
+
+	    System.out.println("Remote execution complete");
         } catch (AxisFault e1) {
             e1.printStackTrace();
         }
@@ -128,15 +150,17 @@ public class AutodockClient implements Runnable {
 
     public static void main(String[] args) {
 
-	if (args.length != 4) {
+	if (args.length != 5) {
 	    System.out.println("java org.renci.ws.AutodockClient " + 
-			       "<username> <password> <dpf_path> <map_zipfiles_path>");
+			       "<username> <password> <dpf_path> " + 
+			       "<map_zipfiles_path> <output_dir>");
 	    System.exit(1);
 	}
         Thread t = new Thread(new AutodockClient(args[0],
 						 args[1],
 						 args[2],
-						 args[3]));
+						 args[3],
+						 args[4]));
         t.start();
     }
 }
