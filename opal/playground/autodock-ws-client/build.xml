@@ -1,0 +1,80 @@
+<!-- ===================================================================
+<description>
+The build file for the Opal Application Wrapper Web service
+
+Notes:
+   This is a build file for use with the Jakarta Ant build tool.
+
+Prerequisites:
+
+   jakarta-ant from http://jakarta.apache.org
+
+Build Instructions:
+
+   Modify build.properties (only for server install)
+
+   To compile
+        ant compile
+   To create jars
+        ant jar
+   To clean compiled jars
+        ant clean
+
+Author:
+   Sriram Krishnan [sriram@sdsc.edu]
+</description>
+==================================================================== -->
+
+<project name="autodock-ws-client" default="jar">
+
+  <property file="build.properties" />
+  <property name="name" value="autodock-ws-client" />
+  <property name="project.home" location="." />
+  <property name="lib" location="${axis2.home}/lib" />
+  <property name="etc" location="${project.home}/etc" />
+  <property name="build" location="${project.home}/target" />
+  <property name="build.classes" location="${build}/classes" />
+  <property name="build.jar" location="${build}/jar" />
+  <property name="debug" value="on"/>
+  <property name="fork" value="true"/>
+
+  <path id="classpath">
+    <fileset dir="${lib}">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement path="${build.classes}" />
+  </path>
+
+  <!-- Set up some prerequisites for compilation -->
+  <target name="setenv">
+    <mkdir dir="${build}" />
+    <mkdir dir="${build.classes}" />
+  </target>
+
+  <!-- Clean build directory -->
+  <target name="clean">
+    <delete dir="${build}"/>
+  </target>
+
+  <!-- Compile sources -->
+  <target name="compile" depends="setenv">
+
+    <!-- Compile the handwritten java files -->
+    <javac srcdir="${project.home}/src/main/java" 
+           destdir="${build.classes}" 
+	   debug="${debug}"
+	   fork="${javac.fork}">
+      <classpath refid="classpath" />
+      <include name="**/*.java" />
+    </javac>
+  </target>
+
+  <!-- Create an opal jar file -->
+  <target name="jar" depends="compile">
+    <mkdir dir="${build.jar}"/>
+    <jar basedir="${build.classes}" destfile="${build.jar}/${name}-${version}.jar">
+        <include name="**/*.class" />
+    </jar>
+  </target>
+
+</project>
