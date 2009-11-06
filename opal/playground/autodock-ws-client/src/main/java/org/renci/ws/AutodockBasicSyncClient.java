@@ -31,8 +31,9 @@ import org.apache.commons.io.FileUtils;
  */
 public class AutodockBasicSyncClient implements Runnable {
 
-    private static final EndpointReference ENDPOINT = new EndpointReference(
-									    "https://irrawaddy.renci.org:8443/synch/services/AutodockBasicService");
+    private static final EndpointReference ENDPOINT = 
+	new EndpointReference(
+			      "https://irrawaddy.renci.org:8443/synch/services/AutodockBasicService");
 
     // parameters for execution
     private String username;
