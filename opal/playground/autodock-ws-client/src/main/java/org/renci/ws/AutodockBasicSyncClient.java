@@ -29,10 +29,10 @@ import org.apache.commons.io.FileUtils;
  * @author jdr0887
  * @author sriram (minor updates)
  */
-public class AutodockClient implements Runnable {
+public class AutodockBasicSyncClient implements Runnable {
 
     private static final EndpointReference ENDPOINT = new EndpointReference(
-            "https://irrawaddy.renci.org:8443/synch/services/AutodockBasicService");
+									    "https://irrawaddy.renci.org:8443/synch/services/AutodockBasicService");
 
     // parameters for execution
     private String username;
@@ -41,11 +41,11 @@ public class AutodockClient implements Runnable {
     private String mapZipFile;
     private String outputDir;
 
-    public AutodockClient(String username,
-			  String password,
-			  String dpfFile,
-			  String mapZipFile,
-			  String outputDir) {
+    public AutodockBasicSyncClient(String username,
+				   String password,
+				   String dpfFile,
+				   String mapZipFile,
+				   String outputDir) {
         super();
 
 	// initialize variables
@@ -82,7 +82,7 @@ public class AutodockClient implements Runnable {
         parameterFileElement.addAttribute(fac.createOMAttribute("filename", null, parameterFile.getName()));
         try {
             parameterFileElement.addChild(fac.createOMText(parameterFileElement, FileUtils
-                    .readFileToString(parameterFile)));
+							   .readFileToString(parameterFile)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,16 +146,16 @@ public class AutodockClient implements Runnable {
     public static void main(String[] args) {
 
 	if (args.length != 5) {
-	    System.out.println("java org.renci.ws.AutodockClient " + 
+	    System.out.println("java org.renci.ws.AutodockBasicSyncClient " + 
 			       "<username> <password> <dpf_path> " + 
 			       "<map_zipfiles_path> <output_dir>");
 	    System.exit(1);
 	}
-        Thread t = new Thread(new AutodockClient(args[0],
-						 args[1],
-						 args[2],
-						 args[3],
-						 args[4]));
+        Thread t = new Thread(new AutodockBasicSyncClient(args[0],
+							  args[1],
+							  args[2],
+							  args[3],
+							  args[4]));
         t.start();
     }
 }
