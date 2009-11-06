@@ -34,12 +34,7 @@ public class AutodockClient implements Runnable {
     private static final EndpointReference ENDPOINT = new EndpointReference(
             "https://irrawaddy.renci.org:8443/synch/services/AutodockBasicService");
 
-    // private static final EndpointReference ENDPOINT = new
-    // EndpointReference("https://irrawaddy.renci.org:8443/asynch/services/AutodockBasicService");
-
-    // private static final EndpointReference ENDPOINT = new
-    // EndpointReference("https://irrawaddy.renci.org:8443/asynch/services/AutodockAdvancedService");
-
+    // parameters for execution
     private String username;
     private String password;
     private String dpfFile;
