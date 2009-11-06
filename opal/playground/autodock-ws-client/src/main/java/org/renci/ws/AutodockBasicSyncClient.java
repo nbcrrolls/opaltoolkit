@@ -79,7 +79,7 @@ public class AutodockBasicSyncClient implements Runnable {
         requestElement.addChild(passwordElement);
 
         File parameterFile = new File(dpfFile);
-        OMElement parameterFileElement = fac.createOMElement("parameterFile", null);
+        OMElement parameterFileElement = fac.createOMElement("dpf", null);
         parameterFileElement.addAttribute(fac.createOMAttribute("filename", null, parameterFile.getName()));
         try {
             parameterFileElement.addChild(fac.createOMText(parameterFileElement, FileUtils
@@ -89,7 +89,7 @@ public class AutodockBasicSyncClient implements Runnable {
         }
         requestElement.addChild(parameterFileElement);
 					  
-	OMElement mapZipFileElement = fac.createOMElement("mapZipFile", null);
+	OMElement mapZipFileElement = fac.createOMElement("mapZip", null);
 	DataHandler dataHandler = new DataHandler(new FileDataSource(new File(mapZipFile)));
 	mapZipFileElement.addAttribute(fac.createOMAttribute("filename", null, dataHandler.getName()));
         OMText textData = fac.createOMText(dataHandler, true);

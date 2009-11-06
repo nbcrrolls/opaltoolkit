@@ -214,7 +214,7 @@ public class AutodockAdvancedAsynchClient implements Runnable {
         requestElement.addChild(passwordElement);
 
         File parameterFile = new File(dpfZipFile);
-        OMElement parameterFileElement = fac.createOMElement("parameterFile", null);
+        OMElement parameterFileElement = fac.createOMElement("dpf", null);
         parameterFileElement.addAttribute(fac.createOMAttribute("filename", null, parameterFile.getName()));
         try {
             parameterFileElement.addChild(fac.createOMText(parameterFileElement, FileUtils
