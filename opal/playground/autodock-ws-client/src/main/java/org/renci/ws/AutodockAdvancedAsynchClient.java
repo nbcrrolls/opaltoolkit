@@ -177,6 +177,11 @@ public class AutodockAdvancedAsynchClient implements Runnable {
 
                 outputZipText.setOptimize(true);
                 // outputZipText.setBinary(true);
+		outputDir += File.separator + jobId;
+		File jobOutputDir = new File(outputDir);
+		if (!jobOutputDir.exists()) {
+		    jobOutputDir.mkdirs();
+		}
                 File f = new File(outputDir, "output.zip");
                 try {
                     DataHandler dataHandler = (DataHandler) outputZipText.getDataHandler();
@@ -213,15 +218,16 @@ public class AutodockAdvancedAsynchClient implements Runnable {
         passwordElement.addChild(fac.createOMText(passwordElement, Base64.encode(this.password.getBytes())));
         requestElement.addChild(passwordElement);
 
-        File parameterFile = new File(dpfZipFile);
+        OMElement runNameElement = fac.createOMElement("runName", null);
+        runNameElement.addChild(fac.createOMText(runNameElement, "test"));
+        requestElement.addChild(runNameElement);
+
         OMElement parameterFileElement = fac.createOMElement("dpf", null);
+        File parameterFile = new File(dpfZipFile);
+        DataHandler dpfDataHandler = new DataHandler(new FileDataSource(parameterFile));
         parameterFileElement.addAttribute(fac.createOMAttribute("filename", null, parameterFile.getName()));
-        try {
-            parameterFileElement.addChild(fac.createOMText(parameterFileElement, FileUtils
-							   .readFileToString(parameterFile)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        OMText dpfTextData = fac.createOMText(dpfDataHandler, true);
+        parameterFileElement.addChild(dpfTextData);
         requestElement.addChild(parameterFileElement);
 
 	OMElement mapZipFileElement = fac.createOMElement("mapZip", null);
