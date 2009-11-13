@@ -75,19 +75,23 @@ public class AutodockAdvancedAsynchClient implements Runnable {
 	    f.printStackTrace();
 	    return;
 	}
+	System.out.println("Received job id: " + jobId);
 
         String status = null;
         do {
-            long duration = 1000 * 60 * 5; // 5 minutes
+            long duration = 1000 * 60 * 1; // 5 minutes
             try {
                 Thread.sleep(duration);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             status = checkStatus(jobId);
+	    System.out.println("Job status: " + status);
         } while (!"DONE".equals(status));
 
+	System.out.println("Downloading results");
         downloadResults(jobId);
+	System.out.println("Job execution complete");
     }
 
     private String checkStatus(Long jobId) {
@@ -182,6 +186,7 @@ public class AutodockAdvancedAsynchClient implements Runnable {
 		if (!jobOutputDir.exists()) {
 		    jobOutputDir.mkdirs();
 		}
+		System.out.println("Writing results into directory: " + outputDir);
                 File f = new File(outputDir, "output.zip");
                 try {
                     DataHandler dataHandler = (DataHandler) outputZipText.getDataHandler();
