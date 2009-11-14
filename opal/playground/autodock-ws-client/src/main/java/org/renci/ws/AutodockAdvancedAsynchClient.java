@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -174,33 +175,39 @@ public class AutodockAdvancedAsynchClient implements Runnable {
             OMElement returnElement = parentElement.getFirstElement();
             OMElement responseElement = returnElement.getFirstElement();
 
-            OMElement outputElement = responseElement.getFirstElement();
-            OMText outputZipText = (OMText) outputElement.getFirstOMChild();
+            Iterator<OMElement> childElements = responseElement.getChildElements();
 
-            if (!outputZipText.getText().startsWith("Failed")) {
-
-                outputZipText.setOptimize(true);
-                // outputZipText.setBinary(true);
-		outputDir += File.separator + jobId;
-		File jobOutputDir = new File(outputDir);
-		if (!jobOutputDir.exists()) {
-		    jobOutputDir.mkdirs();
-		}
-		System.out.println("Writing results into directory: " + outputDir);
-                File f = new File(outputDir, "output.zip");
-                try {
-                    DataHandler dataHandler = (DataHandler) outputZipText.getDataHandler();
-                    FileOutputStream fos = new FileOutputStream(f);
-                    dataHandler.writeTo(fos);
-                    fos.flush();
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            while (childElements.hasNext()) {
+                OMElement element = childElements.next();
+                if ("output".equals(element.getLocalName())) {
+                    OMText outputZipText = (OMText) element.getFirstOMChild();
+                    if (!outputZipText.getText().startsWith("Failed")) {
+                        outputZipText.setOptimize(true);
+                        outputZipText.setBinary(true);
+                        File f = new File(outputDir, "output-" + 
+					  jobId + ".zip");
+                        try {
+                            DataHandler dataHandler = 
+				(DataHandler) outputZipText.getDataHandler();
+                            FileOutputStream fos = new FileOutputStream(f);
+                            dataHandler.writeTo(fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    File f = new File(outputDir, element.getLocalName() + "-" + jobId);
+                    try {
+                        FileUtils.writeStringToFile(f, element.getText());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
-
         } catch (AxisFault e1) {
             e1.printStackTrace();
         }
