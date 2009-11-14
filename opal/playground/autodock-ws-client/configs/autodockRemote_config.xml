@@ -1,0 +1,52 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<!--
+to use this interface you need to use a wrapper script to invoke autodock
+the script is run_autodock.py in this directory. Modify it accordingly to 
+your installation
+-->
+  <metadata appName="Autodock">
+    <usage><![CDATA[Use of OSG resources provided by RENCI to run AutoDock jobs]]></usage>
+    <info>
+    <![CDATA[
+     runAutodockRempte.sh <url of zipped dpf files> <url of zipped map and pdbqt files>
+    ]]>
+    </info>
+
+    <types>
+      <!-- list of untagged parameters -->
+      <untaggedParams>
+        <param>
+            <id>dpf</id>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType>PDBQ</semanticType>
+            <textDesc>Location of zipped DPF files</textDesc>
+            <default>http://vm4.ucsd.edu:8080/samples/dpfFiles.zip</default>
+        </param>
+        <param>
+            <id>map</id>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType>PDBQ</semanticType>
+            <textDesc>Location of zipped receptor and map files</textDesc>
+            <default>http://vm4.ucsd.edu:8080/samples/2HTY_A.zip</default>
+        </param>
+      </untaggedParams>
+
+      <groups>
+          <group>
+            <name>inputParams</name>
+            <elements>dpf map</elements>
+            <required>true</required>
+            <textDesc>Input Parameters</textDesc>
+          </group>
+      </groups>
+    </types>
+  </metadata>
+  <binaryLocation>/home/sriram/Software/autodock-ws-client/runAutodockRemote.sh</binaryLocation>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
+  <parallel>false</parallel>
+</appConfig>
+
