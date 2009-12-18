@@ -9,7 +9,7 @@
       such as Autodock, PDB2PQR, MEME, Continuity, Blast, APBS, Babel, etc.  </p>
       <p>Below a list of deployed services running Opal (to be added to this list e-mail admin A T nbcr.net):</p>
       <ul>
-        <li><a href="http://ws.nbcr.net:8080/opal/GetServicesList.do">ws.nbcr.net</a></li>
+        <li><a href="http://ws.nbcr.net">ws.nbcr.net</a></li>
       </ul>
     </section>
     <section name="Applications that use Opal services">
