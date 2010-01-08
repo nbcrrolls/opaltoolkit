@@ -3,11 +3,21 @@
   * Support for DB2 for state monitoring
   * PBS support (with or without DRMAA)
   * WSDL generation - Anthony's update
-  * Security for Opal dashboard
+
+* Utility services
+  * Server load, queue length, data lifetime
+
+* Security enhancements
+  * FacebookConnect or OpenID
 
 * Plug-ins
   * Testing of Condor plug-in on RENCI's Condor pool
   * Hadoop/EC2 MapReduce plugin
+
+* Performance improvements
+  * Ability to queue jobs before job submission - based on an upper bound
+    specified in opal.properties
+  * Improved fault tolerance on server restart
 
 * WSDL additions/improvements
   * Add GridFTP support
