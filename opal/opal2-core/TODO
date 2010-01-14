@@ -3,6 +3,7 @@
   * Support for DB2 for state monitoring
   * PBS support (with or without DRMAA)
   * WSDL generation - Anthony's update
+  * Use of MIME attachments in the Opal dashboard
 
 * Utility services
   * Server load, queue length, data lifetime
