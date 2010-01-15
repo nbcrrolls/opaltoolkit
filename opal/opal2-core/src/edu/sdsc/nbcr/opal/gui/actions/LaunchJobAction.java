@@ -336,12 +336,17 @@ public class LaunchJobAction extends MappingDispatchAction{
         return files;
     }//getfile
 
-    // hack to get the absolute path from FormFile
+    /**
+     * Method to get the absolute path from FormFile
+     *
+     * @param file FormFile whose path is desired
+     * @return null if FormFile is in memory, else absolute path
+    */
     private File getStoredFile(FormFile file) {
 	try {
 	    File osFile = null;
-	    // Class formClass = CommonsMultipartRequestHandler.CommonsFormFile.class;
-	    // should be CommonsMultipartRequestHandler.CommonsFormFile
+
+	    // returned class should be CommonsMultipartRequestHandler.CommonsFormFile
 	    Class formClass = file.getClass();
 	    Field fileItemField = formClass.getDeclaredField("fileItem");
 	    fileItemField.setAccessible(true);
