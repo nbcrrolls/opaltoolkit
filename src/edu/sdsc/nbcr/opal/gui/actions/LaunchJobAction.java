@@ -3,6 +3,11 @@ package edu.sdsc.nbcr.opal.gui.actions;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.io.File;
+import java.lang.reflect.Field;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +20,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 import org.apache.struts.actions.MappingDispatchAction;
 import org.apache.struts.upload.FormFile;
+import org.apache.struts.upload.CommonsMultipartRequestHandler;
+
+import org.apache.commons.fileupload.DefaultFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 
 import edu.sdsc.nbcr.opal.AppServiceLocator;
 import edu.sdsc.nbcr.opal.AppServicePortType;
@@ -40,7 +49,6 @@ import edu.sdsc.nbcr.opal.gui.common.OPALService;
 public class LaunchJobAction extends MappingDispatchAction{
     
     protected Log log = LogFactory.getLog(Constants.PACKAGE);
-    
     
     // See superclass for Javadoc
     public ActionForward execute(ActionMapping mapping, ActionForm form, 
@@ -279,7 +287,15 @@ public class LaunchJobAction extends MappingDispatchAction{
                     files[i] = new InputFileType();
                     if (param.getFile() != null) {
                         files[i].setName(param.getFile().getFileName());
-                        files[i].setContents(param.getFile().getFileData());
+			File osFile = getStoredFile(param.getFile());
+			if (osFile != null) {
+			    DataHandler dh = 
+				new DataHandler(new FileDataSource(osFile));
+			    files[i].setAttachment(dh);
+			} else {
+			    // data is in memory already - reuse it
+			    files[i].setContents(param.getFile().getFileData());
+			}
                         log.info("Setting up one input file which is called: " + param.getFile().getFileName());
                     } else {
                         log.error("This is very nasty... Contact developers!!\n The arg: " + param + "lost the file...");
@@ -298,7 +314,13 @@ public class LaunchJobAction extends MappingDispatchAction{
                         //let's an input file
                         InputFileType file = new InputFileType();
                         file.setName( app.getFiles()[i].getFileName() );
-                        file.setContents( app.getFiles()[i].getFileData() );
+			File osFile = getStoredFile(app.getFiles()[i]);
+			if (osFile != null) {
+			    DataHandler dh = new DataHandler(new FileDataSource(osFile));
+			    file.setAttachment(dh);
+			} else {
+			    file.setContents( app.getFiles()[i].getFileData() );
+			}
                         filesArrayReturn.add( file );
                     }//if
                 }//for
@@ -313,6 +335,38 @@ public class LaunchJobAction extends MappingDispatchAction{
         }
         return files;
     }//getfile
-    
+
+    // hack to get the absolute path from FormFile
+    private File getStoredFile(FormFile file) {
+	try {
+	    File osFile = null;
+	    // Class formClass = CommonsMultipartRequestHandler.CommonsFormFile.class;
+	    // should be CommonsMultipartRequestHandler.CommonsFormFile
+	    Class formClass = file.getClass();
+	    Field fileItemField = formClass.getDeclaredField("fileItem");
+	    fileItemField.setAccessible(true);
+	    Object o = fileItemField.get(file);
+	    if (o instanceof DiskFileItem) {
+		DiskFileItem df = (DiskFileItem) o;
+		if (df.isInMemory()) {
+		    log.info("FormFile is actually in memory - " + 
+			     "no need to write it out to File");
+		    return null;
+		} else {
+		    osFile = df.getStoreLocation();
+		    String path = osFile.getAbsolutePath();
+		    log.info("FormFile found at absolute path: " + path);
+		    return osFile;
+		}
+	    } else {
+		log.error("Can't retrieve stored File for FormFile");
+		return null;
+	    }
+	} catch (Exception e) {
+	    log.error("Can't retrieve stored File for FormFile");
+	    log.error(e);
+	    return null;
+	}
+    }
 }//class
 
