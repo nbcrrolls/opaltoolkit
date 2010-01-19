@@ -40,7 +40,7 @@ public class Deploy {
 	// get the location of the application configuration
 	String appConfig = System.getProperty("appConfig");
 	if (appConfig == null) {
-	    logger.error("System property appConfig not set!");
+	    logger.info("System property appConfig not set!");
 	    System.exit(1);
 	} else {
 	    logger.info("Property appConfig set to: " + appConfig);
@@ -139,7 +139,7 @@ public class Deploy {
 	if (finalVersion != null) {
 	    serviceName += "_" + finalVersion;
 	}
-	logger.error("Service name used for deployment: " + serviceName);
+	logger.info("Service name used for deployment: " + serviceName);
 
 	// replace SERVICE_NAME with actual service name
 	byte[] data = new byte[(int) f.length()];

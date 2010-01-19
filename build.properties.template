@@ -6,3 +6,7 @@ catalina.home = /path/to/catalina_home
 
 # port number used by the tomcat server
 tomcat.port = 8080
+
+# location of the typed services directory relative to $CATALINA_HOME/webapps.
+# uncomment if you want to generate typed WSDL for services
+# typedservices.dir = opal2/typedservices

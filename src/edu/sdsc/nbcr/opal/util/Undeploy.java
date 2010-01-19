@@ -84,7 +84,7 @@ public class Undeploy {
 	if (version != null) {
 	    serviceName += "_" + version;
 	}
-	logger.error("Service name used for undeployment: " + serviceName);
+	logger.info("Service name used for undeployment: " + serviceName);
 
 	// write out the final WSDD file
 	byte[] data = new byte[(int) f.length()];
