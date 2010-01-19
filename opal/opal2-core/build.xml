@@ -88,6 +88,9 @@ Author:
     <available file="${build.generated}"
                type="dir" 
                property="stubs.present" />
+    <condition property="typedservices.present">
+      <isset property="typedservices.dir"/>
+    </condition>
   </target>
 
   <!-- Clean build directory -->
@@ -140,7 +143,15 @@ Author:
       <classpath refid="classpath" />
       <include name="edu/sdsc/nbcr/opal/**/*.java" />
       <include name="edu/sdsc/nbcr/common/*.java" />
+      <include name="org/inria/genouest/opal/tools/**/*.java" />
     </javac>
+
+    <!-- Copy over the xslt files as well -->
+    <copy todir="${build.classes}">
+      <fileset dir="${project.home}/src/">
+        <include name="xslt/**" />
+      </fileset>
+    </copy>
   </target>
 
   <!-- Create an opal jar file -->
@@ -149,6 +160,8 @@ Author:
     <jar basedir="${build.classes}" destfile="${build.jar}/${name}-${version}.jar">
         <include name="edu/sdsc/nbcr/opal/**/*.class" />
         <include name="edu/sdsc/nbcr/common/*.class" />
+        <include name="org/inria/genouest/opal/tools/**/*.class" />
+	<include name="xslt/**" />
     </jar>
   </target>
 
@@ -382,7 +395,7 @@ Author:
     <mkdir dir="${docs}" />
     <delete dir="${docs}/api"/>
     <mkdir dir="${docs}/api"/>
-    <javadoc packagenames="edu.sdsc.nbcr.*"
+    <javadoc packagenames="edu.sdsc.nbcr.*,org.inria.genouest.*"
 	     sourcepathref="src.path.list"
 	     defaultexcludes="yes"
 	     destdir="${docs}/api"
@@ -431,8 +444,20 @@ Author:
       <classpath refid="classpath" />
     </java>
 
+    <!-- generate typed WSDL -->
+    <antcall target="generateTypedWSDL"/>
+
     <!-- delete WSDD after deploying -->
     <delete file="${build.generated}/${serviceName}_deploy.wsdd"/>
+  </target>
+
+    <!-- generate typed WSDL, if need be -->
+  <target name="generateTypedWSDL" if="typedservices.present">
+    <java classname="org.inria.genouest.opal.tools.typedwsdl.generator.OpalTypedWSDLGenerator" fork="true">
+      <arg value="-s${serviceName}" />
+      <arg value="-c${appConfig}"/>
+      <classpath refid="classpath" />
+    </java>
   </target>
 
   <!-- Undeploy an opal service -->
@@ -463,6 +488,10 @@ Author:
       <classpath refid="classpath" />
     </java>
 
+    <!-- delete typed WSDL, if it exists --> 
+    <delete file="${catalina.home}/webapps/${typedservices.dir}/${serviceName}.wsdl"
+	    quiet = "true"/>
+    
     <!-- delete WSDD after undeploying -->
     <delete file="${build.generated}/${serviceName}_undeploy.wsdd"/>
   </target>
