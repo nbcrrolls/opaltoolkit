@@ -555,11 +555,11 @@ public class AppServiceImpl
 	info.setCode(status.getCode());
 	info.setMessage(status.getMessage());
 	info.setBaseURL(status.getBaseURL().toString());
-    Date currentDate = new Date();
-    info.setStartTimeDate(new java.sql.Date(currentDate.getTime()));
-    info.setStartTimeTime(new java.sql.Time(currentDate.getTime()));
+	Date currentDate = new Date();
+	info.setStartTimeDate(new java.sql.Date(currentDate.getTime()));
+	info.setStartTimeTime(new java.sql.Time(currentDate.getTime()));
 	info.setLastUpdateDate(new java.sql.Date(currentDate.getTime()));
-    info.setLastUpdateTime(new java.sql.Time(currentDate.getTime()));
+	info.setLastUpdateTime(new java.sql.Time(currentDate.getTime()));
 	info.setClientDN(Util.getRemoteDN());
 	info.setClientIP(Util.getRemoteIP());
 	info.setServiceName(serviceName);
@@ -1013,7 +1013,7 @@ public class AppServiceImpl
 		    logger.debug("Received attachment: " + dh.getName());
                     File attachFile = new File(dh.getName());
                     logger.debug("Source is " + attachFile.toString() + 
-				" and dest is " + f.toString());
+				 " and dest is " + f.toString());
                     if (attachFile.renameTo(f) == false) {
 			String msg = "Unable to copy attachment correctly: " +
 			    dh.getName();
