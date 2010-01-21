@@ -3,11 +3,12 @@
   * Support for DB2 for state monitoring
   * WSDL generation - Anthony's update
   * Use of MIME attachments in the Opal dashboard
-  * PBS support (with or without DRMAA)
+  * Per-IP limit on number of jobs per hour
 
 * Opal 2.3 release
-  * Per-IP limit on number of jobs per hour
   * Removal of number of CPUs for non-parallel jobs on input form
+  * PBS support (with or without DRMAA)
+  * Subset of wishlist below
 
 * Utility services
   * Server load, queue length, data lifetime
