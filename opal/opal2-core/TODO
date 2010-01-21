@@ -4,6 +4,7 @@
   * PBS support (with or without DRMAA)
   * WSDL generation - Anthony's update
   * Use of MIME attachments in the Opal dashboard
+  * Removal of number of CPUs for non-parallel jobs on input form
 
 * Utility services
   * Server load, queue length, data lifetime
