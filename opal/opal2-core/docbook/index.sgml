@@ -5,6 +5,7 @@
 
 <!ENTITY overview SYSTEM "overview.sgml">
 <!ENTITY basicinstallation SYSTEM "basicinstallation.sgml">
+<!ENTITY deploy SYSTEM "deploy.sgml">
 <!ENTITY database SYSTEM "database.sgml">
 <!ENTITY scheduler SYSTEM "scheduler.sgml">
 <!ENTITY security SYSTEM "security.sgml">
@@ -97,6 +98,7 @@ to install and configure it.
 
 &overview;
 &basicinstallation;
+&deploy;
 &database;
 &scheduler;
 &security;
