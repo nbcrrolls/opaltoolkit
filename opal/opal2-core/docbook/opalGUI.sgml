@@ -50,8 +50,9 @@ application:</para>
 <section id="opalGUI-simplesub"  xreflabel="Simple Submission Form">
 <title>Simple Submission Form</title>
 
-<para >If applications have been deployed following the instruction at <xref
-linkend="basicinstallation"> the Opal Dashboard will display a simple form with
+<para >If applications have been deployed following the deploying 
+<command>/bin/date</command> instructions at <xref
+linkend="deploy">, then the Opal Dashboard will display a simple form with
 an input text field and an input file box.  The user should type the desired
 command-line into the input text box and he can also upload an input file.
 There is also an Add File button if the user wants to upload more than one
