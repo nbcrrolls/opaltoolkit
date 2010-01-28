@@ -56,8 +56,9 @@ linkend="deploy">, then the Opal Dashboard will display a simple form with
 an input text field and an input file box.  The user should type the desired
 command-line into the input text box and he can also upload an input file.
 There is also an Add File button if the user wants to upload more than one
-files.  The application configuration file described at  <xref
-linkend="server-installation"> does not present any metadata describing the
+files.  The application configuration file described at the <command>/bin/date</command>
+example at  <xref
+linkend="deploy"> does not present any metadata describing the
 format of the input arguments of the application. Therefore the Opal dashboard can
 display to the user only the simple submission form.</para>
 
