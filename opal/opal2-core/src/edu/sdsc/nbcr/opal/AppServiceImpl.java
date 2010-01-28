@@ -81,6 +81,14 @@ public class AppServiceImpl
     /** The fully qualified class name of the job manager */
     private static String jobManagerFQCN;
 
+    /** 
+     * The properties for processing of per IP job limits
+     */
+    private static boolean ipProcessing;
+    private static int ipLimit;
+    private static String[] blackListIP;
+    private static String[] whiteListIP;
+
     // the configuration information for the application
     private String serviceName;
     private AppConfigType config;
@@ -143,6 +151,41 @@ public class AppServiceImpl
 	jobManagerFQCN = props.getProperty("opal.jobmanager");
 	if (jobManagerFQCN == null) {
 	    logger.fatal("Required property not set - opal.jobmanager");
+	}
+
+	// retrieve all the relevant properties for IP processing
+	ipProcessing = 
+	    Boolean.valueOf(props.getProperty("opal.ip.processing")).booleanValue();
+
+	// return true if processing is not set up
+	if (!ipProcessing) {
+	    logger.debug("Upper limits per IP not turned on");
+	} else {
+	    // get the limit per hour
+	    String ipLimitString = props.getProperty("opal.ip.limit");
+	    if (ipLimitString == null) {
+		logger.fatal("Unable to find a limit for number of jobs per IP");
+		ipLimit = 0;
+	    } else {
+		ipLimit = Integer.parseInt(ipLimitString);
+		logger.debug("Number of jobs per IP per hour: " + ipLimit);
+	    }
+
+	    // get the black list of IP addresses
+	    String blackListString = props.getProperty("opal.ip.blacklist");
+	    if (blackListString != null) {
+		blackListIP = blackListString.split(",");
+	    } else {
+		blackListIP = new String[0];
+	    }
+	    
+	    // get the white list of IP addresses
+	    String whiteListString = props.getProperty("opal.ip.whitelist");
+	    if (whiteListString != null) {
+		whiteListIP = whiteListString.split(",");
+	    } else {
+		whiteListIP = new String[0];
+	    }
 	}
     }
 
@@ -236,6 +279,9 @@ public class AppServiceImpl
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
 
+	// check to see if IP is within limits
+	isWithinIPLimits();
+
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
 
@@ -268,6 +314,9 @@ public class AppServiceImpl
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
 	logger.info("called");
+
+	// check to see if IP is within limits
+	isWithinIPLimits();
 
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
@@ -1082,6 +1131,68 @@ public class AppServiceImpl
 		logger.error(msg);
 		throw new FaultType(msg);	    
 	    }
+	}
+    }
+
+    /* 
+     * returns "true" if IP processing is off
+     * returns "true" if processing is on and {IP is in whitelist OR number of
+       jobs during that hour from that IP is less than limit}
+     * throws exception if IP is in blacklist OR number of jobs during that
+       hour from that IP is greater than limit (with appropriate message)
+    */
+    private boolean isWithinIPLimits() 
+	throws FaultType {
+
+	logger.debug("called");
+
+	// return true if processing is not set up
+	if (!ipProcessing) {
+	    return true;
+	}
+
+	// get the remote IP to start processing
+	String remoteIP = Util.getRemoteIP();
+	logger.debug("Request received from IP: " + remoteIP);
+
+	// throw exception if IP is in blacklist
+	for (int i = 0; i < blackListIP.length; i++) {
+	    if (remoteIP.equals(blackListIP[i])) {
+		String msg = "Remote IP " + remoteIP + " found in blacklist";
+		logger.error(msg);
+		throw new FaultType(msg);
+	    }
+	}
+
+	// return true if IP is in whitelist 
+	for (int i = 0; i < whiteListIP.length; i++) {
+	    if (remoteIP.equals(whiteListIP[i])) {
+		logger.debug("Remote IP " + remoteIP + " found in whitelist");
+		return true;
+	    }
+	}
+
+	// calculate number of jobs per hour from this IP
+	int numJobsIP = 0; 
+	try {
+	   numJobsIP =  HibernateUtil.getNumJobsThisHour(remoteIP);
+	} catch (StateManagerException sme) {
+	    String msg = sme.getMessage();
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+
+	// return true if numJobs per hour from IP is less than limit
+	if (numJobsIP < ipLimit) {
+	    logger.debug("Number of jobs (" + numJobsIP + ") for this IP (" + 
+			 remoteIP + ") is within limit");
+	    return true;
+	} else {
+	    // TODO: should log IP in a database to monitor abuse
+	    String msg = "Number of jobs (" + numJobsIP + ") for this IP (" + 
+		remoteIP + ") is over limit (" + ipLimit + "/hr)";
+	    logger.error(msg);
+	    throw new FaultType(msg);
 	}
     }
 }

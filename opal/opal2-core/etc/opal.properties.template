@@ -75,3 +75,19 @@ csf4.workingDir=opal_runs
 mpi.script=/opt/condor/etc/examples/mp1script
 ## ------------------------------------------------
 ## END: information for the Condor job manager
+
+## BEGIN: information for the per IP limits on job submission
+## ----------------------------------------------------------
+# boolean switch to turn processing on or off
+opal.ip.processing=false
+
+# number of jobs per IP per hour
+opal.ip.limit=10
+
+# permanently block jobs from this IP - comma separated entries (optional)
+opal.ip.blacklist=66.102.7.104
+
+# always allow jobs from this IP - comma separated entries (optional)
+opal.ip.whitelist=127.0.0.1
+## ----------------------------------------------------------
+## END: information for the per IP limits on job submission
