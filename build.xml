@@ -169,7 +169,7 @@ Author:
   <target name="tests" depends="clean, jar">
 
     <copy file="${project.home}/etc/hibernate-opal.cfg.xml" tofile="${project.home}/etc/hibernate-opal.cfg.tests.xml" />
-    <!-- let's modify hibernate-opal.cfg.xml before moving it to tomcat -->
+    <!-- let's modify hibernate-opal.cfg.xml to use in memory db -->
     <replace file="${project.home}/etc/hibernate-opal.cfg.tests.xml" token="jdbc:hsqldb:file:data/opaldb" value="jdbc:hsqldb:mem:opaldb"/>
 
     <java classname="edu.sdsc.nbcr.opal.util.Tests"

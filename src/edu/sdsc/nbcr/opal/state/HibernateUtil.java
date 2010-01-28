@@ -26,6 +26,8 @@ import edu.sdsc.nbcr.opal.OutputFileType;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 
+import edu.sdsc.nbcr.opal.dashboard.util.DateHelper;
+
 /**
  *
  * Utility class for hibernate functions
@@ -310,7 +312,6 @@ public class HibernateUtil {
             try {
                 // retrieve job status from hibernate
                 Session session = getSessionFactory().openSession();
-                session.beginTransaction();
                 List results = session.createCriteria(JobInfo.class)
                     .add(Restrictions.eq("jobID", jobID))
                     .list();
@@ -358,7 +359,6 @@ public class HibernateUtil {
             try {
                 // retrieve job status from hibernate
                 Session session = getSessionFactory().openSession();
-                session.beginTransaction();
                 List results = session.createCriteria(JobInfo.class)
                     .add(Restrictions.eq("jobID", jobID))
                     .list();
@@ -422,7 +422,6 @@ public class HibernateUtil {
 
             try {
                 Session session = getSessionFactory().openSession();
-                session.beginTransaction();
                 List results = session.createQuery("from JobOutput output " +
                         "left join fetch output.job " +
                         "where output.job.jobID = '" +
@@ -478,6 +477,62 @@ public class HibernateUtil {
 
             return outputs;
         }
+
+    /**
+     * Retrieves number of jobs this hour by IP
+     *
+     * @param IP for remote client
+     * @return number of jobs this hour per IP
+     * @throws StateManagerException if there is an error during retrieval
+     */
+    public static int getNumJobsThisHour(String remoteIP) 
+	throws StateManagerException {
+	logger.info("called");
+
+	Integer numJobs = new Integer(0);
+
+	try {
+	    // open a session
+	    Session session = getSessionFactory().openSession();
+
+	    // the date now
+	    long timeNow = System.currentTimeMillis();
+	    Date endDate = new Date(timeNow);
+
+	    // the date one hour back
+	    // 1 hour = 3,600,000 ms
+	    Date startDate = new Date(timeNow - 3600000);
+
+	    // formulate the query
+	    java.sql.Date  endDateSQL = new java.sql.Date(endDate.getTime());
+	    java.sql.Date startDateSQL = new java.sql.Date(startDate.getTime());
+
+	    String query = "select count(*)  " +            
+                " from JobInfo jobInfo where " +
+                " jobInfo.startTimeDate >= :startDate " +
+                " and jobInfo.endTimeDate <= :endDate";
+            Query queryStat = session.createQuery(query);
+            queryStat.setDate("startDate", startDateSQL)
+                .setDate("endDate", endDateSQL);
+            List results = queryStat.list();
+	    if (results.size() != 1) {
+		session.close();
+		String msg = 
+		    "Error while trying to retrive number of jobs from database";
+		throw new StateManagerException(msg);
+	    } 
+	    numJobs = (Integer) results.get(0);
+
+	    session.close();
+	} catch (HibernateException he) {
+	    String msg = "Error while trying to retrieve hits from database: " +
+		he.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
+
+	return numJobs.intValue();
+    }
 
     // A simple main method to test functionality
     public static void main(String[] args) 
