@@ -85,7 +85,7 @@ public class AppServiceImpl
      * The properties for processing of per IP job limits
      */
     private static boolean ipProcessing;
-    private static int ipLimit;
+    private static long ipLimit;
     private static String[] blackListIP;
     private static String[] whiteListIP;
 
@@ -167,14 +167,14 @@ public class AppServiceImpl
 		logger.fatal("Unable to find a limit for number of jobs per IP");
 		ipLimit = 0;
 	    } else {
-		ipLimit = Integer.parseInt(ipLimitString);
+		ipLimit = Long.parseLong(ipLimitString);
 		logger.debug("Number of jobs per IP per hour: " + ipLimit);
 	    }
 
 	    // get the black list of IP addresses
 	    String blackListString = props.getProperty("opal.ip.blacklist");
 	    if (blackListString != null) {
-		blackListIP = blackListString.split(",");
+		blackListIP = blackListString.split("\\s*,\\s*");
 	    } else {
 		blackListIP = new String[0];
 	    }
@@ -182,7 +182,7 @@ public class AppServiceImpl
 	    // get the white list of IP addresses
 	    String whiteListString = props.getProperty("opal.ip.whitelist");
 	    if (whiteListString != null) {
-		whiteListIP = whiteListString.split(",");
+		whiteListIP = whiteListString.split("\\s*,\\s*");
 	    } else {
 		whiteListIP = new String[0];
 	    }
@@ -1173,7 +1173,7 @@ public class AppServiceImpl
 	}
 
 	// calculate number of jobs per hour from this IP
-	int numJobsIP = 0; 
+	long numJobsIP = 0; 
 	try {
 	   numJobsIP =  HibernateUtil.getNumJobsThisHour(remoteIP);
 	} catch (StateManagerException sme) {
@@ -1184,13 +1184,13 @@ public class AppServiceImpl
 
 	// return true if numJobs per hour from IP is less than limit
 	if (numJobsIP < ipLimit) {
-	    logger.debug("Number of jobs (" + numJobsIP + ") for this IP (" + 
+	    logger.debug("Number of jobs (" + numJobsIP + ") for client (" + 
 			 remoteIP + ") is within limit");
 	    return true;
 	} else {
 	    // TODO: should log IP in a database to monitor abuse
-	    String msg = "Number of jobs (" + numJobsIP + ") for this IP (" + 
-		remoteIP + ") is over limit (" + ipLimit + "/hr)";
+	    String msg = "Number of jobs (" + numJobsIP + ") for client (" + 
+		remoteIP + ") is on over over limit (" + ipLimit + " per hour)";
 	    logger.error(msg);
 	    throw new FaultType(msg);
 	}

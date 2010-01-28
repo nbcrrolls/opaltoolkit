@@ -485,11 +485,11 @@ public class HibernateUtil {
      * @return number of jobs this hour per IP
      * @throws StateManagerException if there is an error during retrieval
      */
-    public static int getNumJobsThisHour(String remoteIP) 
+    public static long getNumJobsThisHour(String remoteIP) 
 	throws StateManagerException {
 	logger.info("called");
 
-	Integer numJobs = new Integer(0);
+	Long numJobs = new Long(0);
 
 	try {
 	    // open a session
@@ -510,7 +510,7 @@ public class HibernateUtil {
 	    String query = "select count(*)  " +            
                 " from JobInfo jobInfo where " +
                 " jobInfo.startTimeDate >= :startDate " +
-                " and jobInfo.endTimeDate <= :endDate";
+                " and jobInfo.startTimeDate <= :endDate";
             Query queryStat = session.createQuery(query);
             queryStat.setDate("startDate", startDateSQL)
                 .setDate("endDate", endDateSQL);
@@ -521,7 +521,7 @@ public class HibernateUtil {
 		    "Error while trying to retrive number of jobs from database";
 		throw new StateManagerException(msg);
 	    } 
-	    numJobs = (Integer) results.get(0);
+	    numJobs = (Long) results.get(0);
 
 	    session.close();
 	} catch (HibernateException he) {
@@ -531,7 +531,7 @@ public class HibernateUtil {
 	    throw new StateManagerException(msg);
 	}
 
-	return numJobs.intValue();
+	return numJobs.longValue();
     }
 
     // A simple main method to test functionality
