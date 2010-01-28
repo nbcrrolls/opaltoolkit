@@ -59,7 +59,7 @@ There is also an Add File button if the user wants to upload more than one
 files.  The application configuration file described at  <xref
 linkend="server-installation"> does not present any metadata describing the
 format of the input arguments of the application. Therefore the Opal dashboard can
-display to the user only the symple submission form.</para>
+display to the user only the simple submission form.</para>
 
 </section>
 
