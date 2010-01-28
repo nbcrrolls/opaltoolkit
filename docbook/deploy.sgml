@@ -5,7 +5,9 @@
 <listitem>
 <para>
 Before deploying an Opal web service, you will first need to create a 
-configuration file for your application.
+configuration file for your application.  For more information about 
+Opal application configuration files, please see <xref linkend="opalgui-simplesub">,
+<xref linkend="opalgui-advancedsub">, and <xref linkend=opalgui-advanced_pdb2pqr_ex>.
 </para>
 
 <para>A sample configuration file for the command <command>/bin/date</command>, located
