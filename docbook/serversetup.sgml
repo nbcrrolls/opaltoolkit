@@ -96,7 +96,7 @@ requires the following packages:</para>
 </section>
 
 
-<section id="severalinstall"  xreflabel="Server Installation">
+<section id="serverinstall"  xreflabel="Server Installation">
 <title>Server Installation</title>
 
 <para>Download the source distribution of Opal2 for installation from
@@ -115,9 +115,6 @@ similar utilities for Windows), as follows:
 <para>This should create a new directory called opal-ws-$VERSION/ where
 all the sources are expanded. Henceforth, we refer to this directory as
 <emphasis role="italics">OPAL_HOME</emphasis>.</para>
-
-<section id="server-installation"  xreflabel="Server Installation">
-<title>Server Installation</title>
 
 <orderedlist>
 <listitem><para>Edit $OPAL_HOME/etc/opal.properties to configure the static container
@@ -294,8 +291,6 @@ ignore the warnings about the <emphasis role="bold">Optional Components</emphasi
 
 </section>
 
-</section>
-
 <section id="deploy" xreflabel="Application Deployment">
 <title>Application Deployment</title>
 
@@ -305,7 +300,7 @@ ignore the warnings about the <emphasis role="bold">Optional Components</emphasi
 Before deploying an Opal web service, you will first need to create a 
 configuration file for your application.  For more information about 
 Opal application configuration files, please see <xref linkend="opalgui-simplesub">,
-<xref linkend="opalgui-advancedsub">, and <xref linkend=opalgui-advanced_pdb2pqr_ex>.
+<xref linkend="opalgui-advancedsub">, and <xref linkend=sample_appconfig>.
 </para>
 
 <para>A sample configuration file for the command <command>/bin/date</command>, located

@@ -4,8 +4,8 @@
 <!ENTITY version "2.1">
 
 <!ENTITY overview SYSTEM "overview.sgml">
-<!ENTITY basicinstallation SYSTEM "basicinstallation.sgml">
-<!ENTITY deploy SYSTEM "deploy.sgml">
+<!ENTITY serversetup SYSTEM "serversetup.sgml">
+<!ENTITY clientsetup SYSTEM "clientsetup.sgml">
 <!ENTITY database SYSTEM "database.sgml">
 <!ENTITY scheduler SYSTEM "scheduler.sgml">
 <!ENTITY opalGUI SYSTEM "opalGUI.sgml">
@@ -97,8 +97,8 @@ to install and configure it.
 -->
 
 &overview;
-&basicinstallation;
-&deploy;
+&serversetup;
+&clientsetup;
 &database;
 &scheduler;
 &opalGUI;
