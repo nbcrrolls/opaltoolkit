@@ -59,8 +59,8 @@ use tcsh on Unix, set your classpath by typing the following command:
 
 </section>
 
-<section id="usingclient"  xreflabel="Using Opal Client">
-<title>Using Opal Client</title>
+<section id="usingclient"  xreflabel="Using Opal Client Programmatically">
+<title>Using Opal Client Programmatically</title>
 
 <para>To launch a job using the Date service mentioned in
 <xref linkend="deploy">, you could use the

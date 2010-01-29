@@ -1,5 +1,98 @@
+<appendix id="sample_appconfig" xreflabel="Sample Application Configuration File">
+<title>Sample Application Configuration File</title>
+
+<para>This example shows how to write the Opal submission configuration file for
+the <ulink type="http" url="http://pdb2pqr.sourceforge.net/">PDB2PQR</ulink>
+program, which is designed to automate many of the common tasks of
+preparing structures for continuum electrostatics calculations, by
+providing a platform-independent utility for converting protein files in
+PDB format to PQR format. A sample configuration file for the same, located
+in $OPAL_HOME/configs/pdb2pqr_config.xml, is shown below.
+
+<screen>
+&lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;metadata appName="PDB2PQR"&gt;
+    &lt;usage&gt;
+    PDB2PQR is a Python software package that automates many of the common
+    tasks of preparing structures for continuum electrostatics
+    calculations, providing a platform-independent utility for converting
+    protein files in PDB format to PQR format
+    &lt;/usage&gt;
+
+    &lt;info xsd:type="xsd:string"&gt;
+         python pdb2pqr.py [options] --ff={forcefield} {path} {output-path}
+ 
+         The required arguments are as follows:
+         ...         
+         &lt;path&gt;
+             The path to the PDB file or an ID to obtain from the PDB archive
+         &lt;output-path&gt;
+             The desired output name of the PQR file to be generated
+         
+         Optional command-line arguments are:
+         
+         --nodebump
+             Do not perform the debumping operation
+         ...
+     &lt;/info&gt;
+  &lt;/metadata&gt;
+  &lt;binaryLocation&gt;/Users/sriramkrishnan/bin/pdb2pqr.py&lt;/binaryLocation&gt;
+  &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
+  &lt;parallel&gt;false&lt;/parallel&gt;
+  &lt;validateArgs&gt;false&lt;/validateArgs&gt;
+  &lt;jobManagerFQCN&gt;edu.sdsc.nbcr.opal.manager.ForkJobManager&lt;/jobManagerFQCN&gt;
+&lt;/appConfig&gt;
+</screen>
+</para>
+
+<para>The configuration consists of a top level element <emphasis
+role="italics">appConfig</emphasis>, which contains <emphasis
+role="italics">metadata</emphasis>, <emphasis
+role="italics">binaryLocation</emphasis>, <emphasis
+role="italics">defaultArgs</emphasis>, <emphasis
+role="italics">parallel</emphasis>, <emphasis
+role="italics">validateArgs</emphasis>, and <emphasis
+role="italics">jobManagerFQCN</emphasis> elements. The metadata consists of
+<emphasis role="italics">usage</emphasis>, which is a string specifying how
+the application is to be invoked, and an array of optional application
+information specified as <emphasis role="italics">info</emphasis> elements.
+It also contains an optional <emphasis role="italics">types</emphasis>
+element, which we can ignore for now (more information about the types
+element can be found from our <xref linkend="opalgui-advancedsub"> page).
+In the above file, the various options that can be used with the
+application are specified within the metadata.</para>
+
+<para>The binaryLocation specifies the location of the application binary -
+note that this has to be the location of a <emphasis
+role="italics">single</emphasis> executable. No arguments may be specified
+here. However, default arguments that need to be used for every run can be
+specified inside the defaultArgs element. The parallel element specifies if
+an application is parallel or not. The validateArgs and jobManagerFQCN
+elements are optional. If set to true, the validateArgs element instructs
+Opal to use the optional command-line specification (within types) to
+validate arguments prior to execution. The jobManagerFQCN element
+over-rides the default job manager, and can be set to the fully qualified
+classname of an Opal job manager. By default, the FQCNs for job managers
+provided by Opal are
+<filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename> (for basic
+fork/system exec),
+<filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> (for
+DRMAA), <filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>
+(for Globus on a local cluster),
+<filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename> (for
+Globus job submissions to a remote cluster), 
+<filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> (for 
+submitting jobs directly to Condor) and 
+<filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename> (for using the 
+Community Scheduler Framework). Use the pdb2pqr_config.xml as
+a guideline to write configurations for your particular
+applications.</para> 
+
+</appendix>
+
 <appendix id="proxy-script" xreflabel="proxy-script">
-<title>Script for Generating Proxy</title>
+<title>Sample Script for Generating Proxy</title>
 
 <para>
 This sample script <filename>newcert.sh</filename> gets the 
