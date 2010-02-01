@@ -1,4 +1,4 @@
-<appendix id="sample_appconfig" xreflabel="Sample Application Configuration File">
+<appendix id="sample-appconfig" xreflabel="Sample Application Configuration File">
 <title>Sample Application Configuration File</title>
 
 <para>This example shows how to write the Opal submission configuration file for

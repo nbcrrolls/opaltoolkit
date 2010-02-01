@@ -1,3 +1,11 @@
+Version 2.2
+- DRMAA jar upgraded to version 6.1
+- Support for DB2 for state monitoring
+- Automatic WSDL generation (optional) - Anthony's update
+- Use of MIME attachments in the Opal dashboard - the dashboard can now
+support larger files
+- Basic Per-IP limit on number of jobs per hour, to stop overload of servers
+
 Version 2.1
 - Improved Ajax-based dashboard that enables searching applications by
 their metadata
