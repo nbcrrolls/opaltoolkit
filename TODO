@@ -1,10 +1,3 @@
-* Opal 2.2 release
-  * DRMAA upgrade
-  * Support for DB2 for state monitoring
-  * WSDL generation - Anthony's update
-  * Use of MIME attachments in the Opal dashboard
-  * Per-IP limit on number of jobs per hour
-
 * Opal 2.3 release
   * Removal of number of CPUs for non-parallel jobs on input form
   * PBS support (with or without DRMAA)
