@@ -1,5 +1,5 @@
 # version number for opal
-version = 2.2a
+version = 2.2
 
 # location of the tomcat installation
 catalina.home = /path/to/catalina_home
