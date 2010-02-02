@@ -308,6 +308,14 @@ Author:
       </fileset>
     </copy>
 
+    <!-- copy over the jar files required into common/endorsed -->
+    <copy todir="${catalina.home}/common/endorsed">
+      <fileset dir="${lib}">
+        <!-- cog-tomcat jar -->
+        <include name="xalan-2.7.0.jar" />
+      </fileset>
+    </copy>
+
     <!-- copy over the opal.properties file -->
     <copy file="${project.home}/etc/opal.properties" 
           todir="${tomcat.WEB-INF}/classes" />
