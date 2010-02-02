@@ -1,16 +1,16 @@
 <chapter id="serversetup"  xreflabel="Server Set Up Guide">
-<title>Server Setup Guide </title>
+<title>Opal Server Installation</title>
 
 <para>Version: &version;</para>
 
 <para>In this chapter we present how to install Opal server with basic functionalities.</para>
 
 <section id="serverprerequisites" xreflabel="Sever Prerequisites">
-<title>Server Prerequisites</title>
+<title>Prerequisites</title>
 
-<para>The source distribution can be used to install both the server and the
-client sides on Unix and Windows platforms. The prerequisites for the
-server installation are as follows.</para>
+<para>The source distribution can be used to install both the server and
+the command-line client sides on Unix and Windows platforms. The
+prerequisites for the installation are as follows.</para>
 
 <section id="server-client-pre" xreflabel="Common Prerequisites for Server and Client">
 <title>Common Prerequisites for Server and Client</title>
@@ -34,8 +34,8 @@ server installation are as follows.</para>
 <section id="server-pre" xreflabel="Additional Prerequisites for Server">
 <title>Additional Prerequisites for Server</title>
 
-<para>Apart from the above packages required for the client, the server also
-requires the following packages:</para>
+<para>Apart from the above packages, the server also requires the following
+packages:</para>
 
 <orderedlist>
    <listitem><para>Tomcat: Tomcat is a servlet container than can be used
@@ -63,9 +63,11 @@ requires the following packages:</para>
    services. For production use, we recommend using a real database such as
    <ulink type="http"
    url="http://www.postgresql.org/">Postgres</ulink> (version 8.2.4 or
-   higher 8.2 flavors) or <ulink type="http"
+   higher 8.2 flavors), <ulink type="http"
    url="http://dev.mysql.com/downloads/">MySQL</ulink> (tested with version
-   5.1.38).</para></listitem>
+   5.1.38). or <ulink type="http"
+   url="http://www-01.ibm.com/software/data/db2/">DB2</ulink> (tested with
+   version 8.2).</para></listitem>
 
    <listitem><para>Scheduler Tools: One way to enable access to schedulers
    is via the <ulink type="http" url="http://www.globus.org">Globus
@@ -97,7 +99,7 @@ requires the following packages:</para>
 
 
 <section id="serverinstall"  xreflabel="Server Installation">
-<title>Server Installation</title>
+<title>Installation Instructions</title>
 
 <para>Download the source distribution of Opal2 for installation from
 <ulink type="http"
@@ -280,12 +282,17 @@ and running the appropriate command (bat on Windows, sh on Unix):
 </screen>
 </para> </listitem>
 
-<listitem><para>Validate that Opal has been deployed correctly by clicking on <ulink type="http"
-url="http://localhost:8080/opal2/happyaxis.jsp">
-http://localhost:8080/opal2/happyaxis.jsp</ulink>. If you have deployed Tomcat
-on another port, you will have to change the port number above. If all the
-<emphasis role="bold">Needed Components</emphasis> are found, Axis has been deployed fine. You can
-ignore the warnings about the <emphasis role="bold">Optional Components</emphasis>.</para> </listitem>
+<listitem><para>Validate that Opal has been deployed correctly by clicking
+on <ulink type="http" url="http://localhost:8080/opal2/happyaxis.jsp">
+http://localhost:8080/opal2/happyaxis.jsp</ulink>. If you have deployed
+Tomcat on another port, you will have to change the port number above. If
+all the <emphasis role="bold">Needed Components</emphasis> are found, Axis
+has been deployed fine. You can ignore the warnings about the <emphasis
+role="bold">Optional Components</emphasis>.</para> </listitem>
+
+<listitem><para>If the above steps have been executed successfully, the
+Opal server is ready for deployment of applications as Web
+services.</para></listitem>
 
 </orderedlist>
 
@@ -297,15 +304,13 @@ ignore the warnings about the <emphasis role="bold">Optional Components</emphasi
 <orderedlist>
 <listitem>
 <para>
-Before deploying an Opal web service, you will first need to create a 
-configuration file for your application.  For more information about 
-Opal application configuration files, please see <xref linkend="opalgui-simplesub">,
-<xref linkend="opalgui-advancedsub">, and <xref linkend="sample-appconfig">.
+For every application that needs to be deployed as an Opal service, you
+will need to create an Opal configuration file. A sample configuration file
+for the command <command>/bin/date</command>, located in
+<filename>$OPAL_HOME/configs/date_config.xml</filename>, is shown below.
 </para>
 
-<para>A sample configuration file for the command <command>/bin/date</command>, located
-in <filename>$OPAL_HOME/configs/date_config.xml</filename>, is shown below.
-
+<para>
 <screen>
 &lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
@@ -314,11 +319,59 @@ in <filename>$OPAL_HOME/configs/date_config.xml</filename>, is shown below.
   &lt;/metadata&gt;
   &lt;binaryLocation&gt;/bin/date&lt;/binaryLocation&gt;
   &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
+  &lt;validateArgs&gt;false&lt;/validateArgs&gt;
   &lt;jobManagerFQCN&gt;edu.sdsc.nbcr.opal.manager.ForkJobManager&lt;/jobManagerFQCN&gt;
   &lt;parallel&gt;false&lt;/parallel&gt;
 &lt;/appConfig&gt;
 &lt;/screen&gt;
 </screen>
+</para>
+
+<para>The configuration consists of a top level element <emphasis
+role="italics">appConfig</emphasis>, which contains <emphasis
+role="italics">metadata</emphasis>, <emphasis
+role="italics">binaryLocation</emphasis>, <emphasis
+role="italics">defaultArgs</emphasis>, <emphasis
+role="italics">parallel</emphasis>, <emphasis
+role="italics">validateArgs</emphasis>, and <emphasis
+role="italics">jobManagerFQCN</emphasis> elements. The metadata consists of
+<emphasis role="italics">usage</emphasis>, which is a string specifying how
+the application is to be invoked, and an array of optional application
+information specified as <emphasis role="italics">info</emphasis> elements.
+It also contains an optional <emphasis role="italics">types</emphasis>
+element, which we can ignore for now (more information about the types
+element can be found from our <xref linkend="opalgui-advancedsub"> page).
+In the above file, the various options that can be used with the
+application are specified within the metadata.</para>
+
+<para>The binaryLocation specifies the location of the application binary -
+note that this has to be the location of a <emphasis
+role="italics">single</emphasis> executable. No arguments may be specified
+here. However, default arguments that need to be used for every run can be
+specified inside the defaultArgs element. The parallel element specifies if
+an application is parallel or not. The validateArgs and jobManagerFQCN
+elements are optional. If set to true, the validateArgs element instructs
+Opal to use the optional command-line specification (within types) to
+validate arguments prior to execution. The jobManagerFQCN element
+over-rides the default job manager, and can be set to the fully qualified
+classname of an Opal job manager. By default, the FQCNs for job managers
+provided by Opal are
+<filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename> (for basic
+fork/system exec),
+<filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> (for
+DRMAA), <filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>
+(for Globus on a local cluster),
+<filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename> (for
+Globus job submissions to a remote cluster),
+<filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> (for
+submitting jobs directly to Condor) and
+<filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename> (for using
+the Community Scheduler Framework). Use the pdb2pqr_config.xml as a
+guideline to write configurations for your particular applications.</para>
+
+<para>
+For a more detailed application configuration, including specification of
+the command-line arguments, please see <xref linkend="sample-appconfig">.
 </para>
 
 </listitem>
@@ -335,12 +388,20 @@ directory, and running the following command:
 <para>For example, to deploy the Date service, you would type the following
 command:
 <screen>
-    $ANT_HOME/bin/ant deploy -DserviceName=Date \
+    $ANT_HOME/bin/ant deploy -DserviceName=DateService \
                  -DappConfig=$PWD/configs/date_config.xml
 </screen>
 </para>
 
-<para>Note that you can undeploy your service at any time by running the 
+<para>
+If the service is deployed successfully, it can be accessed
+programmatically at URL:
+<emphasis>http://host:port/opal2/services/serviceName</emphasis>, or via
+the Web-based Opal Dashboard at URL:
+<emphasis>http://host:port/opal2/dashboard</emphasis>.
+</para>
+
+<para>You can undeploy your service at any time by running the 
 following command:
 <screen>
     $ANT_HOME/bin/ant undeploy -DserviceName=&lt;serviceName&gt;
