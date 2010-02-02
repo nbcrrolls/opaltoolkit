@@ -1,9 +1,9 @@
 <chapter id="opalGUI" xreflabel="Opal Dynamic Interface Generation"> 
 <title>Opal Dashboard</title>
 
-<para>This chapter presents the Opal Dashboard, a new Web interface that
-allows a user to monitor the status of an Opal Server, to check its usage,
-and to dynamically create customized Web forms for job submission.</para>
+<para>This chapter presents the Opal Dashboard, a Web interface that allows
+a user to monitor the status of an Opal Server, to check its usage, and to
+dynamically create customized Web forms for job submission.</para>
 
 <section id="opalGUI-overview" xreflabel="Overview">
 <title>Overview</title>
@@ -16,22 +16,38 @@ with Opal, and it can be accessed at <ulink type="http"
 url="http://localhost:8080/opal2/dashboard">http://servername:8080/opal2/dashboard</ulink>.</para>
 
 <para>
-The Opal dashboard provides the following features:</para>
+The Opal dashboard provides the following tabs:</para>
 <itemizedlist>
-        <listitem><para>Installation Summary: This provides general
-        information about the Opal installation, such as server
-        configuration, versions, etc.</para></listitem>
-        <listitem><para>Statistics: This provides charts with usage
-        statistics, errors and average execution times. The charts are
-        created dynamically based on user inputs, such as a time range and
-        particular services of interest.</para></listitem>
-        <listitem><para>List of Applications: This provides a list of all
-        the installed applications. Users can search for applications based
-        on specified metadata, and click on the applications to access
-        submission forms. An Atom feed for the list of applications is also
-        available.</para></listitem> <listitem><para>Information: This
-        provides relevant information about Opal such as documentation,
-        funding sources, etc.</para></listitem>
+        <listitem><para><command>Summary Home</command>: This
+        provides general information about the Opal installation, such as
+        server configuration, versions, etc.</para>
+
+	<graphic fileref="images/summary_home.png" scale=50></graphic>
+	</listitem>
+
+        <listitem><para><command>Statistics</command>: This provides
+        charts with usage statistics, errors and average execution times.
+        The charts are created dynamically based on user inputs, such as a
+        time range and particular services of interest.</para>
+
+	<para>For instance, the following screenshot displays the number of
+	jobs executed per day over a specified timeframe. Users can select
+	a time window, as well the services that they would like to be
+	plotted.</para>
+
+	<graphic fileref="images/plotchart.jpg" scale=50></graphic>
+
+	</listitem>
+
+        <listitem><para><command>List of Applications</command>: This
+        provides a list of all the installed applications. Users can search
+        for applications based on specified metadata, and click on the
+        applications to access submission forms. An Atom feed for the list
+        of applications is also available.</para></listitem>
+
+	<listitem><para><command>About Opal</command>: This provides
+        relevant information about Opal such as documentation, funding
+        sources, etc.</para></listitem>
 </itemizedlist>
 
 <para> The list of installed applications is generated dynamically by
@@ -65,7 +81,7 @@ display to the user only the simple submission form.</para>
 </section>
 
 <section id="opalGUI-advancedsub" xreflabel="Advanced Submission Form">
-<title>Advanced submission Form</title>
+<title>Advanced Submission Form</title>
 
 <para> It is possible to add an optional element called 'types', in the
 application configuration file described at <xref
