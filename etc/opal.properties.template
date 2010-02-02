@@ -84,7 +84,7 @@ opal.ip.processing=false
 # number of jobs per IP per hour
 opal.ip.limit=10
 
-# permanently block jobs from this IP - comma separated entries (optional)
+# block all jobs from this IP - comma separated entries (optional)
 opal.ip.blacklist=66.102.7.104
 
 # always allow jobs from this IP - comma separated entries (optional)
