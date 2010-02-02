@@ -145,9 +145,13 @@
   programmatically inside a client stub in order to enable GSI HTTPS.
   </para></listitem>
 
-  <listitem><para>Note that the Opal dashboard may not function correctly
-  when GSI-based mutual authentication is being used. We will address this
-  in future releases of Opal.</para></listitem>
+  <listitem><para>Note that the Opal dashboard will not function out of the
+  box when GSI-based mutual authentication is being used. This is because
+  the Opal server will reject clients that are not authenticated. You will
+  need to import your client certificate or proxy into your Web browser to
+  be able to authenticate to the Opal server. The procedure for this varies
+  from one browser to another. Please follow the documentation for your own
+  specific Web browsers.</para></listitem>
 
 </orderedlist>
 

@@ -36,13 +36,20 @@ plan on supporting parallel jobs. </para></listitem>
     ant install
 </screen>
 </para>
+
 </listitem>
 
 <listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
 
-<listitem><para>Note that we do not stage input and output files from the Opal server
-to the submit host if DRMAA is being used; hence, the machines should be on
-a shared file system for the DRMAA job manager to work correctly.</para></listitem>
+<listitem><para>Note that we do not stage input and output files from the
+Opal server to the submit host if DRMAA is being used; hence, the machines
+should be on a shared file system for the DRMAA job manager to work
+correctly.</para> 
+
+<para>Also note that DRMAA support will not work correctly if you have
+another version of the drmaa.jar inside Tomcat's common/lib or server/lib
+directories, since that will be loaded first by Tomcat's class
+loader.</para></listitem>
 </orderedlist>
 </section>
 
