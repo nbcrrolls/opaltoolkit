@@ -168,7 +168,57 @@
 <section id="ip-limits" xreflabel="ip-limits">
 <title>Configuring IP-based Restrictions for Job Submission</title>
 
-<para>Text for IP-based restrictions goes here.</para>
+<para>Beginning with version 2.2, Opal provides basic support for
+restricting number of job submissions per IP. Users can set appropriate
+properties in the etc/opal.properties to configure this features. For
+instance, the specific lines for configuring this feature are as follows:
+</para>
+
+<screen>
+## BEGIN: information for the per IP limits on job submission
+## ----------------------------------------------------------
+# boolean switch to turn processing on or off
+opal.ip.processing=false
+
+# number of jobs per IP per hour
+opal.ip.limit=10
+
+# block all jobs from this IP - comma separated entries (optional)
+opal.ip.blacklist=66.102.7.104
+
+# always allow jobs from this IP - comma separated entries (optional)
+opal.ip.whitelist=66.102.7.105, 127.0.0.1
+## ----------------------------------------------------------
+## END: information for the per IP limits on job submission
+</screen>
+
+<para>
+By default, the IP-based restrictions are turned off. To turn it on, please
+set the <filename>opal.ip.processing</filename> to
+<filename>true</filename>. You can configure the number of jobs that are
+allowed per IP address by setting the <filename>opal.ip.limit</filename>.
+If the Opal server receives more than these many jobs from any IP address,
+it will reject job submissions by throwning an appropriate exception. Opal
+also supports the concept of blacklists and whitelists. To block all jobs
+from a particular IP address, add that address to the
+<filename>opal.ip.blacklist</filename>. Similarly, to allow all jobs from a
+particular IP, add that address to the
+<filename>opal.ip.whitelist</filename>.
+</para>
+
+<para>
+Please note that the blacklist takes precedence over the whitelist - i.e.
+if an IP address is present on the blacklist, all jobs from this address
+will be blocked even if it may be on the whitelist. Also note that you
+should add localhost (127.0.0.1) to the whitelist, if you would like enable
+the Opal Dashboard to always be able to submit jobs.
+</para>
+
+<para>
+As usual, after all changes to the etc/opal.properties, reinstall Opal
+using the <filename>ant install</filename> command, and restart Tomcat for
+the changes to take effect.
+</para>
 </section>
 
 <section id="sample-appconfig" xreflabel="Sample Application Configuration File">
