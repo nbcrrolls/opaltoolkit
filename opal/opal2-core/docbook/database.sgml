@@ -3,9 +3,9 @@
 
 <para>By default, Opal stores its state into an in-memory <ulink
 type="http" url="http://hsqldb.org/">HSQL</ulink> database, so it should
-work out of the box.However, for production systems you may wish to store the Opal state in a real
-external database. This chapter describes how to configure Opal to use
-PostgreSQL and MySQL to store its state</para>
+work out of the box.However, for production systems you may wish to store
+the Opal state in a real external database. This chapter describes how to
+configure Opal to use PostgreSQL, MySQL or DB2 to store its state</para>
 
 <section id="postgres"  xreflabel="postgres">
 <title>Using Postgres</title>
@@ -129,4 +129,64 @@ this property.
 
 </section>
 
+<section id="db2"  xreflabel="db2">
+<title>Using DB2</title>
+
+<orderedlist>
+<listitem><para>Install a DB2 database (tested with version 8.2).</para></listitem>
+
+<listitem><para>Create a database called <emphasis role="italics">opal2_db</emphasis>, and a user called
+<emphasis role="italics">opal_user</emphasis> with a password. Grant all permissions on opal2_db to the
+opal_user. Configure the database to accept remote JDBC connections (consult
+the database documentation for this).</para>
+</listitem>
+
+<listitem><para>Edit the <emphasis
+role="italics">etc/hibernate-opal.cfg.xml</emphasis> configuration file and
+comment out the properties that are HSQL specific. In particular, the
+following five lines should be commented out as follows:
+<screen>
+        &lt;!-- Database connection settings for HSQL --&gt;
+&lt;!--         &lt;property name="connection.driver_class"&gt;org.hsqldb.jdbcDriver&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="connection.url"&gt;jdbc:hsqldb:file:data/opaldb&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="connection.username"&gt;sa&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="connection.password"&gt;&lt;/property&gt; --&gt;
+&lt;!--         &lt;property name="dialect"&gt;org.hibernate.dialect.HSQLDialect&lt;/property&gt; --&gt;
+</screen> 
+</para>
+</listitem>
+
+<listitem><para>Uncomment the properties that are DB2 specific. In
+particular, uncomment the following five lines as follows:
+<screen>
+        &lt;!-- Database connection settings for DB2 --&gt;
+        &lt;property name="connection.driver_class"&gt;com.ibm.db2.jcc.DB2Driver&lt;/property&gt; 
+        &lt;property name="connection.url"&gt;jdbc:db2://localhost:60000/opaldb&lt;/property&gt; 
+        &lt;property name="connection.username"&gt;opal_user&lt;/property&gt; 
+        &lt;property name="connection.password"&gt;opal_passwd&lt;/property&gt; 
+        &lt;property name="dialect"&gt;org.hibernate.dialect.DB2Dialect&lt;/property&gt; 
+</screen>
+</para>
+
+<para>Note that you can change the property <emphasis
+role="italics">connection.url</emphasis> to point to a database that is
+running on another machine as long as it can accept JDBC connection from
+the machine running the Opal services. If the database is running on the
+same machine as the Opal server, there is no need to change the value of
+this property.
+</para>
+</listitem>
+
+<listitem><para>Reinstall Opal by running the following command:
+<screen>
+    ant install
+</screen>
+</para>
+</listitem>
+
+<listitem><para>Restart Tomcat for the changes to take effect.</para>
+</listitem>
+</orderedlist>
+
+</section>
 </chapter>
