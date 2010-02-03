@@ -66,17 +66,23 @@ application:</para>
 <section id="opalGUI-simplesub"  xreflabel="Simple Submission Form">
 <title>Simple Submission Form</title>
 
-<para >If applications have been deployed following the deploying 
-<command>/bin/date</command> instructions at <xref
-linkend="deploy">, then the Opal Dashboard will display a simple form with
-an input text field and an input file box.  The user should type the desired
-command-line into the input text box and he can also upload an input file.
-There is also an Add File button if the user wants to upload more than one
-files.  The application configuration file described at the <command>/bin/date</command>
-example at  <xref
-linkend="deploy"> does not present any metadata describing the
-format of the input arguments of the application. Therefore the Opal dashboard can
-display to the user only the simple submission form.</para>
+<para >If applications have been deployed using a basic application
+configuration, such as the one used by the <command>/bin/date</command>
+example shown in <xref linkend="deploy">, then the Opal Dashboard will
+display a simple form with an input text field and an input file box. The
+user should type the desired command-line into the input text box and he
+can also upload an input file. There is also an Add File button if the user
+wants to upload more than one files. The user may also type in the number
+of CPUs to be used, if this is a parallel application.</para>
+
+<para>
+The application configuration file described at the
+<command>/bin/date</command> example at <xref linkend="deploy"> does not
+present any metadata describing the format of the input arguments of the
+application. Therefore the Opal dashboard can display to the user only the
+simple submission form.</para>
+
+<graphic fileref="images/simple_sub.png" scale=50></graphic>
 
 </section>
 
@@ -211,7 +217,9 @@ the code snippet below):</para>
                 &lt;value&gt;PARSE&lt;/value&gt; 
                 &lt;value&gt;TYL06&lt;/value&gt; 
                 &lt;default&gt;AMBER&lt;/default&gt; 
-                &lt;textDesc&gt;The forcefield to use -- currently AMBER, CHARMM, PARSE, and TYL06 are supported.&lt;/textDesc&gt; 
+                &lt;textDesc&gt;The forcefield to use -- 
+		                currently AMBER, CHARMM, PARSE, and TYL06 are supported.
+                &lt;/textDesc&gt; 
             &lt;/param&gt; 
                   ...
         &lt;/taggedParams&gt; 
@@ -271,6 +279,12 @@ the code snippet below):</para>
         </listitem>
     </itemizedlist>
 
+<para>
+For the Opal configuration described in <xref linkend="sample-appconfig">,
+the following advanced submission form is generated:
+</para>
+
+<graphic fileref="images/advanced_sub.png" scale=40></graphic>
 </section>
 </section>
 

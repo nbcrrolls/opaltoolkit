@@ -100,7 +100,8 @@ particular, uncomment the following five lines as follows:
 <screen>
         &lt;!-- Database connection settings for MySQL --&gt;
         &lt;property name="connection.driver_class"&gt;com.mysql.jdbc.Driver&lt;/property&gt;
-        &lt;property name="connection.url"&gt;jdbc:mysql://localhost/opal2_db?autoReconnect=true&lt;/property&gt;
+        &lt;property name="connection.url"&gt;
+	             jdbc:mysql://localhost/opal2_db?autoReconnect=true&lt;/property&gt;
         &lt;property name="connection.username"&gt;opal_user&lt;/property&gt;
         &lt;property name="connection.password"&gt;opal_passwd&lt;/property&gt;
         &lt;property name="dialect"&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;
