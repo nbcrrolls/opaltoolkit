@@ -1190,7 +1190,7 @@ public class AppServiceImpl
 	} else {
 	    // TODO: should log IP in a database to monitor abuse
 	    String msg = "Number of jobs (" + numJobsIP + ") for client (" + 
-		remoteIP + ") is over limit (" + ipLimit + " per hour)";
+		remoteIP + ") at maximum limit (" + ipLimit + " per hour)";
 	    logger.error(msg);
 	    throw new FaultType(msg);
 	}

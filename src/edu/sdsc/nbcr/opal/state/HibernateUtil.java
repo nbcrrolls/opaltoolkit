@@ -497,22 +497,40 @@ public class HibernateUtil {
 
 	    // the date now
 	    long timeNow = System.currentTimeMillis();
-	    Date endDate = new Date(timeNow);
-
+	    
 	    // the date one hour back
-	    // 1 hour = 3,600,000 ms
-	    Date startDate = new Date(timeNow - 3600000);
+	    long timePast = timeNow - 3600000;
 
 	    // formulate the query
-	    java.sql.Date  endDateSQL = new java.sql.Date(endDate.getTime());
-	    java.sql.Date startDateSQL = new java.sql.Date(startDate.getTime());
+	    java.sql.Time endTimeSQL = new java.sql.Time(timeNow);
+	    java.sql.Date endDateSQL = new java.sql.Date(timeNow);
+	    java.sql.Time startTimeSQL = new java.sql.Time(timePast);
+	    java.sql.Date startDateSQL = new java.sql.Date(timePast);
 
-	    String query = "select count(*)  " +            
-                " from JobInfo jobInfo where " +
-                " jobInfo.startTimeDate >= :startDate " +
-                " and jobInfo.startTimeDate <= :endDate";
+	    String query;
+	    if (endDateSQL.toString().equals(startDateSQL.toString())) {
+		// both start and end are the same day
+		query = "select count(*)  " +            
+		    " from JobInfo jobInfo where " +
+		    " jobInfo.startTimeTime >= :startTime " +
+		    " and jobInfo.startTimeTime <= :endTime " +
+		    " and jobInfo.startTimeDate = :startDate" +
+		    " and jobInfo.startTimeDate = :endDate ";
+	    } else {
+		// start and end are different days
+		query = "select count(*)  " +            
+		    " from JobInfo jobInfo where " +
+		    " (jobInfo.startTimeTime >= :startTime " +
+		    " and jobInfo.startTimeDate = :startDate)" +
+		    " or (jobInfo.startTimeTime <= :endTime " +
+		    " and jobInfo.startTimeDate = :endDate) ";
+	    }
+	    
+	    // execute query
             Query queryStat = session.createQuery(query);
-            queryStat.setDate("startDate", startDateSQL)
+            queryStat.setTime("startTime", startTimeSQL)
+                .setTime("endTime", endTimeSQL)
+                .setDate("startDate", startDateSQL)
                 .setDate("endDate", endDateSQL);
             List results = queryStat.list();
 	    if (results.size() != 1) {
