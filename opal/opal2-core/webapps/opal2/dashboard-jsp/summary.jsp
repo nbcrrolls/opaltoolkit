@@ -135,6 +135,7 @@
 <div>
 <p><b>Opal:</b> an automatic Web service wrappers for scientific applications on Grid resources.</p>
 <p style="font-size: smaller"><a href="http://nbcr.net/software/opal/LICENSE.txt">BSD License</a></p>
+<p><a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">Tutorials and Sample Programs</a></p>
 <br/><br/><br/><br/><br/>
 </div>
 </td></tr>
