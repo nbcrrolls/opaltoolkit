@@ -1,10 +1,11 @@
 * Opal 2.3 release
   * Removal of number of CPUs for non-parallel jobs on input form
   * PBS support (with or without DRMAA)
+  * Support upload of tarballs for inputs
   * Subset of wishlist below
 
 * Utility services
-  * Server load, queue length, data lifetime
+  * Server load, queue length, data lifetime, server information
 
 * Security enhancements
   * FacebookConnect or OpenID
