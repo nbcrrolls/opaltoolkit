@@ -232,6 +232,7 @@ you have to create a ~/.m2/settings.xml file with the follwing content
                   <arg value="-r"/>
                   <arg value="-a"/>  -->
                 </exec>
+                <exec executable="./copyrss.sh"/>
                 <echo>Build Dir: ${project.build.directory}</echo>
               </tasks>
             </configuration>
