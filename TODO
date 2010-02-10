@@ -2,46 +2,39 @@
   * Removal of number of CPUs for non-parallel jobs on input form
   * PBS support (with or without DRMAA)
   * Support upload of tarballs for inputs
-  * Subset of wishlist below
-
-* Utility services
-  * Server load, queue length, data lifetime, server information
+  * Addition of utility services (addition to WSDL)
+    * Server load, queue length, data lifetime, server information
+  * Addition of the above statistics to the Dashboard
 
 * Security enhancements
   * FacebookConnect or OpenID
 
+* REST support - and upgrade to Axis2
+
+* Updated Ajax-based automatic interface generation
+
 * Plug-ins
-  * Testing of Condor plug-in on RENCI's Condor pool
   * Hadoop/EC2 MapReduce plugin
 
 * Performance improvements
   * Ability to queue jobs before job submission - based on an upper bound
     specified in opal.properties
-  * Improved fault tolerance on server restart
+  * Improved fault tolerance on server restarts - being able to bind to
+    already running jobs
 
 * WSDL additions/improvements
   * Add GridFTP support
   * Additional statistics for job to be set by client (like email address)
     * Twitter, RSS access to job metadata
-  * The <usage> tag is used improperly, it contains now the description of
-    the application
-  * launchJob should allow the user to specify the wallclock
-  * REST support - and upgrade to Axis2
+  * launchJob should allow the user to specify the wallclock time
   * Support for array jobs
-  * Support for hadoop jobs
 
 * Additional Features
-  * Addition of implicit files to dashboard 
-    This will be in 2.something
-  * Arguments schema: how to express 1-* or 2-* multiplicity? specify the
-    min but not the max? LC
-    Checked! We can express this condition simply using only the min tag 
-    and not the max tag
   * Conditional display of parameters (a group of parameters are displayed only
     if a flag is checked) (reuqested by the PDB guys)
-  * Display additional statistics on the dashboard - average load, queue
-    time
-    * May also need to provide programmatic access
-  * Get the version of Opal 
+    * Will need addition of relations to parameter types
+  * Get the version of the Opal server
+    * And applications as well
   * Parameterize port numbers for dashboard
+  * Addition of implicit files to dashboard 
 
