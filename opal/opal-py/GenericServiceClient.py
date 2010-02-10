@@ -114,38 +114,6 @@ elif opt_req == "launchJob":
     resp = appServicePort.launchJob(req)
     jobID = resp._jobID
     print "Received Job ID:", jobID
-
-    # Poll for job status
-    status = resp._status
-    print "Polling job status"
-    while 1:
-        # print current status
-        print "Status:"
-        print "\tCode:", status._code
-        print "\tMessage:", status._message
-        print "\tOutput Base URL:", status._baseURL
-        
-        if (status._code == 8) or (status._code == 4): # STATUS_DONE || STATUS_FAILED
-            break
-
-        # Sleep for 30 seconds
-        print "Waiting 30 seconds"
-        time.sleep(30)
-    
-        # Query job status
-        status = appServicePort.queryStatus(queryStatusRequest(jobID))    
-
-    # Retrieve job outputs, if execution is successful
-    if status._code == 8: # 8 = GramJob.STATUS_DONE
-        print "Retrieving " + appname + " output metadata: "
-        resp = appServicePort.getOutputs(getOutputsRequest(jobID))
-
-        # Retrieve a listing of all output files
-        print "\tStandard Output:", resp._stdOut, "\n", \
-              "\tStandard Error:", resp._stdErr
-        if (resp._outputFile != None):
-            for i in range(0, resp._outputFile.__len__()):
-                print "\t" + resp._outputFile[i]._name, ":", resp._outputFile[i]._url
 elif opt_req == "launchJobBlocking":
     req = launchJobBlockingRequest()
     req._argList = opt_arg
