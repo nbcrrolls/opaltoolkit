@@ -25,7 +25,7 @@ def usage():
 
 try:
 #    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:", ["help", "output="])
-    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:")
+    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:n:")
 except getopt.GetoptError, err:
     print "ERROR: Unsupported option"
     usage()
@@ -38,8 +38,9 @@ if opts == []:
 
 opt_url = ""
 opt_req = ""
-opt_arg = ""
 opt_jid = ""
+opt_arg = None
+opt_num = None
 opt_att = []
 
 for o, a in opts:
@@ -51,10 +52,17 @@ for o, a in opts:
         opt_arg = a
     elif o == "-j":
         opt_jid = a
+    elif o == "-n":
+        opt_num = a
     elif o == "-b" or o == "-f":
         a = a.split(',')
         for i in a:
             opt_att.append(i.strip('"').strip(' '))
+
+if opt_req == "":
+    print "ERROR: Missing option -r"
+    usage
+    sys.exit(0)
 
 ##### add stuff to check if url etc was entered
 
@@ -112,6 +120,10 @@ if opt_req == "getAppMetadata":
 elif opt_req == "launchJob":
     req = launchJobRequest()
     req._argList = opt_arg
+
+    if opt_num != None:
+        req._numProcs = int(opt_num)
+        
     inputFiles = []
     inputFile_arg = opt_att
 
