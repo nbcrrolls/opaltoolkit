@@ -5,6 +5,8 @@
   * Addition of utility services (addition to WSDL)
     * Server load, queue length, data lifetime, server information
   * Addition of the above statistics to the Dashboard
+  * Bug fix for destroy() operation, where baseURL was incorrectly
+    returned as empty after job destruction
 
 * Opal MetaService - submission of jobs to other Opal servers
 
