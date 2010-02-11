@@ -7,19 +7,33 @@ import getopt
 from AppService_client import \
      AppServiceLocator, getAppMetadataRequest, launchJobRequest, \
      queryStatusRequest, getOutputsRequest, \
-     launchJobBlockingRequest, getOutputAsBase64ByNameRequest
+     launchJobBlockingRequest, getOutputAsBase64ByNameRequest, \
+     destroyRequest
 from AppService_types import ns0
 from ZSI.TC import String
+
+def usage():
+    print ""
+    print "Usage: python GenericServiceClient.py"
+    print "-a <args>                  command line arguments"
+    print "-b/-f <attch1,attch2,..>   local input files as a binary attachment"
+    print "-j <job_id>                job id for a run"
+    print "-l <url>                   service url"
+    print "-n <num_procs>             number of processors for parallel job"
+    print "-r <operation>             remote operation to invoke:"
+    print "                           [getAppMetadata|launchJob|queryStatus|getOutputs|destroy]"
 
 try:
 #    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:", ["help", "output="])
     opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:")
 except getopt.GetoptError, err:
-    print str("Option not recognized")
+    print "ERROR: Unsupported option"
+    usage()
     sys.exit(2)
 
 if opts == []:
-    print "USAGE: Please visit https://www.nbcr.net/pub/wiki/index.php?title=Opal_Client for documentation"
+    print "ERROR: no option was used"
+    usage()
     sys.exit(0)
 
 opt_url = ""
@@ -156,6 +170,21 @@ elif opt_req == "queryStatus":
     print "\tCode:", status._code
     print "\tMessage:", status._message
     print "\tOutput Base URL:", status._baseURL
+elif opt_req == "destroy":
+    jobID = opt_jid 
+
+    if jobID == "":
+        print" ERROR: jobID must be specified with \"-j\" for queryStatus"
+        sys.exit(0)
+
+    print "Destroying remote " + appname + " job"
+
+    resp = appServicePort.destroy(destroyRequest(jobID))
+    status = appServicePort.queryStatus(queryStatusRequest(jobID))
+
+    print appname + " final status:"
+    print "\tCode:", status._code
+    print "\tMessage:", status._message
 elif opt_req == "getOutputs":
     jobID = opt_jid
 
@@ -181,20 +210,6 @@ elif opt_req == "getOutputs":
         print "\tCode:", status._code
         print "\tMessage:", status._message
         print "\tOutput Base URL:", status._baseURL
-        sys.exit(0)
-elif opt_req == "getOutputAsBase64ByName":
-    jobID = jid
-
-    if jobID == "":
-        print" ERROR: jobID must be specified with \"-j\" for getOutputAsBase64ByName"
-        sys.exit(0)
-
-    print "Downloading " + appname + " output: "
-    req = getOutputAsBase64ByNameRequest()
-    req._jobID = jobID
-    req._fileName = "sample.pqr"
-    resp = appServicePort.getOutputAsBase64ByName(req)
-    print resp
 else:
     print "ERROR: Unsupported argument for -r"
     sys.exit(0)
