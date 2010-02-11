@@ -23,6 +23,7 @@ def usage():
     print "-r <operation>             remote operation to invoke:"
     print "                           [getAppMetadata|launchJob|queryStatus|getOutputs|destroy]"
     print "-u <url1,url2,..>          input file urls"
+    sys.exit(0)
 
 try:
 #    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:", ["help", "output="])
@@ -30,12 +31,10 @@ try:
 except getopt.GetoptError, err:
     print "ERROR: Unsupported option"
     usage()
-    sys.exit(2)
 
 if opts == []:
     print "ERROR: no option was used"
     usage()
-    sys.exit(0)
 
 opt_url = ""
 opt_req = ""
@@ -68,7 +67,6 @@ for o, a in opts:
 if opt_req == "":
     print "ERROR: Missing option -r"
     usage
-    sys.exit(0)
 
 ##### add stuff to check if url etc was entered
 
@@ -91,7 +89,6 @@ try:
 except:
     print "ERROR: Invalid Opal service URL"
     usage()
-    sys.exit(0)
 
 # Retrieve a reference to the AppServicePort
 appLocator = AppServiceLocator()
@@ -213,5 +210,4 @@ elif opt_req == "getOutputs":
 else:
     print "ERROR: Unsupported argument for -r"
     usage()
-    sys.exit(0)
 
