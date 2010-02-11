@@ -89,8 +89,14 @@ proto = opt_url.split(':')[0]
 
 # Host and port for remote services
 # baseURL = proto + "://ws.nbcr.net/"
-url_host = opt_url.split("://")[1].split("/")[0] + '/'
-baseURL = proto + "://" + url_host
+
+try:
+    url_host = opt_url.split("://")[1].split("/")[0] + '/'
+    baseURL = proto + "://" + url_host
+except:
+    print "ERROR: unable to get valid Opal service URL"
+    usage()
+    sys.exit(0)
 
 # Retrieve a reference to the AppServicePort
 appLocator = AppServiceLocator()
@@ -236,5 +242,6 @@ elif opt_req == "getOutputs":
         print "\tOutput Base URL:", status._baseURL
 else:
     print "ERROR: Unsupported argument for -r"
+    usage()
     sys.exit(0)
 
