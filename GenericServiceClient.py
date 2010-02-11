@@ -22,10 +22,11 @@ def usage():
     print "-n <num_procs>             number of processors for parallel job"
     print "-r <operation>             remote operation to invoke:"
     print "                           [getAppMetadata|launchJob|queryStatus|getOutputs|destroy]"
+    print "-u <url1,url2,..>          input file urls"
 
 try:
 #    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:", ["help", "output="])
-    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:n:")
+    opts, args = getopt.getopt(sys.argv[1:], "l:r:a:j:b:f:n:u:")
 except getopt.GetoptError, err:
     print "ERROR: Unsupported option"
     usage()
@@ -41,7 +42,8 @@ opt_req = ""
 opt_jid = ""
 opt_arg = None
 opt_num = None
-opt_att = []
+opt_att = []  # input file attachments
+opt_ifu = []  # input file urls
 
 for o, a in opts:
     if o == "-l":
@@ -54,6 +56,10 @@ for o, a in opts:
         opt_jid = a
     elif o == "-n":
         opt_num = a
+    elif o == "-u":
+        a = a.split(',')
+        for i in a:
+            opt_ifu.append(i.strip('"').strip(' '))
     elif o == "-b" or o == "-f":
         a = a.split(',')
         for i in a:
@@ -131,6 +137,12 @@ elif opt_req == "launchJob":
         inputFile = ns0.InputFileType_Def('inputFile')
         inputFile._name = os.path.basename(i)
         inputFile._attachment = open(i, "r")
+        inputFiles.append(inputFile)
+
+    for i in opt_ifu:
+        inputFile = ns0.InputFileType_Def('inputFile')
+        inputFile._name = os.path.basename(i)
+        inputFile._location = i
         inputFiles.append(inputFile)
 
     req._inputFile = inputFiles
