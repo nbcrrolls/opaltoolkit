@@ -122,7 +122,11 @@ if opt_req == "getAppMetadata":
     resp = appServicePort.getAppMetadata(req)
     print "Usage:", resp._usage
 elif opt_req == "launchJob" or opt_req == "launchJobBlocking":
-    req = launchJobRequest()
+    if opt_req == "launchJob":
+        req = launchJobRequest()
+    elif opt_req == "launchJobBlocking":
+        req = launchJobBlockingRequest()
+        
     req._argList = opt_arg
 
     if opt_num != None:
@@ -148,12 +152,23 @@ elif opt_req == "launchJob" or opt_req == "launchJobBlocking":
     if opt_req == "launchJob":
         print "Launching remote " + appname + " job"
         resp = appServicePort.launchJob(req)
+        jobID = resp._jobID
+        print "Received Job ID:", jobID
     elif opt_req == "launchJobBlocking":
         print "Launching blocking " + appname + " job"
-        resp = appServicePort.launchJobBlocking(req)        
-    
-    jobID = resp._jobID
-    print "Received Job ID:", jobID
+        resp = appServicePort.launchJobBlocking(req)
+        print "Status:", resp._status._code, "-", resp._status._message
+        print "Base Output URL:", resp._status._baseURL
+
+        # List job outputs, if execution is successful
+        if resp._status._code == 8: # 8 = GramJob.STATUS_DONE
+            out = resp._jobOut
+
+            print "\tStandard Output:", out._stdOut, "\n", \
+                  "\tStandard Error:", out._stdErr
+            if (out._outputFile != None):
+                for i in range(0, out._outputFile.__len__()):
+                    print "\t" + out._outputFile[i]._name, ":", out._outputFile[i]._url                    
 elif opt_req == "queryStatus":
     jobID = opt_jid
 
