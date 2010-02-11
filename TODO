@@ -6,12 +6,14 @@
     * Server load, queue length, data lifetime, server information
   * Addition of the above statistics to the Dashboard
 
-* Security enhancements
-  * FacebookConnect or OpenID
+* Opal MetaService - submission of jobs to other Opal servers
 
 * REST support - and upgrade to Axis2
 
 * Updated Ajax-based automatic interface generation
+
+* Security enhancements
+  * FacebookConnect or OpenID
 
 * Plug-ins
   * Hadoop/EC2 MapReduce plugin
