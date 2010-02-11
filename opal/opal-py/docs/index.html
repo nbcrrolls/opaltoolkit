@@ -6,19 +6,17 @@
 <!-- <body text="black" link="darkblue" vlink="black" link="black" -->
 <!-- bgcolor="white"> -->
 <body>
-<h1>Python Opal Web Service Client: Version 2.0.0</h1>
+<h1>Python Opal Web Service Client: Version 2.2.0</h1>
 
 <hr/>
 
 <h2>1. Overview</h2>
 
 <p>This distribution contains the WSDL for the Opal Web service toolkit,
-and a sample Python client that invokes a <a
-href="http://pdb2pqr.sourceforge.net/">PDB2PQR</a> service that has been
-deployed via Opal on our production cluster (ws.nbcr.net). Alternatively,
+and a generic Python client that can call any opal2 services.
+Alternatively,
 you could follow the documentation for the server-side installation of Opal
-<a href="http://nbcr.net/software/opal/documentation.html">here</a>, and
-deploy a PDB2PQR service yourself.
+<a href="http://nbcr.net/software/opal/documentation.html">here</a>.
 
 <h2>2. Prerequisites</h2>
 
@@ -128,34 +126,90 @@ types defined in the WSDL for the service.
 </li>
 </ol>
 
-<h2>4. Running the Client</h2>
+<h2>4. Running the Generic Client</h2>
 
-<p>A sample Opal client is provided in $OPAL_PY_HOME/Pdb2pqrClient.py. It
-shows how to retrieve a reference to a remote Web service port, set
-parameters, and invoke remote operations. To launch the remote PDB2PQR
-service, the argument string (<tt>--ff=amber sample.pdb sample.pqr</tt>)
-and the list of input files (<tt>etc/sample.pdb</tt>) are sent over. The
-service returns a <tt>jobID</tt> that is used later to query for status and
-retrieve locations of the output files. Alternatively, the service can also
-be invoked in a <em>blocking</em> fashion, where the client blocks until
-the remote execution is complete, and the outputs are returned as a
-response to the same invocation.
+<p>A generic Opal client is provided in $OPAL_PY_HOME/GenericServiceClient.py. It
+allows the user to retrieve a reference to a remote Web service port, set
+parameters, and invoke remote operations.<P>
 
-<p>To run the client, you can run the following command from inside the
-$OPAL_PY_HOME directory.</p>
+Before using the generic Opal client, please make sure you have added the
+special ZSI inside Opal to your <tt>PYTHONPATH</tt>.<P>
 
+    <p>If you are using a bash shell, you can execute:</p>
+
+    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+    <TR><TD><FONT COLOR="#000000">
+    <pre class="SCREEN">
+    export PYTHONPATH=$OPAL_PY_HOME/prereqs/ZSI-2.1_a2-py2.6.egg:$PYTHONPATH</pre>
+    </FONT></TD></TR>
+    </TABLE>
+
+    <p>If you are using a tcsh shell, you can execute:</p>
+
+    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+    <TR><TD><FONT COLOR="#000000">
+    <pre class="SCREEN">
+    setenv PYTHONPATH=$OPAL_PY_HOME/prereqs/ZSI-2.1_a2-py2.6.egg:${PYTHONPATH}</pre>
+    </FONT></TD></TR>
+    </TABLE>
+
+<P>
+
+The Opal python client supports the following arguments:<P>
+
+<TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+<TR>
+  <TD><tt>-l &lt;url&gt;</tt></TD>
+  <TD>service url</TD>
+</TR>
+<TR>
+  <TD><tt>-a &lt;args&gt;</tt></TD>
+  <TD>command line arguments</TD>
+</TR>
+<TR>
+  <TD><tt>-b/-f &lt;attch1,attch2,..&gt;</tt></TD>
+  <TD>local input files as binary attachments</TD>
+</TR>
+<TR>
+  <TD><tt>-j &lt;job_id&gt;</tt></TD>
+  <TD>job ID</TD>
+</TR>
+<TR>
+  <TD><tt>-n &lt;num_procs&gt;</tt></TD>
+  <TD>number of processors (parallel jobs only)</TD>
+</TR>
+<TR>
+  <TD><tt>-r &lt;operation&gt;</tt></TD>
+  <TD>remote operation to invoke: [getAppMetadata|launchJob|queryStatus|getOutputs|destroy]</TD>
+</TR>
+<TR>
+  <TD><tt>-u &lt;url1,url2,..&gt;</tt></TD>
+  <TD>input file urls</TD>
+</TR> 
+</TABLE>
+
+<P>
+For example, to launch the remote PDB2PQR Opal Serivce on 
+<A HREF="http://ws.nbcr.net">http://ws.nbcr.net</A>, you may use the 
+following command (assuming you have the input file
+<A HREF="http://www.nbcr.net/ws_help/PDB2PQR/sample_inputs/1hpx.pdb"><tt>1hpx.pdb</tt></A> in your directory):<P>
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000"
    <pre class="SCREEN">
-    python Pdb2pqrClient.py</pre>
+   python GenericServiceClient.py -l http://ws.nbcr.net/opal2/services/Pdb2pqrOpalService \
+   -r launchJob -a "--ff=amber 1hpx.pdb output.pqr" -f 1hpx.pdb </pre>
    </FONT></TD></TR>
    </TABLE>
 
-<p>By default, the client uses the Web service running on <a
-href="http://ws.nbcr.net">http://ws.nbcr.net</a>. To change this location,
-modify the URL inside Pdb2pqrClient.py. Also note that this client uses the
-SOAP Base64 encoding to upload input files - to use MIME attachments for
-input uploads, please follow the Developers Guide below.
+<P>
+The above command will
+return a <tt>jobID</tt> that can be later used to query status and 
+retrieve locations of the output files.  Alternatively, the service
+can also be invoked in a <em>blocking</em> fashion with 
+<tt>-r launchJobBlocking</tt>, where the client
+blocks until the remote execution is complete, and the outputs are
+returned as a response to the same invocation.
+<P>
 
 <h2>5. Developers Guide</h2>
 
@@ -265,7 +319,7 @@ as in the previous example.
 
 <p>The Opal Web service can be optionally set up to accept connections
 using GSI-based HTTPS documentation for instructions). The following
-snippet of code from Pdb2pqrClient.py shows how to access a secure Opal
+snippet of code from shows how to access a secure Opal
 service from Python.</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
@@ -291,13 +345,17 @@ compliant. This can be done by creating a Grid proxy using
 has only been tested with OpenSSL version 0.9.7g, and may not work with
 older versions.
 
-<h2>6. Feedback</h2>
+<h2>6. Related Links</h2>
+
+<UL>
+<LI><A HREF="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">NBCR Opal Client Wiki</A>
+</UL>
+
+<h2>7. Feedback</h2>
 
 <p>Please use the Opal Toolkit <a
 href="http://sourceforge.net/tracker/?group_id=211778">Tracker</a> on
-Sourceforge to report bugs and feature requests, and the NBCR Web Services
-User Forum (<a href="https://nbcr.net/forum/viewforum.php?f=13">WSUF</a>)
-for general comments and feedback.
+Sourceforge to report bugs and feature requests.
 <hr/>
 </body>
 </html>
