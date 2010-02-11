@@ -13,10 +13,10 @@
 <h2>1. Overview</h2>
 
 <p>This distribution contains the WSDL for the Opal Web service toolkit,
-and a generic Python client that can call any opal2 services.
-Alternatively,
-you could follow the documentation for the server-side installation of Opal
-<a href="http://nbcr.net/software/opal/documentation.html">here</a>.
+and a generic Python client that can call any Opal2 service that is already
+deployed. If you would like to install your own Opal services, you should
+follow the documentation for the server-side installation of Opal <a
+href="http://nbcr.net/software/opal/documentation.html">here</a>.
 
 <h2>2. Prerequisites</h2>
 
@@ -52,18 +52,20 @@ the sources are expanded. Henceforth, we will call this directory
 <i>OPAL_PY_HOME</i>. 
 </li>
 
-<li><p>Install ZSI version 2.1_a2 that is part of this distribution. ZSI is
-   a SOAP and Web services toolkit for Python. The ZSI version included
-   with this distribution can also be obtained from the SourceForge SVN
-   using <i>svn co --revision 1490
+<li><p>For your convenience, we are including ZSI version 2.1_a2 as part of
+   this distribution. ZSI is a SOAP and Web services toolkit for Python.
+   The ZSI version included with this distribution can also be obtained
+   from the SourceForge SVN using <i>svn co --revision 1490
    https://pywebsvcs.svn.sourceforge.net/svnroot/pywebsvcs/trunk/zsi</i>.
    To use the Opal clients, you only need the <i>egg</i> version of the ZSI
    installation from the <i>prereqs</i> directory. However, if you need a
    full installation of ZSI (which is useful for features such as code
    regeneration from WSDL), you may install it from the tarball provided in
-   the same directory. You can do either of the above as follows.
+   the same directory.
 
-   <p>To access the functionality of ZSI, you may simply add the ZSI-2.1_a2-py2.6.egg file to your PYTHONPATH. If you are using a bash shell on Unix, you can execute:</p>
+   <p>To access the client-side functionality of ZSI, you may simply add
+   the ZSI-2.1_a2-py2.6.egg file to your PYTHONPATH. If you are using a
+   bash shell on Unix, you can execute:</p>
 
     <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
     <TR><TD><FONT COLOR="#000000">
@@ -81,10 +83,10 @@ the sources are expanded. Henceforth, we will call this directory
     </FONT></TD></TR>
     </TABLE>
 
-    <p>If you wish to install the full version of ZSI, you would need to
-    use a sudo or root shell on Unix. Expand the prereqs/zsi-2.1_a2.tar.gz
-    tarball, change to the directory that is extracted from it, and execute
-    the following command:</p>
+    <p><b>OPTIONAL</b>: If you wish to install the full version of ZSI, you would
+    need to use a sudo or root shell on Unix. Expand the
+    prereqs/zsi-2.1_a2.tar.gz tarball, change to the directory that is
+    extracted from it, and execute the following command:</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000">
@@ -105,7 +107,7 @@ the sources are expanded. Henceforth, we will call this directory
    that you are using the versions shipped with this installation of Opal.</i>
 </li>
 
-<li><p>OPTIONAL: If you wish to regenerate the client-side stubs, you can
+<li><p><b>OPTIONAL</b>: If you wish to regenerate the client-side stubs, you can
 do so by using the Opal WSDL. However, you must have a full ZSI
 installation done manually as described above. Most users can use the
 pre-shipped stubs, and skip this step.
@@ -128,34 +130,20 @@ types defined in the WSDL for the service.
 
 <h2>4. Running the Generic Client</h2>
 
-<p>A generic Opal client is provided in $OPAL_PY_HOME/GenericServiceClient.py. It
-allows the user to retrieve a reference to a remote Web service port, set
-parameters, and invoke remote operations.<P>
+<p>A generic Opal client is implemented by
+$OPAL_PY_HOME/GenericServiceClient.py. It allows the user to launch Opal
+jobs, query status and retrieve job outputs.<P>
 
-Before using the generic Opal client, please make sure you have added the
-special ZSI inside Opal to your <tt>PYTHONPATH</tt>.<P>
-
-    <p>If you are using a bash shell, you can execute:</p>
+To get the complete usage of the generic Opal client, you can execute:
 
     <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
     <TR><TD><FONT COLOR="#000000">
     <pre class="SCREEN">
-    export PYTHONPATH=$OPAL_PY_HOME/prereqs/ZSI-2.1_a2-py2.6.egg:$PYTHONPATH</pre>
+      python GenericServiceClient.py</pre>
     </FONT></TD></TR>
     </TABLE>
 
-    <p>If you are using a tcsh shell, you can execute:</p>
-
-    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-    <TR><TD><FONT COLOR="#000000">
-    <pre class="SCREEN">
-    setenv PYTHONPATH=$OPAL_PY_HOME/prereqs/ZSI-2.1_a2-py2.6.egg:${PYTHONPATH}</pre>
-    </FONT></TD></TR>
-    </TABLE>
-
-<P>
-
-The Opal python client supports the following arguments:<P>
+<P>The Opal python client supports the following arguments:<P>
 
 <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
 <TR>
@@ -180,7 +168,7 @@ The Opal python client supports the following arguments:<P>
 </TR>
 <TR>
   <TD><tt>-r &lt;operation&gt;</tt></TD>
-  <TD>remote operation to invoke: [getAppMetadata|launchJob|queryStatus|getOutputs|destroy]</TD>
+  <TD>remote operation to invoke: [getAppMetadata|launchJob|queryStatus|getOutputs]</TD>
 </TR>
 <TR>
   <TD><tt>-u &lt;url1,url2,..&gt;</tt></TD>
@@ -348,7 +336,7 @@ older versions.
 <h2>6. Related Links</h2>
 
 <UL>
-<LI><A HREF="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">NBCR Opal Client Wiki</A>
+<LI><P>More examples of client usage can be found at: <A HREF="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">NBCR Opal Client Wiki</A>
 </UL>
 
 <h2>7. Feedback</h2>
