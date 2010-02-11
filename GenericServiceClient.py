@@ -72,10 +72,6 @@ if opt_req == "":
 
 ##### add stuff to check if url etc was entered
 
-# Set the protocol to http or https
-# proto = "http"
-proto = opt_url.split(':')[0]
-
 # Ignore these values if you are not using security
 # Otherwise, set the locations for the X509 certificate and key
 #cert = "/Users/sriramkrishnan/certs/apbs_service.cert.pem"
@@ -87,14 +83,13 @@ proto = opt_url.split(':')[0]
 # cert = "/tmp/x509up_u506"
 # key = "/tmp/x509up_u506"
 
-# Host and port for remote services
-# baseURL = proto + "://ws.nbcr.net/"
-
 try:
+    # Set the protocol to http or https
+    proto = opt_url.split(':')[0]
     url_host = opt_url.split("://")[1].split("/")[0] + '/'
     baseURL = proto + "://" + url_host
 except:
-    print "ERROR: unable to get valid Opal service URL"
+    print "ERROR: Invalid Opal service URL"
     usage()
     sys.exit(0)
 
@@ -129,7 +124,7 @@ if opt_req == "getAppMetadata":
     req = getAppMetadataRequest()
     resp = appServicePort.getAppMetadata(req)
     print "Usage:", resp._usage
-elif opt_req == "launchJob":
+elif opt_req == "launchJob" or opt_req == "launchJobBlocking":
     req = launchJobRequest()
     req._argList = opt_arg
 
@@ -152,41 +147,16 @@ elif opt_req == "launchJob":
         inputFiles.append(inputFile)
 
     req._inputFile = inputFiles
-
-    # Launch job, and retrieve job ID
-    print "Launching remote " + appname + " job"
-    resp = appServicePort.launchJob(req)
+    
+    if opt_req == "launchJob":
+        print "Launching remote " + appname + " job"
+        resp = appServicePort.launchJob(req)
+    elif opt_req == "launchJobBlocking":
+        print "Launching blocking " + appname + " job"
+        resp = appServicePort.launchJobBlocking(req)        
+    
     jobID = resp._jobID
     print "Received Job ID:", jobID
-elif opt_req == "launchJobBlocking":
-    req = launchJobBlockingRequest()
-    req._argList = opt_arg
-    inputFiles = []
-    inputFile_arg = opt_att
-
-    for i in inputFile_arg:
-        inputFile = ns0.InputFileType_Def('inputFile')
-        inputFile._name = os.path.basename(i)
-        inputFile._attachment = open(i, "r")
-        inputFiles.append(inputFile)
-
-    req._inputFile = inputFiles
-
-    # Launch a blocking job
-    print "Launching blocking " + appname + " job"
-    resp = appServicePort.launchJobBlocking(req)
-    print "Status:", resp._status._code, "-", resp._status._message
-    print "Base Output URL:", resp._status._baseURL
-
-    # List job outputs, if execution is successful
-    if resp._status._code == 8: # 8 = GramJob.STATUS_DONE
-        out = resp._jobOut
-    
-        print "\tStandard Output:", out._stdOut, "\n", \
-              "\tStandard Error:", out._stdErr
-        if (out._outputFile != None):
-            for i in range(0, out._outputFile.__len__()):
-                print "\t" + out._outputFile[i]._name, ":", out._outputFile[i]._url
 elif opt_req == "queryStatus":
     jobID = opt_jid
 
