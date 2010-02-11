@@ -7,8 +7,7 @@ import getopt
 from AppService_client import \
      AppServiceLocator, getAppMetadataRequest, launchJobRequest, \
      queryStatusRequest, getOutputsRequest, \
-     launchJobBlockingRequest, getOutputAsBase64ByNameRequest, \
-     destroyRequest
+     launchJobBlockingRequest, getOutputAsBase64ByNameRequest
 from AppService_types import ns0
 from ZSI.TC import String
 
@@ -21,7 +20,7 @@ def usage():
     print "-j <job_id>                job id for a run"
     print "-n <num_procs>             number of processors for parallel job"
     print "-r <operation>             remote operation to invoke:"
-    print "                           [getAppMetadata|launchJob|queryStatus|getOutputs|destroy]"
+    print "                           [getAppMetadata|launchJob|queryStatus|getOutputs]"
     print "-u <url1,url2,..>          input file urls"
     sys.exit(0)
 
@@ -70,6 +69,15 @@ if opt_req == "":
 
 ##### add stuff to check if url etc was entered
 
+try:
+    # Set the protocol to http or https
+    proto = opt_url.split(':')[0]
+    url_host = opt_url.split("://")[1].split("/")[0] + '/'
+    baseURL = proto + "://" + url_host
+except:
+    print "ERROR: Invalid Opal service URL"
+    usage()
+
 # Ignore these values if you are not using security
 # Otherwise, set the locations for the X509 certificate and key
 #cert = "/Users/sriramkrishnan/certs/apbs_service.cert.pem"
@@ -80,15 +88,6 @@ if opt_req == "":
 # Proxies have to be RFC 3820 compliant (use grid-proxy-init -rfc)
 # cert = "/tmp/x509up_u506"
 # key = "/tmp/x509up_u506"
-
-try:
-    # Set the protocol to http or https
-    proto = opt_url.split(':')[0]
-    url_host = opt_url.split("://")[1].split("/")[0] + '/'
-    baseURL = proto + "://" + url_host
-except:
-    print "ERROR: Invalid Opal service URL"
-    usage()
 
 # Retrieve a reference to the AppServicePort
 appLocator = AppServiceLocator()
@@ -116,11 +115,14 @@ else:
 	
 appname = os.path.basename(url_service)
 
+# get application metadata and print usage
 if opt_req == "getAppMetadata":
     print "Getting Application Metadata"
     req = getAppMetadataRequest()
     resp = appServicePort.getAppMetadata(req)
     print "Usage:", resp._usage
+
+# launch remote Opal job
 elif opt_req == "launchJob" or opt_req == "launchJobBlocking":
     if opt_req == "launchJob":
         req = launchJobRequest()
@@ -154,6 +156,7 @@ elif opt_req == "launchJob" or opt_req == "launchJobBlocking":
         resp = appServicePort.launchJob(req)
         jobID = resp._jobID
         print "Received Job ID:", jobID
+	print "Base Output URL:", resp._status._baseURL
     elif opt_req == "launchJobBlocking":
         print "Launching blocking " + appname + " job"
         resp = appServicePort.launchJobBlocking(req)
@@ -168,7 +171,9 @@ elif opt_req == "launchJob" or opt_req == "launchJobBlocking":
                   "\tStandard Error:", out._stdErr
             if (out._outputFile != None):
                 for i in range(0, out._outputFile.__len__()):
-                    print "\t" + out._outputFile[i]._name, ":", out._outputFile[i]._url                    
+                    print "\t" + out._outputFile[i]._name, ":", out._outputFile[i]._url
+
+# query status for non blocking job
 elif opt_req == "queryStatus":
     jobID = opt_jid
 
@@ -182,26 +187,13 @@ elif opt_req == "queryStatus":
     print "\tCode:", status._code
     print "\tMessage:", status._message
     print "\tOutput Base URL:", status._baseURL
-elif opt_req == "destroy":
-    jobID = opt_jid 
 
-    if jobID == "":
-        print" ERROR: jobID must be specified with \"-j\" for queryStatus"
-        sys.exit(0)
-
-    print "Destroying remote " + appname + " job"
-
-    resp = appServicePort.destroy(destroyRequest(jobID))
-    status = appServicePort.queryStatus(queryStatusRequest(jobID))
-
-    print appname + " final status:"
-    print "\tCode:", status._code
-    print "\tMessage:", status._message
+# get output metadata for finished job
 elif opt_req == "getOutputs":
     jobID = opt_jid
 
     if jobID == "":
-        print" ERROR: jobID must be specified with \"-j\" for queryStatus"
+        print" ERROR: jobID must be specified with \"-j\" for getOutputs"
         sys.exit(0)
 
     status = appServicePort.queryStatus(queryStatusRequest(jobID))
@@ -222,6 +214,8 @@ elif opt_req == "getOutputs":
         print "\tCode:", status._code
         print "\tMessage:", status._message
         print "\tOutput Base URL:", status._baseURL
+
+# unsupported operation
 else:
     print "ERROR: Unsupported argument for -r"
     usage()
