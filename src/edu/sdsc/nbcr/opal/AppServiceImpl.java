@@ -507,6 +507,18 @@ public class AppServiceImpl
 	    status = queryStatus(in);
 	}
 
+	// make sure baseURL is not empty
+	if (status.getBaseURL() == null) {
+	    try {
+		URI baseURL = new URI(tomcatURL + in);
+		status.setBaseURL(baseURL);
+	    } catch (Exception e) {
+		String message = "Exception while trying to construct base URL";
+		logger.error(message);
+		throw new FaultType(message);
+	    }
+	}
+
 	long t1 = System.currentTimeMillis();
 	logger.debug("Destruction time: " + (t1 - t0) + " ms");
 	return status;
