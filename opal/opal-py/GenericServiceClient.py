@@ -203,7 +203,7 @@ elif opt_req == "getOutputs":
             for i in range(0, resp._outputFile.__len__()):
                 print "\t" + resp._outputFile[i]._name, ":", resp._outputFile[i]._url
     else:
-        print "Error: " + appname + " " + jobID + " failed"
+        print "Error: " + appname + " " + jobID + " failed or not completed"
         print "\tCode:", status._code
         print "\tMessage:", status._message
         print "\tOutput Base URL:", status._baseURL
