@@ -17,7 +17,7 @@ def usage():
     print "Usage: python GenericServiceClient.py"
     print "-l <url>                   service url"
     print "-a <args>                  command line arguments"
-    print "-b/-f <attch1,attch2,..>   local input files as a binary attachment"
+    print "-b/-f <attch1,attch2,..>   local input files as binary attachments"
     print "-j <job_id>                job id for a run"
     print "-n <num_procs>             number of processors for parallel job"
     print "-r <operation>             remote operation to invoke:"
