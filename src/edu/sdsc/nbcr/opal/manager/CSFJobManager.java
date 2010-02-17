@@ -456,6 +456,8 @@ public class CSFJobManager implements OpalJobManager {
                 //Close the input stream
                 in.close();
                 out.close();//flushes and closes the stream
+
+		proc_check_status.destroy();
                 }
                 
                 
