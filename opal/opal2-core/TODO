@@ -7,6 +7,7 @@
   * Addition of the above statistics to the Dashboard
   * Bug fix for destroy() operation, where baseURL was incorrectly
     returned as empty after job destruction
+  * Bug fix for SOAP filter to support large files and for empty arguments
 
 * Opal MetaService - submission of jobs to other Opal servers
 
