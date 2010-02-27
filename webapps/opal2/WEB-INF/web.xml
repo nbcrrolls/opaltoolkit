@@ -102,6 +102,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
   <!-- Struts configurations... do not touch it  -->
  
   <!-- Filter for SOAP request of typed services -->
+  <!--
   <filter> 
     <filter-name>OpalSOAPRequestFilter</filter-name> 
     <filter-class>org.inria.genouest.opal.tools.soaprequest.filter.OpalSOAPRequestFilter</filter-class> 
@@ -110,6 +111,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     <filter-name>OpalSOAPRequestFilter</filter-name> 
     <servlet-name>AxisServlet</servlet-name> 
   </filter-mapping> 
+  -->
 
   <!-- Axis configuration parameters... do not touch this part!! -->
   <servlet>
