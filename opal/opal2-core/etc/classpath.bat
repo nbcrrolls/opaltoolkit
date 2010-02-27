@@ -8,7 +8,7 @@ rem
 
 set LOCALCLASSPATH=
 for %%i in (lib\*.jar) do call "%ANT_HOME%\bin\lcp.bat" %%i
-for %%i in (webapps\opal\WEB-INF\lib\*.jar) do call "%ANT_HOME%\bin\lcp.bat" %%i
+for %%i in (webapps\opal2\WEB-INF\lib\*.jar) do call "%ANT_HOME%\bin\lcp.bat" %%i
 
 set LOCALCLASSPATH=build\classes;%LOCALCLASSPATH%
 set CLASSPATH=%LOCALCLASSPATH%
