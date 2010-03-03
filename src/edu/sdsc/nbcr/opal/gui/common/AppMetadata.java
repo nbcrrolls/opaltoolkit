@@ -38,27 +38,27 @@ public class AppMetadata extends ActionForm{
     
     protected Log log = LogFactory.getLog(Constants.PACKAGE);
     
-	private String serviceName;
-	private String usage;
-	private String [] info;
-	private String URL;
-	private ArgFlag [] argFlags;
-	private ArgParam [] argParams;
-	private Group [] groups;
-	private String separator;
-	//these are to hold the values from the form 
-	private String cmdLine;
-	private FormFile [] files;
-	private String jobId;
-        private String numCpu;
-	private boolean addFile;
-	
+    private String serviceName;
+    private String usage;
+    private String [] info;
+    private String URL;
+    private ArgFlag [] argFlags;
+    private ArgParam [] argParams;
+    private Group [] groups;
+    private String separator;
+    //these are to hold the values from the form 
+    private String cmdLine;
+    private FormFile [] files;
+    private String jobId;
+    private String numCpu;
+    private boolean addFile;
+    private boolean parallel;
 
 
-	/**
-	 * Default constructor
-	 */
-	public AppMetadata() {
+    /**
+     * Default constructor
+     */
+    public AppMetadata() {
         serviceName = null;
         usage = null;
         info = null;
@@ -69,15 +69,16 @@ public class AppMetadata extends ActionForm{
         cmdLine = null;
         files = new FormFile[1];
         addFile = false;
-	}
+	parallel = false;
+    }
     
-	/**
-	 * It tells you if the current instance of the AppMetadata supports 
-	 * the complex submission form
-	 * 
-	 * @return true is we have a complex submission form
-	 * 
-	 */
+    /**
+     * It tells you if the current instance of the AppMetadata supports 
+     * the complex submission form
+     * 
+     * @return true is we have a complex submission form
+     * 
+     */
     public boolean isArgMetadataEnable() {
         if ( (argFlags == null) && (argParams == null) ) {
             return false;
@@ -132,8 +133,8 @@ public class AppMetadata extends ActionForm{
             }
         }
         if ( groups != null ) {
-        	str += "Groups:\n";
-        	for (int i = 0; i < groups.length; i++){
+	    str += "Groups:\n";
+	    for (int i = 0; i < groups.length; i++){
                 str += groups[i].toString() + "\n";
             }
         }
@@ -214,10 +215,10 @@ public class AppMetadata extends ActionForm{
      */
     public ArgFlag getArgFlagId(String id){
         if ( argFlags != null ){
-        	for (int i = 0; i < argFlags.length; i++ ) {
-        		if ( argFlags[i].getId().equals(id) )
-        			return argFlags[i];
-        	}
+	    for (int i = 0; i < argFlags.length; i++ ) {
+		if ( argFlags[i].getId().equals(id) )
+		    return argFlags[i];
+	    }
         }
     	return null;
     }
@@ -432,5 +433,18 @@ public class AppMetadata extends ActionForm{
     public void setAddFile(boolean addFile) {
         this.addFile = addFile;
     }
-    
+
+    /**
+     * @return if parallel or not
+     */
+    public boolean isParallel() {
+        return parallel;
+    }
+
+    /**
+     * @param parallel the parallel parameter to set
+     */
+    public void setParallel(boolean parallel) {
+        this.parallel = parallel;
+    }    
 }

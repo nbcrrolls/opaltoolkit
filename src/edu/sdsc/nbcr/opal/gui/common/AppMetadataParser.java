@@ -12,7 +12,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import edu.sdsc.nbcr.opal.AppMetadataInputType;
+import edu.sdsc.nbcr.opal.AppConfigInputType;
 import edu.sdsc.nbcr.opal.AppMetadataType;
+import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.AppServiceLocator;
 import edu.sdsc.nbcr.opal.AppServicePortType;
 import edu.sdsc.nbcr.opal.FaultType;
@@ -81,12 +83,17 @@ public class AppMetadataParser{
         } */
         try {
             AppServicePortType appServicePort = asl.getAppServicePort(new URL(serviceURL));
-            AppMetadataType amt = appServicePort.getAppMetadata(new AppMetadataInputType());
+	    AppConfigType act = appServicePort.getAppConfig(new AppConfigInputType());
+	    AppMetadataType amt = act.getMetadata();
+            // AppMetadataType amt = appServicePort.getAppMetadata(new AppMetadataInputType());
       
             //setting general info
             app.setUsage(amt.getUsage());
             app.setInfo(amt.getInfo());
             app.setURL(serviceURL);
+	    if (act.isParallel()) {
+		app.setParallel(true);
+	    }
             String serviceName = amt.getAppName();
             if ( serviceName == null) {
                 serviceName =  serviceURL.substring(serviceURL.lastIndexOf("/") + 1, serviceURL.length());

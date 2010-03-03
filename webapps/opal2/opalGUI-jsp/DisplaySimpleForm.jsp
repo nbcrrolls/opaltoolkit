@@ -68,10 +68,10 @@ function showHide(layer_ref) {
 <table cellspacing="10">
 
     <tr><td>Insert command line here:</td><td><html:text property="cmdLine" size="50"/></td>
-    <tr><td>Insert number of CPU (only for parallel application):</td><td><html:text property="numCpu" size="50"/></td>
-    
-
-    
+ <logic:equal name="appMetadata" property="parallel" value="true">
+    <tr><td>Insert number of CPU for parallel application:</td><td><html:text property="numCpu" size="50"/></td>
+ </logic:equal>
+     
 <% 
 
 AppMetadata app = (AppMetadata) request.getSession().getAttribute("appMetadata");
