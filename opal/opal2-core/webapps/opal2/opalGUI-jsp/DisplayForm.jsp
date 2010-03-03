@@ -81,10 +81,12 @@ function selectElement(element, groupId){
 
 
 <!-- the number of cpu  -->
-  <tr>
-    <td> Insert number of CPU (only for parallel application): </td>
-    <td><nested:text name="appMetadata" property="numCpu" size="40"/></td>
-  </tr>
+ <logic:equal name="appMetadata" property="parallel" value="true">
+    <tr>
+        <td> Insert number of CPUs for parallel application: </td>
+        <td><nested:text name="appMetadata" property="numCpu" size="40"/></td>
+    </tr>
+</logic:equal>
 
 <!--  double nested tag does not work with input field vaule so I had to use long format -->
 
