@@ -512,7 +512,8 @@ public class HibernateUtil {
 		// both start and end are the same day
 		query = "select count(*)  " +            
 		    " from JobInfo jobInfo where " +
-		    " jobInfo.startTimeTime >= :startTime " +
+		    " jobInfo.clientIP = :remoteIP " +
+		    " and jobInfo.startTimeTime >= :startTime " +
 		    " and jobInfo.startTimeTime <= :endTime " +
 		    " and jobInfo.startTimeDate = :startDate" +
 		    " and jobInfo.startTimeDate = :endDate ";
@@ -520,7 +521,8 @@ public class HibernateUtil {
 		// start and end are different days
 		query = "select count(*)  " +            
 		    " from JobInfo jobInfo where " +
-		    " (jobInfo.startTimeTime >= :startTime " +
+		    " jobInfo.clientIP = :remoteIP " +
+		    " and (jobInfo.startTimeTime >= :startTime " +
 		    " and jobInfo.startTimeDate = :startDate)" +
 		    " or (jobInfo.startTimeTime <= :endTime " +
 		    " and jobInfo.startTimeDate = :endDate) ";
@@ -528,7 +530,8 @@ public class HibernateUtil {
 	    
 	    // execute query
             Query queryStat = session.createQuery(query);
-            queryStat.setTime("startTime", startTimeSQL)
+            queryStat.setString("remoteIP", remoteIP)
+		.setTime("startTime", startTimeSQL)
                 .setTime("endTime", endTimeSQL)
                 .setDate("startDate", startDateSQL)
                 .setDate("endDate", endDateSQL);
