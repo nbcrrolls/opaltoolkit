@@ -1023,33 +1023,40 @@ public class AppServiceImpl
 		throw new FaultType(msg);
 	    }
 
+	    // call utility method to write input files
+	    writeInputFile(outputDirName, inputFiles[i]);
+	}
+    }
+
+    private void writeInputFile(String outputDirName, InputFileType inputFile) 
+	throws FaultType {
 	    try {
 		File f = new File(outputDirName + File.separator + 
-				  inputFiles[i].getName());
+				  inputFile.getName());
                 BufferedOutputStream out = null;
-		if (inputFiles[i].getContents() != null) {
+		if (inputFile.getContents() != null) {
                     //it is a 'normal' file
                     out = new BufferedOutputStream(new FileOutputStream(f));
-		    out.write(inputFiles[i].getContents());
+		    out.write(inputFile.getContents());
 		    out.close();
-		} else if (inputFiles[i].getLocation() != null) {
+		} else if (inputFile.getLocation() != null) {
                     //it is a URL
-		    int index = inputFiles[i].getLocation().toString().indexOf(":");
+		    int index = inputFile.getLocation().toString().indexOf(":");
 		    if (index == -1) {
 			String msg = "Can't find protocol for URL: " + 
-			    inputFiles[i].getLocation();
+			    inputFile.getLocation();
 			logger.error(msg);
 			throw new FaultType(msg);
 		    }
                     
                     out = new BufferedOutputStream(new FileOutputStream(f));
-		    String protocol = inputFiles[i].getLocation().toString().substring(0, index);
+		    String protocol = inputFile.getLocation().toString().substring(0, index);
 		    logger.info("Using protocol: " + protocol);
 
 		    if (protocol.equals("http") ||
 			protocol.equals("https")) {
 			// fetch the file from the URL
-			URL url = new URL(inputFiles[i].getLocation().toString());
+			URL url = new URL(inputFile.getLocation().toString());
 			URLConnection conn = url.openConnection();
 			InputStream input = conn.getInputStream();
 			byte[] buffer = new byte[1024];
@@ -1060,7 +1067,7 @@ public class AppServiceImpl
 			    numWritten += numRead;
 			}
 			logger.debug(numWritten + " bytes written from url: " +
-				     inputFiles[i].getLocation());
+				     inputFile.getLocation());
 			input.close();
 			out.close();
 		    } else {
@@ -1070,7 +1077,7 @@ public class AppServiceImpl
 		    }
 		} else { 
                     // it is an attachment
-		    DataHandler dh = inputFiles[i].getAttachment();
+		    DataHandler dh = inputFile.getAttachment();
 		    logger.debug("Received attachment: " + dh.getName());
                     File attachFile = new File(dh.getName());
                     logger.debug("Source is " + attachFile.toString() + 
@@ -1091,7 +1098,6 @@ public class AppServiceImpl
 		throw new FaultType("IOException while trying to write input file: " + 
 				    ioe.getMessage());
 	    }
-	}
     }
 
     private void retrieveAppConfig()
