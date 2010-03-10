@@ -1024,11 +1024,13 @@ public class AppServiceImpl
 	    }
 
 	    // call utility method to write input files
-	    writeInputFile(outputDirName, inputFiles[i]);
+	    writeInputFile(outputDirName, inputFiles[i], in.getZipInputs());
 	}
     }
 
-    private void writeInputFile(String outputDirName, InputFileType inputFile) 
+    private void writeInputFile(String outputDirName, 
+				InputFileType inputFile,
+				Boolean isZip) 
 	throws FaultType {
 	    try {
 		File f = new File(outputDirName + File.separator + 
@@ -1088,6 +1090,10 @@ public class AppServiceImpl
 			logger.error(msg);
 			throw new FaultType(msg);
 		    }
+		}
+
+		// TODO: unzip files if need be
+		if (isZip) {
 		}
 	    } catch (FaultType f) {
 		// pass the exception along
