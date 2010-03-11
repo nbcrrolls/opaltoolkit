@@ -323,7 +323,6 @@ for the command <command>/bin/date</command>, located in
   &lt;jobManagerFQCN&gt;edu.sdsc.nbcr.opal.manager.ForkJobManager&lt;/jobManagerFQCN&gt;
   &lt;parallel&gt;false&lt;/parallel&gt;
 &lt;/appConfig&gt;
-&lt;/screen&gt;
 </screen>
 </para>
 
