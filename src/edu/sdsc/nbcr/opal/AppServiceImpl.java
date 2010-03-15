@@ -1093,7 +1093,9 @@ public class AppServiceImpl
 		}
 
 		// TODO: unzip files if need be
-		if (isZip) {
+		if (isZip != null) {
+		    if (isZip) {
+		    }
 		}
 	    } catch (FaultType f) {
 		// pass the exception along
