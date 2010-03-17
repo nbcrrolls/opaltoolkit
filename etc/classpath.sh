@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # if Opal is installed at a standard location, replace OPAL_HOME appropriately
-OPAL_HOME=$PWD
+#OPAL_HOME=$PWD
+OPAL_HOME=.
 
 # set the classpath
 CLASSPATH=`echo $OPAL_HOME/lib/*.jar | tr ' ' ':'`
