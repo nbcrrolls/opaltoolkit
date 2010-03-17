@@ -47,6 +47,7 @@ import edu.sdsc.nbcr.opal.state.StateManagerException;
 
 import edu.sdsc.nbcr.opal.util.Util;
 import edu.sdsc.nbcr.opal.util.ArgValidator;	
+import edu.sdsc.nbcr.opal.util.UnZip;
 
 /**
  *
@@ -1092,9 +1093,16 @@ public class AppServiceImpl
 		    }
 		}
 
-		// TODO: unzip files if need be
+		// unzip files if need be
 		if (isZip != null) {
 		    if (isZip) {
+			logger.debug("Unzipping file: " + f.getName());
+			UnZip uz = new UnZip();
+			uz.unZip(outputDirName,
+				 f.getAbsolutePath());
+
+			// delete file after unzipping
+			f.delete();
 		    }
 		}
 	    } catch (FaultType f) {
