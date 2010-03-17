@@ -94,6 +94,10 @@
       <!-- these complexType it is used to group paramters -->
       <xsd:complexType name="GroupsType">
 	<xsd:sequence>
+	  <!-- for referencing this parameter later -->
+	  <!-- minOccurs is set to 0 for backwards compatibility -->
+	  <xsd:element name="id" type="xsd:ID" minOccurs="0"/>
+	  
 	  <!-- the name of the group -->
 	  <xsd:element name="name" type="xsd:string"/>
 
