@@ -5,9 +5,9 @@
   <!-- Import data from Opal program definition file -->
   <xsl:param name="configPath"/>
   <xsl:variable name="config" select="document($configPath)"/>
-  
+
   <!-- Construct new SOAP content -->
-  <xsl:template match="/soapenv:Envelope/soapenv:Body/opal:launchJobInput[not(argList)] | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput[not(argList)]">
+  <xsl:template match="/soapenv:Envelope/soapenv:Body/opal:launchJobInput[not(argList) and node()] | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput[not(argList) and node()]">
     
     <xsl:variable name="taggedParamSep" select="$config/opal:appConfig/opal:metadata/opal:types/opal:taggedParams/opal:separator"/>
     <xsl:variable name="inputNodeValue" select="/soapenv:Envelope/soapenv:Body/opal:launchJobInput | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput"/>
@@ -61,7 +61,7 @@
 	  <xsl:param name="inputNode"/>
 	  <xsl:variable name="elemId" select="opal:id"/>
 	  <xsl:choose>
-	    <xsl:when test="not($inputNode/node()[(name()=$elemId)]) and opal:default='true'">
+	    <xsl:when test="(not($inputNode/node()[(name()=$elemId)]) or not($inputNode/node()[(name()=$elemId) and node()])) and opal:default='true'">
 	      <xsl:value-of select="opal:tag"/> <!-- Not specified, use default -->
 	      <xsl:text> </xsl:text>
 	    </xsl:when>
@@ -77,24 +77,29 @@
     <xsl:param name="inputNode"/>
     <xsl:variable name="elemId" select="opal:id"/>
     <xsl:choose>
-      <xsl:when test="not($inputNode/node()[(name()=$elemId)]) and opal:default">
+      <xsl:when test="(not($inputNode/node()[(name()=$elemId)]) or not($inputNode/node()[(name()=$elemId) and node()])) and opal:default ">
           <xsl:value-of select="opal:tag"/> <!-- Not specified, use default -->
           <xsl:value-of select="$sep"/>
           <xsl:value-of select="opal:default"/>
           <xsl:text> </xsl:text>
       </xsl:when>
-      <xsl:when test="$inputNode/node()[(name()=$elemId)]">
-        <xsl:value-of select="opal:tag"/> <!-- Set by user -->
-        <xsl:value-of select="$sep"/>
+      <xsl:when test="$inputNode/node()[(name()=$elemId) and node()]">
         <xsl:choose>
           <xsl:when test="opal:paramType='FILE' and (opal:ioType='INOUT' or opal:ioType='INPUT')">
-            <xsl:value-of select="$inputNode/node()[(name()=$elemId)]/name"/>
+            <xsl:if test="$inputNode/node()[(name()=$elemId)]/name[node()] and ($inputNode/node()[(name()=$elemId)]/contents[node()] or $inputNode/node()[(name()=$elemId)]/location[node()] or $inputNode/node()[(name()=$elemId)]/attachment[node()])">
+              <xsl:value-of select="opal:tag"/> <!-- Set by user -->
+              <xsl:value-of select="$sep"/>
+              <xsl:value-of select="$inputNode/node()[(name()=$elemId)]/name"/>
+            <xsl:text> </xsl:text>
+            </xsl:if>
           </xsl:when>
           <xsl:otherwise>
+            <xsl:value-of select="opal:tag"/> <!-- Set by user -->
+            <xsl:value-of select="$sep"/>
             <xsl:value-of select="$inputNode/node()[(name()=$elemId)]"/>
+            <xsl:text> </xsl:text>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text> </xsl:text>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
@@ -102,17 +107,17 @@
   <xsl:template match="opal:param" mode="input">
     <xsl:param name="inputNode"/>
     <xsl:variable name="elemId" select="opal:id"/>
-    <xsl:if test="$inputNode/node()[(name()=$elemId)] and opal:paramType='FILE' and (opal:ioType='INOUT' or opal:ioType='INPUT')">
+    <xsl:if test="$inputNode/node()[(name()=$elemId) and node()] and $inputNode/node()[(name()=$elemId)]/name[node()] and ($inputNode/node()[(name()=$elemId)]/contents[node()] or $inputNode/node()[(name()=$elemId)]/location[node()] or $inputNode/node()[(name()=$elemId)]/attachment[node()]) and opal:paramType='FILE' and (opal:ioType='INOUT' or opal:ioType='INPUT')">
       <inputFile>
         <name><xsl:value-of select="$inputNode/node()[(name()=$elemId)]/name"/></name>
         <xsl:choose>
-          <xsl:when test="$inputNode/node()[(name()=$elemId)]/contents">
+          <xsl:when test="$inputNode/node()[(name()=$elemId)]/contents[node()]">
             <contents><xsl:value-of select="$inputNode/node()[(name()=$elemId)]/contents"/></contents>
           </xsl:when>
-          <xsl:when test="$inputNode/node()[(name()=$elemId)]/location">
+          <xsl:when test="$inputNode/node()[(name()=$elemId)]/location[node()]">
             <location><xsl:value-of select="$inputNode/node()[(name()=$elemId)]/location"/></location>
           </xsl:when>
-          <xsl:when test="$inputNode/node()[(name()=$elemId)]/attachment">
+          <xsl:when test="$inputNode/node()[(name()=$elemId)]/attachment[node()]">
             <attachment><xsl:value-of select="$inputNode/node()[(name()=$elemId)]/attachment"/></attachment>
           </xsl:when>
         </xsl:choose>
