@@ -45,6 +45,8 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.log4j.Logger;
+
 /**
  * UnZip -- print or unzip a JAR or PKZIP file using java.util.zip. Command-line
  * version: extracts files.
@@ -54,6 +56,10 @@ import java.util.zip.ZipFile;
  * @author Sriram Krishnan, modified the version from http://tinyurl.com/yz5wnz2
  */
 public class UnZip {
+    // get an instance of the log4j Logger
+    private static Logger logger = 
+	Logger.getLogger(UnZip.class.getName());
+
     /** Constants for mode listing or mode extracting. */
     public final int LIST = 0, EXTRACT = 1;
 
@@ -84,11 +90,11 @@ public class UnZip {
     }
 
     /** For a given Zip file, process each entry. */
-    public synchronized void unZip(String fileName) {
+    public void unZip(String targetDir, String fileName) {
 
 	// check for validity of zip file
 	if (!(fileName.endsWith(".zip") || fileName.endsWith(".jar"))) {
-	    System.err.println("Not a zip file? " + fileName);
+	    logger.error("Not a zip file? " + fileName);
 	    // need to throw exception
 	}
 
@@ -98,10 +104,10 @@ public class UnZip {
 	    zippy = new ZipFile(fileName);
 	    Enumeration all = zippy.entries();
 	    while (all.hasMoreElements()) {
-		getFile((ZipEntry) all.nextElement());
+		getFile(targetDir, (ZipEntry) all.nextElement());
 	    }
 	} catch (IOException err) {
-	    System.err.println("IO Error: " + err);
+	    logger.error("IO Error: " + err);
 	    return;
 	}
     }
@@ -112,13 +118,13 @@ public class UnZip {
      * Process one file from the zip, given its name. Either print the name, or
      * create the file on disk.
      */
-    protected void getFile(ZipEntry e) throws IOException {
+    protected void getFile(String targetDir, ZipEntry e) throws IOException {
 	String zipName = e.getName();
 	switch (mode) {
 	case EXTRACT:
 	    if (zipName.startsWith("/")) {
 		if (!warnedMkDir)
-		    System.out.println("Ignoring absolute paths");
+		    logger.info("Ignoring absolute paths");
 		warnedMkDir = true;
 		zipName = zipName.substring(1);
 	    }
@@ -133,22 +139,24 @@ public class UnZip {
 	    int ix = zipName.lastIndexOf('/');
 	    if (ix > 0) {
 		String dirName = zipName.substring(0, ix);
+		dirName = targetDir + File.separator + dirName;
 		if (!dirsMade.contains(dirName)) {
 		    File d = new File(dirName);
 		    // If it already exists as a dir, don't do anything
 		    if (!(d.exists() && d.isDirectory())) {
 			// Try to create the directory, warn if it fails
-			System.out.println("Creating Directory: " + dirName);
+			logger.debug("Creating Directory: " + dirName);
 			if (!d.mkdirs()) {
-			    System.err.println("Warning: unable to mkdir "
-					       + dirName);
+			    logger.error("Warning: unable to mkdir "
+					 + dirName);
 			}
 			dirsMade.add(dirName);
 		    }
 		}
 	    }
-	    System.err.println("Creating " + zipName);
-	    FileOutputStream os = new FileOutputStream(zipName);
+	    String fileName = targetDir + File.separator + zipName;
+	    logger.debug("Creating " + fileName);
+	    FileOutputStream os = new FileOutputStream(fileName);
 	    InputStream is = zippy.getInputStream(e);
 	    int n = 0;
 	    while ((n = is.read(b)) > 0)
@@ -159,13 +167,20 @@ public class UnZip {
 	case LIST:
 	    // Not extracting, just list
 	    if (e.isDirectory()) {
-		System.out.println("Directory " + zipName);
+		logger.info("Directory " + zipName);
 	    } else {
-		System.out.println("File " + zipName);
+		logger.info("File " + zipName);
 	    }
 	    break;
 	default:
 	    throw new IllegalStateException("mode value (" + mode + ") bad");
 	}
+    }
+
+    public static void main(String[] args)
+	throws Exception {
+
+	UnZip uz = new UnZip();
+	uz.unZip("build", "./samples/samples.zip");
     }
 }
