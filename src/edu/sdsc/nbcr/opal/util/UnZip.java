@@ -47,6 +47,8 @@ import java.util.zip.ZipFile;
 
 import org.apache.log4j.Logger;
 
+import edu.sdsc.nbcr.opal.FaultType;
+
 /**
  * UnZip -- print or unzip a JAR or PKZIP file using java.util.zip. Command-line
  * version: extracts files.
@@ -90,12 +92,14 @@ public class UnZip {
     }
 
     /** For a given Zip file, process each entry. */
-    public void unZip(String targetDir, String fileName) {
+    public void unZip(String targetDir, String fileName) 
+	throws FaultType {
 
 	// check for validity of zip file
 	if (!(fileName.endsWith(".zip") || fileName.endsWith(".jar"))) {
-	    logger.error("Not a zip file? " + fileName);
-	    // need to throw exception
+	    String msg = "Not a zip file? " + fileName;
+	    logger.error(msg);
+	    throw new FaultType(msg);
 	}
 
 	// valid zip file - proceed to extract
@@ -107,8 +111,9 @@ public class UnZip {
 		getFile(targetDir, (ZipEntry) all.nextElement());
 	    }
 	} catch (IOException err) {
-	    logger.error("IO Error: " + err);
-	    return;
+	    logger.error(err);
+	    String msg = "IO Error while unzipping input file: " + err.getMessage();
+	    throw new FaultType(msg);
 	}
     }
 
@@ -147,8 +152,8 @@ public class UnZip {
 			// Try to create the directory, warn if it fails
 			logger.debug("Creating Directory: " + dirName);
 			if (!d.mkdirs()) {
-			    logger.error("Warning: unable to mkdir "
-					 + dirName);
+			    logger.warn("Warning: unable to mkdir "
+					+ dirName);
 			}
 			dirsMade.add(dirName);
 		    }
