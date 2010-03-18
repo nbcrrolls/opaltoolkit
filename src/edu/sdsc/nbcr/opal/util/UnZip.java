@@ -97,7 +97,7 @@ public class UnZip {
 
 	// check for validity of zip file
 	if (!(fileName.endsWith(".zip") || fileName.endsWith(".jar"))) {
-	    String msg = "Not a zip file? " + fileName;
+	    String msg = "Zip file " + fileName + " should be .zip or .jar";
 	    logger.error(msg);
 	    throw new FaultType(msg);
 	}
