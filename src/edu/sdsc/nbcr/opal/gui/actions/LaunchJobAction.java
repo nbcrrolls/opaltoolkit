@@ -120,7 +120,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         //let's invoke the remote opal service
         JobInputType in = new JobInputType();
         in.setArgList(cmd);
-
+	in.setExtractInputs(app.isExtractInputs());
 
         int numCpu = -1;
         if ( (app.getNumCpu() != null) && (app.getNumCpu().length() >= 1) ) {

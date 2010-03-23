@@ -53,7 +53,7 @@ public class AppMetadata extends ActionForm{
     private String numCpu;
     private boolean addFile;
     private boolean parallel;
-
+    private boolean extractInputs;
 
     /**
      * Default constructor
@@ -70,6 +70,7 @@ public class AppMetadata extends ActionForm{
         files = new FormFile[1];
         addFile = false;
 	parallel = false;
+	extractInputs = false;
     }
     
     /**
@@ -446,5 +447,19 @@ public class AppMetadata extends ActionForm{
      */
     public void setParallel(boolean parallel) {
         this.parallel = parallel;
-    }    
+    }
+
+    /**
+     * @return if extractInputs or not
+     */
+    public boolean isExtractInputs() {
+        return extractInputs;
+    }
+
+    /**
+     * @param extractInputs the extractInputs parameter to set
+     */
+    public void setExtractInputs(boolean extractInputs) {
+        this.extractInputs = extractInputs;
+    }
 }
