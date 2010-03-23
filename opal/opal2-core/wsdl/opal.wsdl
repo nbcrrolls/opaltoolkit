@@ -260,7 +260,7 @@
           <xsd:element name="wallClockTime" type="xsd:nonNegativeInteger"  minOccurs="0"/>
 	  <xsd:element name="inputFile" type="types:InputFileType"
 		       minOccurs="0" maxOccurs="unbounded"/>
-	  <xsd:element name="zipInputs" type="xsd:boolean" minOccurs="0"/>
+	  <xsd:element name="extractInputs" type="xsd:boolean" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 
