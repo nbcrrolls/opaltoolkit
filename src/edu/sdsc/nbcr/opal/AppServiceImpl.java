@@ -1025,13 +1025,13 @@ public class AppServiceImpl
 	    }
 
 	    // call utility method to write input files
-	    writeInputFile(outputDirName, inputFiles[i], in.getZipInputs());
+	    writeInputFile(outputDirName, inputFiles[i], in.getExtractInputs());
 	}
     }
 
     private void writeInputFile(String outputDirName, 
 				InputFileType inputFile,
-				Boolean isZip) 
+				Boolean extractInputs) 
 	throws FaultType {
 	    try {
 		File f = new File(outputDirName + File.separator + 
@@ -1093,10 +1093,10 @@ public class AppServiceImpl
 		    }
 		}
 
-		// unzip files if need be
-		if (isZip != null) {
-		    if (isZip) {
-			logger.debug("Unzipping file: " + f.getName());
+		// extract files if need be
+		if (extractInputs != null) {
+		    if (extractInputs) {
+			logger.debug("Trying to extract file: " + f.getName());
 			UnZip uz = new UnZip();
 			uz.unZip(outputDirName,
 				 f.getAbsolutePath());

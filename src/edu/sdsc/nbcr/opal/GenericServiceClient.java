@@ -119,8 +119,8 @@ public class GenericServiceClient {
 			  .withValueSeparator(',')
 			  .hasArgs(Option.UNLIMITED_VALUES)
 			  .create("b"));
-	options.addOption(OptionBuilder.withArgName("zips")
-			  .withDescription("input files are zips")
+	options.addOption(OptionBuilder.withArgName("extract")
+			  .withDescription("extract input files that are zipped")
 			  .create("z"));
 	options.addOption(OptionBuilder.withArgName("serverDN")
 			  .withDescription("server DN expected - if gsi is being used")
@@ -152,7 +152,7 @@ public class GenericServiceClient {
 	}
 	System.out.print("\n");
 
-	boolean zipInputs = line.hasOption("z");
+	boolean extractInputs = line.hasOption("z");
 
 	// connect to the App Web service
 	AppServiceLocator asl = new AppServiceLocator();
@@ -311,9 +311,9 @@ public class GenericServiceClient {
 		in.setInputFile(infileArray);
 	    }
 
-	    // set the variable to signify whether job inputs are zip files
-	    if (zipInputs) {
-		in.setZipInputs(true);
+	    // set the variable to signify whether input files should be extracted
+	    if (extractInputs) {
+		in.setExtractInputs(true);
 	    }
 
 	    // set up a non-blocking call
