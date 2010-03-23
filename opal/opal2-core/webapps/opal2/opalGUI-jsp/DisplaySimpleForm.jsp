@@ -92,7 +92,8 @@ if ( files.length > 1 ) {
 
 String index = "" + (files.length - 1);
 %>
-    <tr><td>Chose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
+    <tr><td>Choose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
+	 <tr><td>Should input files be unzipped on server?</td><td><nested:checkbox property="extractInputs"/></td>
     
     <!-- end file upload part -->
 
