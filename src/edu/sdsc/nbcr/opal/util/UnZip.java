@@ -37,6 +37,7 @@ package edu.sdsc.nbcr.opal.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -44,6 +45,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.GZIPInputStream;
+import org.apache.tools.tar.TarInputStream;
+import org.apache.tools.tar.TarEntry;
 
 import org.apache.log4j.Logger;
 
@@ -62,12 +66,6 @@ public class UnZip {
     private static Logger logger = 
 	Logger.getLogger(UnZip.class.getName());
 
-    /** Constants for mode listing or mode extracting. */
-    public final int LIST = 0, EXTRACT = 1;
-
-    /** Whether we are extracting or just printing TOC */
-    protected int mode = EXTRACT;
-
     /** The ZipFile that is used to read an archive */
     protected ZipFile zippy;
 
@@ -77,110 +75,167 @@ public class UnZip {
     /** Cache of paths we've mkdir()ed. */
     protected SortedSet dirsMade;
 
+    protected boolean warnedMkDir = false;
+
     /** Default constructor */
     public UnZip() {
-    }
-
-    /** Set the mode - 0 for LIST, 1 for EXTRACT **/
-    public void setMode(int mode) {
-	this.mode = mode;
-    }
-
-    /** Return the mode - 0 for LIST, 1 for EXTRACT **/
-    public int getMode() {
-	return mode;
+	dirsMade = new TreeSet();
     }
 
     /** For a given Zip file, process each entry. */
-    public void unZip(String targetDir, String fileName) 
+    public void extract(String targetDir, 
+			String fileName) 
 	throws FaultType {
+	logger.debug("called");
 
 	// check for validity of zip file
-	if (!(fileName.endsWith(".zip") || fileName.endsWith(".jar"))) {
+	if (fileName.endsWith(".zip") || fileName.endsWith(".jar")) {
+	    // valid zip file - proceed to extract
+	    unZipFile(targetDir, fileName);
+	} else if (fileName.endsWith(".tar") || fileName.endsWith("tar.gz")) {
+	    unTarFile(targetDir, fileName);
+	} else {
 	    String msg = "File " + fileName + 
-		" doesn't end with .zip or .jar - " +
-		"no need to extract";
+		" doesn't end with .zip, .jar, .tar(.gz) - " +
+		"can't extract";
 	    logger.warn(msg);
 	    return;
 	}
+    }
 
-	// valid zip file - proceed to extract
-	dirsMade = new TreeSet();
+
+    /**
+     * Extract a zip file archive
+     */
+    protected void unZipFile(String targetDir, 
+			     String fileName) 
+	throws FaultType {
+	logger.debug("called");
+
 	try {
 	    zippy = new ZipFile(fileName);
 	    Enumeration all = zippy.entries();
 	    while (all.hasMoreElements()) {
-		getFile(targetDir, (ZipEntry) all.nextElement());
+		unZipFileEntry(targetDir, (ZipEntry) all.nextElement());
 	    }
 	} catch (IOException err) {
 	    logger.error(err);
 	    String msg = "IO Error while unzipping input file: " + err.getMessage();
 	    throw new FaultType(msg);
-	}
+	} 
     }
-
-    protected boolean warnedMkDir = false;
 
     /**
      * Process one file from the zip, given its name. Either print the name, or
      * create the file on disk.
      */
-    protected void getFile(String targetDir, ZipEntry e) throws IOException {
+    protected void unZipFileEntry(String targetDir, 
+				  ZipEntry e) 
+	throws IOException {
 	String zipName = e.getName();
-	switch (mode) {
-	case EXTRACT:
-	    if (zipName.startsWith("/")) {
-		if (!warnedMkDir)
-		    logger.info("Ignoring absolute paths");
-		warnedMkDir = true;
-		zipName = zipName.substring(1);
+
+
+	if (zipName.startsWith("/")) {
+	    if (!warnedMkDir)
+		logger.debug("Ignoring absolute paths");
+	    warnedMkDir = true;
+	    zipName = zipName.substring(1);
+	}
+	// if a directory, just return. We mkdir for every file,
+	// since some widely-used Zip creators don't put out
+	// any directory entries, or put them in the wrong place.
+	if (zipName.endsWith("/")) {
+	    return;
+	}
+	// else this is a file
+
+	// create the directory, if need be
+	createDir(targetDir, zipName);
+
+	// extract the file contents
+	String fileName = targetDir + File.separator + zipName;
+	logger.debug("Creating " + fileName);
+	FileOutputStream os = new FileOutputStream(fileName);
+	InputStream is = zippy.getInputStream(e);
+	int n = 0;
+	while ((n = is.read(b)) > 0)
+	    os.write(b, 0, n);
+	is.close();
+	os.close();
+    }
+
+    /**
+     * Extract a tar file archive
+     */
+    protected void unTarFile(String targetDir,
+			     String fileName)
+	throws FaultType {
+	logger.debug("called");
+
+	try {
+	    InputStream in;
+	    if (fileName.endsWith(".gz")) {
+		in = new GZIPInputStream(new FileInputStream(fileName));
+	    } else {
+		in = new FileInputStream(fileName);
 	    }
-	    // if a directory, just return. We mkdir for every file,
-	    // since some widely-used Zip creators don't put out
-	    // any directory entries, or put them in the wrong place.
-	    if (zipName.endsWith("/")) {
-		return;
+
+	    TarInputStream tin = new TarInputStream(in);
+	    TarEntry tarEntry = tin.getNextEntry();
+	    while (tarEntry != null) {
+		unTarFileEntry(targetDir, tin, tarEntry);
+		tarEntry = tin.getNextEntry();
 	    }
-	    // Else must be a file; open the file for output
-	    // Get the directory part.
-	    int ix = zipName.lastIndexOf('/');
-	    if (ix > 0) {
-		String dirName = zipName.substring(0, ix);
-		dirName = targetDir + File.separator + dirName;
-		if (!dirsMade.contains(dirName)) {
-		    File d = new File(dirName);
-		    // If it already exists as a dir, don't do anything
-		    if (!(d.exists() && d.isDirectory())) {
-			// Try to create the directory, warn if it fails
-			logger.debug("Creating Directory: " + dirName);
-			if (!d.mkdirs()) {
-			    logger.warn("Warning: unable to mkdir "
-					+ dirName);
-			}
-			dirsMade.add(dirName);
+	    tin.close();
+	} catch (IOException ioe) {
+	    String msg = "Error while extracting tarball: " + 
+		ioe.getMessage();
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+    }
+
+    protected void unTarFileEntry(String targetDir,
+				  TarInputStream tin,
+				  TarEntry tarEntry)
+	throws IOException {
+	File destPath = new File(targetDir + 
+				 File.separator + 
+				 tarEntry.getName());
+	logger.debug("Processing " + destPath.getAbsoluteFile());
+
+	// create directory, if need be
+	createDir(targetDir, tarEntry.getName());
+
+	if (!tarEntry.isDirectory()) {
+	    FileOutputStream fout = new FileOutputStream(destPath);
+	    tin.copyEntryContents(fout);
+	    fout.close();
+	} else {
+	    // just return, since we mkdir for every file
+	}
+    }
+
+    protected void createDir(String targetDir, 
+			     String zipName) {
+	// Get the directory part.
+	int ix = zipName.lastIndexOf('/');
+	if (ix > 0) {
+	    String dirName = zipName.substring(0, ix);
+	    dirName = targetDir + File.separator + dirName;
+	    if (!dirsMade.contains(dirName)) {
+		File d = new File(dirName);
+		// If it already exists as a dir, don't do anything
+		if (!(d.exists() && d.isDirectory())) {
+		    // Try to create the directory, warn if it fails
+		    logger.debug("Creating Directory: " + dirName);
+		    if (!d.mkdirs()) {
+			logger.warn("Warning: unable to mkdir "
+				    + dirName);
 		    }
+		    dirsMade.add(dirName);
 		}
 	    }
-	    String fileName = targetDir + File.separator + zipName;
-	    logger.debug("Creating " + fileName);
-	    FileOutputStream os = new FileOutputStream(fileName);
-	    InputStream is = zippy.getInputStream(e);
-	    int n = 0;
-	    while ((n = is.read(b)) > 0)
-		os.write(b, 0, n);
-	    is.close();
-	    os.close();
-	    break;
-	case LIST:
-	    // Not extracting, just list
-	    if (e.isDirectory()) {
-		logger.info("Directory " + zipName);
-	    } else {
-		logger.info("File " + zipName);
-	    }
-	    break;
-	default:
-	    throw new IllegalStateException("mode value (" + mode + ") bad");
 	}
     }
 
@@ -188,6 +243,6 @@ public class UnZip {
 	throws Exception {
 
 	UnZip uz = new UnZip();
-	uz.unZip("build", "./samples/samples.zip");
+	uz.extract("build", "./samples/samples.zip");
     }
 }

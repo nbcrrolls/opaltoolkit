@@ -1098,8 +1098,8 @@ public class AppServiceImpl
 		    if (extractInputs) {
 			logger.debug("Trying to extract file: " + f.getName());
 			UnZip uz = new UnZip();
-			uz.unZip(outputDirName,
-				 f.getAbsolutePath());
+			uz.extract(outputDirName,
+				   f.getAbsolutePath());
 
 			// delete file after unzipping
 			f.delete();
