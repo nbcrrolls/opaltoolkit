@@ -54,17 +54,17 @@ import org.apache.log4j.Logger;
 import edu.sdsc.nbcr.opal.FaultType;
 
 /**
- * UnZip -- print or unzip a JAR or PKZIP file using java.util.zip. Command-line
+ * Extract -- print or unzip a JAR or PKZIP file using java.util.zip. Command-line
  * version: extracts files.
  * 
- * @author Ian Darwin, Ian@DarwinSys.com $Id: UnZip.java,v 1.7 2004/03/07
+ * @author Ian Darwin, Ian@DarwinSys.com $Id: Extract.java,v 1.7 2004/03/07
  *         17:40:35 ian Exp $
  * @author Sriram Krishnan, modified the version from http://tinyurl.com/yz5wnz2
  */
-public class UnZip {
+public class Extract {
     // get an instance of the log4j Logger
     private static Logger logger = 
-	Logger.getLogger(UnZip.class.getName());
+	Logger.getLogger(Extract.class.getName());
 
     /** The ZipFile that is used to read an archive */
     protected ZipFile zippy;
@@ -78,7 +78,7 @@ public class UnZip {
     protected boolean warnedMkDir = false;
 
     /** Default constructor */
-    public UnZip() {
+    public Extract() {
 	dirsMade = new TreeSet();
     }
 
@@ -242,7 +242,7 @@ public class UnZip {
     public static void main(String[] args)
 	throws Exception {
 
-	UnZip uz = new UnZip();
-	uz.extract("build", "./samples/samples.zip");
+	Extract ex = new Extract();
+	ex.extract("build", "./samples/samples.zip");
     }
 }

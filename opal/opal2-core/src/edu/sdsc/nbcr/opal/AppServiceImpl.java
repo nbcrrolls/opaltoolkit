@@ -47,7 +47,7 @@ import edu.sdsc.nbcr.opal.state.StateManagerException;
 
 import edu.sdsc.nbcr.opal.util.Util;
 import edu.sdsc.nbcr.opal.util.ArgValidator;	
-import edu.sdsc.nbcr.opal.util.UnZip;
+import edu.sdsc.nbcr.opal.util.Extract;
 
 /**
  *
@@ -1097,8 +1097,8 @@ public class AppServiceImpl
 		if (extractInputs != null) {
 		    if (extractInputs) {
 			logger.debug("Trying to extract file: " + f.getName());
-			UnZip uz = new UnZip();
-			uz.extract(outputDirName,
+			Extract ex = new Extract();
+			ex.extract(outputDirName,
 				   f.getAbsolutePath());
 
 			// delete file after unzipping
