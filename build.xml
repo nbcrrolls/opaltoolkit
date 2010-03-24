@@ -254,6 +254,9 @@ Author:
         <!-- drmaa jar -->
         <include name="drmaa.jar" />
 
+        <!-- ant jar -->
+        <include name="ant-1.7.0.jar" />
+
 	<!-- mailapi jar -->
         <include name="mailapi-1_3_1.jar" />
 
