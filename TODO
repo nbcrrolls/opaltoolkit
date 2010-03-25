@@ -5,11 +5,11 @@
   * Addition of utility services (addition to WSDL)
     * Server load, queue length, data lifetime, server information
   * Addition of the above statistics to the Dashboard
+  * Refreshed look and feel for Opal dashboard
   * Bug fix for destroy() operation, where baseURL was incorrectly
     returned as empty after job destruction: X
   * Bug fix for IP limits where the query for filtering by IP was incorrect: X
   * Bug fix for SOAP filter to support large files and for empty arguments (X)
-  * Refreshed look and feel for Opal dashboard
 
 * Opal MetaService - submission of jobs to other Opal servers
 
