@@ -534,7 +534,7 @@ public class AppServiceImpl
 	throws FaultType {
 
 	// create a working directory where it can be accessible
-	final String jobID = "app" + System.currentTimeMillis();
+	final String jobID = "app" + serviceName + System.currentTimeMillis();
 	final String outputDirName = 
 	    outputPrefix + File.separator + jobID + File.separator;
 	final File outputDir = new File(outputDirName);
