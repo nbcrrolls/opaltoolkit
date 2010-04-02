@@ -16,17 +16,21 @@
     <title>Submission form for <bean:write name="appMetadata" property="serviceName" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
-    
     <script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
+    <script src="scripts/jquery.js" language="javascript" type="text/javascript" ></script>
+    <script src="scripts/jquery.corner.js" language="javascript" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#list-nav ul li.left a").corner("tl bl 10px  cc:#fff");
+            $("#list-nav ul li.right a").corner("tr br 10px cc:#fff");
+        });
+    </script>
 
 <script language="javascript">
 <!--
-
 var state = 'none';
 
-function makeTrue(){
-
-}
+function makeTrue(){ }
 
 function showHide(layer_ref) {
     if (state == 'block') {
@@ -46,7 +50,6 @@ function showHide(layer_ref) {
         hza.style.display = state;
     }
 }
-
 //-->
 </script> 
 </head>
@@ -54,11 +57,26 @@ function showHide(layer_ref) {
 <body>
 <div class="mainBody">
 
+<jsp:include page="../dashboard-jsp/header.jsp"/>
+<!-- Navigation Menu Bar -->
+<table border="0" class="mainnav" cellpadding="0" cellspacing="0">
+<tr>
+  <td>
+    <div id="list-nav">
+    <ul>
+      <li class="left"><a href="dashboard">Home</a></li>
+      <li><a href="dashboard?command=serverInfo">Server Info</a></li>
+      <li><a href="dashboard?command=serviceList"  class="active">List of applications</a></li>
+      <li><a href="dashboard?command=statistics">Usage Statistics</a></li>
+      <li class="right"><a href="dashboard?command=docs">Documentation</a></li>
+    </ul>
+    </div>
+  </td>
+</tr>
+</table> 
+<br>
 
-
-<jsp:include page="../include-jsp/header.jsp"/>
 <jsp:include page="header.jsp"/>
-
 
 <br/>
     <h2>Submission form for <bean:write name="appMetadata" property="serviceName" /></h2>
@@ -68,10 +86,10 @@ function showHide(layer_ref) {
 <table cellspacing="10">
 
     <tr><td>Insert command line here:</td><td><html:text property="cmdLine" size="50"/></td>
- <logic:equal name="appMetadata" property="parallel" value="true">
-    <tr><td>Insert number of CPU for parallel application:</td><td><html:text property="numCpu" size="50"/></td>
- </logic:equal>
-     
+    <tr><td>Insert number of CPU (only for parallel application):</td><td><html:text property="numCpu" size="50"/></td>
+    
+
+    
 <% 
 
 AppMetadata app = (AppMetadata) request.getSession().getAttribute("appMetadata");
@@ -92,8 +110,7 @@ if ( files.length > 1 ) {
 
 String index = "" + (files.length - 1);
 %>
-    <tr><td>Choose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
-	 <tr><td>Should input files be unzipped on server?</td><td><nested:checkbox property="extractInputs"/></td>
+    <tr><td>Chose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
     
     <!-- end file upload part -->
 

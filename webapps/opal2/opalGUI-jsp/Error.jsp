@@ -20,22 +20,44 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ page import="org.apache.struts.Globals" %>
 <%@ page import="edu.sdsc.nbcr.opal.gui.common.Constants;" %>
-<html:html>
+<html>
   <head>
     <title>Unexpected Error</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
     <script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script>
-
+    <script src="scripts/jquery.js" language="javascript" type="text/javascript" ></script>
+    <script src="scripts/jquery.corner.js" language="javascript" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#list-nav ul li.left a").corner("tl bl 10px  cc:#fff");
+            $("#list-nav ul li.right a").corner("tr br 10px cc:#fff");
+        });
+    </script>
   </head>
 
   <body>
   <div class="mainBody">
 
-
-    <jsp:include page="../include-jsp/header.jsp"/>
+    <jsp:include page="../dashboard-jsp/header.jsp"/>
+<!-- Navigation Menu Bar -->
+<table border="0" class="mainnav" cellpadding="0" cellspacing="0">
+<tr>
+  <td>
+    <div id="list-nav">
+    <ul>
+      <li class="left"><a href="dashboard">Home</a></li>
+      <li><a href="dashboard?command=serverInfo">Server Info</a></li>
+      <li><a href="dashboard?command=serviceList">List of applications</a></li>
+      <li><a href="dashboard?command=statistics">Usage Statistics</a></li>
+      <li class="right"><a href="dashboard?command=docs">Documentation</a></li>
+    </ul>
+    </div>
+  </td>
+</tr>
+</table> 
+<br>
     <jsp:include page="header.jsp"/>
-
 
     <h3>An unexpected error has occured</h3>
     <logic:present name="<%=Constants.ERROR_MESSAGES%>">
@@ -49,8 +71,5 @@
         <p><bean:write name="<%=Globals.EXCEPTION_KEY%>"
                        property="message"/></p>
     </logic:present>
-
     <jsp:include page="footer.jsp"/>
 
-  </body>
-</html:html>

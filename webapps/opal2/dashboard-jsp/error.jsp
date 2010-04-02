@@ -28,11 +28,13 @@ String error = (String)request.getAttribute("error");
 <html>
     <head>
         <title>Unexpected Error</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/style-maintag.css"/>
+
     </head>
     <body>
     
-    <h1>An unexpected error has occured</h1>
+    <h1>An unexpected error has occured here</h1>
     <%if (error != null) %>
     <h3>Error: <%=error %> </h3>
     
