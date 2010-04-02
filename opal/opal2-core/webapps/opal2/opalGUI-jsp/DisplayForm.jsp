@@ -104,10 +104,14 @@ function selectElement(element, groupId){
 <html:form action="LaunchJob.do" enctype="multipart/form-data" >
 
 <table border="0" cellspacing="5">
-<tr> <!-- the number of cpu  -->
-   <td> Insert number of CPUs (only for parallel application): </td>
-   <td><nested:text name="appMetadata" property="numCpu" size="40"/></td>
-</tr>
+
+<!-- the number of cpu  -->
+ <logic:equal name="appMetadata" property="parallel" value="true">
+    <tr>
+        <td> Insert number of CPUs for parallel application: </td>
+        <td><nested:text name="appMetadata" property="numCpu" size="40"/></td>
+    </tr>
+</logic:equal>
 
 <!--  double nested tag does not work with input field vaule so I had to use long format -->
 

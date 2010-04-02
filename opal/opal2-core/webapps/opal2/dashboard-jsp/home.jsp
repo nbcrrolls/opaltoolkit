@@ -95,14 +95,15 @@
 		<span class="infoTitle">How to use </span><br>
 		Click on the tabs in the navigation bar at the top of the page. They provide:
 		   <ul class="menu2">
-		     <li><span class="Nav">Home</span><span class="Content"> - this page</span> </li>
-		     <li><span class="Nav">List of applications</span><span class="Content"> - choose 
-			     an available applications to run your job</span> </li>
-		     <li><span class="Nav">Usage Statistics</span><span class="Content"> - shows usage 
-			     statistics for Opal server by job.</span> </li>
-		     <li><span class="Nav">Server Info</span><span class="Content"> - information 
-			     about Opal server host.</span> </li>
-		     <li><span class="Nav">Documentation</span><span class="Content"> - Opal documentation, 
+		     <li><a href="./dashboard">Home</a> - this page </li>
+		     <li><a href="./dashboard?command=serverInfo">Server Info</a> - information 
+			     about Opal server host </li>
+
+		     <li><a href="./dashboard?command=serviceList">List of applications</a> - choose 
+			     an available applications to run your job </li>
+		     <li><a href="./dashboard?command=statistics">Usage Statistics</a> - shows usage 
+			     statistics for Opal server by job </li>
+		     <li><a href="./dashboard?command=docs">Documentation</a> - Opal documentation, 
 			     tutorials, support</li>
 		   </ul>
 		<br>
