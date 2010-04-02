@@ -25,7 +25,7 @@ String opalUrl = (String) request.getAttribute("opalUrl");
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Available Applications</title>
+    <title>Opal2 Server Available Applications</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" media="all" href="css/ext-all.css" />
     <link rel="stylesheet" type="text/css" media="all" href="css/feed-viewer.css" /> 

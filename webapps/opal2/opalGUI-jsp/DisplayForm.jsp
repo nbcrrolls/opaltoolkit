@@ -11,7 +11,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Submission form for <bean:write name="appMetadata" property="serviceName" /></title>
+    <title>Opal2 submission form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
     
@@ -95,7 +95,10 @@ function selectElement(element, groupId){
 
 <jsp:include page="header.jsp"/>
 
-<h2>Submission form for <bean:write name="appMetadata" property="serviceName" /></h2>
+<h2 id="centered">
+    <span class="Label"><bean:write name="appMetadata" property="serviceName"/>
+	submission form </span>
+</h2>
 <p><span class="Require">*</span> Required parameters.</p>
 
 <html:form action="LaunchJob.do" enctype="multipart/form-data" >

@@ -15,7 +15,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Job submission result</title>
+    <title>Opal2 job submission result</title>
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
     <script src="scritps/scripts.js" language="javascript" type="text/javascript" ></script>
 	<script src="scripts/jquery.js" language="javascript" type="text/javascript" ></script>

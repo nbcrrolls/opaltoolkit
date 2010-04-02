@@ -6,7 +6,7 @@
 
 
 <head>
-	<title>Opal AAA System</title>
+	<title>Opal2 Server Connections</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  	<link rel="stylesheet" type="text/css" media="all" href="css/style.css"/> 
     <link rel="stylesheet" type="text/css" media="all" href="css/style-maintag.css"/>
@@ -15,15 +15,10 @@
 <% 
    String systemServerHostname = (String) request.getAttribute("systemServerHostname"); 
    //String opalDocumentation = (String) request.getAttribute("opalDocumentation");
-
-
 //   response.sendRedirect("http://" + systemServerHostname + "/phpSysInfo");
 %>
 
 <body > 
-
-
-
 <div class="mainBody">
 
 <!-- [headerInclude] -->
