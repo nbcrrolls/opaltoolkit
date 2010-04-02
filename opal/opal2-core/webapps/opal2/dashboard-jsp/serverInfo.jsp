@@ -6,7 +6,7 @@
 
 
 <head>
-	<title>Opal Server Deployment Information</title>
+	<title>Opal2 Server Deployment Information</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  	<link rel="stylesheet" type="text/css" media="all" href="css/style.css"/> 
     <link rel="stylesheet" type="text/css" media="all" href="css/style-maintag.css" />

@@ -27,7 +27,7 @@ String error = (String)request.getAttribute("error");
 %>
 <html>
     <head>
-        <title>Unexpected Error</title>
+        <title>Opal2 Service Unexpected Error</title>
         <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/style-maintag.css"/>
 

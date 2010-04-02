@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Opal Toolkit Deployment Information</title>
+    <title>Opal2: A Toolkit for Scientific Software as a Service.</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="enter, keywords, here" />
     <meta name="description" content="enter keywords here" />

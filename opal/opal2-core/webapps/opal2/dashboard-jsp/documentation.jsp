@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Opal Toolkit Deployment Information</title>
+    <title>Opal2 Toolkit Documentation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="enter, keywords, here" />
     <meta name="description" content="enter keywords here" />
@@ -74,26 +74,26 @@
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Website: </td>
-        <td class="boxBody colColor"><a href="<%= opalWebsite %>">Opal Web Site</a>, 
+        <td class="boxBody colColor"><a href="<%= opalWebsite %>">Opal Web Site</a>
                   <a href="http://sourceforge.net/projects/opaltoolkit/">Opal at SourceForge</a></td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Documentation:</td>
-        <td class="boxBody colColor"><a href="<%= opalDocumentation %>">Opal Documentation</a>,
+        <td class="boxBody colColor"><a href="<%= opalDocumentation %>">Opal Documentation</a>
 		<a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">Tutorials
 		and Sample Programs</a>
 		</td> 
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Support: </td>
-        <td class="boxBody colColor"><a href="mailto:support@nbcr.net">NBCR Support mailing list</a>, 
-                  <a href="http://sourceforge.net/mail/?group_id=211778">Opal mailing list</a>, 
+        <td class="boxBody colColor"><a href="mailto:support@nbcr.net">NBCR Support mailing list</a>
+                  <a href="http://sourceforge.net/mail/?group_id=211778">Opal mailing list</a>
                   <a href="https://www.nbcr.net/forum/">NBCR Forum</a></td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Opal use cases:</td>
-        <td class="boxBody colColor"><a href="http://meme.nbcr.net/">MEME Website</a>,
-                  <a href="http://nbcr.net/pdb2pqr">NBCR PDB2PQR Website</a>,
+        <td class="boxBody colColor"><a href="http://meme.nbcr.net/">MEME Website</a>
+                  <a href="http://nbcr.net/pdb2pqr">NBCR PDB2PQR Website</a>
                   <a href="http://camera.calit2.net/">CAMERA</a></td>
       </tr>
       <tr>

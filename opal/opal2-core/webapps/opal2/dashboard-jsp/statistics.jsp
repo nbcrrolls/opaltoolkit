@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<title>Opal Dashboard</title>
+	<title>Opal2 Server Dashboard Usage Statistics</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
  	<link rel="stylesheet" type="text/css" media="all" href="css/style.css"/> 

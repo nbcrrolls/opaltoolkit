@@ -13,7 +13,7 @@
 <%@page import="org.apache.struts.upload.FormFile"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Submission form for <bean:write name="appMetadata" property="serviceName" /></title>
+    <title>Opal2 simple submission form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
     <script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
@@ -78,9 +78,10 @@ function showHide(layer_ref) {
 
 <jsp:include page="header.jsp"/>
 
-<br/>
-    <h2>Submission form for <bean:write name="appMetadata" property="serviceName" /></h2>
-<br/>
+<h2 id="centered">
+   <span class="Label"><bean:write name="appMetadata" property="serviceName" />
+   submission form </span> 
+</h2>
 
 <html:form action="LaunchJob.do" enctype="multipart/form-data" >
 <table cellspacing="10">
@@ -137,7 +138,7 @@ String index = "" + (files.length - 1);
 </div>
 </br>
 
-<p>* Required parameters.</p>
+<p><span class="Require">*</span> Required parameters.</p>
 
 <br/>
 <jsp:include page="footer.jsp"/>
