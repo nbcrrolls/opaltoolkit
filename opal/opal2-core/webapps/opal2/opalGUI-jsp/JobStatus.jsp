@@ -1,7 +1,5 @@
 <%--
  copy the license here
-
- 
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -17,43 +15,81 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<META HTTP-EQUIV="Refresh" CONTENT="30">
     <title>Job submission result</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
-    <script language="javascript" type="text/javascript" ></script>
     <script src="scritps/scripts.js" language="javascript" type="text/javascript" ></script>
-
+	<script src="scripts/jquery.js" language="javascript" type="text/javascript" ></script>
+	<script src="scripts/jquery.corner.js" language="javascript" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#list-nav ul li.left a").corner("tl bl 10px  cc:#fff");
+            $("#list-nav ul li.right a").corner("tr br 10px cc:#fff");
+        });
+    </script>
 <%
 StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
 String serviceID = (String)request.getAttribute("serviceID");
 String jobId = (String)request.getAttribute("jobId");
+if (status.getCode() != 8 ) { 
 %>
+  <script language="JavaScript"> 
+    function refresh() { window.location.reload( true ); }
+    setTimeout("refresh()", 30*1000); 
+  </script> 
+<% } %>
 
 </head>
 
 <body>
 <div class="mainBody">
 
+<jsp:include page="../dashboard-jsp/header.jsp"/>
+<!-- Navigation Menu Bar -->
+<table border="0" class="mainnav" cellpadding="0" cellspacing="0">
+<tr>
+  <td>
+    <div id="list-nav">
+    <ul>
+      <li class="left"><a href="dashboard">Home</a></li>
+      <li><a href="dashboard?command=serverInfo">Server Info</a></li>
+      <li><a href="dashboard?command=serviceList"  class="active">List of applications</a></li>
+      <li><a href="dashboard?command=statistics">Usage Statistics</a></li>
+      <li class="right"><a href="dashboard?command=docs">Documentation</a></li>
+    </ul>
+    </div>
+  </td>
+</tr>
+</table>
+<br>
 
-<jsp:include page="../include-jsp/header.jsp"/>
 <jsp:include page="header.jsp"/>
 
-
-<br/>
     <h2>Submission results for <%= serviceID %></h2>
-<br/>
 
-<table cellspacing="10">
-
-    <tr><td>JobId :</td><td> <%= jobId %></td>
-
-    <tr><td>Status code:</td><td><%= status.getCode() %></td>
-    
-    <tr><td>Message:</td><td><%= status.getMessage() %></td>
-    
-    <tr><td>Output Base URL:</td><td><a href="<%= status.getBaseURL() %>"  target="_blank" ><%= status.getBaseURL() %></a></td>
-    
+<table border="0" cellspacing="10">
+    <tr>
+	  <td>Date and time :</td>
+	  <td><script type="text/javascript"> 
+	          document.write('<b>'+(new Date).toLocaleString()+'</b>'); 
+		  </script> 
+	  </td>
+	</tr>
+    <tr>
+	  <td>JobId :</td>
+	  <td> <%= jobId %></td>
+	</tr>
+    <tr>
+	  <td>Status code:</td>
+	  <td><%= status.getCode() %></td>
+    </tr>
+    <tr>
+	  <td>Message:</td>
+	  <td><%= status.getMessage() %></td>
+	</tr>
+    <tr>
+	  <td>Output Base URL:</td>
+	  <td><a href="<%= status.getBaseURL() %>"  target="_blank" ><%= status.getBaseURL() %></a></td>
+    </tr> 
 </table>
 
 <br/>

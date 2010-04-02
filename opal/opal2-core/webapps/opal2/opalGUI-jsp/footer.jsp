@@ -16,33 +16,18 @@
 --%>
 
 </td>
-
 <td class="colColor boxRight" ></td>
 </tr>
 
 <tr>
-<td width="15" height="15" class="boxBottomLeft colColor"></td>
-
-
-<td height="15" class="boxBottom colColor"><br /></td>
-
-<td width="15" height="15" class="boxBottomRight colColor"></td>
+  <td width="15" height="15" class="boxBottomLeft colColor"></td>
+  <td  class="boxBottom colColor"></td>
+  <td width="15" class="boxBottomRight colColor"></td>
 </tr>
-
-</table>
-<!-- END Body -->
-
-<br />
-
-<!-- BEGIN Footer -->
-
-<!-- END Footer -->
+</table> <!-- END Body -->
+<%@ include file="../dashboard-jsp/copyright.jsp" %>
 </div>
 </body>
-
 </html>
-
-
-
 
 

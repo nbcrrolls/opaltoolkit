@@ -1,55 +1,188 @@
+/* style.css */
+
+.question {
+    background-image:url(../images/add/icon-question.gif)!important;
+}
+
+ol {list-style-type: decimal;}
+ol li {padding-left: 5px;;}
+
+#centered { text-align: center; }
+.copyright { 
+  text-align: left; 
+  color: #888888; 
+  font-size: 0.9em;
+}
+.shadow {
+  text-shadow: #6374AB 2px -2px 4px;
+}
+
+/*  to make grey image */
+.grey {
+  opacity : 0.5;
+  filter: alpha(opacity=40); 
+  margin: 4px; 
+}
+
+.Title {color: #163466;}
+.Content {color: black;}
+.Label {color: #1760A5;}
+.Nav {
+   background: #163466;
+   color:#FCF2D7;
+   padding: 1px 2px 1px 2px;
+}
+
+/* ---------- special character list  marker ----------------- */
+ul.menu2 { 
+list-style: none ;
+}
+
+ul.menu1 { 
+list-style: none ;
+color: #1760A5;
+font-color: black;
+margin-left: 10; 
+padding-left: 20px;
+}
+
+ul.menu1 li {
+width: 100%;
+padding: 0;
+margin: 0 0 0.25em 0;
+}
+
+ul.menu1 li:before {
+ content: "\00BB \0020"; 
+} 
+
+/* ---------- navigation bar at the top of the page ---------- */
+#list-nav {
+    list-style:none;
+    margin:0;
+    padding:0px;
+    padding-right:30px;
+    width:auto;; 
+	/* z-index: 1;	*/
+}
+
+#list-nav ul li { 
+    display:inline;
+    overflow:hidden; 
+}
+
+#list-nav a, a.active {
+    background:#163466;
+    color:#FCF2D7;
+    text-decoration:none;
+    font-weight: bold;
+    padding:3px 0px 3px 0px;
+	width:20%;
+    float:left;
+    text-align:center;
+	margin:0px;
+}
+
+#list-nav a.active {
+    background:#FCF2D7;
+    color:#163466;
+    /* border-bottom: 1px solid #FCF2D7; */
+}
+
+#list-nav a:hover {
+    background:#163466;
+    color:#FF6622;
+}
+
+#list-nav a.active:hover {
+    background:#FCF2D7;
+    color:#FF6622;
+}
+
+/* ---------- end navigation bar at the top of the page ------ */
+
+.Require {
+color: #FF6622; 
+font-weight: bold;
+}
+
+/*    For publications */
+.PubTitle { font-weight: bold; font-size: 90%;}
+.PubAuth { font-size: 90%;}
+.PubPub { font-style: italic; font-size: 90%;}
+a span.PubTitle { color: #163466;}
+a:hover span.PubTitle { color: #FF6622;}
+
+
 /* CSS Document */
 body {
 	font-family: Arial,Verdana,Helvetica,sans-serif;
-	font-size: 75%;  
+	font-size: 80%;  
 	color: #000;
-	padding:0; margin:0;
-	background-color:#FFF; 
+	padding:0px; 
+    margin: 0px 40px 0px 40px;
+	background:#FFF; 
 }
+	pre {text-indent: 30px}
+
+
 a img {border: 0}
 form {margin:0px; border:0px}
 
-.centerDiv{ text-align:center}
+
+.centerDiv{ text-align:center; margin-top:10px; }
 .clearBR{ clear: both;}
 .clearLeft{ clear: left;}
 .clearNOBR{ clear: both; padding:0; margin:0; line-height:0}
 .groupTitle{ font-weight: bold; }
 
+.infoTitle{ 
+   font-weight: bold; 
+   color: #1760A5;
+   text-align: right;
+   padding-right: 10px;
+}
+
 .alignRight{float:right}
 .alignLeft{float:left}
+.largeText{font-size:1.2em}
 .medText{font-size:1em}
 .smText{font-size:.9em}	
+
 input, select {
 	font-size:1em;
 	background-color:#F2F0EE; 
 	border: #666 solid 1px;
-	color:#000}
+	color:#000
+}
+
 .textBox {
 	width: 331px;
 	height: 80px;
-        font-size:1em;
-        background-color:#F2F0EE;
-        border: #666 solid 1px;
-        color:#000}
+    font-size:1em;
+    background-color:#F2F0EE;
+    border: #666 solid 1px;
+    color:#000
+	}
+
 .goBtn{ background-color:#ECE9AA; border:#666 1px solid}
-.goBtn:hover{ background-color: #FF9900; border:#000 1px solid}
+.goBtn:hover{ background-color: #FF6622; border:#000 1px solid}
 /* orig CSS*/
+
 .header {
 	font-family: "Lucida Grande",arial,sans-serif;
-	background-image: url(../images/body_back.jpg);
-        background-position: top right;
+    background-position: top right;
 	color: #305D9E;
 	background-repeat: no-repeat;
-	padding: 60px 10px 10px 0px;
+	padding: 0px 0px 10px 0px;
 	height: 86px; 
 	margin-bottom: 0px;
 	width: 950px;
 }
 .mainnav {
-	background-image: url(../images/Main_Nav_Background.jpg);
-	background-repeat: no-repeat;
-	margin: 2px 1px 0 0;
-	padding-bottom: 4px;
+    margin-left : auto;
+    margin-right : auto;
+	padding-bottom: 0px;
 	width: 950px;
 }
 .subnav-holder {
@@ -64,6 +197,7 @@ input, select {
 	margin-left: -475px;
 	text-decoration: none;
 }
+
 #about-subnav {
 	margin-left: 152px; 
 	display: none; 
@@ -72,6 +206,7 @@ input, select {
 	width:300px;
 	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat; 
 }
+
 #metagenomics-subnav {
 	margin-left:288px;
 	display: none; 
@@ -80,6 +215,7 @@ input, select {
 	width:500px;
 	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
 }
+
 #research-subnav {
 	margin-left: 421px; 
 	display: none; 
@@ -88,6 +224,7 @@ input, select {
 	width:380px;
 	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
 }
+
 #news-subnav {
 	margin-left: 552px; 
 	display: none; 
@@ -96,6 +233,7 @@ input, select {
 	width:398px;
 	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
 }
+
 #events-subnav {
 	margin-left: 687px; 
 	display: none; 
@@ -105,6 +243,7 @@ input, select {
 	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
 	
 }
+
 #forums-subnav { 
 	margin-left: 601px;
 	display: none;
@@ -113,6 +252,7 @@ input, select {
 	width:349px;
 	background: #FFF url('../images/navSubBkg.jpg') top right no-repeat;
 }
+
 .subnav-link {
 	display: inline;
 	color: #000; 
@@ -122,18 +262,24 @@ input, select {
 	font-size: 1em;
 	text-decoration: none;
 }
+
 .subnav a:link, .subnav a:visited {color:#000;text-decoration: none; }
-.subnav-holder div a:hover, .subnav-holder div a:focus{color:#FF9900;text-decoration: none; } 
+.subnav-holder div a:hover, .subnav-holder div a:focus{color:#FF6622;text-decoration: none; } 
 /* end orig CSS*/
+
 /* main body CSS */
-#mainBody {
+
+.mainBody {
 	position:absolute;
 	left: 50%;
 	width:950px;
-	margin-left: -475px; /*set to a negative number 1/2 of your width*/
+	margin-left: -475px; 
 }
 .boxContainer{padding:0}
-.boxBody{ background-color:#FFF; text-align:left; font-size:1.2em; line-height:1.5em; text-align:left}
+
+.boxBody{ background-color:#FFF; text-align:left; font-size:1.2em; line-height:1.5em;}
+.boxBodyRight{ background-color:#FFF; text-align:right; font-size:1.2em; line-height:1.5em;}
+
 .boxTopLeft{background:#FFF url(../images/boxTopLeft.gif) top left; height:15px}
 .boxTop{background:#FFF url(../images/boxTop.gif) top left repeat-x; height:15px}
 .boxTopRight{background:#FFF url(../images/boxTopRight.gif) top right; height:15px}
@@ -144,8 +290,9 @@ input, select {
 .boxRight{background:#FFF url(../images/boxRight.gif) top right repeat-y; width:15px}
 .colColor{background-color:#FCF2D7}
 .leftCol{
-	width:200px; padding-right:15px}	
+	width:200px; padding-right:15px; padding-left:10px;}	
 .leftGutter{ padding-left:15px}
+.rightGutter{ padding-right:15px}
 .rightCol{
 	width:200px; padding-left:15px;}
 .rightColVertBar{  border-left: #999 1px solid; padding-left:15px;}
@@ -172,13 +319,15 @@ input, select {
 	margin:0 4px 0 4px
 }
 .inlineStyle{display: inline}
+
 /*text and search in the initial header */
-#headerLeft{ font-size: 250%}
+#headerLeft{ font-size: 180%}
 #headerRight{width:220px; margin-top:15px; }
 #headerText{width:82px; margin-top:15px}
 #loginText{width:58px; margin-top:15px}
 #headerSearch{width:180px}
 #headerText a, #loginText a, #headerSearch a{color:#305D9E; text-decoration:none}
+
 /*level 3 navigation in main body*/
 #bodyNav,#bodyNav ul {
 	padding:0; 
@@ -202,6 +351,7 @@ input, select {
 	color:#000; 
 	font-weight:bold
 }
+
 /* level 4 and 5 menu */
 #sideNav{
 	text-decoration:none;
@@ -215,6 +365,7 @@ input, select {
 	margin:0 0 10px -30px; line-height:1.2em; font-size:.9em}
 #sideNav a {color:#000; text-decoration:none}
 #sideNav a:hover{ background-color:#FFF; text-decoration:none}
+
 /* header box */
 .headerTitle1 {
 	margin: 0 0 10px 0; 
@@ -233,7 +384,6 @@ input, select {
 	background-color:#BCD6BC; 
 	vertical-align: middle
 }
-
 
 .standard-table {
 	border: solid black 1px;

@@ -49,3 +49,14 @@
   * Parameterize port numbers for dashboard
   * Addition of implicit files to dashboard 
 
+* Dashboard updates
+  * update navigation bar layout 
+  * enable navigation bar round corners without image files
+  * add coyuright to all pages
+  * move all documentation liks to one page
+  * enable sorted applications list upon first page load
+  * move application usage info into a "row expander"
+  * add "Help" tooltip for novice users navigation
+  * stop page refresh when job is finished. The default refresh rate is set to 30 sec.
+  * Add time stamp for page refreshing.
+

@@ -35,11 +35,11 @@ import java.lang.Character;
 public class OpalInfoServlet extends HttpServlet {
 
     protected static Log log = LogFactory.getLog(OpalInfoServlet.class.getName());
-    private static final String SUMMARY_JSP = "/dashboard-jsp/summary.jsp";
+    private static final String SERVERINFO_JSP = "/dashboard-jsp/serverInfo.jsp";
     private static final String STATISTICS_JSP = "/dashboard-jsp/statistics.jsp";
     private static final String SYSINFO_JSP = "/dashboard-jsp/sysinfo.jsp";
     private static final String DOC_JSP = "/dashboard-jsp/documentation.jsp";
-    private static final String CONTACTUS_JSP = "/dashboard-jsp/contactus.jsp";
+    private static final String HOME_JSP = "/dashboard-jsp/home.jsp";
     private static final String SERVICELIST_JSP = "/dashboard-jsp/serviceList.jsp";
     
     //private static final String ERROR_JSP = "/dashboard-jsp/error.jsp";
@@ -200,19 +200,22 @@ public class OpalInfoServlet extends HttpServlet {
             //this doesn't exist anymore... Now there is the opal GUI
             dispatcher = getServletContext().getRequestDispatcher(SYSINFO_JSP);
             dispatcher.forward(req, res);
-        } else if ("doc".equals(command)) {
+        } else if ("docs".equals(command)) {
             //this doesn't exist anymore... Now there is the opal GUI
-            res.sendRedirect(opalDocumentation);
-        } else if ("contactus".equals(command)) {
+            //res.sendRedirect(opalDocumentation);
             req.setAttribute("opalWebsite", opalWebsite);
-            dispatcher = getServletContext().getRequestDispatcher(CONTACTUS_JSP);
+            dispatcher = getServletContext().getRequestDispatcher(DOC_JSP);
+            dispatcher.forward(req, res);
+        } else if ("home".equals(command)) {
+            req.setAttribute("opalWebsite", opalWebsite);
+            dispatcher = getServletContext().getRequestDispatcher(HOME_JSP);
             dispatcher.forward(req, res);
         } else if ("serviceList".equals(command)) {
             req.setAttribute("tomcatUrl", tomcatUrl);
-	    req.setAttribute("opalUrl", opalUrl);
+	        req.setAttribute("opalUrl", opalUrl);
             dispatcher = getServletContext().getRequestDispatcher(SERVICELIST_JSP);
             dispatcher.forward(req, res);
-        } else {
+        } else if ("serverInfo".equals(command)) {
             // need to gather a bunch of information regarding the opal
             // installation
             req.setAttribute("systemIPAddress", req.getLocalAddr());
@@ -228,7 +231,12 @@ public class OpalInfoServlet extends HttpServlet {
             req.setAttribute("submissionSystem", opalJobManager );
             req.setAttribute("opalDataLifetime", opalDataLifetime);
             
-            dispatcher = getServletContext().getRequestDispatcher(SUMMARY_JSP);
+            dispatcher =
+			getServletContext().getRequestDispatcher(SERVERINFO_JSP);
+            dispatcher.forward(req, res);
+        } else {
+            req.setAttribute("opalWebsite", opalWebsite);
+            dispatcher = getServletContext().getRequestDispatcher(HOME_JSP);
             dispatcher.forward(req, res);
         }
     }

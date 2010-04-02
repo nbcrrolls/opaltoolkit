@@ -14,3 +14,7 @@ GPS 3 licence
 -----------------------------
 clem
 
+jquery.js - jQuery JavaScript Library v1.3.2 http://jquery.com/
+jquery.corner.js - jquery corner plugin version 1.7
+RowExpander.js - from Ext JS Library 3.1.1
+services-panel.js - code moved from dashboard-jsp/serviceList.jsp
