@@ -283,7 +283,11 @@ public class CSFJobManager implements OpalJobManager {
         }
 
         // return an identifier for this process
-        return proc_submit_job.toString();
+
+        String proc_submit_id = proc_submit_job.toString();
+        proc_submit_job.destroy();
+
+        return proc_submit_id;
     }
 
     /**
