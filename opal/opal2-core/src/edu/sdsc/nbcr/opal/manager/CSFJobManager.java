@@ -284,10 +284,7 @@ public class CSFJobManager implements OpalJobManager {
 
         // return an identifier for this process
 
-        String proc_submit_id = proc_submit_job.toString();
-        proc_submit_job.destroy();
-
-        return proc_submit_id;
+	return proc_submit_job.toString();  
     }
 
     /**
@@ -474,11 +471,13 @@ public class CSFJobManager implements OpalJobManager {
             
             if(pdone_exit==1){
             	//Job complete
+		proc_submit_job.destroy();
             	logger.debug("CSF Job Status:PDone, Job Completed");
                 
             	status.setMessage("Execution complete - " + 
                               "check outputs to verify successful execution");
             }else {
+		proc_submit_job.destroy();
             	logger.debug("CSF Job Status:PExit, Job failed");
                 status.setMessage("Execution failed - process exited with value " +
                         "-1");
