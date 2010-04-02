@@ -8,7 +8,7 @@
   </tr>
   <tr>
     <td>
-      <div id="headerLeft" class="centerDiv shadow ">Welcome to Opal Dashboard
+      <div id="headerLeft" class="centerDiv shadow ">Welcome to the Opal Dashboard
 	  </div>
     </td>
   </tr>

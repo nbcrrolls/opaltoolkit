@@ -87,9 +87,9 @@ function showHide(layer_ref) {
 <table cellspacing="10">
 
     <tr><td>Insert command line here:</td><td><html:text property="cmdLine" size="50"/></td>
-    <tr><td>Insert number of CPU (only for parallel application):</td><td><html:text property="numCpu" size="50"/></td>
-    
-
+    <logic:equal name="appMetadata" property="parallel" value="true">
+      <tr><td>Insert number of CPU for parallel application:</td><td><html:text property="numCpu" size="50"/></td>
+    </logic:equal>
     
 <% 
 
@@ -111,7 +111,8 @@ if ( files.length > 1 ) {
 
 String index = "" + (files.length - 1);
 %>
-    <tr><td>Chose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
+    <tr><td>Choose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
+    <tr><td>Should input files be unzipped on server?</td><td><nested:checkbox property="extractInputs"/></td>
     
     <!-- end file upload part -->
 
