@@ -68,7 +68,7 @@
     <table border="0" width="100%" cellpadding="2px" >
       <tr>
         <td colspan="3" class="boxBody colColor">
-		<span class="infoTitle"> Opal2 :</span> is a toolkit for wrapping scientific applications as Web 
+		<span class="infoTitle"> Opal2</span> is a toolkit for wrapping scientific applications as Web 
 		services.  It leverages open standards and toolkits DRMAA, Condor and the Globus 
 		for cluster scheduling, standards-based Grid security and data management in an easy to use 
 		and highly configurable manner.  Opal is released under the 
@@ -79,7 +79,7 @@
       </tr>
       <tr>
         <td valign="top" width="38%" class="boxBody colColor"><span class="infoTitle">The
-		Opal Dashboard </span><br>
+		Opal Dashboard </span>
 		provides an easy interface for jobs submision and monitoring. The key features at a glance: 
 		   <ul class="menu1">
 		     <li><span class="Content">Easy to use and free of charge</span> </li>
@@ -92,19 +92,21 @@
 		</td>
 		<td class="colColor rightColVertBar">
         <td valign="top" class="boxBody colColor"> 
-		<span class="infoTitle">How to use </span><br>
-		Click on the tabs in the navigation bar at the top of the page. They provide:
+		<span class="infoTitle">How to use </span>
+		Click on the tabs in the navigation bar at the top of the page. 
 		   <ul class="menu2">
-		     <li><a href="./dashboard">Home</a> - this page </li>
-		     <li><a href="./dashboard?command=serverInfo">Server Info</a> - information 
-			     about Opal server host </li>
+		     <li><a href="./dashboard"><span class="PubTitle">Home</span></a> - this page </li>
+		     <li><a href="./dashboard?command=serverInfo">
+			     <span class="PubTitle">Server Info</span></a> - information about Opal server host </li>
 
-		     <li><a href="./dashboard?command=serviceList">List of applications</a> - choose 
-			     an available applications to run your job </li>
-		     <li><a href="./dashboard?command=statistics">Usage Statistics</a> - shows usage 
+		     <li><a href="./dashboard?command=serviceList">
+			     <span class="PubTitle">List of applications</span></a> 
+				 - choose an available applications to run your job </li>
+		     <li><a href="./dashboard?command=statistics">
+			     <span class="PubTitle">Usage Statistics</span></a> - shows usage 
 			     statistics for Opal server by job </li>
-		     <li><a href="./dashboard?command=docs">Documentation</a> - Opal documentation, 
-			     tutorials, support</li>
+		     <li><a href="./dashboard?command=docs">
+			     <span class="PubTitle">Documentation</span></a> - Opal documentation, tutorials, support</li>
 		   </ul>
 		<br>
 		</td>

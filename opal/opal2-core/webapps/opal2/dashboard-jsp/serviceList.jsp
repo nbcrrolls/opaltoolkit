@@ -84,9 +84,8 @@ String opalUrl = (String) request.getAttribute("opalUrl");
     <div id="containing-div" >
       <div id="feed-viewer" style="margin-left: auto; margin-right: auto; width: 900px"></div>
     </div>
-    <br>* a customized submission form is avaiable for this application 
-	<br>For an Atom feed of the available services <a href="opalServices.xml">
-	    <img src="images/feed-icon.png"/> click here</a>.
+    <br><span class="Require">*</span> a customized submission form is avaiable for this application 
+	<br>Available services Atom feed<a href="opalServices.xml"> <img src="images/feed-icon.png"/> </a>
   </td>
   <td class="boxRight colColor"><br /></td>
 </tr>

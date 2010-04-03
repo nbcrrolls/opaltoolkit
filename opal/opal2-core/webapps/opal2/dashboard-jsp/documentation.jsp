@@ -74,27 +74,34 @@
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Website: </td>
-        <td class="boxBody colColor"><a href="<%= opalWebsite %>">Opal Web Site</a>
-                  <a href="http://sourceforge.net/projects/opaltoolkit/">Opal at SourceForge</a></td>
+        <td class="boxBody colColor"><a href="<%= opalWebsite %>">
+		          <span class="PubTitle">Opal Web Site</span></a>
+                  <a href="http://sourceforge.net/projects/opaltoolkit/">
+				  <span class="PubTitle">Opal at SourceForge</span></a></td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Documentation:</td>
-        <td class="boxBody colColor"><a href="<%= opalDocumentation %>">Opal Documentation</a>
-		<a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">Tutorials
-		and Sample Programs</a>
+        <td class="boxBody colColor"><a href="<%= opalDocumentation %>">
+		          <span class="PubTitle">Opal Documentation</span></a>
+		          <a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">
+		          <span class="PubTitle">Tutorials and Sample Programs</span></a>
 		</td> 
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Support: </td>
-        <td class="boxBody colColor"><a href="mailto:support@nbcr.net">NBCR Support mailing list</a>
-                  <a href="http://sourceforge.net/mail/?group_id=211778">Opal mailing list</a>
-                  <a href="https://www.nbcr.net/forum/">NBCR Forum</a></td>
+        <td class="boxBody colColor"><a href="mailto:support@nbcr.net">
+		          <span class="PubTitle">NBCR Support mailing list</a>
+                  <a href="http://sourceforge.net/mail/?group_id=211778">
+				  <span class="PubTitle">Opal mailing list</span></a>
+                  <a href="https://www.nbcr.net/forum/">
+				  <span class="PubTitle">NBCR Forum</span></a></td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Opal use cases:</td>
-        <td class="boxBody colColor"><a href="http://meme.nbcr.net/">MEME Website</a>
-                  <a href="http://nbcr.net/pdb2pqr">NBCR PDB2PQR Website</a>
-                  <a href="http://camera.calit2.net/">CAMERA</a></td>
+        <td class="boxBody colColor"><a href="http://meme.nbcr.net/">
+		          <span class="PubTitle">MEME Website</span></a>
+                  <a href="http://nbcr.net/pdb2pqr"><span class="PubTitle">NBCR PDB2PQR Website</span></a>
+                  <a href="http://camera.calit2.net/"><span class="PubTitle">CAMERA<?span></a></td>
       </tr>
       <tr>
         <td valign="top" class="boxBodyRight colColor infoTitle">Publications:</td> 
