@@ -18,6 +18,23 @@ mpi.run=/path/to/your/mpi
 # modify the opal.xml accordingly
 # working.dir=opal-jobs
 
+## BEGIN: email configuration for server
+##        To be used for notifying users
+## -------------------------------------------
+# url for smtp server
+mail.smtp.host=smtp.gmail.com
+# whether the server needs authentication
+mail.smtp.auth=true
+# turn debugging on or off
+mail.smtp.debug=false
+# from address in notification email - could be a "no-reply" address
+mail.smtp.from=foo@bar.com
+# credentials for logging into smtp server
+mail.smtp.user=foo@bar.com
+mail.smtp.password=foobar
+## -------------------------------------------
+## END: email configuration for server
+
 # use this key to display how long to save user data on server
 opal.datalifetime=4 days
 

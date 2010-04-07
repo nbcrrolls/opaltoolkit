@@ -35,6 +35,8 @@
         <property name="clientIP" type="string" column="client_ip"/>
 
         <property name="serviceName" type="string" column="service_name"/>
+
+        <property name="userEmail" type="string" column="user_email"/>
     </class>
 
     <class name="JobOutput" table="job_output">

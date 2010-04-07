@@ -92,6 +92,10 @@ public class GenericServiceClient {
 			  .withDescription("command line arguments")
 			  .hasArg()
 			  .create("a"));
+	options.addOption(OptionBuilder.withArgName("email")
+			  .withDescription("user email for notification and logging")
+			  .hasArg()
+			  .create("e"));
 	options.addOption(OptionBuilder.withArgName("url1" + 
 						    "," + 
 						    "url2" + 
@@ -122,6 +126,9 @@ public class GenericServiceClient {
 	options.addOption(OptionBuilder.withArgName("extract")
 			  .withDescription("extract input files that are zipped")
 			  .create("z"));
+	options.addOption(OptionBuilder.withArgName("notify")
+			  .withDescription("notify users by email when job is complete")
+			  .create("m"));
 	options.addOption(OptionBuilder.withArgName("serverDN")
 			  .withDescription("server DN expected - if gsi is being used")
 			  .hasArg()
@@ -151,8 +158,6 @@ public class GenericServiceClient {
 	    System.out.println("Server DN: " + serverDN);
 	}
 	System.out.print("\n");
-
-	boolean extractInputs = line.hasOption("z");
 
 	// connect to the App Web service
 	AppServiceLocator asl = new AppServiceLocator();
@@ -246,6 +251,24 @@ public class GenericServiceClient {
 		in.setNumProcs(new Integer(numProcs));
 	    }
 
+	    boolean extractInputs = line.hasOption("z");
+	    if (extractInputs) {
+		System.out.println("Instructing server to unzip/untar zipped files");
+		in.setExtractInputs(true);
+	    }
+
+	    String email = line.getOptionValue("e");
+	    if (email != null) {
+		System.out.println("User email for notification: " + email);
+		in.setUserEmail(email);
+
+		boolean notifyUsers = line.hasOption("m");
+		if (notifyUsers) {
+		    System.out.println("Instructing server to notify on job completion");
+		    in.setSendNotification(notifyUsers);
+		}
+	    }
+
 	    // initialize list of files
 	    Vector inputFileVector = new Vector();
 
@@ -309,11 +332,6 @@ public class GenericServiceClient {
 		    infileArray[i] = (InputFileType) inputFileVector.get(i);
 		}
 		in.setInputFile(infileArray);
-	    }
-
-	    // set the variable to signify whether input files should be extracted
-	    if (extractInputs) {
-		in.setExtractInputs(true);
 	    }
 
 	    // set up a non-blocking call
