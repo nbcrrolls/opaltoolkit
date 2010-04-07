@@ -15,6 +15,7 @@ import java.net.URLConnection;
 import java.util.StringTokenizer;
 import java.util.Properties;
 import java.util.Hashtable;
+import java.util.Random;
 
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -103,6 +104,9 @@ public class AppServiceImpl
     private AppConfigType config;
     private File configFile;
     private long lastModified;
+
+    // random number generator
+    Random rand = new Random();
 
     // containier properties - initialize only once
     private static Properties props;
@@ -542,7 +546,8 @@ public class AppServiceImpl
 	throws FaultType {
 
 	// create a working directory where it can be accessible
-	final String jobID = "app" + serviceName + System.currentTimeMillis();
+	final String jobID = 
+	    "app" + serviceName + System.currentTimeMillis() + rand.nextInt();
 	final String outputDirName = 
 	    outputPrefix + File.separator + jobID + File.separator;
 	final File outputDir = new File(outputDirName);
