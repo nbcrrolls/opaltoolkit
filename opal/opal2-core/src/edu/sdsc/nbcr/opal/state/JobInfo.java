@@ -35,6 +35,7 @@ public class JobInfo {
     private String clientDN;
     private String clientIP;
     private String serviceName;
+    private String userEmail;
 
     // default constructor
     public JobInfo() {}
@@ -167,5 +168,13 @@ public class JobInfo {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

@@ -16,6 +16,14 @@ import java.util.StringTokenizer;
 import java.util.Properties;
 import java.util.Hashtable;
 
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.Message;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
+
 import org.apache.log4j.Logger;
 
 import org.apache.axis.types.URI;
@@ -350,7 +358,7 @@ public class AppServiceImpl
 	logger.info("called for job: " + in);
 	
 	// make sure that the config has been retrieved
-	retrieveAppConfig();
+	// retrieveAppConfig();
 
 	// retrieve the status
 	StatusOutputType status = null;
@@ -380,7 +388,7 @@ public class AppServiceImpl
 	logger.info("called for job: " + in);
 	
 	// make sure that the config has been retrieved
-	retrieveAppConfig();
+	// retrieveAppConfig();
 
 	// retrieve the statistics
 	JobStatisticsType stats = null;
@@ -411,7 +419,7 @@ public class AppServiceImpl
 	logger.info("called for job: " + in);
 	
 	// make sure that the config has been retrieved
-	retrieveAppConfig();
+	// retrieveAppConfig();
 
 	// retrieve the outputs
 	JobOutputType outputs = null;
@@ -625,6 +633,13 @@ public class AppServiceImpl
 	info.setClientDN(Util.getRemoteDN());
 	info.setClientIP(Util.getRemoteIP());
 	info.setServiceName(serviceName);
+	final String userEmail = in.getUserEmail();
+	if (userEmail != null) {
+	    logger.debug("User email for notification: " + userEmail);
+	    info.setUserEmail(userEmail);
+	} else {
+	    info.setUserEmail("Unknown");
+	}
 	try {
 	    HibernateUtil.saveJobInfoInDatabase(info);
 	} catch (StateManagerException se) {
@@ -708,21 +723,63 @@ public class AppServiceImpl
 	// add this jobLaunchUtil into the jobTable
 	jobTable.put(jobID, jobManager);
 
+	final Boolean sendNotification = in.getSendNotification();
 	if (!blocking) {
 	    // launch thread to monitor status
 	    new Thread() {
 		public void run() {
 		    try {
-			manageJob(jobManager, jobID, outputDirName, baseURL, handle);
+			manageJob(jobManager, 
+				  jobID, 
+				  outputDirName, 
+				  baseURL, 
+				  handle);
 		    } catch (FaultType f) {
 			// status is logged, not much else to do here
 			logger.error(f);
 		    }
+
+		    // after finishing, notify user if need be
+		    if (sendNotification != null) {
+			if (sendNotification) {
+			    if (userEmail != null) {
+				emailStatus(userEmail, jobID);
+			    } else {
+				logger.error("Can't send email to user as email is NULL");
+			    }
+			}
+		    }
 		}
 	    }.start();
 	} else {
-	    // monitor status in the same thread
-	    manageJob(jobManager, jobID, outputDirName, baseURL, handle);
+	    try {
+		// monitor status in the same thread
+		manageJob(jobManager, jobID, outputDirName, baseURL, handle);
+	    } catch (FaultType f) {
+		// after finishing, notify user if need be
+		if (sendNotification != null) {
+		    if (sendNotification) {
+			if (userEmail != null) {
+			    emailStatus(userEmail, jobID);
+			} else {
+			    logger.error("Can't send email to user as email is NULL");
+			}
+		    }
+		}
+		// rethrow the exception
+		throw f;
+	    }
+
+	    // no exceptions - notify user if need be
+	    if (sendNotification != null) {
+		if (sendNotification) {
+		    if (userEmail != null) {
+			emailStatus(userEmail, jobID);
+		    } else {
+			logger.error("Can't send email to user as email is NULL");
+		    }		
+		}    
+	    }
 	}
 
 	// return the jobID
@@ -1227,6 +1284,116 @@ public class AppServiceImpl
 		remoteIP + ") at maximum limit (" + ipLimit + " per hour)";
 	    logger.error(msg);
 	    throw new FaultType(msg);
+	}
+    }
+
+    /**
+     * Emails the user with the status of job
+     * Doesn't throw any exception, only logs it
+     */
+    private void emailStatus(String userEmail, String jobID) {
+	try {
+	    logger.info("called");
+	    StatusOutputType status = queryStatus(jobID);
+
+	    // set the connection properties
+	    Properties mailProps = new Properties();
+	    
+	    // get the mail server
+	    String mailServer = props.getProperty("mail.smtp.host");
+	    if (mailServer == null) {
+		logger.error("No mail server specified in opal.properties");
+		return;
+	    }
+	    mailProps.put("mail.smtp.host", mailServer);
+
+	    // check whether authentication should be turned on
+	    Authenticator auth = null;
+	    String enableAuth = props.getProperty("mail.smtp.auth");
+	    if (enableAuth != null) {
+		mailProps.put("mail.smtp.starttls.enable",
+			      enableAuth);
+		mailProps.put("mail.smtp.auth", 
+			      enableAuth);
+
+
+		String userName = props.getProperty("mail.smtp.user");
+		String password = props.getProperty("mail.smtp.password");
+
+		if ((userName == null) || (password == null)) {
+		    logger.error("Username/password for SMTP server is null");
+		    return;
+		}
+		auth = new SMTPAuthenticator(userName,
+					     password);
+	    }
+
+	    // get the default Session using above properties
+	    Session session = Session.getDefaultInstance(mailProps, 
+							 auth);
+	    Boolean debug = Boolean.parseBoolean(props.getProperty("mail.smtp.debug"));
+	    session.setDebug(debug);
+
+	    // create a message
+	    Message msg = new MimeMessage(session);
+	    
+	    // set the from and to address
+	    String userFrom = props.getProperty("mail.smtp.from");
+	    if (userFrom == null) {
+		logger.error("Can't find a from email address in the opal.properties");
+		return;
+	    }
+
+	    InternetAddress addressFrom = new InternetAddress(userFrom);
+	    msg.setFrom(addressFrom);
+	    
+	    InternetAddress[] addressTo = new InternetAddress[1]; 
+	    addressTo[0] = new InternetAddress(userEmail);
+
+	    msg.setRecipients(Message.RecipientType.TO, addressTo);
+
+	    // Optional : You can also set your custom headers in the Email if you Want
+	    // msg.addHeader("MyHeaderName", "myHeaderValue");
+	    
+	    // Setting the Subject and Content Type
+	    msg.setSubject("Results for Opal job: " + jobID);
+	    String body = "Your Opal job is complete\n\n" +
+		"Job ID: " + jobID + "\n" +
+		"Status code: " + status.getCode() + "\n" +
+		"Message: " + status.getMessage() + "\n" +
+		"Output Base URL: " + status.getBaseURL() + "\n";
+	    msg.setContent(body, "text/plain");
+	    
+	    Transport.send(msg);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    String msg = "Exception caught while trying to email user: " +
+		e.getMessage();
+	    logger.error(msg);
+	}
+    }
+
+    /**
+     * SimpleAuthenticator is used to do simple authentication
+     * when the SMTP server requires it.
+     */
+    private class SMTPAuthenticator extends Authenticator {
+	private String username;
+	private String password;
+
+	/**
+	 * Default constructor
+	 */
+	SMTPAuthenticator(String username, String password) {
+	    this.username = username;
+	    this.password = password;
+	}
+
+	/**
+	 * Return a PasswordAuthentication object based on username/password
+	 */
+	public PasswordAuthentication getPasswordAuthentication() {
+	    return new PasswordAuthentication(username, password);
 	}
     }
 }

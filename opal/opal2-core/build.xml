@@ -257,8 +257,9 @@ Author:
         <!-- ant jar -->
         <include name="ant-1.7.0.jar" />
 
-	<!-- mailapi jar -->
+	<!-- mail jars -->
         <include name="mailapi-1_3_1.jar" />
+	<include name="javamail-1.4.3.jar"/>
 
 	<!-- activation jar -->
         <include name="activation-1_0_2.jar" />

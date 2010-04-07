@@ -257,10 +257,12 @@
 	<xsd:sequence>
 	  <xsd:element name="argList" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="numProcs" type="xsd:int" minOccurs="0"/>
+	  <xsd:element name="userEmail" type="xsd:string" minOccurs="0"/>
           <xsd:element name="wallClockTime" type="xsd:nonNegativeInteger"  minOccurs="0"/>
 	  <xsd:element name="inputFile" type="types:InputFileType"
 		       minOccurs="0" maxOccurs="unbounded"/>
 	  <xsd:element name="extractInputs" type="xsd:boolean" minOccurs="0"/>
+	  <xsd:element name="sendNotification" type="xsd:boolean" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 
