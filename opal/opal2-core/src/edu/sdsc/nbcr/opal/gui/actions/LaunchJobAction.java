@@ -141,6 +141,10 @@ public class LaunchJobAction extends MappingDispatchAction{
         if ( numCpu != -1 ) {
             in.setNumProcs(numCpu);
         }
+	if ((app.getUserEmail() != null) && (app.getUserEmail().length() >= 1)) {
+	    in.setUserEmail(app.getUserEmail());
+	    in.setSendNotification(true);
+	}
 
         // preparing the input files
         InputFileType [] files = getFiles(app);
