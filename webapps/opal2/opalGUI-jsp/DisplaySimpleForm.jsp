@@ -87,6 +87,7 @@ function showHide(layer_ref) {
 <table cellspacing="10">
 
     <tr><td>Insert command line here:</td><td><html:text property="cmdLine" size="50"/></td>
+    <tr><td>Insert user email for status notification:</td><td><html:text property="userEmail" size="50"/></td>
     <logic:equal name="appMetadata" property="parallel" value="true">
       <tr><td>Insert number of CPU for parallel application:</td><td><html:text property="numCpu" size="50"/></td>
     </logic:equal>

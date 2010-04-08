@@ -51,6 +51,7 @@ public class AppMetadata extends ActionForm{
     private FormFile [] files;
     private String jobId;
     private String numCpu;
+    private String userEmail;
     private boolean addFile;
     private boolean parallel;
     private boolean extractInputs;
@@ -67,6 +68,7 @@ public class AppMetadata extends ActionForm{
         argParams = null;
         separator = null;
         cmdLine = null;
+	userEmail = null;
         files = new FormFile[1];
         addFile = false;
 	parallel = false;
@@ -279,6 +281,21 @@ public class AppMetadata extends ActionForm{
      */
     public void setNumCpu(String numCpu){
         this.numCpu = numCpu;
+    }
+
+    /**
+     * @return the user email 
+     */
+    public String getUserEmail(){
+        return userEmail;
+    }
+
+
+    /**
+     * @param userEmail the email for user notification
+     */
+    public void setUserEmail(String userEmail){
+        this.userEmail = userEmail;
     }
 
     /**
