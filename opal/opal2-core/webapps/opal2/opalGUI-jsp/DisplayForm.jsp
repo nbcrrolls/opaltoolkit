@@ -113,6 +113,8 @@ function selectElement(element, groupId){
     </tr>
 </logic:equal>
 
+    <tr><td>Insert user email for status notification:</td><td><html:text property="userEmail" size="50"/></td>
+
 <!--  double nested tag does not work with input field vaule so I had to use long format -->
 
 <% boolean exclusiveGroup = false; %>
