@@ -1307,7 +1307,7 @@ public class AppServiceImpl
 	    // get the mail server
 	    String mailServer = props.getProperty("mail.smtp.host");
 	    if (mailServer == null) {
-		logger.error("No mail server specified in opal.properties");
+		logger.warn("No mail server specified in opal.properties");
 		return;
 	    }
 	    mailProps.put("mail.smtp.host", mailServer);
@@ -1326,7 +1326,7 @@ public class AppServiceImpl
 		String password = props.getProperty("mail.smtp.password");
 
 		if ((userName == null) || (password == null)) {
-		    logger.error("Username/password for SMTP server is null");
+		    logger.warn("Username/password for SMTP server is null");
 		    return;
 		}
 		auth = new SMTPAuthenticator(userName,
@@ -1345,7 +1345,7 @@ public class AppServiceImpl
 	    // set the from and to address
 	    String userFrom = props.getProperty("mail.smtp.from");
 	    if (userFrom == null) {
-		logger.error("Can't find a from email address in the opal.properties");
+		logger.warn("Can't find a from email address in the opal.properties");
 		return;
 	    }
 
