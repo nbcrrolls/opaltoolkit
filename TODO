@@ -2,7 +2,7 @@
   * Removal of number of CPUs for non-parallel jobs on input form: X
   * PBS support (with or without DRMAA)
   * Support upload of tarballs for inputs: X
-  * Support for user email as an optional argument
+  * Support for user email as an optional argument: X
   * Modification of jobID to include service name: X
   * Addition of utility services (addition to WSDL)
     * Server load, queue length, data lifetime, server information
