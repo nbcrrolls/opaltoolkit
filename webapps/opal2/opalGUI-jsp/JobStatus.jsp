@@ -30,7 +30,7 @@
 StatusOutputType status =  (StatusOutputType) request.getAttribute("status");
 String serviceID = (String)request.getAttribute("serviceID");
 String jobId = (String)request.getAttribute("jobId");
-if (status.getCode() != 8 ) { 
+if (status.getCode() != 8  && status.getCode() != 4) { 
 %>
   <script language="JavaScript"> 
     function refresh() { window.location.reload( true ); }
