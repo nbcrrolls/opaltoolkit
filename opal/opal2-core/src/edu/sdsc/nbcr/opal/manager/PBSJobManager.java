@@ -319,9 +319,28 @@ public class PBSJobManager implements OpalJobManager {
     public StatusOutputType destroyJob()
 	throws JobManagerException {
 	logger.info("called");
+
+	// check if this process has been started already
+	if (!started) {
+	    String msg = "Can't destroy a process that hasn't be started";
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
+	}
 	
-	// TODO: need to figure out how to destroy job
-	throw new JobManagerException("Destroy not supported for PBS jobs");
+	try {
+	    Job.destroy(handle);
+	} catch (Exception e) {
+	    String msg = "Error while destroying job: " +
+		e.getMessage();
+	    logger.error(e);
+	    throw new JobManagerException(msg);
+	}
+
+	// update status
+	status.setCode(GramJob.STATUS_FAILED);
+	status.setMessage("Process destroyed on user request");
+
+	return status;
     }
 
     /**
