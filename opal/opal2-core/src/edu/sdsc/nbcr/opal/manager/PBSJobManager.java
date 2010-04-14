@@ -260,23 +260,45 @@ public class PBSJobManager implements OpalJobManager {
 	    throw new JobManagerException(msg);
 	}
 
-	// poll till status is RUNNING
-	while (!job.isComplete()) {
-	    try {
-		// sleep for 3 seconds
-		Thread.sleep(3000);
-	    } catch (InterruptedException ie) {
-		// minor exception - log exception and continue
-		logger.error(ie.getMessage());
-		continue;
-	    }
-	}
+
+        // poll till status is COMPLETE
+	String jobState = "";
+	boolean gotStatus = true;
+        while (true) {
+            try {
+                // sleep for 3 seconds
+                Thread.sleep(3000);
+
+                // print job status
+                jobState = Job.getJobStatus(handle);
+                logger.info("Received job status: " + jobState);
+            } catch (Exception e) {
+		// this is probably because keep_completed is not set
+		// so PBS forgets about completed jobs
+                String msg = "Can't wait for job to complete - " +
+                    e.getMessage();
+                logger.warn(msg);
+		gotStatus = false;
+		break;
+            }
+        }
 
 	// update status
-	// TODO: Need better error handling
-	status.setCode(GramJob.STATUS_DONE);
-	status.setMessage("Execution complete - " + 
-			  job.getStatus());
+	if (!gotStatus) {
+	    status.setCode(GramJob.STATUS_DONE);
+	    status.setMessage("Execution complete - " + 
+			      "check outputs to verify successful execution");
+	} else {
+	    if (jobState.equals("C")) {
+		status.setCode(GramJob.STATUS_DONE);
+		status.setMessage("Execution complete - " + 
+				  "check outputs to verify successful execution");
+	    } else {
+		status.setCode(GramJob.STATUS_FAILED);
+		status.setMessage("Execution failed - " + 
+				  "final job status is " + jobState);
+	    }
+	}
 
 	return status;
     }
@@ -307,8 +329,8 @@ public class PBSJobManager implements OpalJobManager {
 
 	// create the submission script
 	pw.println("#!/bin/sh");
-	pw.println("#PBS -e stderr.txt");
-	pw.println("#PBS -o stdout.txt");
+	pw.println("#PBS -e " + workingDir + File.separator + "stderr.txt");
+	pw.println("#PBS -o " + workingDir + File.separator + "stdout.txt");
 	pw.println("cd " + workingDir);
 	pw.println(cmd);
 	pw.close();
