@@ -182,8 +182,8 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
   </welcome-file-list>
 
   <session-config>
-      <!-- Default to 5 minute session timeouts -->
-      <session-timeout>5</session-timeout>
+      <!-- Default to 15 minute session timeouts -->
+      <session-timeout>15</session-timeout>
   </session-config>
 
 

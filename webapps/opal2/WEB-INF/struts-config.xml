@@ -42,7 +42,7 @@
     <global-forwards>
         <forward
                 name="Error"
-                path="/opalGUI-jsp/Error.jsp"/>
+                path="/dashboard-jsp/timeout.jsp"/>
     </global-forwards>
 
     <!-- ==== Action Mapping Definitions ==== -->
