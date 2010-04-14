@@ -146,7 +146,7 @@ public class PBSJobManager implements OpalJobManager {
 
 	    // append arguments - needs to be this way to locate machinefile
 	    cmd = mpiRun + 
-		" -machinefile $TMPDIR/machines" +
+		//		" -machinefile $TMPDIR/machines" +
 		" -np " + numProcs + " " +
 		config.getBinaryLocation();
 	    if ((args != null) && (!(args.equals("")))) {
