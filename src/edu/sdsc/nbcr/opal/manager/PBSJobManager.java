@@ -192,17 +192,8 @@ public class PBSJobManager implements OpalJobManager {
 	    throw new JobManagerException(msg);
 	}
 
-	// TODO: need to figure out how to wait for activation
-
-	// update status to active
-	status.setCode(GramJob.STATUS_ACTIVE);
-	status.setMessage("Execution in progress");
-
 	// notify listeners that process is activated
 	started = true;
-	synchronized(this) {
-	    this.notifyAll();
-	}
 
 	// return an identifier for this process
 	return handle;
@@ -218,8 +209,6 @@ public class PBSJobManager implements OpalJobManager {
 	throws JobManagerException {
 	logger.info("called");
 
-	// TODO: Need to figure out how to wait for activation
-
 	// check if this process has been started already
 	if (!started) {
 	    String msg = "Can't wait for a process that hasn't be started";
@@ -227,18 +216,32 @@ public class PBSJobManager implements OpalJobManager {
 	    throw new JobManagerException(msg);
 	}
 
-	// poll till status is ACTIVE or ERROR
-	while (!started) {
+	// poll till status is RUNNING
+	while (true) {
 	    try {
-		synchronized(this) {
-		    this.wait();
+		// if job status is not queued, terminate loop
+		String jobState = Job.getJobStatus(handle);
+		logger.debug("Received job status: " + jobState);
+		if (!jobState.equals("Q")) {
+		    // not queued AKA active
+		    break;
+		} else {
+		    // still queued - sleep for 3 seconds
+		    Thread.sleep(3000);
 		}
-	    } catch (InterruptedException ie) {
-		// minor exception - log exception and continue
-		logger.error(ie.getMessage());
-		continue;
+	    } catch (Exception e) {
+		// this is probably because keep_completed is not set
+		// so PBS forgets about completed jobs
+		String msg = "Can't wait for job to activate - " +
+		    e.getMessage();
+		logger.warn(msg);
+		break;
 	    }
 	}
+
+	// update status to active
+	status.setCode(GramJob.STATUS_ACTIVE);
+	status.setMessage("Execution in progress");
 
 	return status;
     }
@@ -271,7 +274,11 @@ public class PBSJobManager implements OpalJobManager {
 
                 // print job status
                 jobState = Job.getJobStatus(handle);
-                logger.info("Received job status: " + jobState);
+                logger.debug("Received job status: " + jobState);
+		if (jobState.equals("C") || jobState.equals("E")) {
+		    // execution complete
+		    break;
+		}
             } catch (Exception e) {
 		// this is probably because keep_completed is not set
 		// so PBS forgets about completed jobs
