@@ -1,6 +1,6 @@
 * Opal 2.3 release
   * Removal of number of CPUs for non-parallel jobs on input form: X
-  * PBS support (with or without DRMAA)
+  * PBS support, using a modified version of the pbs4java package: X
   * Support upload of tarballs for inputs: X
   * Support for user email as an optional argument: X
   * Modification of jobID to include service name: X
