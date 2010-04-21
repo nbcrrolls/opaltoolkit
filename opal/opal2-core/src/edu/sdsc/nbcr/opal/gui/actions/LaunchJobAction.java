@@ -179,6 +179,9 @@ public class LaunchJobAction extends MappingDispatchAction{
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }catch (Exception e){
+            if ( e.getMessage() == null ) {
+                return mapping.findForward("Timeout");
+            }
             log.error("An error occurred while submitting the job.");
             log.error("The error message is: " + e.getMessage(), e);
 
