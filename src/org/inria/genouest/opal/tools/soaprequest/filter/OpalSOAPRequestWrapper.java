@@ -6,6 +6,7 @@
  * 
  * Genouest Platform (http://www.genouest.org)
  * Author: Anthony Bretaudeau <anthony.bretaudeau@irisa.fr>
+ * Modified by: Sriram Krishnan <sriram@sdsc.edu>
  * Creation: May 26th, 2009
  */
 
@@ -56,7 +57,10 @@ public class OpalSOAPRequestWrapper extends HttpServletRequestWrapper {
 		servletPath = request.getRequestURL().toString();
 
 		logger.debug("Entering OpalSOAPRequestFilter");
-		modifiedStream = new SoapInputStream(request.getInputStream(), getContentType().startsWith("multipart/"), servletPath, context);
+		// make sure that this is indeed an Opal call by checking request params
+		if (getContentType() != null) {
+		    modifiedStream = new SoapInputStream(request.getInputStream(), getContentType().startsWith("multipart/"), servletPath, context);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +76,11 @@ public class OpalSOAPRequestWrapper extends HttpServletRequestWrapper {
 	 */
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
+	    if (modifiedStream != null) {
 		return modifiedStream;
+	    } else {
+		return super.getInputStream();
+	    }
 	}
 
 	/* (non-Javadoc)

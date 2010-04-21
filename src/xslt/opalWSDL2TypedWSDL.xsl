@@ -105,6 +105,9 @@
       
 	    <xsd:element maxOccurs="1" minOccurs="0" name="numProcs" type="xsd:int"/>
 	    <xsd:element maxOccurs="1" minOccurs="0" name="wallClockTime" type="xsd:nonNegativeInteger"/>
+	    <xsd:element maxOccurs="1" minOccurs="0" name="userEmail" type="xsd:string"/>
+	    <xsd:element maxOccurs="1" minOccurs="0" name="password" type="xsd:string"/>
+	    <xsd:element maxOccurs="1" minOccurs="0" name="sendNotification" type="xsd:boolean"/>
     </xsd:sequence>
   </xsl:template>
   

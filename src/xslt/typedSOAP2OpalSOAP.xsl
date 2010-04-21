@@ -44,6 +44,17 @@
       <xsl:if test="wallClockTime">
         <wallClockTime><xsl:value-of select="wallClockTime"/></wallClockTime>
       </xsl:if>
+
+      <!-- Add userEmail, password and sendNotification-->
+      <xsl:if test="userEmail">
+        <userEmail><xsl:value-of select="userEmail"/></userEmail>
+      </xsl:if>
+      <xsl:if test="password">
+        <password><xsl:value-of select="password"/></password>
+      </xsl:if>
+      <xsl:if test="sendNotification">
+        <sendNotification><xsl:value-of select="sendNotification"/></sendNotification>
+      </xsl:if>
       
       <!-- Construct inputFile arguments -->
       <xsl:apply-templates select="$config/opal:appConfig/opal:metadata/opal:types/opal:taggedParams/opal:param" mode="input">
