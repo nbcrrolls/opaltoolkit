@@ -59,7 +59,7 @@
 <br>
     <jsp:include page="header.jsp"/>
 
-    <h3>An unexpected error has occured</h3>
+    <h3>Opal has encountered an error</h3>
     <logic:present name="<%=Constants.ERROR_MESSAGES%>">
         <ul>
             <logic:iterate id="error" name="<%=Constants.ERROR_MESSAGES%>" indexId="index">
