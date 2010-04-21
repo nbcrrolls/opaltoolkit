@@ -175,7 +175,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             log.error("The remote error message is: " + e.getMessage1(), e);
 
             errors.add("A remote error occured while submitting the job to the remote server");
-            errors.add("the remote error message is: " + e.getMessage1());
+            errors.add("The remote error message is: " + e.getMessage1());
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }catch (Exception e){
@@ -183,8 +183,8 @@ public class LaunchJobAction extends MappingDispatchAction{
             log.error("The error message is: " + e.getMessage(), e);
 
             errors.add("An error occured while submitting the job to the remote server");
-            errors.add("the error message is: " + e.getMessage());
-            errors.add("Please go back to the List of Application page and try resubmitting the job");
+            errors.add("The error message is: " + e.getMessage());
+            errors.add("Please go back to the List of Applications page and try resubmitting the job");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
