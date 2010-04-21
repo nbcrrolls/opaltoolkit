@@ -6,34 +6,30 @@
  * 
  * Genouest Platform (http://www.genouest.org)
  * Author: Anthony Bretaudeau <anthony.bretaudeau@irisa.fr>
- * Creation: May 26th, 2009
+ * Creation: April 15th, 2010
  */
 
 package org.inria.genouest.opal.tools.soaprequest.filter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.ServletInputStream;
-
 /**
- * Implements ServletInputStream to store data from a ByteArrayOutputStream.
+ * Implements InputStream to read only xml part of the input SOAP request.
  */
-public class OpalSOAPInputStream extends ServletInputStream {
+public class XmlPartInputStream extends InputStream {
 
-	/** The input data. */
-	private InputStream in;
+	/** The soap whole request containing xml and possibly attachments. */
+	private SoapInputStream wholeRequest;
 
 	/**
 	 * Instantiates a new custom soap input stream.
 	 * 
 	 * @param baos the output stream
 	 */
-	public OpalSOAPInputStream(ByteArrayOutputStream baos) {
+	public XmlPartInputStream(SoapInputStream wholeRequest) {
 		super();
-		in = new ByteArrayInputStream(baos.toByteArray());
+		this.wholeRequest = wholeRequest;
 	}
 
 	/* (non-Javadoc)
@@ -41,15 +37,16 @@ public class OpalSOAPInputStream extends ServletInputStream {
 	 */
 	@Override
 	public int read() throws IOException {
-		return in.read();
+		return wholeRequest.readXml();
 	}
+
 
 	/* (non-Javadoc)
 	 * @see java.io.InputStream#close()
 	 */
 	@Override
 	public void close() throws IOException {
-		in.close();
+		super.close();
 	}
 
 }
