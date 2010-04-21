@@ -44,10 +44,17 @@ public class OpalSOAPRequestFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 
-		OpalSOAPRequestWrapper reqWrapper = new OpalSOAPRequestWrapper(req, filterConfig.getServletContext()); // Modify the SOAP request if needed
-		
-		// Pass to other filters/servlet
-		chain.doFilter(reqWrapper, response);
+		String path = req.getRequestURL().toString();
+
+		// only do the translation if it is not a built-in Axis service
+		if (!path.endsWith("AxisServlet")) {
+		    OpalSOAPRequestWrapper reqWrapper = new OpalSOAPRequestWrapper(req, filterConfig.getServletContext()); // Modify the SOAP request if needed
+
+		    // Pass to other filters/servlet
+		    chain.doFilter(reqWrapper, response);
+		} else {
+		    chain.doFilter(request, response);
+		}
 	}
 
 	/**
