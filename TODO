@@ -4,16 +4,17 @@
   * Support upload of tarballs for inputs: X
   * Support for user email as an optional argument: X
   * Modification of jobID to include service name: X
-  * Addition of utility services (addition to WSDL)
-    * Server load, queue length, data lifetime, server information
-  * Addition of the above statistics to the Dashboard
   * Refreshed look and feel for Opal dashboard: X
+    * Fix Opal upgrade script
   * Bug fix for destroy() operation, where baseURL was incorrectly
     returned as empty after job destruction: X
   * Bug fix for IP limits where the query for filtering by IP was incorrect: X
   * Bug fix for Opal GUI timeout error: X
   * Bug fix for SOAP filter to support large files and for empty arguments: X
 
+* Addition of utility services (addition to WSDL)
+  * Server load, queue length, data lifetime, server information
+* Addition of the above statistics to the Dashboard
 * Opal MetaService - submission of jobs to other Opal servers
 
 * REST support - and upgrade to Axis2
