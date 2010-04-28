@@ -73,8 +73,8 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
         }
         String serviceBaseURL = (String) serviceForm.get("serviceURL");
         //String serviceName = (String) serviceForm.get("serviceName");       
-        log.info("The serviceBaseURL is: " + serviceBaseURL );
-        //log.info("The serviceName is: " + serviceName );
+        log.debug("The serviceBaseURL is: " + serviceBaseURL );
+        //log.debug("The serviceName is: " + serviceName );
         //let's parse the serviceBaseURL appMetadata file
         AppMetadata app = AppMetadataParser.parseAppMetadata(serviceBaseURL );
         if (app == null){

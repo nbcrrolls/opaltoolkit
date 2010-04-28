@@ -224,7 +224,7 @@ public class PloterServlet extends HttpServlet
         // ok, so all the parameters are now parsed...
         //                 -----------------      getting data from DB          ---------------
         //let's get the data out of the DB 
-        log.info("Going to generate a chart (" + type + ") " + width + "x"
+        log.debug("Going to generate a chart (" + type + ") " + width + "x"
                 + height + " with beginning date " + startDate + " and end date " + endDate);
         String xAxisTitle = "";
         String yAxisTitle = "";
@@ -359,7 +359,7 @@ public class PloterServlet extends HttpServlet
         // validate color first
         try {
             if (bgcolor != null && bgcolor.matches("#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]")) {
-                log.info("color valid");
+                log.debug("color valid");
                 valid = true;
             }
         } catch (PatternSyntaxException e) {
@@ -371,19 +371,19 @@ public class PloterServlet extends HttpServlet
 
         String tmp;
         tmp = bgcolor.substring(1, 3);
-        log.info("tmp = " + tmp);
+        log.debug("tmp = " + tmp);
         red = Integer.valueOf(tmp, 16).intValue();
-        log.info("int = " + red);
+        log.debug("int = " + red);
 
         tmp = bgcolor.substring(3, 5);
-        log.info("tmp = " + tmp);
+        log.debug("tmp = " + tmp);
         green = Integer.valueOf(tmp, 16).intValue();
-        log.info("int = " + green);
+        log.debug("int = " + green);
 
         tmp = bgcolor.substring(5, 7);
-        log.info("tmp = " + tmp);
+        log.debug("tmp = " + tmp);
         blue = Integer.valueOf(tmp, 16).intValue();
-        log.info("int = " + blue);
+        log.debug("int = " + blue);
 
         return new Color(red, green, blue);
     }

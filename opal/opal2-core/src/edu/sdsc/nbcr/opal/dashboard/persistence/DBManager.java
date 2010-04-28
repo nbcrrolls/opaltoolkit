@@ -293,11 +293,11 @@ public class DBManager {
                 .setDate("endDate", endDateSQL);
             List result = queryStat.list();
             Iterator itera = result.iterator();
-            log.info("Going to get the " + type + " for the service: " + service + 
+            log.debug("Going to get the " + type + " for the service: " + service + 
                     "\nRunning the following query: " + queryStat.getQueryString());
             //while (itera.hasNext()){
             //    Object [] entry = (Object []) itera.next();
-            //    log.info("the rsults are: " + (String) entry[0] + ",  " + (Integer)entry[1] );
+            //    log.debug("the rsults are: " + (String) entry[0] + ",  " + (Integer)entry[1] );
             //}
             //itera = result.iterator(); 
             double [] values = new double[numberOfDays+1];
@@ -415,7 +415,7 @@ public class DBManager {
                 " order by jobInfo.start_time_date desc" ;
         //getting the dialect
         String dialect = getDialect();
-        log.info("The dialect in use is: " + dialect);
+        log.debug("The dialect in use is: " + dialect);
         if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
             //this is HSQL
             query = "select jobInfo.start_time_date as date, " +

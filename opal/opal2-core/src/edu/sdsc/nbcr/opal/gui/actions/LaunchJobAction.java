@@ -73,7 +73,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             if ( (formFiles[formFiles.length - 1] != null) 
                     && (formFiles[formFiles.length - 1].getFileName().length() > 0 ) ) {
                 //the user has actually uploaded something!
-                log.info("Adding one more input file to the simple submission form");
+                log.debug("Adding one more input file to the simple submission form");
                 //let's add an element to the files array so the user upload a new file there is a place holder (the last element)
                 
                 FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
@@ -105,7 +105,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                 debug += "" + app.getFiles()[i].getFileName() + " ";
             }
         }
-        log.info("the following parameters has been posted:\n" + debug);
+        log.debug("the following parameters has been posted:\n" + debug);
         //let's build the command line
         String cmd = makeCmdLine(app);
         if (cmd == null){
@@ -149,14 +149,14 @@ public class LaunchJobAction extends MappingDispatchAction{
         // preparing the input files
         InputFileType [] files = getFiles(app);
         if ( files != null ) {            
-            log.info(files.length + " files have been submitted");
+            log.debug(files.length + " files have been submitted");
             String names = "";
             for (int i = 0; i < files.length; i++ ) names += files[i].getName() + " ";
-            log.info("their names are: " + names);
+            log.debug("their names are: " + names);
             in.setInputFile(files);
         } else{
         	//TODO improve this, it could be that the input file has been lost in the way
-        	log.info("No file has been submitted.");
+        	log.debug("No file has been submitted.");
         }
 
         //finally invoke opal service!
@@ -195,11 +195,11 @@ public class LaunchJobAction extends MappingDispatchAction{
         //Let's do some logging
         log.info("Job submitted received jobID: " + subOut.getJobID());
         StatusOutputType status = subOut.getStatus();
-        log.info("Current Status:\n" +
+        log.debug("Current Status:\n" +
                            "\tCode: " + status.getCode() + "\n" +
                            "\tMessage: " + status.getMessage() + "\n" +
                            "\tOutput Base URL: " + status.getBaseURL());
-        log.info("redirecting to the status page...");
+        log.debug("redirecting to the status page...");
 
         // everything went allright redirect to the status page
         // put the jobId in the URL coz we are redirecting and not forwarding 
@@ -239,9 +239,9 @@ public class LaunchJobAction extends MappingDispatchAction{
                 String [] untaggedParams = new String[app.getNumUnttagedParams()];
                 for ( int i = 0; i < untaggedParams.length; i++ )
                     untaggedParams[i] = "";
-                log.info("We have " + app.getNumUnttagedParams() + " untaggged parameters.");
+                log.debug("We have " + app.getNumUnttagedParams() + " untaggged parameters.");
                 for( int i = 0; i < params.length; i++ ) {
-                	log.info("Analizing param: " + params[i].getId());
+                	log.debug("Analizing param: " + params[i].getId());
                     if (params[i].getTag() != null) {
                         //tagged params
                         if ( params[i].isFileUploaded() ) {
@@ -257,7 +257,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                         } else if ( (params[i].getSelectedValue() != null) && (params[i].getSelectedValue().length() > 0 ) ) {
                             //untagged params this is a bit unreadable!!
                             untaggedParams[params[i].getPosition()] = " " + params[i].getSelectedValue();
-                            log.info("Adding the " + i + " untagged paramters with: " + untaggedParams[params[i].getPosition()]);
+                            log.debug("Adding the " + i + " untagged paramters with: " + untaggedParams[params[i].getPosition()]);
                         }//if
                     }//else
                 }//for
@@ -287,7 +287,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             if ( app.getNumArgFileSubmitted() > 0 ) {
                 //we have some files in the argParam array...
                 int numFile = app.getNumArgFileSubmitted();
-                log.info("We have " + numFile + " input files, in the ArgParam array");
+                log.debug("We have " + numFile + " input files, in the ArgParam array");
                 files = new InputFileType[numFile];
                 for ( int i = 0; i < numFile; i++ ){
                     ArgParam param = app.getArgFileSubmitted(i);
@@ -303,7 +303,7 @@ public class LaunchJobAction extends MappingDispatchAction{
 			    // data is in memory already - reuse it
 			    files[i].setContents(param.getFile().getFileData());
 			}
-                        log.info("Setting up one input file which is called: " + param.getFile().getFileName());
+                        log.debug("Setting up one input file which is called: " + param.getFile().getFileName());
                     } else {
                         log.error("This is very nasty... Contact developers!!\n The arg: " + param + "lost the file...");
                         return null;
@@ -311,7 +311,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                 }//for
             } else if ( (app.getFiles() != null) && ( app.getFiles()[0] != null) && (app.getFiles()[0].getFileName().length() > 0 ) ){
                 //simple form, we have at least one input file
-                log.info("We have at least a file in the simple form");
+                log.debug("We have at least a file in the simple form");
                 FormFile [] filesForm =  app.getFiles();
                 ArrayList filesArrayReturn = new ArrayList();
                 
@@ -361,13 +361,13 @@ public class LaunchJobAction extends MappingDispatchAction{
 	    if (o instanceof DiskFileItem) {
 		DiskFileItem df = (DiskFileItem) o;
 		if (df.isInMemory()) {
-		    log.info("FormFile is actually in memory - " + 
+		    log.debug("FormFile is actually in memory - " + 
 			     "no need to write it out to File");
 		    return null;
 		} else {
 		    osFile = df.getStoreLocation();
 		    String path = osFile.getAbsolutePath();
-		    log.info("FormFile found at absolute path: " + path);
+		    log.debug("FormFile found at absolute path: " + path);
 		    return osFile;
 		}
 	    } else {

@@ -62,7 +62,7 @@ public class AppMetadataParser{
         AppMetadata app = new AppMetadata();
         // connect to the App Web service
         AppServiceLocator asl = new AppServiceLocator();
-        log.info("PARSER: Starting the parsing process...");
+        log.debug("PARSER: Starting the parsing process...");
         /*       ----------  this is for htts, not supported at the moment
         // register a protocol handler for https, if need be
         int index = serviceURL.indexOf(":");
@@ -113,7 +113,7 @@ public class AppMetadataParser{
                     }
                     app.setArgFlags(flags);
                 } else { 
-                    log.info("PARSER: there are no flag in the parsed config file");
+                    log.debug("PARSER: there are no flag in the parsed config file");
                     app.setArgFlags(null); 
                 }
                 
@@ -128,7 +128,7 @@ public class AppMetadataParser{
                         args.add(parseParam(paramsType[i], -1));
                     }
                 } else {
-                    log.info("PARSER: There are not tagged parameters in the parsed file");
+                    log.debug("PARSER: There are not tagged parameters in the parsed file");
                 }
                 
                 //setting untagged parameters
@@ -138,7 +138,7 @@ public class AppMetadataParser{
                     for ( int i = 0; i < paramsType.length; i++ )
                         args.add(parseParam(paramsType[i], i));
                 } else {
-                    log.info("PARSER: there are not untagged paramters in the parsed file");
+                    log.debug("PARSER: there are not untagged paramters in the parsed file");
                 }
                 if ( (taggedArrayType != null) || (untaggedArrayType != null) ) {
                     app.setArgParams( (ArgParam[]) args.toArray(new ArgParam[args.size()]));
@@ -152,7 +152,7 @@ public class AppMetadataParser{
                 GroupsType [] groupsType = null;
                 ArrayList groups = new ArrayList();
                 if ( (groupsArrayType != null) && (groupsArrayType.getGroup() != null) ) {
-                        log.info("PARSER: parsing groups");
+                        log.debug("PARSER: parsing groups");
                         groupsType = groupsArrayType.getGroup();
                         //ok we have groups
                 
@@ -160,7 +160,7 @@ public class AppMetadataParser{
                                 groups.add( parseGroup(groupsType[i], app));
                         }//for
                 } else { 
-                    log.info("PARSER: there are no group in the parsed config file setting up the default one");
+                    log.debug("PARSER: there are no group in the parsed config file setting up the default one");
                 }//group
                 if (  ! setDefaultGroup(groups, app) ) { 
                         //something went wrong currently impossible!!!
@@ -168,8 +168,8 @@ public class AppMetadataParser{
                 }//if
                 app.setGroups((Group[]) groups.toArray(new Group[groups.size()]));
             }
-            else log.info("PARSER: no types found in the config file");
-            log.info("PARSER: ---  Parsed sucesfully the configuration file    --\n" + app + "PARSER:         ------------        ");
+            else log.debug("PARSER: no types found in the config file");
+            log.debug("PARSER: ---  Parsed sucesfully the configuration file    --\n" + app + "PARSER:         ------------        ");
         }catch (FaultType e){
             //some error fetching the data from the remote server
             log.error("PARSER: Unable to get the appMetadata from the Opal server. Error: " + e.getMessage1());
@@ -292,7 +292,7 @@ public class AppMetadataParser{
         ArgParam [] ungroupedParams = getUngroupedParams( groups, app.getArgParams());
         ArgFlag [] ungroupedFlags = getUngroupedFlags(groups, app.getArgFlags());
         if ( (ungroupedParams.length == 0) && (ungroupedFlags.length == 0) ) {
-                log.info("There are no parameters or flags ungrouped...");
+                log.debug("There are no parameters or flags ungrouped...");
                 return true;
         }
         String info = "PARSER: the ungropped paramters are: ";
@@ -301,7 +301,7 @@ public class AppMetadataParser{
         info += "\nPARSER: the ungroupped flags are: ";
         for (int i = 0; i< ungroupedFlags.length; i++)
                 info += ungroupedFlags[i].getId() + " ";
-        log.info(info);
+        log.debug(info);
         Group defaultGroup = new Group();
         defaultGroup.setName("Default Group");
         defaultGroup.setTextDesc("Ungrouped input fields...");
