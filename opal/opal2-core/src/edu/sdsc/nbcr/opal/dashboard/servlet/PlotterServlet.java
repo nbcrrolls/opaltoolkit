@@ -1,4 +1,4 @@
-// PloterServlet.java
+// PlotterServlet.java
 //
 // simple java servlet that generates graph images based
 // on url arguments.  Data is retrieved from a mysql 
@@ -76,11 +76,11 @@ import java.util.regex.*;
  *  
  */
 
-public class PloterServlet extends HttpServlet
+public class PlotterServlet extends HttpServlet
 {  
     
     // get an instance of the log4j Logger
-    protected static Log log = LogFactory.getLog(PloterServlet.class.getName());
+    protected static Log log = LogFactory.getLog(PlotterServlet.class.getName());
 
     private DBManager dbManager = null;
     private boolean initialized = false;
