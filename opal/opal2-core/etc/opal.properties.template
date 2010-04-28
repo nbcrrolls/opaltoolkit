@@ -21,6 +21,8 @@ mpi.run=/path/to/your/mpi
 ## BEGIN: email configuration for server
 ##        To be used for notifying users
 ## -------------------------------------------
+# set to true if email notification is to be turned ON
+mail.enable=false
 # url for smtp server
 mail.smtp.host=smtp.gmail.com
 # whether the server needs authentication

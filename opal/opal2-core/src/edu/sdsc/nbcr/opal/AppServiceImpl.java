@@ -1299,6 +1299,14 @@ public class AppServiceImpl
     private void emailStatus(String userEmail, String jobID) {
 	try {
 	    logger.info("called");
+
+	    boolean emailEnabled = 
+		Boolean.valueOf(props.getProperty("mail.enable")).booleanValue();
+	    if (!emailEnabled) {
+		logger.warn("Opal server is not enabled to send email to user");
+		return;
+	    }
+
 	    StatusOutputType status = queryStatus(jobID);
 
 	    // set the connection properties
@@ -1307,7 +1315,7 @@ public class AppServiceImpl
 	    // get the mail server
 	    String mailServer = props.getProperty("mail.smtp.host");
 	    if (mailServer == null) {
-		logger.warn("No mail server specified in opal.properties");
+		logger.error("No mail server specified in opal.properties");
 		return;
 	    }
 	    mailProps.put("mail.smtp.host", mailServer);
@@ -1326,7 +1334,7 @@ public class AppServiceImpl
 		String password = props.getProperty("mail.smtp.password");
 
 		if ((userName == null) || (password == null)) {
-		    logger.warn("Username/password for SMTP server is null");
+		    logger.error("Username/password for SMTP server is null");
 		    return;
 		}
 		auth = new SMTPAuthenticator(userName,
@@ -1345,7 +1353,7 @@ public class AppServiceImpl
 	    // set the from and to address
 	    String userFrom = props.getProperty("mail.smtp.from");
 	    if (userFrom == null) {
-		logger.warn("Can't find a from email address in the opal.properties");
+		logger.error("Can't find a FROM email address in the opal.properties");
 		return;
 	    }
 
@@ -1371,7 +1379,7 @@ public class AppServiceImpl
 	    
 	    Transport.send(msg);
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    // logger.error(e);
 	    String msg = "Exception caught while trying to email user: " +
 		e.getMessage();
 	    logger.error(msg);
