@@ -94,15 +94,50 @@ public class Extract {
 	    unZipFile(targetDir, fileName);
 	} else if (fileName.endsWith(".tar") || fileName.endsWith("tar.gz")) {
 	    unTarFile(targetDir, fileName);
+	} else if (fileName.endsWith(".gz")) {
+	    gunZipFile(targetDir, fileName);
 	} else {
 	    String msg = "File " + fileName + 
-		" doesn't end with .zip, .jar, .tar(.gz) - " +
+		" doesn't end with .zip, .jar, .gz or .tar(.gz) - " +
 		"can't extract";
 	    logger.warn(msg);
 	    return;
 	}
     }
 
+
+    /**
+     * Extract a gzip file archive
+     */
+    protected void gunZipFile(String targetDir, 
+			     String fileName) 
+	throws FaultType {
+	logger.debug("called");
+
+	try {
+	    String outputFileName = fileName.substring(0, fileName.indexOf(".gz"));
+	    FileOutputStream out = new FileOutputStream(new File(outputFileName));
+	    GZIPInputStream in = new GZIPInputStream(new FileInputStream(fileName));
+	    
+	    int MAX_BUFFER_SIZE = 1024;
+	    byte[] buf = new byte[MAX_BUFFER_SIZE];
+	    int len;
+	    
+	    while ((len = in.read(buf)) > 0 ) {
+		out.write(buf, 0, len);
+	    }
+	    
+	    out.flush();
+	    out.close();
+	    in.close();
+	} catch (IOException ioe) {
+	    String msg = "Error while extracting gzip file: " + 
+		ioe.getMessage();
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+
+    }
 
     /**
      * Extract a zip file archive
@@ -157,11 +192,18 @@ public class Extract {
 	logger.debug("Creating " + fileName);
 	FileOutputStream os = new FileOutputStream(fileName);
 	InputStream is = zippy.getInputStream(e);
-	int n = 0;
-	while ((n = is.read(b)) > 0)
-	    os.write(b, 0, n);
-	is.close();
+
+	int MAX_BUFFER_SIZE = 1024;
+	byte[] buf = new byte[MAX_BUFFER_SIZE];
+	int len;
+	    
+	while ((len = is.read(buf)) > 0 ) {
+	    os.write(buf, 0, len);
+	}
+
+	os.flush();
 	os.close();
+	is.close();
     }
 
     /**
