@@ -144,7 +144,7 @@ public class GetServiceListHelper {
                     service.setURL(basePublicURL + "/" + serviceName);
                     service.setServiceID(serviceName);
                     list.add(service);
-                    log.info("added -> " + service);
+                    log.debug("added -> " + service);
                 }
             }// for
             return (OPALService[]) list.toArray(new OPALService[list.size()]);
