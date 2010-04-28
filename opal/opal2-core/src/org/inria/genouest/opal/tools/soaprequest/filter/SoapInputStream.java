@@ -89,10 +89,10 @@ public class SoapInputStream extends ServletInputStream {
     private boolean stopParsing = false;
 	
     /** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(OpalSOAPRequestWrapper.class);
-	
-    /** The servlet path. */
-    private String servletPath;
+    private static final Logger logger = Logger.getLogger(SoapInputStream.class);
+
+    /** The name of the service invoked. */
+    private String serviceName;
 	
     /** The context. */
     private ServletContext context;
@@ -105,12 +105,12 @@ public class SoapInputStream extends ServletInputStream {
      * 
      * @param baos the output stream
      */
-    public SoapInputStream(ServletInputStream requestStream, boolean isMultipart, String servletPath, ServletContext context) {
+    public SoapInputStream(ServletInputStream requestStream, boolean isMultipart, String serviceName, ServletContext context) {
 	super();
 	rawRequest = requestStream;
 	isMultipartRequest = isMultipart;
 	this.context = context;
-	this.servletPath = servletPath;
+	this.serviceName = serviceName;
 		
 	if (!isMultipartRequest) {
 	    // This is not a multipart request: launch xml transformation immediately
@@ -119,14 +119,13 @@ public class SoapInputStream extends ServletInputStream {
 		transformedXML = applyXSLTTransformation(xmlStream);
 	    } catch (Exception e) {
 		logger.warn("Could not apply XSLT stylesheet to incoming xml.");
-		e.printStackTrace();
-		transformedXML = null; 
+		transformedXML = null;
 	    }
 	    try {
 		xmlStream.close();
 	    } catch (IOException e) {
 		logger.warn("Problem closing incoming xml stream.");
-		e.printStackTrace();
+		logger.error(e);
 	    }
 	}
     }
@@ -163,8 +162,8 @@ public class SoapInputStream extends ServletInputStream {
 			    transformedXML = applyXSLTTransformation(xmlStream);
 			} catch (Exception e) {
 			    logger.warn("Could not apply XSLT stylesheet to incoming SOAP request.");
-			    e.printStackTrace();
-			    transformedXML = null; 
+			    transformedXML = null;
+			    stopParsing = true; // And don't retry!
 			}
 			xmlStream.close();
 		    }
@@ -222,9 +221,8 @@ public class SoapInputStream extends ServletInputStream {
 	    if (transformedXML != null) {
 		dataChunk = transformedXML.read();
 	    }
-	    else { // This is not supposed to happen
-		logger.error("Can't read transformed data from pure xml request. Stopping the request.");
-		dataChunk = -1;
+	    else { // This happens when transformation fails
+		dataChunk = rawRequest.read();
 	    }
 	}
 		
@@ -364,11 +362,6 @@ public class SoapInputStream extends ServletInputStream {
 	StringWriter writer = new StringWriter();
 	StreamResult result = new StreamResult(writer);
 		
-	String serviceName = "";
-	String[] servletPathSplit = servletPath.split("/");
-	if (servletPathSplit.length > 0)
-	    serviceName = servletPathSplit[servletPathSplit.length-1];
-		
 	if (("").equals(serviceName)) {
 	    logger.error("Unknown service name.");
 	    throw new Exception("Unknown service name.");
@@ -378,6 +371,10 @@ public class SoapInputStream extends ServletInputStream {
 	if (serviceConfigFilePath != null) {
 	    transformer.setParameter("configPath", serviceConfigFilePath);
 	    transformer.transform(source, result);
+	}
+	else {
+	    logger.warn("No config file found for asked service. Aborting XSLT transformation.");
+	    throw new Exception("No config file found for asked service. Aborting XSLT transformation.");
 	}
 		
 	writer.flush();
@@ -478,7 +475,7 @@ public class SoapInputStream extends ServletInputStream {
 	        
 	}
         catch(XPathExpressionException xpee){
-	    xpee.printStackTrace();
+	    logger.error(xpee);
 	} catch (Exception e) {
 	    logger.warn("We could not get the service list from the Axis Engine...");
 	    logger.warn(e);
