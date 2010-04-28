@@ -84,7 +84,7 @@ public class OpalInfoServlet extends HttpServlet {
         boolean initialized = false;
         try {
             // load runtime properties from properties file
-            props.load(PloterServlet.class.getClassLoader().getResourceAsStream(propsFileName));
+            props.load(PlotterServlet.class.getClassLoader().getResourceAsStream(propsFileName));
         } catch (Exception e) {
             e.printStackTrace();
             log.error("Impossible to load opal.properties: " + e.getMessage());

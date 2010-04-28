@@ -344,7 +344,7 @@ public class DBManager {
             String str = new String();
             for ( counter = 0; counter < values.length; counter++)
                 str += values[counter] + ", ";
-            log.info("The query on " + type + " with service " + service + " is returning values: " + str); 
+            log.debug("The query on " + type + " with service " + service + " is returning values: " + str); 
             session.close();
             return values;
         }catch (Exception e ) {
