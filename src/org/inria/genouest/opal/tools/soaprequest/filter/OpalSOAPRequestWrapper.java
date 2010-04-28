@@ -37,9 +37,6 @@ public class OpalSOAPRequestWrapper extends HttpServletRequestWrapper {
 	/** The context. */
 	private ServletContext context;
 	
-	/** The servlet path. */
-	private String servletPath;
-	
 	/** The wsdd name space. */
 	static String wsddNameSpace = "http://xml.apache.org/axis/wsdd/";
 
@@ -51,15 +48,14 @@ public class OpalSOAPRequestWrapper extends HttpServletRequestWrapper {
 	 * 
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public OpalSOAPRequestWrapper(HttpServletRequest request, ServletContext servletContext) throws IOException {
+	public OpalSOAPRequestWrapper(HttpServletRequest request, ServletContext servletContext, String serviceName) throws IOException {
 		super(request);
 		context = servletContext;
-		servletPath = request.getRequestURL().toString();
 
 		logger.debug("Entering OpalSOAPRequestFilter");
 		// make sure that this is indeed an Opal call by checking request params
 		if (getContentType() != null) {
-		    modifiedStream = new SoapInputStream(request.getInputStream(), getContentType().startsWith("multipart/"), servletPath, context);
+		    modifiedStream = new SoapInputStream(request.getInputStream(), getContentType().startsWith("multipart/"), serviceName, context);
 		}
 	}
 
