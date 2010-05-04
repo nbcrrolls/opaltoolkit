@@ -4,6 +4,7 @@ package edu.sdsc.nbcr.opal.gui.actions;
 import java.net.URL;
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 
 import javax.activation.DataHandler;
@@ -49,15 +50,29 @@ import edu.sdsc.nbcr.opal.gui.common.OPALService;
 public class LaunchJobAction extends MappingDispatchAction{
     
     protected Log log = LogFactory.getLog(Constants.PACKAGE);
+    protected ArrayList errors = new ArrayList();
+	protected HttpServletRequest request;
+	protected ActionMapping mapping;
     
     // See superclass for Javadoc
     public ActionForward execute(ActionMapping mapping, ActionForm form, 
             HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
+		request = request;
+		mapping = mapping;
         log.info("Action: LaunchJob");
+
+		// session timeout 
+		if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {
+            log.info("*** Session has timed out ***");
+            ArrayList errors = new ArrayList();
+            errors.add("Session timed out");
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+            return mapping.findForward("Timeout");
+		}
         
         AppMetadata app = (AppMetadata) form;
-        ArrayList errors = new ArrayList();
+
         if (app == null){
             log.error("Error the appMetadata is not present.");
             errors.add("We could not find the input values please go back to the welcome page");
@@ -65,25 +80,11 @@ public class LaunchJobAction extends MappingDispatchAction{
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
-        //let's print some debug informations
+
+        InputFileType [] files; 
+
         String debug = "";
-        if ( app.isAddFile() ) {
-            //maybe the user has updated a file, let's check
-            FormFile [] formFiles = app.getFiles();
-            if ( (formFiles[formFiles.length - 1] != null) 
-                    && (formFiles[formFiles.length - 1].getFileName().length() > 0 ) ) {
-                //the user has actually uploaded something!
-                log.debug("Adding one more input file to the simple submission form");
-                //let's add an element to the files array so the user upload a new file there is a place holder (the last element)
-                
-                FormFile [] newFormFiles = new FormFile[formFiles.length + 1];
-                for (int i = 0; i < formFiles.length; i++ ){
-                    newFormFiles[i] = formFiles[i];
-                }
-                app.setFiles(newFormFiles);
-            }
-            return mapping.findForward("DisplaySimpleForm");
-        }else if ( app.isArgMetadataEnable()) {
+		if ( app.isArgMetadataEnable()) { // processing compelx form
             ArgFlag [] flags = app.getArgFlags();
             if (flags != null ) { 
                 for (int i = 0; i < flags.length; i++ ) {
@@ -96,31 +97,22 @@ public class LaunchJobAction extends MappingDispatchAction{
                     debug += "for flags " + params[i].getId() + " the user has entered: " + params[i].getSelectedValue() + "\n";
                 }
             } else { debug += "no parameters found\n"; }
-        } else {
-            debug += "the command line is: " + app.getCmdLine() + "\n";
-            if ( (app.getFiles() != null) && (app.getFiles().length > 0) ) { 
-                debug += "we have " + app.getFiles().length + " file(s)";
-                debug += "the uploaded file are: "; 
-                for (int i = 0; i < app.getFiles().length; i++ )
-                debug += "" + app.getFiles()[i].getFileName() + " ";
-            }
+            files = getFiles(app);
+        } else { // processing simple form
+            files = getDynamicFiles(app);
         }
+
         log.debug("the following parameters has been posted:\n" + debug);
-        //let's build the command line
+        // build the command line
         String cmd = makeCmdLine(app);
-        if (cmd == null){
-            //that's bad!
-            log.error("The command line is null!");
-            errors.add("We could not built the command line from your input parameters");
-            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+		if ( cmd == null)
             return mapping.findForward("Error");
-        }
-        log.info("the submitted command line is: " + cmd);
+
         //now we could validate the cmd line
         //let's invoke the remote opal service
         JobInputType in = new JobInputType();
         in.setArgList(cmd);
-	in.setExtractInputs(app.isExtractInputs());
+        in.setExtractInputs(app.isExtractInputs());
 
         int numCpu = -1;
         if ( (app.getNumCpu() != null) && (app.getNumCpu().length() >= 1) ) {
@@ -137,22 +129,17 @@ public class LaunchJobAction extends MappingDispatchAction{
                 return mapping.findForward("Error");
             }
         }
-        //here numCpu is either -1 or a positive integer
         if ( numCpu != -1 ) {
             in.setNumProcs(numCpu);
         }
+
 	if ((app.getUserEmail() != null) && (app.getUserEmail().length() >= 1)) {
 	    in.setUserEmail(app.getUserEmail());
 	    in.setSendNotification(true);
 	}
 
         // preparing the input files
-        InputFileType [] files = getFiles(app);
         if ( files != null ) {            
-            log.debug(files.length + " files have been submitted");
-            String names = "";
-            for (int i = 0; i < files.length; i++ ) names += files[i].getName() + " ";
-            log.debug("their names are: " + names);
             in.setInputFile(files);
         } else{
         	//TODO improve this, it could be that the input file has been lost in the way
@@ -179,7 +166,14 @@ public class LaunchJobAction extends MappingDispatchAction{
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }catch (Exception e){
+		    if ( e == null) {
+                log.info("*** Session has timed out 2 ***");
+                return mapping.findForward("Timeout");
+			};
             if ( e.getMessage() == null ) {
+                log.info("*** Session has timed out 3 ***");
+                errors.add("Session timed out");
+                request.setAttribute(Constants.ERROR_MESSAGES, errors);
                 return mapping.findForward("Timeout");
             }
             log.error("An error occurred while submitting the job.");
@@ -216,20 +210,17 @@ public class LaunchJobAction extends MappingDispatchAction{
      * @return a string representing the command line
      */
     private  String makeCmdLine(AppMetadata app){
-        String str = "";
-        if ( app.isArgMetadataEnable() ) {
-            //build we have the configuration paramters
+        String cmd = "";
+        if ( app.isArgMetadataEnable() ) { // have the configuration paramters
             if (app.getArgFlags() != null ) {
-                //let's do the flag
                 ArgFlag [] flags = app.getArgFlags();
                 for ( int i = 0; i < flags.length; i++){
-                    //if ( (flags[i].getSelected() != null) && (flags[i].getSelected().equals("on")) )
                 	if ( flags[i].isSelected() )
-                        str += " " + flags[i].getTag();
-                }//for
+                        cmd += " " + flags[i].getTag();
+                }
             }
-            if (app.getArgParams() != null ){
-                //let's do the tag and untagged
+
+            if (app.getArgParams() != null ){ // process tagged and untagged
                 ArgParam [] params = app.getArgParams();
                 String taggedParams = "";
                 String separator = app.getSeparator();
@@ -242,38 +233,109 @@ public class LaunchJobAction extends MappingDispatchAction{
                 log.debug("We have " + app.getNumUnttagedParams() + " untaggged parameters.");
                 for( int i = 0; i < params.length; i++ ) {
                 	log.debug("Analizing param: " + params[i].getId());
-                    if (params[i].getTag() != null) {
-                        //tagged params
+                    if (params[i].getTag() != null) { //tagged params
                         if ( params[i].isFileUploaded() ) {
                             //we have a file!
                             taggedParams += " " + params[i].getTag() + separator + params[i].getFile().getFileName();
                         }else if ( (params[i].getSelectedValue() != null) && ( params[i].getSelectedValue().length() > 0) )
                             taggedParams += " " + params[i].getTag() + separator + params[i].getSelectedValue();
-                    } else {
-                        //untagged parameters
-                        if (params[i].isFileUploaded() ) {
-                            //we have a file
+                    } else { //untagged parameters
+                        if (params[i].isFileUploaded() ) { //we have a file
                             untaggedParams[params[i].getPosition()] = " " + params[i].getFile().getFileName();
                         } else if ( (params[i].getSelectedValue() != null) && (params[i].getSelectedValue().length() > 0 ) ) {
                             //untagged params this is a bit unreadable!!
                             untaggedParams[params[i].getPosition()] = " " + params[i].getSelectedValue();
                             log.debug("Adding the " + i + " untagged paramters with: " + untaggedParams[params[i].getPosition()]);
-                        }//if
-                    }//else
-                }//for
+                        }
+                    }
+                }
+
                 if (taggedParams.length() > 0)
-                    str += taggedParams;
+                    cmd += taggedParams;
                 for (int i = 0; i < app.getNumUnttagedParams(); i ++) 
-                    str += untaggedParams[i];
+                    cmd += untaggedParams[i];
             }
-        } else {
-            //no configuration parameters, that's easy
-            str = app.getCmdLine();
+        } else { //no configuration parameters
+            cmd = app.getCmdLine();
         }
-        return str;
-    }//makeCmdLine
+
+        if (cmd == null) {
+            log.error("The command line is null!");
+            errors.add("We could not built the command line from your input parameters");
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+        }
+        log.info("the submitted command line is: " + cmd);
+        return cmd;
+    }
     
     
+    /**
+     * logs uploaded file info 
+     * 
+     * @param pos
+     * @param FormFile
+     */
+    private void  logFileInfo(int pos, FormFile ff){
+	    String fileInfo;
+        String fname = ff.getFileName();
+
+        if(ff == null) {
+            fileInfo = "(" + pos + ") file name : there was an error uploading file"; 
+			return;
+        }
+
+        if(fname.length()==0) {
+            fileInfo = "(" + pos + ") file name has zero length"; 
+		} else {
+            fileInfo = "(" + pos + ") file name :" + ff.getFileName();
+            fileInfo += " type: " + ff.getContentType();
+		    fileInfo += " size: " + ff.getFileSize();
+		}
+
+        log.info(fileInfo);
+	}
+
+    /**
+     * Return an array of InputFileType with all the user dynamically uploaded files 
+     * 
+     * @param app
+     * @return the dynamic files from simple form submitted by the user
+     */
+    private InputFileType [] getDynamicFiles(AppMetadata app){
+        InputFileType [] files = null;
+        try {
+		    ArrayList al = app.getFormFiles();
+            ArrayList filesArrayReturn = new ArrayList();
+            log.info("User uploads " + al.size() + " dynamic input file(s)");
+            for (int i = 0; i<al.size(); i++) { // get files from the bean
+                FormFile ff = (FormFile) al.get(i);
+                String fname = ff.getFileName();
+                if(fname.length()==0) {
+                    continue;
+                }
+				logFileInfo(i+1, ff);
+
+                InputFileType file = new InputFileType();
+                file.setName(fname);
+			    File osFile = getStoredFile(ff);
+			    if (osFile != null) {
+			        DataHandler dh = new DataHandler(new FileDataSource(osFile));
+			        file.setAttachment(dh);
+			    } else {
+			        file.setContents(ff.getFileData());
+			    }
+                filesArrayReturn.add( file );
+            }
+            files = (InputFileType[]) filesArrayReturn.toArray(new InputFileType[filesArrayReturn.size()]);
+        } catch (Exception e){
+            log.error("There was an error reading uploaded files!");
+            log.error("The exception is: " + e.getMessage(), e.getCause());
+            e.printStackTrace();
+            return null;
+        }
+        return files;
+	}
+
     /**
      * Given an appMetadata we return an array of InputFileType with all the files 
      * submitted by the user
@@ -284,56 +346,30 @@ public class LaunchJobAction extends MappingDispatchAction{
     private InputFileType [] getFiles(AppMetadata app){
         InputFileType [] files = null;
         try {
-            if ( app.getNumArgFileSubmitted() > 0 ) {
-                //we have some files in the argParam array...
+            if ( app.getNumArgFileSubmitted() > 0 ) { //we have some files in the argParam array...
                 int numFile = app.getNumArgFileSubmitted();
-                log.debug("We have " + numFile + " input files, in the ArgParam array");
+                log.info("User uploads " + numFile + " input file(s)");
                 files = new InputFileType[numFile];
                 for ( int i = 0; i < numFile; i++ ){
                     ArgParam param = app.getArgFileSubmitted(i);
                     files[i] = new InputFileType();
-                    if (param.getFile() != null) {
-                        files[i].setName(param.getFile().getFileName());
-			File osFile = getStoredFile(param.getFile());
-			if (osFile != null) {
-			    DataHandler dh = 
-				new DataHandler(new FileDataSource(osFile));
-			    files[i].setAttachment(dh);
-			} else {
-			    // data is in memory already - reuse it
-			    files[i].setContents(param.getFile().getFileData());
-			}
-                        log.debug("Setting up one input file which is called: " + param.getFile().getFileName());
+					FormFile ff = param.getFile();
+                    if (ff != null) {
+                        files[i].setName(ff.getFileName());
+                        File osFile = getStoredFile(ff);
+                        if (osFile != null) {
+                            DataHandler dh = new DataHandler(new FileDataSource(osFile));
+                            files[i].setAttachment(dh);
+                        } else { // data is in memory already - reuse it
+                            files[i].setContents(ff.getFileData());
+                        }
                     } else {
                         log.error("This is very nasty... Contact developers!!\n The arg: " + param + "lost the file...");
                         return null;
                     }
-                }//for
-            } else if ( (app.getFiles() != null) && ( app.getFiles()[0] != null) && (app.getFiles()[0].getFileName().length() > 0 ) ){
-                //simple form, we have at least one input file
-                log.debug("We have at least a file in the simple form");
-                FormFile [] filesForm =  app.getFiles();
-                ArrayList filesArrayReturn = new ArrayList();
-                
-                //get the number of files  --- not nice! make a function!
-                for (int i = 0; i < filesForm.length; i++) {
-                    if ((filesForm[i] != null) && (filesForm[i].getFileName().length() > 0)){
-                        //let's an input file
-                        InputFileType file = new InputFileType();
-                        file.setName( app.getFiles()[i].getFileName() );
-			File osFile = getStoredFile(app.getFiles()[i]);
-			if (osFile != null) {
-			    DataHandler dh = new DataHandler(new FileDataSource(osFile));
-			    file.setAttachment(dh);
-			} else {
-			    file.setContents( app.getFiles()[i].getFileData() );
-			}
-                        filesArrayReturn.add( file );
-                    }//if
-                }//for
-                
-                files = (InputFileType[]) filesArrayReturn.toArray(new InputFileType[filesArrayReturn.size()]);
-            }
+                    logFileInfo(i+1, ff);
+                }
+            } 
         } catch (Exception e){
             log.error("There was an error reading uploaded files!");
             log.error("The exception is: " + e.getMessage(), e.getCause());
@@ -341,7 +377,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             return null;
         }
         return files;
-    }//getfile
+    }
 
     /**
      * Method to get the absolute path from FormFile
@@ -350,35 +386,34 @@ public class LaunchJobAction extends MappingDispatchAction{
      * @return null if FormFile is in memory, else absolute path
     */
     private File getStoredFile(FormFile file) {
-	try {
-	    File osFile = null;
+    try {
+        File osFile = null;
 
-	    // returned class should be CommonsMultipartRequestHandler.CommonsFormFile
-	    Class formClass = file.getClass();
-	    Field fileItemField = formClass.getDeclaredField("fileItem");
-	    fileItemField.setAccessible(true);
-	    Object o = fileItemField.get(file);
-	    if (o instanceof DiskFileItem) {
-		DiskFileItem df = (DiskFileItem) o;
-		if (df.isInMemory()) {
-		    log.debug("FormFile is actually in memory - " + 
-			     "no need to write it out to File");
-		    return null;
-		} else {
-		    osFile = df.getStoreLocation();
-		    String path = osFile.getAbsolutePath();
-		    log.debug("FormFile found at absolute path: " + path);
-		    return osFile;
-		}
-	    } else {
-		log.error("Can't retrieve stored File for FormFile");
-		return null;
-	    }
-	} catch (Exception e) {
-	    log.error("Can't retrieve stored File for FormFile");
-	    log.error(e);
-	    return null;
-	}
+        // returned class should be CommonsMultipartRequestHandler.CommonsFormFile
+        Class formClass = file.getClass();
+        Field fileItemField = formClass.getDeclaredField("fileItem");
+        fileItemField.setAccessible(true);
+        Object o = fileItemField.get(file);
+        if (o instanceof DiskFileItem) {
+        DiskFileItem df = (DiskFileItem) o;
+        if (df.isInMemory()) {
+			log.debug("FormFile is actually in memory - " + "no need to write it out to File");
+            return null;
+        } else {
+            osFile = df.getStoreLocation();
+            String path = osFile.getAbsolutePath();
+            log.debug("FormFile found at absolute path: " + path);
+            return osFile;
+        }
+        } else {
+            log.error("Can't retrieve stored File for FormFile");
+            return null;
+        }
+    } catch (Exception e) {
+        log.error("Can't retrieve stored File for FormFile");
+        log.error(e);
+        return null;
     }
-}//class
+    }
+}
 

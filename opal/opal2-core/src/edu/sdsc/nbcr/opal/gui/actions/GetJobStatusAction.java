@@ -46,6 +46,16 @@ public class GetJobStatusAction extends MappingDispatchAction{
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         
     	log.info("Action: GetJobStatusAction");
+
+        // session timeout 
+        if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {
+            log.info("*** Session has timed out ***");
+            ArrayList errors = new ArrayList();
+            errors.add("Session timed out");
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
+            return mapping.findForward("Timeout");
+        }
+        
         String jobId = (String) request.getParameter("jobId");
         String serviceID = (String) request.getParameter("serviceID");
         ArrayList errors = new ArrayList();
