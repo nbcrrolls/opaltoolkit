@@ -85,7 +85,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }
-        request.getSession().setAttribute("appMetadata", app);
+        request.getSession(false).setAttribute("appMetadata", app);
         if ( app.isArgMetadataEnable() ) {
             log.info("Metadata parsed correctly, forwarding to the submission form");
             return mapping.findForward("DisplayForm");
