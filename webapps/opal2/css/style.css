@@ -33,6 +33,12 @@ ol li {padding-left: 5px;;}
    padding: 1px 2px 1px 2px;
 }
 
+.Hide {
+   color: #1760A5;
+   text-decoration:underline; 
+   font-weight:bold; 
+}
+
 /* ---------- special character list  marker ----------------- */
 ul.menu2 { 
 list-style: none ;
@@ -385,6 +391,14 @@ input, select {
 	vertical-align: middle
 }
 
+	/*#background-color:#FCF2D7; */
+table.groupings tr.odd {
+    background-color:#D1DFF0;
+}
+table.groupings tr.even {
+    background-color:#EEF6FE;
+}
+
 .standard-table {
 	border: solid black 1px;
 	border-collapse: collapse;
@@ -431,4 +445,46 @@ input, select {
 
 rect {
    fill: #FCF2D7;
+}
+
+/* reset button 
+ * style per http://particletree.com/features/rediscovering-the-button-element/
+*/
+
+.mReset {
+    color:#F00; 
+    font: bold 90% 'trebuchet ms',helvetica,sans-serif; 
+	border: 1px solid #006;
+    background-color:#fed;
+	 padding: 2px 8px;
+}
+
+/* standard */
+button {
+    background-color:#EEF6FE;
+    border:1px solid #dedede;
+	border-top:1px solid #eee;
+	border-left:1px solid #eee;
+	font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+	font-size:100%;
+	line-height:130%;
+	text-decoration:none;
+	font-weight:bold;
+	color:#232323;
+	cursor:pointer;
+	padding:5px 5px 5px 5px;
+}
+
+/* Submit */
+button.Submit:hover {
+    background-color:#E6EFC2;
+    border:1px solid #C6FEC2;
+    color:#529214;
+}
+
+/* Reset */
+ button.Reset:hover {
+    background:#FEB190;
+    border:1px solid #fbc2c4;
+    color:#B24617;
 }
