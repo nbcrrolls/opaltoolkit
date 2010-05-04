@@ -8,6 +8,7 @@ import org.apache.struts.upload.FormFile;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import java.util.ArrayList;
 
 
 /**
@@ -27,14 +28,15 @@ import org.apache.commons.logging.LogFactory;
  * <li>FormFile [] files - place holder for the input file submitted by the user using the web form
  * <li>String jobId - place holder for the jobID once this job has been submitted to opal
  * <li>boolean addFile - place holder used by the submission form, if this field is true it means that the user does not wants to submit the job but it only wants to add an input file
+ * <li> FormFile inputFile - place holder for an input file dynamically added via on a sismple form 
+ * <li> ArrayList formFiles - for multiple dynamiccally addded input files
+ * <li> int index - index for formFiles variable
  * </ul>
- * 
  * 
  * @author clem
  *
  */
 public class AppMetadata extends ActionForm{
-	
     
     protected Log log = LogFactory.getLog(Constants.PACKAGE);
     
@@ -55,6 +57,10 @@ public class AppMetadata extends ActionForm{
     private boolean addFile;
     private boolean parallel;
     private boolean extractInputs;
+    private ArrayList formFiles = null;
+    private FormFile inputFile = null;  // needed by formFiles
+    private int index;                  // needed by formFiles
+
 
     /**
      * Default constructor
@@ -68,11 +74,14 @@ public class AppMetadata extends ActionForm{
         argParams = null;
         separator = null;
         cmdLine = null;
-	userEmail = null;
+        userEmail = null;
         files = new FormFile[1];
         addFile = false;
-	parallel = false;
-	extractInputs = false;
+        parallel = false;
+        extractInputs = false;
+        formFiles = new ArrayList();
+        index = 0;
+
     }
     
     /**
@@ -209,6 +218,8 @@ public class AppMetadata extends ActionForm{
             for (int i = 0; i < argParams.length; i++ ){
                 argParams[i].reset();
             }
+
+        inputFile = null;
     }
     
     /**
@@ -479,4 +490,39 @@ public class AppMetadata extends ActionForm{
     public void setExtractInputs(boolean extractInputs) {
         this.extractInputs = extractInputs;
     }
+
+    /**
+     * Get FormFiles
+     * @return ArrayList
+     */
+    public ArrayList getFormFiles() {
+            return formFiles;
+    }
+
+    /**
+     * Get inputFile
+     * @return FormFile
+     */
+    public FormFile getInputFile(int in) {
+        return inputFile;
+    }
+
+    /**
+     * Set inputFile
+     * @param <code>FormFile</code>
+     */
+    public void setInputFile(int in,FormFile t) {
+        try {
+            this.inputFile = t;
+            setFormFiles(t);
+            index++;
+        }catch(Exception e) {
+            log.error("Exception in setInputFile!" + e);
+        }
+    }
+
+    public void setFormFiles(FormFile t) {
+        this.formFiles.add(index,t);
+    }
+
 }
