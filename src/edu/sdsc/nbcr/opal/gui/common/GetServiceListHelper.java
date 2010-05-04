@@ -143,6 +143,7 @@ public class GetServiceListHelper {
                     OPALService service = new OPALService();
                     service.setURL(basePublicURL + "/" + serviceName);
                     service.setServiceID(serviceName);
+                    service.setServiceName(serviceName);
                     list.add(service);
                     log.debug("added -> " + service);
                 }
