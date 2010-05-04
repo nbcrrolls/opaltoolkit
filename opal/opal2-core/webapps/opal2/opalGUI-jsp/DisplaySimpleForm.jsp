@@ -13,7 +13,7 @@
 <%@page import="org.apache.struts.upload.FormFile"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Opal2 simple submission form</title>
+	<title>Opal2 <bean:write name="appMetadata" property="serviceName" /> submission form </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="css/style.css" media="all" rel="stylesheet" type="text/css" /> 
     <script src="scripts/scripts.js" language="javascript" type="text/javascript" ></script> 
@@ -26,10 +26,34 @@
         });
     </script>
 
+<% 
+// for coloring rows
+int rowN=0;
+String rowVal[] = new String[2];
+rowVal[0] = "odd"; 
+rowVal[1] = "even";
+
+// for uploading files
+AppMetadata app = (AppMetadata) request.getSession(false).getAttribute("appMetadata");
+FormFile [] files = app.getFiles();
+String index = "" + (files.length - 1);
+%>
+
 <script language="javascript">
 <!--
-var state = 'none';
+var count = 1;
+function addFileInput() {
+   var newfile = document.createElement("input");
+   newfile.type = "file";
+   newfile.name = "inputFile[" + count + "]";
+   newfile.size = "40";
+   var d = document.createElement("div");
+   d.appendChild(newfile);
+   fplace = document.getElementById("moreUploads").appendChild(d);
+   count++;
+}
 
+var state = 'none';
 function makeTrue(){ }
 
 function showHide(layer_ref) {
@@ -79,57 +103,62 @@ function showHide(layer_ref) {
 <jsp:include page="header.jsp"/>
 
 <h2 id="centered">
-   <span class="Label"><bean:write name="appMetadata" property="serviceName" />
-   submission form </span> 
+   <span class="Label"><bean:write name="appMetadata" property="serviceName" /> submission form </span> 
 </h2>
+<p><span class="Require">*</span> Required parameters.</p>
 
 <html:form action="LaunchJob.do" enctype="multipart/form-data" >
-<table cellspacing="10">
+<table class="groupings" border="0" cellspacing="0" cellpadding="5">
 
-    <tr><td>Insert command line here:</td><td><html:text property="cmdLine" size="50"/></td>
-    <tr><td>Insert user email for status notification:</td><td><html:text property="userEmail" size="50"/></td>
+    <tr class="<%=rowVal[rowN%2]%>"> <% rowN += 1; %>
+	   <td>Insert command line here:</td>
+	   <td><html:text property="cmdLine" size="50"/></td>
+	</tr>
+    <tr class="<%=rowVal[rowN%2]%>"> <% rowN += 1; %>
+	   <td>Insert user email for status notification:</td>
+	   <td><html:text property="userEmail" size="50"/></td>
+	</tr>
     <logic:equal name="appMetadata" property="parallel" value="true">
-      <tr><td>Insert number of CPU for parallel application:</td><td><html:text property="numCpu" size="50"/></td>
+      <tr class="<%=rowVal[rowN%2]%>"> <% rowN += 1; %>
+	  <td>Insert number of CPU for parallel application:</td><td><html:text property="numCpu" size="50"/></td>
+	  </tr>
     </logic:equal>
-    
-<% 
-
-AppMetadata app = (AppMetadata) request.getSession().getAttribute("appMetadata");
-FormFile [] files = app.getFiles();
-
-if ( files.length > 1 ) {
-    //let's print the name of the file already uploaded
-    for (int i = 0; i < files.length - 1; i++ ){
-        
-        String name = null;
-        if ( files[i] != null ) {
-            name = files[i].getFileName();
-        }else name = "null file at " + i;
-        
-        out.println("<tr><td colspan=\"2\"> Uploaded file: " + name + "</td></tr>");
-    }
-}
-
-String index = "" + (files.length - 1);
-%>
-    <tr><td>Choose input file:</td><td><nested:file property="<%= \"files[\" + index + \"]\" %>" size="40"/></td>
-    <tr><td>Should input files be unzipped on server?</td><td><nested:checkbox property="extractInputs"/></td>
-    
-    <!-- end file upload part -->
-
-    
-    
+    <tr class="<%=rowVal[rowN%2]%>"> <% rowN += 1; %>
+       <td>Should input files be unzipped on server?</td><td><nested:checkbox property="extractInputs"/></td>
+    </tr> 
+    <tr class="<%=rowVal[rowN%2]%>"> 
+	   <td>Choose input file:</td>
+	   <td>
+	<div id="moreUploads"> 
+	       <input type="file" name="inputFile[0]" value="" size="40"
+	       onchange="document.getElementById('moreUploadsLink').style.display = 'block';" />
+	</div>
+	<div id="moreUploadsLink" style="display:none;">
+	     <a href="javascript:addFileInput();"><span class="Title">Attach another File</span></a>
+	</div>
+	   </td>
+	</tr>
     <html:hidden property="addFile" value="false" />
-    <!-- submit and reset button  -->
-    <tr> <td colspan="2" align="left"> <html:submit value="Submit"/> <html:reset value="Reset"/> 
-    <input type="button" onclick="document.appMetadata.addFile.value='true'; document.appMetadata.submit()" value="Add Another File"/> </td> </tr>
+    <tr class="<%=rowVal[rowN%2]%>"> 
+	   <td> </td> 
+	   <td> 
+	   </td> 
+	</tr>
+
+	<!-- submit and reset button  -->
+	<tr>
+	  <td align="right"> <button class="Submit" type="submit">  
+	                 <Img src="images/tick.png" alt="" />&nbsp;Submit</button> </td>
+	  <td align="left"> <button class="Reset" type="reset" onClick="window.location.reload()">
+					 <Img src="images/cross.png" alt="" />&nbsp;Reset</button> </td>
+	</tr>
+
 </table>
 </html:form>
-<span style="text-decoration: underline; " onclick="showHide('help')">Show/Hide help</span>
 
+<span class="Hide" onclick="showHide('help')">Show/Hide help (click)</span>
 <div id="help" style="display: none;">
     <p class="manual" >Application Description: <bean:write name="appMetadata" property="usage"/> </p>
-
     <logic:notEmpty name="appMetadata" property="info">
     <p class="manual" >Usage Info:</br>
         <logic:iterate id="infoString" name="appMetadata" property="info"> 
@@ -140,7 +169,6 @@ String index = "" + (files.length - 1);
 </div>
 </br>
 
-<p><span class="Require">*</span> Required parameters.</p>
 
 <br/>
 <jsp:include page="footer.jsp"/>
