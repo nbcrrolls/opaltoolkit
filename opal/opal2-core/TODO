@@ -1,16 +1,17 @@
 * Opal 2.3 release
-  * Removal of number of CPUs for non-parallel jobs on input form: X
-  * PBS support, using a modified version of the pbs4java package: X
-  * Support upload of tarballs for inputs: X
-  * Support for user email as an optional argument: X
-  * Modification of jobID to include service name: X
-  * Refreshed look and feel for Opal dashboard: X
-    * Fix Opal upgrade script
+  * Removal of number of CPUs for non-parallel jobs on input form
+  * PBS support, using a modified version of the pbs4java package
+  * Added a limit to the Fork job manager for number of jobs that can be
+    executed concurrently
+  * Support upload of tarballs for inputs
+  * Support for user email as an optional argument
+  * Modification of jobID to include service name
+  * Refreshed look and feel for Opal dashboard
   * Bug fix for destroy() operation, where baseURL was incorrectly
-    returned as empty after job destruction: X
-  * Bug fix for IP limits where the query for filtering by IP was incorrect: X
-  * Bug fix for Opal GUI timeout error: X
-  * Bug fix for SOAP filter to support large files and for empty arguments: X
+    returned as empty after job destruction
+  * Bug fix for IP limits where the query for filtering by IP was incorrect
+  * Bug fix for Opal GUI timeout error
+  * Bug fix for SOAP filter to support large files and for empty arguments
 
 * Addition of utility services (addition to WSDL)
   * Server load, queue length, data lifetime, server information

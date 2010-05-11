@@ -16,6 +16,8 @@ import org.apache.log4j.Logger;
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
 
+import edu.sdsc.nbcr.opal.state.HibernateUtil;
+
 /**
  *
  * Implementation of an Opal Job Manager using Process fork
@@ -34,6 +36,7 @@ public class ForkJobManager implements OpalJobManager {
     private Thread stderrThread; // the thread that writes stderr
     private boolean started = false; // whether the execution has started
     private volatile boolean done = false; // whether the execution is complete
+    private final Object lock = new Object(); // an object for wait and notify
 
     /**
      * Initialize the Job Manager for a particular job
@@ -86,7 +89,7 @@ public class ForkJobManager implements OpalJobManager {
      */
     public String launchJob(String argList, 
 			    Integer numProcs, 
-			    String workingDir)
+			    final String workingDir)
 	throws JobManagerException {
 	logger.info("called");
 
@@ -156,33 +159,36 @@ public class ForkJobManager implements OpalJobManager {
 	}
 	logger.debug("CMD: " + cmd);
 	
-	// run executable in the working directory
-	try {
-	    logger.debug("Working directory: " + workingDir);
-	    proc = Runtime.getRuntime().exec(cmd, null, new File(workingDir));
-	    
-	    // spawn new threads to write out stdout, and stderr
-	    stdoutThread = writeStdOut(proc, workingDir);
-	    stderrThread = writeStdErr(proc, workingDir);
-	} catch (IOException ioe) {
-	    String msg = "Error while running executable via fork - " +
-		ioe.getMessage();
-	    logger.error(msg);
-	    throw new JobManagerException(msg);
-	}
-	
-	// update status to active
-	status.setCode(GramJob.STATUS_ACTIVE);
-	status.setMessage("Execution in progress");
+	// run executable in the working directory, in a separate thread
+	final String finalCmd = cmd;
+	new Thread() {
+	    public void run() {
+		try {
+		    executeJob(workingDir, finalCmd);
+		} catch (JobManagerException jme) {
+		    String msg =
+			"Error while executing job: " + jme.getMessage();
+		    logger.error(jme);
 
-	// notify listeners that process is activated
-	started = true;
-	synchronized(this) {
-	    this.notifyAll();
-	}
+		    // update status to active
+		    status.setCode(GramJob.STATUS_FAILED);
+		    status.setMessage(msg);
+
+		    // notify listeners that process is activated and failed
+		    started = true;
+		    synchronized(lock) {
+			lock.notifyAll();
+		    }
+		}
+	    }
+	}.start();
 
 	// return an identifier for this process
-	return proc.toString();
+	if (proc != null) {
+	    return proc.toString();
+	} else {
+	    return new String("Unavailable");
+	}
     }
 
     /**
@@ -195,24 +201,22 @@ public class ForkJobManager implements OpalJobManager {
 	throws JobManagerException {
 	logger.info("called");
 
-	// check if this process has been started already
-	if (proc == null) {
-	    String msg = "Can't wait for a process that hasn't be started";
-	    logger.error(msg);
-	    throw new JobManagerException(msg);
-	}
-
 	// poll till status is ACTIVE or ERROR
 	while (!started) {
 	    try {
-		synchronized(this) {
-		    this.wait();
+		synchronized(lock) {
+		    lock.wait();
 		}
 	    } catch (InterruptedException ie) {
 		// minor exception - log exception and continue
 		logger.error(ie.getMessage());
 		continue;
 	    }
+	}
+
+	// throw Exception if job failed during activation
+	if (status.getCode() == GramJob.STATUS_FAILED) {
+	    throw new JobManagerException(status.getMessage());
 	}
 
 	return status;
@@ -293,6 +297,71 @@ public class ForkJobManager implements OpalJobManager {
 	status.setMessage("Process destroyed on user request");
 
 	return status;
+    }
+
+    /**
+     * Method to wait for this jobs turn, and execute if appropriate
+     */
+    private void executeJob(String workingDir,
+			    String cmd) 
+	throws JobManagerException {
+	try {
+	    // check if job limit has been reached
+	    if (props.getProperty("fork.jobs.limit") != null) {
+		long jobLimit = Integer.parseInt(props.getProperty("fork.jobs.limit"));
+
+		// wait, if need be
+		while (true) {
+		    // get number of jobs running from database
+		    long runningJobs;
+		    try {
+			runningJobs = HibernateUtil.getNumExecutingJobs();
+			logger.debug("Number of running jobs: " + runningJobs);
+		    } catch (Exception e) {
+			String msg = 
+			    "Exception while retrieving number of jobs from database: " +
+			    e.getMessage();
+			logger.error(msg);
+			throw new JobManagerException(msg);
+		    }
+
+		    // sleep 10 seconds, if limit has been reached
+		    if (runningJobs >= jobLimit) {
+			try {
+			    logger.debug("Waiting for number of Fork jobs to fall below limit");
+			    Thread.sleep(10000);
+			} catch (Exception e) {
+			    // log exception, and continue
+			    logger.warn(e);
+			}
+		    } else {
+			break;
+		    }
+		}
+	    }
+
+	    logger.debug("Working directory: " + workingDir);
+	    proc = Runtime.getRuntime().exec(cmd, null, new File(workingDir));
+	    
+	    // spawn new threads to write out stdout, and stderr
+	    stdoutThread = writeStdOut(proc, workingDir);
+	    stderrThread = writeStdErr(proc, workingDir);
+	} catch (IOException ioe) {
+	    String msg = "Error while running executable via fork - " +
+		ioe.getMessage();
+	    logger.error(msg);
+	    throw new JobManagerException(msg);
+	}
+	
+	// update status to active
+	status.setCode(GramJob.STATUS_ACTIVE);
+	status.setMessage("Execution in progress");
+
+	// notify listeners that process is activated
+	started = true;
+	synchronized(lock) {
+	    lock.notifyAll();
+	}
     }
 
     /*
