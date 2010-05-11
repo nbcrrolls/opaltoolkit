@@ -555,6 +555,49 @@ public class HibernateUtil {
 	return numJobs.longValue();
     }
 
+    /**
+     * Get the number of jobs that are currently in execution
+     */
+    public static long getNumExecutingJobs() 
+	throws StateManagerException {
+
+	logger.info("called");
+
+	Long numJobs = new Long(0);
+
+	try {
+	    // open a session
+	    Session session = getSessionFactory().openSession();
+
+	    String query = 
+		"select count(*)  " +            
+		" from JobInfo jobInfo where " +
+		" jobInfo.code = :code";
+	    
+	    // execute query
+            Query queryStat = session.createQuery(query);
+            queryStat.setInteger("code", GramJob.STATUS_ACTIVE);
+
+            List results = queryStat.list();
+	    if (results.size() != 1) {
+		session.close();
+		String msg = 
+		    "Error while trying to retrive number of jobs from database";
+		throw new StateManagerException(msg);
+	    } 
+	    numJobs = (Long) results.get(0);
+
+	    session.close();
+	} catch (HibernateException he) {
+	    String msg = "Error while trying to retrieve hits from database: " +
+		he.getMessage();
+	    logger.error(msg);
+	    throw new StateManagerException(msg);
+	}
+
+	return numJobs.longValue();
+    }
+
     // A simple main method to test functionality
     public static void main(String[] args) 
         throws Exception {
