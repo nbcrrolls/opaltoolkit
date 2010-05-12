@@ -88,6 +88,10 @@ packages:</para>
    can submit jobs to schedulers as long as they support the DRMAA API. We
    have only tested job submits to SGE via DRMAA.</para>
 
+   <para>If neither Globus or DRMAA are installed, Opal can be set up to
+   submit jobs directly to schedulers such as Condor or <ulink type="http"
+   url="http://www.clusterresources.com/products/torque-resource-manager.php">TORQUE</ulink>.</para>
+
    <para>Finally, from the version 2.1 release of the Opal toolkit, we are
    supporting the Community Scheduler Framework (<ulink type="http"
    url="http://www.globus.org/toolkit/docs/4.0/contributions/csf/">CSF4</ulink>)
@@ -162,44 +166,7 @@ properties correctly. It should look something like the following:</para>
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CondorJobManager
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CSFJobManager
 
-    ## BEGIN: information for the DRMAA job manager
-    ## ------------------------------------------------
-    # the parallel environment (PE) being used by DRMAA
-    drmaa.pe=mpich
-    ## ------------------------------------------------
-    ## END: information for the DRMAA job manager
-
-    ## BEGIN: information for the Globus job managers
-    ## ------------------------------------------------ 
-    # url for the globus gatekeeper
-    globus.gatekeeper=host:2119/jobmanager-sge
-
-    # gsi information 
-    globus.service_cert=/path/to/your/globus/cert
-    globus.service_privkey=/path/to/your/globus/key
-
-    # base url for gridftp server, used by remote Globus job manager
-    # make sure that this directory actually exists on remote server
-    # use "//" to indicate absolute path, else it is interpreted as relative
-    # to home directory
-    globus.gridftp_base=gsiftp://host:2811/working_dir
-    ## ------------------------------------------------
-    ## END: information for the Globus job manager
-
-    ## BEGIN: information for the CSF job manager
-    ## ------------------------------------------------
-    # CSF working directory
-    # This is the remote directory under the remote user's home directory
-    csf4.workingDir=opal_runs
-    ## ------------------------------------------------
-    ## END: information for the CSF job manager
-
-    ## BEGIN: information for the Condor job manager
-    ## ------------------------------------------------
-    # the script used by Condor to launch MPI jobs
-    mpi.script=/opt/condor/etc/examples/mp1script
-    ## ------------------------------------------------
-    ## END: information for the Condor job manager
+    ...
 </screen>
 
 
