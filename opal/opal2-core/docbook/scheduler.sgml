@@ -9,11 +9,12 @@ manager, if need be.</para>
 <para>The prerequisite to this section is that you have a scheduler such as
 Condor or SGE installed on your compute cluster. Access to schedulers is
 provided in a number of ways - in particular, via the DRMAA API and the
-Globus Toolkit. Starting with release 3.1, we support Condor natively
+Globus Toolkit. Starting with release 2.1, we support Condor natively
 without using DRMAA or Globus, and also the Community Scheduler Framework
-(CSF4) for scheduling jobs across multiple clusters. Please consult the
-appropriate documentation for the installation of these scheduler
-tools.</para>
+(CSF4) for scheduling jobs across multiple clusters. In release 2.3, we
+introduced direct support for TORQUE/PBS without having to use DRMAA or
+Globus. Please consult the appropriate documentation for the installation
+of these scheduler tools.</para>
 
 <section id="drmaa-scheduler" xreflabel="DRMAA Setup">
 <title>Using DRMAA</title>
@@ -178,6 +179,33 @@ parallel jobs. </para></listitem>
 
 <listitem><para>Note that we have not tested advanced Condor features such
 as flocking and Condor-G.</para></listitem>
+</orderedlist>
+
+</section>
+
+<section id="pbs-scheduler" xreflabel="TORQUE/PBS Setup">
+<title>Using TORQUE/PBS</title>
+
+<orderedlist>
+<listitem><para>Ensure that you have a working TORQUE/PBS installation, by following the instructions on the TORQUE <ulink type="http" url="http://www.clusterresources.com/products/torque-resource-manager.php">website</ulink>. In particular, verify that you can submit and monitor jobs from the command-line with commands such as <filename>qsub</filename> and <filename>qstat</filename>. Note that we have only tested with version 2.3.0 of TORQUE.</para></listitem>
+
+<listitem><para>Inside the opal.properties, set the
+<filename>opal.jobmanager</filename> to
+<filename>edu.sdsc.nbcr.opal.manager.PBSJobManager</filename>.</para></listitem>
+
+<listitem><para>Reinstall Opal by running the following command:
+<screen>
+    ant install
+</screen>
+</para>
+</listitem>
+
+<listitem><para>Make sure that you all the PBS binaries such as
+<filename>qsub</filename> and <filename>qstat</filename> in your
+PATH.</para></listitem>
+
+<listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
+
 </orderedlist>
 
 </section>

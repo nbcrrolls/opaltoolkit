@@ -230,6 +230,45 @@ non-typed WSDLs.
 </para>
 </section>
 
+<section id="job-limits" xreflabel="job-limits">
+<title>Configuring job limit for Fork Job Manager</title>
+
+<para>Beginning with version 2.3, Opal provides an ability to queue up jobs
+using the Fork Job Manager. This feature may be particularly useful if the
+jobs being launched by Opal need a definite amount of memory or processing,
+thus hindering an large amount of jobs from running at the same time. Note
+that this is not a replacement for a traditional batch scheduler - it is
+simply a way to limit the total number of jobs that are concurrently being
+executed. Also note that we have not done any scalability testing of this
+feature because the Fork Job Manager is not supposed to be used for large
+numnbers of concurrent jobs.</para>
+
+<para>Users can set appropriate properties in the etc/opal.properties to
+configure this features. For instance, the specific lines for configuring
+this feature are as follows:</para>
+
+<screen>
+## BEGIN: information for Fork job manager
+## ----------------------------------------------------------
+# number of jobs that can be in execution simultaneously
+fork.jobs.limit=1
+## ----------------------------------------------------------
+## END: information for For job manager
+</screen>
+
+<para>
+By default, the job limits are turned off. To turn it on, please set the
+<filename>fork.jobs.limit</filename> to the number of jobs that can execute
+concurrently.
+</para>
+
+<para>
+As usual, after all changes to the etc/opal.properties, reinstall Opal
+using the <filename>ant install</filename> command, and restart Tomcat for
+the changes to take effect.
+</para>
+</section>
+
 <section id="ip-limits" xreflabel="ip-limits">
 <title>Configuring IP-based Restrictions for Job Submission</title>
 
@@ -284,6 +323,52 @@ As usual, after all changes to the etc/opal.properties, reinstall Opal
 using the <filename>ant install</filename> command, and restart Tomcat for
 the changes to take effect.
 </para>
+</section>
+
+<section id="email-notifications" xreflabel="email-notifications">
+<title>Setting up Email Notifications</title>
+
+<para>Opal provides an ability to optionally notify a user of the status of
+a job after its complication by email. Users can set appropriate properties
+in the etc/opal.properties to configure this features. For instance, the
+specific lines for configuring this feature are as follows:</para>
+
+<screen>
+## BEGIN: email configuration for server
+##        To be used for notifying users
+## -------------------------------------------
+# set to true if email notification is to be turned ON
+mail.enable=false
+# url for smtp server
+mail.smtp.host=smtp.gmail.com
+# whether the server needs authentication
+mail.smtp.auth=true
+# turn debugging on or off
+mail.smtp.debug=false
+# from address in notification email - could be a "no-reply" address
+mail.smtp.from=foo@bar.com
+# credentials for logging into smtp server
+mail.smtp.user=foo@bar.com
+mail.smtp.password=foobar
+## -------------------------------------------
+## END: email configuration for server
+</screen>
+
+<para>
+By default, the email notifications are turned off. To turn it on, please
+set the <filename>mail.enable</filename> to true. Update the rest of the
+properties above appropriately.
+</para>
+
+<para>
+As usual, after all changes to the etc/opal.properties, reinstall Opal
+using the <filename>ant install</filename> command, and restart Tomcat for
+the changes to take effect.
+</para>
+
+<para>For a user to receive email notifications, they will have to specify
+their email address via the Dashboard, or via the command-line
+client.</para>
 </section>
 
 <section id="sample-appconfig" xreflabel="Sample Application Configuration File">
