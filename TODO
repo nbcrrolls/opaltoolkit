@@ -29,15 +29,12 @@
   * Hadoop/EC2 MapReduce plugin
 
 * Performance improvements
-  * Ability to queue jobs before job submission - based on an upper bound
-    specified in opal.properties
   * Improved fault tolerance on server restarts - being able to bind to
     already running jobs
 
 * WSDL additions/improvements
   * Add GridFTP support
-  * Additional statistics for job to be set by client (like email address)
-    * Twitter, RSS access to job metadata
+  * Twitter, RSS access to job metadata
   * launchJob should allow the user to specify the wallclock time
   * Support for array jobs
 
