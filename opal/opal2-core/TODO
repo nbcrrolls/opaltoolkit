@@ -10,8 +10,12 @@
   * Bug fix for destroy() operation, where baseURL was incorrectly
     returned as empty after job destruction
   * Bug fix for IP limits where the query for filtering by IP was incorrect
-  * Bug fix for Opal GUI timeout error
+  * Bug fix for Opal GUI timeout error for simple form
   * Bug fix for SOAP filter to support large files and for empty arguments
+  * Bug fix for radio buttons group separaton: 
+  * Bug fix for making accessible only a single option from selection
+  * Support for dynamic addiiton for multiple files upload on simple form
+
 
 * Addition of utility services (addition to WSDL)
   * Server load, queue length, data lifetime, server information
@@ -59,4 +63,9 @@
   * add "Help" tooltip for novice users navigation
   * stop page refresh when job is finished. The default refresh rate is set to 30 sec.
   * Add time stamp for page refreshing.
+  * enable radio buttons groping separation. Fixes a bug of not displaying choosen buttons.
+  * enable dynamic addiiton for multiple files upload on simple form
+  * redirect to "timeout" page on a session tiemout. Increase the session timeout to 30min
+  * enable one accesible option from a selection: 
+    user can type in the field only after making a selection choice and not before. 
 
