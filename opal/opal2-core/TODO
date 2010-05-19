@@ -1,22 +1,3 @@
-* Opal 2.3 release
-  * Removal of number of CPUs for non-parallel jobs on input form
-  * PBS support, using a modified version of the pbs4java package
-  * Added a limit to the Fork job manager for number of jobs that can be
-    executed concurrently
-  * Support upload of tarballs for inputs
-  * Support for user email as an optional argument
-  * Modification of jobID to include service name
-  * Refreshed look and feel for Opal dashboard
-  * Bug fix for destroy() operation, where baseURL was incorrectly
-    returned as empty after job destruction
-  * Bug fix for IP limits where the query for filtering by IP was incorrect
-  * Bug fix for Opal GUI timeout error for simple form
-  * Bug fix for SOAP filter to support large files and for empty arguments
-  * Bug fix for radio buttons group separaton: 
-  * Bug fix for making accessible only a single option from selection
-  * Support for dynamic addiiton for multiple files upload on simple form
-
-
 * Addition of utility services (addition to WSDL)
   * Server load, queue length, data lifetime, server information
 * Addition of the above statistics to the Dashboard
@@ -53,19 +34,4 @@
   * Parameterize port numbers for dashboard
   * Addition of implicit files to dashboard 
 
-* Dashboard updates
-  * update navigation bar layout 
-  * enable navigation bar round corners without image files
-  * add coyuright to all pages
-  * move all documentation liks to one page
-  * enable sorted applications list upon first page load
-  * move application usage info into a "row expander"
-  * add "Help" tooltip for novice users navigation
-  * stop page refresh when job is finished. The default refresh rate is set to 30 sec.
-  * Add time stamp for page refreshing.
-  * enable radio buttons groping separation. Fixes a bug of not displaying choosen buttons.
-  * enable dynamic addiiton for multiple files upload on simple form
-  * redirect to "timeout" page on a session tiemout. Increase the session timeout to 30min
-  * enable one accesible option from a selection: 
-    user can type in the field only after making a selection choice and not before. 
 

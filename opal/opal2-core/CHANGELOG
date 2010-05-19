@@ -1,23 +1,55 @@
+Version 2.3
+  - PBS support, using a modified version of the pbs4java package
+  - Added a limit to the Fork job manager for number of jobs that can be
+    executed concurrently
+  - Support for upload of tarballs for inputs
+  - Support for user email as an optional argument
+  - Removal of number of CPUs for non-parallel jobs on input form
+  - Support for dynamic addiiton for multiple files upload on simple form
+  - Modification of jobID to include service name
+  - Refreshed look and feel for Opal dashboard
+    - update navigation bar layout 
+    - enable navigation bar round corners without image files
+    - add coyuright to all pages
+    - move all documentation liks to one page
+    - enable sorted applications list upon first page load
+    - move application usage info into a "row expander"
+    - add "Help" tooltip for novice users navigation
+    - stop page refresh when job is finished. The default refresh rate is set to 30 sec.
+    - Add time stamp for page refreshing.
+    - enable radio buttons grouping separation. Fixes a bug of not displaying choosen buttons.
+    - enable dynamic addiiton for multiple files upload on simple form
+    - redirect to "timeout" page on a session tiemout. Increase the session timeout to 30min
+    - enable one accesible option from a selection: 
+      user can type in the field only after making a selection choice and not before. 
+  - Bug fix for destroy() operation, where baseURL was incorrectly
+    returned as empty after job destruction
+  - Bug fix for IP limits where the query for filtering by IP was incorrect
+  - Bug fix for Opal GUI timeout error for simple form
+  - Bug fix for SOAP filter to support large files and for empty arguments
+  - Bug fix for radio buttons group separaton: 
+  - Bug fix for making accessible only a single option from selection
+
 Version 2.2
 - DRMAA jar upgraded to version 6.1
 - Support for DB2 for state monitoring
 - Automatic WSDL generation (optional) - Anthony's update
 - Use of MIME attachments in the Opal dashboard - the dashboard can now
-support larger files
+  support larger files
 - Basic Per-IP limit on number of jobs per hour, to stop overload of servers
 
 Version 2.1
 - Improved Ajax-based dashboard that enables searching applications by
-their metadata
+  their metadata
 - Use of C3P0 for providing production-level connection pooling for state
-management, and addition of support for MySQL database back-end
-(contributed by Anthony Bretaudeau)
+  management, and addition of support for MySQL database back-end
+  (contributed by Anthony Bretaudeau)
 - Addition of two new job managers - for Condor and the Community Scheduler
-Framework (CSF4)
+  Framework (CSF4)
 - Updated user guide consistent with all new features
 - Bug fixes include removal of hardcoding of opal url in the dashboard
-code, and fixing the default HSQL configuration to write data to within the
-opal2 webapp
+  code, and fixing the default HSQL configuration to write data to within the
+  opal2 webapp
 
 Version 2.0.1
 - Opal Dashboard
