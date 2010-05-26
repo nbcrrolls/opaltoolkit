@@ -203,6 +203,7 @@ public class OpalInfoServlet extends HttpServlet {
         } else if ("docs".equals(command)) {
             //this doesn't exist anymore... Now there is the opal GUI
             //res.sendRedirect(opalDocumentation);
+            req.setAttribute("opalDocumentation", opalDocumentation);
             req.setAttribute("opalWebsite", opalWebsite);
             dispatcher = getServletContext().getRequestDispatcher(DOC_JSP);
             dispatcher.forward(req, res);
