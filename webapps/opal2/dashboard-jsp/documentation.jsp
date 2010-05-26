@@ -109,7 +109,6 @@
         <td class="boxBody colColor"><a href="http://meme.nbcr.net/">
 		          <span class="PubTitle">MEME Website</span></a>
                   <a href="http://nbcr.net/pdb2pqr"><span class="PubTitle">NBCR PDB2PQR Website</span></a>
-                  <a href="http://camera.calit2.net/"><span class="PubTitle">CAMERA<?span></a></td>
       </tr>
       <tr>
         <td valign="top" class="boxBodyRight colColor infoTitle">Publications:</td> 
