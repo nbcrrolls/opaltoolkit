@@ -79,14 +79,22 @@
                   <a href="http://sourceforge.net/projects/opaltoolkit/">
 				  <span class="PubTitle">Opal at SourceForge</span></a></td>
       </tr>
+
       <tr>
         <td class="boxBodyRight colColor infoTitle">Documentation:</td>
         <td class="boxBody colColor"><a href="<%= opalDocumentation %>">
 		          <span class="PubTitle">Opal Documentation</span></a>
+		</td> 
+      </tr>
+
+      <tr>
+        <td class="boxBodyRight colColor infoTitle">Tutorials:</td>
+        <td class="boxBody colColor">
 		          <a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">
 		          <span class="PubTitle">Tutorials and Sample Programs</span></a>
 		</td> 
       </tr>
+
       <tr>
         <td class="boxBodyRight colColor infoTitle">Support: </td>
         <td class="boxBody colColor"><a href="mailto:support@nbcr.net">
