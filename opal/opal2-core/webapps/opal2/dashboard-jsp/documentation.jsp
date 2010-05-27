@@ -69,13 +69,13 @@
     <table border="0" width="100%">
       <tr>
         <td width=20% class="boxBodyRight colColor infoTitle">Opal Contributors: </td>
-        <td class="boxBody colColor">Sriram Krishnan, Luca Clementi, Wes Goodman, 
-                  Jane Ren, Karan Bhatia, Wilfred Li, and Peter Arzberger </td>
+       <td class="boxBody colColor">Sriram Krishnan, Luca Clementi, Wes Goodman, 
+       Jane Ren, Nadya Williams, Anthony Bretaudeau, Karan Bhatia, Wilfred Li, and Peter Arzberger </td>
       </tr>
       <tr>
-        <td class="boxBodyRight colColor infoTitle">Website: </td>
+        <td class="boxBodyRight colColor infoTitle">Websites: </td>
         <td class="boxBody colColor"><a href="<%= opalWebsite %>">
-		          <span class="PubTitle">Opal Web Site</span></a>
+       <span class="PubTitle">Opal Web Site</span></a>
                   <a href="http://sourceforge.net/projects/opaltoolkit/">
 				  <span class="PubTitle">Opal at SourceForge</span></a></td>
       </tr>
@@ -98,17 +98,18 @@
       <tr>
         <td class="boxBodyRight colColor infoTitle">Support: </td>
         <td class="boxBody colColor"><a href="mailto:support@nbcr.net">
-		          <span class="PubTitle">NBCR Support mailing list</a>
+       <span class="PubTitle">NBCR Support Mailing List</span></a>
                   <a href="http://sourceforge.net/mail/?group_id=211778">
-				  <span class="PubTitle">Opal mailing list</span></a>
+       <span class="PubTitle">Opal Mailing List</span></a>
                   <a href="https://www.nbcr.net/forum/">
 				  <span class="PubTitle">NBCR Forum</span></a></td>
       </tr>
       <tr>
-        <td class="boxBodyRight colColor infoTitle">Opal use cases:</td>
+        <td class="boxBodyRight colColor infoTitle">Opal Use Cases:</td>
         <td class="boxBody colColor"><a href="http://meme.nbcr.net/">
 		          <span class="PubTitle">MEME Website</span></a>
                   <a href="http://nbcr.net/pdb2pqr"><span class="PubTitle">NBCR PDB2PQR Website</span></a>
+       <a href="http://www.opentopography.org/"><span class="PubTitle">OpenTopography</span></a>
       </tr>
       <tr>
         <td valign="top" class="boxBodyRight colColor infoTitle">Publications:</td> 
@@ -119,8 +120,8 @@
 			    <span class="PubTitle">Design and Evaluation of Opal2: A Toolkit for Scientific 
 			    Software as a Service.</span></a><br>
 			    <span class="PubAuth">Sriram Krishnan, Luca Clementi, Jingyuan Ren, 
-				Philip Papadopoulos and Wilfred Li. </span> Submitted to 
-				<span class="PubPub"> ICWS 2009, IEEE International Conference on Web Services, 2009.</span>
+				Philip Papadopoulos and Wilfred Li. </span>
+				<span class="PubPub"> In proceedings of the 2009 IEEE Congress on Services (SERVICES-1 2009), July, 2009.</span>
 			</li>
             <li>
                 <a class="externalLink" href="http://www.collab-ogce.org/gce07/index.php/Main_Page">
