@@ -1,3 +1,8 @@
+Version 2.3.1
+* Bug fixes
+  * Unable to upload files in non-mutually exclusive groups
+  * Typed SOAP to Opal SOAP filter, which was failing on certain inputs
+
 * Addition of utility services (addition to WSDL)
   * Server load, queue length, data lifetime, server information
 * Addition of the above statistics to the Dashboard
