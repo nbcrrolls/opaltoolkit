@@ -164,17 +164,19 @@ rowVal[1] = "even";
         <nested:equal value="FILE" name="param" property="type"> 
           <nested:equal value="INPUT" name="param" property="ioType">
           <% testCond = true; %>
+          <% boolean disabled = false; %>
             <td width="45%">
               <!-- exclusive group radio box -->
               <logic:equal value="true" name="appMetadata" property="<%=\"groups[\" + indexGroup + \"].exclusive\"%>">
                 <input type="radio" name="unused<%=indexGroup%>" value="value" onClick="selectElement('<%="groups[" + indexGroup + "].argParams[" + indexParam + "].file"%>', 'group<%=indexGroup%>')" /> 
+                <% disabled = true; %>
               </logic:equal> 
               <nested:write  filter="false" name="param" property="textDesc"/>
               <span class="Require"><nested:equal value="true" name="param" property="required"><span class=Require">*</span></nested:equal></span>
             </td>
             <td>
               <!-- file upload text field -->
-              <nested:file name="appMetadata" styleClass="<%=\"group\" + indexGroup%>" property="<%=\"groups[\" + indexGroup + \"].argParams[\" + indexParam + \"].file\"%>" size="40" disabled="true"/>
+              <nested:file name="appMetadata" styleClass="<%=\"group\" + indexGroup%>" property="<%=\"groups[\" + indexGroup + \"].argParams[\" + indexParam + \"].file\"%>" size="40" disabled="<%=disabled%>"/>
             </td>
           </nested:equal>
         </nested:equal>
