@@ -13,12 +13,12 @@
     <xsl:variable name="inputNodeValue" select="/soapenv:Envelope/soapenv:Body/opal:launchJobInput | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput"/>
     <xsl:variable name="inputTagName">
       <xsl:for-each select="$inputNodeValue"> <!-- There's only one element but couldn't find another way -->
-        <xsl:value-of select="name()"/>
+        <xsl:value-of select="local-name()"/>
       </xsl:for-each>
     </xsl:variable>
     
     <!-- Return the SOAP request content -->
-    <xsl:element name="{$inputTagName}">
+    <xsl:element name="{$inputTagName}" namespace="http://nbcr.sdsc.edu/opal/types">
       <argList>
 	      <!-- Construct argList argument -->
         <!-- First flags -->
