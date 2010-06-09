@@ -1073,10 +1073,13 @@ public class AppServiceImpl
 	InputFileType[] inputFiles = in.getInputFile();
 	if (inputFiles == null) {
 	    // no files to be written
+	    logger.debug("No input files to be written out");
 	    return;
 	}
 
 	// write the input files into the working directory
+	logger.debug("Number of input files to be written out: " + inputFiles.length);
+
 	for (int i = 0; i < inputFiles.length; i++) {
 	    // make sure the contents are supplied
 	    if ((inputFiles[i].getContents() == null) &&
@@ -1097,88 +1100,98 @@ public class AppServiceImpl
 				InputFileType inputFile,
 				Boolean extractInputs) 
 	throws FaultType {
-	    try {
-		File f = new File(outputDirName + File.separator + 
-				  inputFile.getName());
-                BufferedOutputStream out = null;
-		if (inputFile.getContents() != null) {
-                    //it is a 'normal' file
-                    out = new BufferedOutputStream(new FileOutputStream(f));
-		    out.write(inputFile.getContents());
-		    out.close();
-		} else if (inputFile.getLocation() != null) {
-                    //it is a URL
-		    int index = inputFile.getLocation().toString().indexOf(":");
-		    if (index == -1) {
-			String msg = "Can't find protocol for URL: " + 
-			    inputFile.getLocation();
-			logger.error(msg);
-			throw new FaultType(msg);
-		    }
-                    
-                    out = new BufferedOutputStream(new FileOutputStream(f));
-		    String protocol = inputFile.getLocation().toString().substring(0, index);
-		    logger.info("Using protocol: " + protocol);
+	logger.debug("called for file: " + inputFile.getName());
 
-		    if (protocol.equals("http") ||
-			protocol.equals("https")) {
-			// fetch the file from the URL
-			URL url = new URL(inputFile.getLocation().toString());
-			URLConnection conn = url.openConnection();
-			InputStream input = conn.getInputStream();
-			byte[] buffer = new byte[1024];
-			int numRead;
-			long numWritten = 0;
-			while ((numRead = input.read(buffer)) != -1) {
-			    out.write(buffer, 0, numRead);
-			    numWritten += numRead;
-			}
-			logger.debug(numWritten + " bytes written from url: " +
-				     inputFile.getLocation());
-			input.close();
-			out.close();
-		    } else {
-			String msg = "Unsupported protocol: " + protocol;
-			logger.error(msg);
-			throw new FaultType(msg);
-		    }
-		} else { 
-                    // it is an attachment
-		    DataHandler dh = inputFile.getAttachment();
-		    logger.debug("Received attachment: " + dh.getName());
-                    File attachFile = new File(dh.getName());
-                    logger.debug("Source is " + attachFile.toString() + 
-				 " and dest is " + f.toString());
-		    try {
-			FileUtils.moveFile(attachFile, f);
-		    } catch (IOException e) {
-			String msg = "Unable to copy attachment correctly: " +dh.getName();
-			logger.error(msg);
-			throw new FaultType(msg);
-		    }
- 		}
-
-		// extract files if need be
-		if (extractInputs != null) {
-		    if (extractInputs) {
-			logger.debug("Trying to extract file: " + f.getName());
-			Extract ex = new Extract();
-			ex.extract(outputDirName,
-				   f.getAbsolutePath());
-
-			// delete file after unzipping
-			f.delete();
-		    }
+	try {
+	    File f = new File(outputDirName + File.separator + 
+			      inputFile.getName());
+	    BufferedOutputStream out = null;
+	    if (inputFile.getContents() != null) {
+		//it is a 'normal' file
+		out = new BufferedOutputStream(new FileOutputStream(f));
+		out.write(inputFile.getContents());
+		out.close();
+	    } else if (inputFile.getLocation() != null) {
+		//it is a URL
+		int index = inputFile.getLocation().toString().indexOf(":");
+		if (index == -1) {
+		    String msg = "Can't find protocol for URL: " + 
+			inputFile.getLocation();
+		    logger.error(msg);
+		    throw new FaultType(msg);
 		}
-	    } catch (FaultType f) {
-		// pass the exception along
-		throw f;
-	    } catch (IOException ioe) {
-		logger.error("IOException while trying to write input file: " + 
-			     ioe.getMessage());
-		throw new FaultType("IOException while trying to write input file: " + 
-				    ioe.getMessage());
+                    
+		out = new BufferedOutputStream(new FileOutputStream(f));
+		String protocol = inputFile.getLocation().toString().substring(0, index);
+		logger.info("Using protocol: " + protocol);
+
+		if (protocol.equals("http") ||
+		    protocol.equals("https")) {
+		    // fetch the file from the URL
+		    URL url = new URL(inputFile.getLocation().toString());
+		    URLConnection conn = url.openConnection();
+		    InputStream input = conn.getInputStream();
+		    byte[] buffer = new byte[1024];
+		    int numRead;
+		    long numWritten = 0;
+		    while ((numRead = input.read(buffer)) != -1) {
+			out.write(buffer, 0, numRead);
+			numWritten += numRead;
+		    }
+		    logger.debug(numWritten + " bytes written from url: " +
+				 inputFile.getLocation());
+		    input.close();
+		    out.close();
+		} else {
+		    String msg = "Unsupported protocol: " + protocol;
+		    logger.error(msg);
+		    throw new FaultType(msg);
+		}
+	    } else { 
+		// it is an attachment
+		DataHandler dh = inputFile.getAttachment();
+		logger.debug("Received attachment: " + dh.getName());
+		File attachFile = new File(dh.getName());
+		logger.debug("Source is " + attachFile.toString() + 
+			     " and dest is " + f.toString());
+
+// 		if (attachFile.renameTo(f) == false) {
+// 		    String msg = "Unable to copy attachment correctly: " +
+// 			dh.getName();
+// 		    logger.error(msg);
+// 		    throw new FaultType(msg);
+// 		}
+
+		try {
+		    FileUtils.moveFile(attachFile, f);
+		} catch (IOException e) {
+		    String msg = "Unable to copy attachment correctly: " +dh.getName();
+		    logger.error(msg);
+		    throw new FaultType(msg);
+		}
 	    }
+
+	    // extract files if need be
+	    if (extractInputs != null) {
+		if (extractInputs) {
+		    logger.debug("Trying to extract file: " + f.getName());
+		    Extract ex = new Extract();
+		    ex.extract(outputDirName,
+			       f.getAbsolutePath());
+
+		    // delete file after unzipping
+		    f.delete();
+		}
+	    }
+	} catch (FaultType f) {
+	    // pass the exception along
+	    throw f;
+	} catch (IOException ioe) {
+	    logger.error("IOException while trying to write input file: " + 
+			 ioe.getMessage());
+	    throw new FaultType("IOException while trying to write input file: " + 
+				ioe.getMessage());
+	}
     }
 
     private void retrieveAppConfig()
