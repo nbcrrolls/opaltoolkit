@@ -58,6 +58,8 @@ import edu.sdsc.nbcr.opal.util.Util;
 import edu.sdsc.nbcr.opal.util.ArgValidator;	
 import edu.sdsc.nbcr.opal.util.Extract;
 
+import org.apache.commons.io.FileUtils;
+
 /**
  *
  * Implementation of the AppServicePortType, which represents every
@@ -1147,13 +1149,14 @@ public class AppServiceImpl
                     File attachFile = new File(dh.getName());
                     logger.debug("Source is " + attachFile.toString() + 
 				 " and dest is " + f.toString());
-                    if (attachFile.renameTo(f) == false) {
-			String msg = "Unable to copy attachment correctly: " +
-			    dh.getName();
+		    try {
+			FileUtils.moveFile(attachFile, f);
+		    } catch (IOException e) {
+			String msg = "Unable to copy attachment correctly: " +dh.getName();
 			logger.error(msg);
 			throw new FaultType(msg);
 		    }
-		}
+ 		}
 
 		// extract files if need be
 		if (extractInputs != null) {
