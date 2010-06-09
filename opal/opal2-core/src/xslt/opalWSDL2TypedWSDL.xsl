@@ -49,6 +49,7 @@
 	          <xsl:when test="@name='destroy'">Destroys a running job identified by a Job ID.</xsl:when>
 	          <xsl:when test="@name='getJobStatistics'">Returns basic job statistics including start time, activation time and completion time for a given Job ID.</xsl:when>
 	          <xsl:when test="@name='launchJobBlocking'">Same as launchJob but blocks until the remote execution is complete, and returns job outputs (as described above) as the response. This operation may only be appropriate for jobs that are not long running.</xsl:when>
+	          <xsl:when test="@name='getAppConfig'">Returns Opal XML description of the program.</xsl:when>
 	        </xsl:choose>
 	      </wsdl:documentation>
       </xsl:if>

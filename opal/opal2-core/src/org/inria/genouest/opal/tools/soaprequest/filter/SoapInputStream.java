@@ -205,7 +205,7 @@ public class SoapInputStream extends ServletInputStream {
 			else
 			    logger.debug("Leaving a part header of a multipart request");
 		    }
-		    else if (isInMultipartSectionHeader && (cachedLine.indexOf("Content-Type: text/xml") >= 0)) {
+		    else if (isInMultipartSectionHeader && ((cachedLine.indexOf("Content-Type: text/xml") >= 0) || (cachedLine.indexOf("application/xop+xml") >= 0))) {
 			// We're in the header of a MIME part, and it seems this part is xml. This is time to launch xslt transformation!
 			logger.debug("Found an XML part to try to transform in incoming multipart request!");
 			isInXmlContentHeader = true;
@@ -325,6 +325,22 @@ public class SoapInputStream extends ServletInputStream {
 		}
 		dataChunk = rawRequest.read();
 	    }
+			
+			if (dataChunk < 0) {
+				// This happens when reaching the end of request
+				// If there's no EOL char after last boundary, we have to detect boundary here!
+				if (isMultipartRequest && (cachedXmlLine.indexOf(multipartBoundary) >= 0) && !isInMultipartSectionHeader) {
+					// Multipart and boundary known + we are getting into a new part of the request.
+					isInMultipartSectionHeader = true;
+					isInXmlContentHeader = false;
+					logger.debug("End of the request: Xml part is finished!");
+					cachedXmlLine = cachedXmlEOL+cachedXmlLine; // Prepend the previous end of line chars to this line
+					cachedXmlEOL = "";
+					cachedXmlLineReader = new StringReader(cachedXmlLine);
+					isInXmlContent = false;
+					throw new Exception("No more Xml data in xml part of http request.");
+				}
+			}
 
 	    logger.trace("New Xml content in cache containing: "+cachedXmlLine);
 	    cachedXmlLineReader = new StringReader(cachedXmlLine);
