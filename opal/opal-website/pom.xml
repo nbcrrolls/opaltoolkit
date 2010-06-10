@@ -59,6 +59,13 @@
       <organization>University of California, San Diego</organization>
       <organizationUrl>http://ucsd.edu/</organizationUrl>
     </developer>
+    <developer>
+      <id>nadyawilliams</id>
+      <name>Nadya Williams</name>
+      <email>nadya A T sdsc.edu.edu</email>
+      <organization>San Diego Supercomputer Center</organization>
+      <organizationUrl>http://sdsc.edu/</organizationUrl>
+    </developer>
   </developers>
 
   <contributors>

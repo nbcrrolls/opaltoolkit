@@ -6,10 +6,13 @@
   <body>
     <section name="Opal deployment">
       <p>The Opal toolkit has been used to deploy several scientific applications as Web services, 
-      such as Autodock, PDB2PQR, MEME, Continuity, Blast, APBS, Babel, etc.  </p>
-      <p>Below a list of deployed services running Opal (to be added to this list e-mail admin A T nbcr.net):</p>
+      such as Autodock, PDB2PQR, MEME, Continuity, Blast, APBS, Babel, etc.  Opal is being used by several projects for their production infrastructures.</p>
+
+      <p>Below a list of projects running Opal (to be added to this list e-mail admin A T nbcr.net):</p>
       <ul>
-        <li><a href="http://ws.nbcr.net">ws.nbcr.net</a></li>
+        <li><a href="http://ws.nbcr.net">The National Biomedical Computation Resource</a></li>
+        <li><a href="http://www.opentopography.org">OpenTopography</a></li>
+	<li><a href="http://www.genouest.org/">GenOuest</a></li>
       </ul>
     </section>
     <section name="Applications that use Opal services">
