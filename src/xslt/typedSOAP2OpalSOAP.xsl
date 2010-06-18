@@ -7,7 +7,7 @@
   <xsl:variable name="config" select="document($configPath)"/>
 
   <!-- Construct new SOAP content -->
-  <xsl:template match="/soapenv:Envelope/soapenv:Body/opal:launchJobInput[not(argList) and node()] | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput[not(argList) and node()]">
+  <xsl:template match="/soapenv:Envelope/soapenv:Body/opal:launchJobInput[not(argList) and not(inputFile) and node()] | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput[not(argList) and not(inputFile) and node()]">
     
     <xsl:variable name="taggedParamSep" select="$config/opal:appConfig/opal:metadata/opal:types/opal:taggedParams/opal:separator"/>
     <xsl:variable name="inputNodeValue" select="/soapenv:Envelope/soapenv:Body/opal:launchJobInput | /soapenv:Envelope/soapenv:Body/opal:launchJobBlockingInput"/>

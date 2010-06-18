@@ -331,7 +331,7 @@ public class SoapInputStream extends ServletInputStream {
 				// If there's no EOL char after last boundary, we have to detect boundary here!
 				if (isMultipartRequest && (cachedXmlLine.indexOf(multipartBoundary) >= 0) && !isInMultipartSectionHeader) {
 					// Multipart and boundary known + we are getting into a new part of the request.
-					isInMultipartSectionHeader = true;
+					isInMultipartSectionHeader = false;
 					isInXmlContentHeader = false;
 					logger.debug("End of the request: Xml part is finished!");
 					cachedXmlLine = cachedXmlEOL+cachedXmlLine; // Prepend the previous end of line chars to this line
