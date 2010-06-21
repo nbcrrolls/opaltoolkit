@@ -2,7 +2,8 @@ Version 2.3.1
 - Bug fixes for
   - Uploading of files in for non-mutually exclusive groups on the
     auto-generated forms
-  - Ability to copy attachments across different partitions
+  - Ability to copy attachments across different partitions when the
+    working directory is being symlinked
   - Opal SOAP filter for typed services
     - Failure of generic Opal command-line client while uploading input files
     - Interoperability with Axis2 MTOM WSDL2Java clients
