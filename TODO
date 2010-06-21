@@ -1,12 +1,3 @@
-Version 2.3.1
-* Bug fixes
-  * Unable to upload files in non-mutually exclusive groups on the
-    auto-generated forms
-  * Ability to copy attachments across different partitions
-  * Opal SOAP filter
-    * Failure of Opal command-line client to uploading input files
-    * Interoperability with Axis2 MTOM WSDL2Java clients
-
 * Addition of utility services (addition to WSDL)
   * Server load, queue length, data lifetime, server information
 * Addition of the above statistics to the Dashboard

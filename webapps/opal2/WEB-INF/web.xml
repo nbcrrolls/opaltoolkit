@@ -50,7 +50,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 
     <context-param>
        <param-name>OPAL_VERSION</param-name>
-       <param-value>2.3</param-value>
+       <param-value>2.3.1</param-value>
     </context-param>
     <!-- the next two paramters are to get os version and loadaverage... leave it empty if you don't have any command-->
     <context-param>
@@ -102,6 +102,8 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
   <!-- Struts configurations... do not touch it  -->
  
   <!-- Filter for SOAP request of typed services -->
+  <!-- Uncomment the following to turn on the Opal SOAP filter for typed services -->
+  <!--
   <filter> 
     <filter-name>OpalSOAPRequestFilter</filter-name> 
     <filter-class>org.inria.genouest.opal.tools.soaprequest.filter.OpalSOAPRequestFilter</filter-class> 
@@ -110,6 +112,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     <filter-name>OpalSOAPRequestFilter</filter-name> 
     <servlet-name>AxisServlet</servlet-name> 
   </filter-mapping> 
+  -->
 
   <!-- Axis configuration parameters... do not touch this part!! -->
   <servlet>

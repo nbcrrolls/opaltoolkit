@@ -1,7 +1,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
 
 <!ENTITY thisyear "2004">
-<!ENTITY version "2.3">
+<!ENTITY version "2.3.1">
 
 <!ENTITY overview SYSTEM "overview.sgml">
 <!ENTITY serversetup SYSTEM "serversetup.sgml">

@@ -1,3 +1,12 @@
+Version 2.3.1
+- Bug fixes for
+  - Uploading of files in for non-mutually exclusive groups on the
+    auto-generated forms
+  - Ability to copy attachments across different partitions
+  - Opal SOAP filter for typed services
+    - Failure of generic Opal command-line client while uploading input files
+    - Interoperability with Axis2 MTOM WSDL2Java clients
+
 Version 2.3
   - PBS support, using a modified version of the pbs4java package
   - Added a limit to the Fork job manager for number of jobs that can be
