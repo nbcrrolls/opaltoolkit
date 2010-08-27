@@ -291,8 +291,17 @@ public class AppServiceImpl
 	logger.info("called");
 
 	// TODO: fill the business logic for this call
+	SystemInfoType result = new SystemInfoType();
+	result.setJobManagerType("NULL");
+	result.setDataLifetime("NULL");
+	result.setHardLimit(0);
+	result.setNumCpuTotal(0);
+	result.setNumCpuFree(0);
+	result.setNumJobsRunning(0);
+	result.setNumJobsQueued(0);
+	// END TODO
 
-	throw new FaultType("Operation currently not implemented");
+	return result;
     }
 
 
