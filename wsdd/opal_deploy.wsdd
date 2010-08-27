@@ -29,6 +29,10 @@
         <parameter qname="pns:getAppConfigInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:AppConfigInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
         <fault name="getAppConfigFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
+      <operation name="getSystemInfo" qname="getSystemInfo" returnQName="retNS:getSystemInfoOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:SystemInfoType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/getSystemInfo" >
+        <parameter qname="pns:getSystemInfoInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:SystemInfoInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
+        <fault name="getSystemInfoFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
+      </operation>
       <operation name="launchJob" qname="launchJob" returnQName="retNS:launchJobOutput" xmlns:retNS="http://nbcr.sdsc.edu/opal/types" returnType="rtns:JobSubOutputType" xmlns:rtns="http://nbcr.sdsc.edu/opal/types" soapAction="http://nbcr.sdsc.edu/opal/launchJob" >
         <parameter qname="pns:launchJobInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:JobInputType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
         <fault name="launchJobFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
@@ -57,7 +61,7 @@
         <parameter qname="pns:destroyInput" xmlns:pns="http://nbcr.sdsc.edu/opal/types" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <fault name="destroyFault" qname="fns:opalFaultOutput" xmlns:fns="http://nbcr.sdsc.edu/opal/types" class="edu.sdsc.nbcr.opal.FaultType" type="tns:FaultType" xmlns:tns="http://nbcr.sdsc.edu/opal/types"/>
       </operation>
-      <parameter name="allowedMethods" value="getJobStatistics queryStatus getOutputAsBase64ByName getAppConfig launchJobBlocking destroy getOutputs launchJob getAppMetadata"/>
+      <parameter name="allowedMethods" value="getJobStatistics queryStatus getOutputAsBase64ByName getAppConfig getSystemInfo launchJobBlocking destroy getOutputs launchJob getAppMetadata"/>
       <parameter name="scope" value="Application"/>
 
       <typeMapping
@@ -158,6 +162,14 @@
       />
       <typeMapping
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:SystemInfoInputType"
+        type="java:edu.sdsc.nbcr.opal.SystemInfoInputType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:AppConfigType"
         type="java:edu.sdsc.nbcr.opal.AppConfigType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
@@ -208,6 +220,14 @@
         xmlns:ns="http://nbcr.sdsc.edu/opal/types"
         qname="ns:GroupsArrayType"
         type="java:edu.sdsc.nbcr.opal.GroupsArrayType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://nbcr.sdsc.edu/opal/types"
+        qname="ns:SystemInfoType"
+        type="java:edu.sdsc.nbcr.opal.SystemInfoType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
