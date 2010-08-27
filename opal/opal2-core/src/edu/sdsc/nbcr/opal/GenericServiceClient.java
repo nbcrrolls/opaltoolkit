@@ -77,7 +77,8 @@ public class GenericServiceClient {
 	options.addOption(OptionBuilder.withArgName("operation")
 			  .isRequired()
 			  .withDescription("remote operation to invoke: [getAppMetadata|" +
-					   "launchJob|queryStatus|getStatistics|getOutputs|destroy]")
+					   "launchJob|queryStatus|\n" + 
+					   "getSystemInfo|getStatistics|getOutputs|destroy]")
 			  .hasArg()
 			  .create("r"));
 	options.addOption(OptionBuilder.withArgName("num_procs")
@@ -140,7 +141,6 @@ public class GenericServiceClient {
 	try {
 	    line = parser.parse(options, args);
 	} catch (Exception e) {
-	    System.err.println(e.toString());
 	    HelpFormatter formatter = new HelpFormatter();
 	    formatter.printHelp("java edu.sdsc.nbcr.opal.GenericServiceClient", options);
 	    System.exit(1);
@@ -229,6 +229,26 @@ public class GenericServiceClient {
 	    sc.serialize(typeDesc.getXmlType(), 
 			 null, 
 			 amt,
+			 typeDesc.getXmlType(), 
+			 new Boolean(true), 
+			 new Boolean(true));
+	    sw.close();
+	    
+	    System.out.println(sw.toString());
+
+	} else if (operation.equals("getSystemInfo")) {
+	    System.out.println("Getting system information- ");
+	    SystemInfoType sit = appServicePort.getSystemInfo(new SystemInfoInputType());
+
+	    TypeDesc typeDesc = sit.getTypeDesc();
+	    StringWriter sw = new StringWriter();
+	    MessageContext mc = new MessageContext(new AxisClient());
+	    SerializationContext sc = new SerializationContext(sw, mc);
+	    sc.setDoMultiRefs(false);
+	    sc.setPretty(true);
+	    sc.serialize(typeDesc.getXmlType(), 
+			 null, 
+			 sit,
 			 typeDesc.getXmlType(), 
 			 new Boolean(true), 
 			 new Boolean(true));
