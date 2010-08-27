@@ -243,6 +243,22 @@
 	</xsd:sequence>
       </xsd:complexType>
 
+      <xsd:complexType name="SystemInfoInputType">
+	<xsd:all/>
+      </xsd:complexType>
+
+      <xsd:complexType name="SystemInfoType">
+	<xsd:sequence>
+	  <xsd:element name="jobManagerType" type="xsd:string"/>
+	  <xsd:element name="dataLifetime" type="xsd:string"/>
+	  <xsd:element name="hardLimit" type="xsd:int"/>
+	  <xsd:element name="numCpuTotal" type="xsd:int"/>
+	  <xsd:element name="numCpuFree" type="xsd:int"/>
+	  <xsd:element name="numJobsRunning" type="xsd:int"/>
+	  <xsd:element name="numJobsQueued" type="xsd:int"/>
+	</xsd:sequence>
+      </xsd:complexType>
+
       <xsd:complexType name="InputFileType">
 	<xsd:sequence>
 	  <xsd:element name="name" type="xsd:string"/>
@@ -338,6 +354,12 @@
       <xsd:element name="getAppConfigOutput"
 		   type="types:AppConfigType"/>
 
+      <xsd:element name="getSystemInfoInput"
+		   type="types:SystemInfoInputType"/>
+
+      <xsd:element name="getSystemInfoOutput"
+		   type="types:SystemInfoType"/>
+
       <xsd:element name="launchJobInput" 
 		   type="types:JobInputType"/>
 
@@ -399,6 +421,14 @@
 
   <wsdl:message name="getAppConfigResponse">
     <wsdl:part name="out" element="types:getAppConfigOutput"/>
+  </wsdl:message>
+
+  <wsdl:message name="getSystemInfoRequest">
+    <wsdl:part name="in" element="types:getSystemInfoInput"/>
+  </wsdl:message>
+
+  <wsdl:message name="getSystemInfoResponse">
+    <wsdl:part name="out" element="types:getSystemInfoOutput"/>
   </wsdl:message>
 
   <wsdl:message name="launchJobRequest">
@@ -473,6 +503,13 @@
       <wsdl:input message="as:getAppConfigRequest"/>
       <wsdl:output message="as:getAppConfigResponse"/>
       <wsdl:fault name="getAppConfigFault"
+		  message="as:opalFaultResponse"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSystemInfo">
+      <wsdl:input message="as:getSystemInfoRequest"/>
+      <wsdl:output message="as:getSystemInfoResponse"/>
+      <wsdl:fault name="getSystemInfoFault"
 		  message="as:opalFaultResponse"/>
     </wsdl:operation>
 
@@ -552,6 +589,19 @@
       </wsdl:output>
       <wsdl:fault name="getAppConfigFault">
 	<wsdlsoap:fault name="getAppConfigFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="getSystemInfo">
+      <wsdlsoap:operation soapAction="http://nbcr.sdsc.edu/opal/getSystemInfo"/>
+      <wsdl:input name="getSystemInfoRequest">
+	<wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getSystemInfoResponse">
+	<wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSystemInfoFault">
+	<wsdlsoap:fault name="getSystemInfoFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
 

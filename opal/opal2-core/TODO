@@ -3,12 +3,16 @@
 * Addition of the above statistics to the Dashboard
 * Opal MetaService - submission of jobs to other Opal servers
 
-* REST support - and upgrade to Axis2
+* User-based accounting for jobs
+  * Specification of limits
+  * Job history per user
 
 * Updated Ajax-based automatic interface generation
 
 * Security enhancements
   * FacebookConnect or OpenID
+
+* REST support - and upgrade to Axis2
 
 * Plug-ins
   * Hadoop/EC2 MapReduce plugin

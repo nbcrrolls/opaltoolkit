@@ -280,6 +280,23 @@ public class AppServiceImpl
     }
 
     /**
+     * Get the system information for this service
+     * 
+     * @param in dummy object representing doc-literal input parameter
+     * @return system information for this service
+     * @throws FaultType if there is an error during retrieval of system information
+     */
+    public SystemInfoType getSystemInfo(SystemInfoInputType in) 
+	throws FaultType {
+	logger.info("called");
+
+	// TODO: fill the business logic for this call
+
+	throw new FaultType("Operation currently not implemented");
+    }
+
+
+    /**
      * Launch a job on behalf of the user, using the given arguments
      *
      * @param in the input object, as defined by the WSDL, which contains the command-line
