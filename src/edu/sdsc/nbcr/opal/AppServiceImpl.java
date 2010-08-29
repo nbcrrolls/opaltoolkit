@@ -292,13 +292,65 @@ public class AppServiceImpl
 
 	// TODO: fill the business logic for this call
 	SystemInfoType result = new SystemInfoType();
-	result.setJobManagerType("NULL");
-	result.setDataLifetime("NULL");
-	result.setHardLimit(0);
-	result.setNumCpuTotal(0);
-	result.setNumCpuFree(0);
-	result.setNumJobsRunning(0);
-	result.setNumJobsQueued(0);
+
+	// set job manager name
+	String className = "edu.sdsc.nbcr.opal.manager.";
+	int start = className.length();
+	int end = jobManagerFQCN.indexOf("JobManager");
+	String jobManagerType = jobManagerFQCN.slice(start, end);
+	result.setJobManagerType(jobManagerType);
+
+	// set user data lifetime
+	String DataLifeTime = props.getProperty("opal.datalifetime");
+	if (DataLifeTime == null) {
+	    DataLifeTime = "4 days";
+	    logger.info("SystemInfoType: Using opal.datalifetime=4 days");
+	}
+	result.setDataLifetime(DataLifeTime);
+
+	// set hard limit
+	int HardLimit = props.getProperty("opal.hard_limit");
+	if (HardLimit == null) {
+	    HardLimit = 0;
+	    logger.info("SystemInfoType: Using opal.hard_limit=0");
+	}
+	result.setHardLimit(HardLimit);
+
+	// set total CPU number 
+	long numCpuTotal = props.getProperty("num.procs");
+	if (numCpuTotal == null) {
+	    numCpuTotal = 1;
+	    logger.info("SystemInfoType: Using num.procs=1");
+	}
+	result.setNumCpuTotal(numCpuTotal);
+
+	// get number of currently excuting jobs 
+	long numJobsExec = 0; 
+	try {
+	   numJobsExec =  HibernateUtil.getNumExecutingJobs();
+	} catch (StateManagerException sme) {
+	    String msg = sme.getMessage();
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+	result.setNumJobsRunning(numJobsExec);
+
+	// get number of pending jobs 
+	long numJobsPending = 0; 
+	try {
+	   numJobsExec =  HibernateUtil.getNumPendingJobs();
+	} catch (StateManagerException sme) {
+	    String msg = sme.getMessage();
+	    logger.error(msg);
+	    throw new FaultType(msg);
+	}
+	result.setNumJobsQueued(numJobsPending);
+
+	// set number of available CPUs
+	long numCpuFree = numCpuTotal - numJobsExec - numJobsPending;
+	if (numCpuFree < 0) 
+		numCpuFree = 0;
+	result.setNumCpuFree(numCpuFree);
 	// END TODO
 
 	return result;
