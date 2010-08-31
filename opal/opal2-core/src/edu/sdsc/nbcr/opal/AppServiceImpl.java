@@ -297,7 +297,7 @@ public class AppServiceImpl
 	String className = "edu.sdsc.nbcr.opal.manager.";
 	int start = className.length();
 	int end = jobManagerFQCN.indexOf("JobManager");
-	String jobManagerType = jobManagerFQCN.slice(start, end);
+	String jobManagerType = jobManagerFQCN.substring(start, end);
 	result.setJobManagerType(jobManagerType);
 
 	// set user data lifetime
@@ -309,18 +309,18 @@ public class AppServiceImpl
 	result.setDataLifetime(DataLifeTime);
 
 	// set hard limit
-	int HardLimit = props.getProperty("opal.hard_limit");
-	if (HardLimit == null) {
-	    HardLimit = 0;
-	    logger.info("SystemInfoType: Using opal.hard_limit=0");
+	int hardLimit = 0;
+	if ((props.getProperty("opal.hard_limit") != null)) {
+	     hardLimit = Integer.parseInt(props.getProperty("opal.hard_limit")) ;
+	     logger.info("SystemInfoType: Using hard limit "  + hardLimit + " seconds");
 	}
-	result.setHardLimit(HardLimit);
+	result.setHardLimit(hardLimit);
 
 	// set total CPU number 
-	long numCpuTotal = props.getProperty("num.procs");
-	if (numCpuTotal == null) {
-	    numCpuTotal = 1;
-	    logger.info("SystemInfoType: Using num.procs=1");
+	int numCpuTotal = 1;
+        if ((props.getProperty("num.procs") != null)) {
+             numCpuTotal = Integer.parseInt(props.getProperty("num.procs")) ;
+	    logger.info("SystemInfoType: Using num.procs = " + numCpuTotal );
 	}
 	result.setNumCpuTotal(numCpuTotal);
 
@@ -333,7 +333,7 @@ public class AppServiceImpl
 	    logger.error(msg);
 	    throw new FaultType(msg);
 	}
-	result.setNumJobsRunning(numJobsExec);
+	result.setNumJobsRunning((int)numJobsExec);
 
 	// get number of pending jobs 
 	long numJobsPending = 0; 
@@ -344,10 +344,10 @@ public class AppServiceImpl
 	    logger.error(msg);
 	    throw new FaultType(msg);
 	}
-	result.setNumJobsQueued(numJobsPending);
+	result.setNumJobsQueued((int)numJobsPending);
 
 	// set number of available CPUs
-	long numCpuFree = numCpuTotal - numJobsExec - numJobsPending;
+	int numCpuFree = numCpuTotal - (int)numJobsExec - (int)numJobsPending;
 	if (numCpuFree < 0) 
 		numCpuFree = 0;
 	result.setNumCpuFree(numCpuFree);
