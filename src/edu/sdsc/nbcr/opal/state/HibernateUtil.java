@@ -640,6 +640,7 @@ public class HibernateUtil {
 
 	return numJobs.longValue();
     }
+
     // A simple main method to test functionality
     public static void main(String[] args) 
         throws Exception {

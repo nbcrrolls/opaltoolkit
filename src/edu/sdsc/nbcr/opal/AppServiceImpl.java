@@ -290,7 +290,7 @@ public class AppServiceImpl
 	throws FaultType {
 	logger.info("called");
 
-	// TODO: fill the business logic for this call
+	// fill the business logic for this call
 	SystemInfoType result = new SystemInfoType();
 
 	// set job manager name
@@ -301,12 +301,12 @@ public class AppServiceImpl
 	result.setJobManagerType(jobManagerType);
 
 	// set user data lifetime
-	String DataLifeTime = props.getProperty("opal.datalifetime");
-	if (DataLifeTime == null) {
-	    DataLifeTime = "4 days";
+	String dataLifeTime = props.getProperty("opal.datalifetime");
+	if (dataLifeTime == null) {
+	    dataLifeTime = "4 days";
 	    logger.info("SystemInfoType: Using opal.datalifetime=4 days");
 	}
-	result.setDataLifetime(DataLifeTime);
+	result.setDataLifetime(dataLifeTime);
 
 	// set hard limit
 	int hardLimit = 0;
@@ -319,7 +319,7 @@ public class AppServiceImpl
 	// set total CPU number 
 	int numCpuTotal = 1;
         if ((props.getProperty("num.procs") != null)) {
-             numCpuTotal = Integer.parseInt(props.getProperty("num.procs")) ;
+	    numCpuTotal = Integer.parseInt(props.getProperty("num.procs")) ;
 	    logger.info("SystemInfoType: Using num.procs = " + numCpuTotal );
 	}
 	result.setNumCpuTotal(numCpuTotal);
@@ -351,7 +351,6 @@ public class AppServiceImpl
 	if (numCpuFree < 0) 
 		numCpuFree = 0;
 	result.setNumCpuFree(numCpuFree);
-	// END TODO
 
 	return result;
     }
