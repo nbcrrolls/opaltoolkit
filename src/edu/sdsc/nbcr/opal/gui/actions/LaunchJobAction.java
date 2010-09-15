@@ -50,26 +50,26 @@ import edu.sdsc.nbcr.opal.gui.common.OPALService;
 public class LaunchJobAction extends MappingDispatchAction{
     
     protected Log log = LogFactory.getLog(Constants.PACKAGE);
-    protected ArrayList errors = new ArrayList();
-	protected HttpServletRequest request;
-	protected ActionMapping mapping;
+    protected ArrayList errors;
+    protected HttpServletRequest request;
+    protected ActionMapping mapping;
     
     // See superclass for Javadoc
     public ActionForward execute(ActionMapping mapping, ActionForm form, 
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+				 HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
-		request = request;
-		mapping = mapping;
+	request = request;
+	mapping = mapping;
         log.info("Action: LaunchJob");
 
-		// session timeout 
-		if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {
+	// session timeout 
+	if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {
             log.info("*** Session has timed out ***");
-            ArrayList errors = new ArrayList();
+            errors = new ArrayList();
             errors.add("Session timed out");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Timeout");
-		}
+	}
         
         AppMetadata app = (AppMetadata) form;
 
@@ -84,7 +84,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         InputFileType [] files; 
 
         String debug = "";
-		if ( app.isArgMetadataEnable()) { // processing compelx form
+	if ( app.isArgMetadataEnable()) { // processing compelx form
             ArgFlag [] flags = app.getArgFlags();
             if (flags != null ) { 
                 for (int i = 0; i < flags.length; i++ ) {
@@ -105,7 +105,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         log.debug("the following parameters has been posted:\n" + debug);
         // build the command line
         String cmd = makeCmdLine(app);
-		if ( cmd == null)
+	if ( cmd == null)
             return mapping.findForward("Error");
 
         //now we could validate the cmd line
@@ -142,8 +142,8 @@ public class LaunchJobAction extends MappingDispatchAction{
         if ( files != null ) {            
             in.setInputFile(files);
         } else{
-        	//TODO improve this, it could be that the input file has been lost in the way
-        	log.debug("No file has been submitted.");
+	    //TODO improve this, it could be that the input file has been lost in the way
+	    log.debug("No file has been submitted.");
         }
 
         //finally invoke opal service!
@@ -166,10 +166,10 @@ public class LaunchJobAction extends MappingDispatchAction{
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
         }catch (Exception e){
-		    if ( e == null) {
+	    if ( e == null) {
                 log.info("*** Session has timed out 2 ***");
                 return mapping.findForward("Timeout");
-			};
+	    };
             if ( e.getMessage() == null ) {
                 log.info("*** Session has timed out 3 ***");
                 errors.add("Session timed out");
@@ -190,9 +190,9 @@ public class LaunchJobAction extends MappingDispatchAction{
         log.info("Job submitted received jobID: " + subOut.getJobID());
         StatusOutputType status = subOut.getStatus();
         log.debug("Current Status:\n" +
-                           "\tCode: " + status.getCode() + "\n" +
-                           "\tMessage: " + status.getMessage() + "\n" +
-                           "\tOutput Base URL: " + status.getBaseURL());
+		  "\tCode: " + status.getCode() + "\n" +
+		  "\tMessage: " + status.getMessage() + "\n" +
+		  "\tOutput Base URL: " + status.getBaseURL());
         log.debug("redirecting to the status page...");
 
         // everything went allright redirect to the status page
@@ -211,11 +211,12 @@ public class LaunchJobAction extends MappingDispatchAction{
      */
     private  String makeCmdLine(AppMetadata app){
         String cmd = "";
+	errors = new ArrayList();
         if ( app.isArgMetadataEnable() ) { // have the configuration paramters
             if (app.getArgFlags() != null ) {
                 ArgFlag [] flags = app.getArgFlags();
                 for ( int i = 0; i < flags.length; i++){
-                	if ( flags[i].isSelected() )
+		    if ( flags[i].isSelected() )
                         cmd += " " + flags[i].getTag();
                 }
             }
@@ -232,7 +233,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                     untaggedParams[i] = "";
                 log.debug("We have " + app.getNumUnttagedParams() + " untaggged parameters.");
                 for( int i = 0; i < params.length; i++ ) {
-                	log.debug("Analizing param: " + params[i].getId());
+		    log.debug("Analizing param: " + params[i].getId());
                     if (params[i].getTag() != null) { //tagged params
                         if ( params[i].isFileUploaded() ) {
                             //we have a file!
@@ -276,24 +277,24 @@ public class LaunchJobAction extends MappingDispatchAction{
      * @param FormFile
      */
     private void  logFileInfo(int pos, FormFile ff){
-	    String fileInfo;
+	String fileInfo;
         String fname = ff.getFileName();
 
         if(ff == null) {
             fileInfo = "(" + pos + ") file name : there was an error uploading file"; 
-			return;
+	    return;
         }
 
         if(fname.length()==0) {
             fileInfo = "(" + pos + ") file name has zero length"; 
-		} else {
+	} else {
             fileInfo = "(" + pos + ") file name :" + ff.getFileName();
             fileInfo += " type: " + ff.getContentType();
-		    fileInfo += " size: " + ff.getFileSize();
-		}
+	    fileInfo += " size: " + ff.getFileSize();
+	}
 
         log.info(fileInfo);
-	}
+    }
 
     /**
      * Return an array of InputFileType with all the user dynamically uploaded files 
@@ -304,7 +305,7 @@ public class LaunchJobAction extends MappingDispatchAction{
     private InputFileType [] getDynamicFiles(AppMetadata app){
         InputFileType [] files = null;
         try {
-		    ArrayList al = app.getFormFiles();
+	    ArrayList al = app.getFormFiles();
             ArrayList filesArrayReturn = new ArrayList();
             log.info("User uploads " + al.size() + " dynamic input file(s)");
             for (int i = 0; i<al.size(); i++) { // get files from the bean
@@ -313,17 +314,17 @@ public class LaunchJobAction extends MappingDispatchAction{
                 if(fname.length()==0) {
                     continue;
                 }
-				logFileInfo(i+1, ff);
+		logFileInfo(i+1, ff);
 
                 InputFileType file = new InputFileType();
                 file.setName(fname);
-			    File osFile = getStoredFile(ff);
-			    if (osFile != null) {
-			        DataHandler dh = new DataHandler(new FileDataSource(osFile));
-			        file.setAttachment(dh);
-			    } else {
-			        file.setContents(ff.getFileData());
-			    }
+		File osFile = getStoredFile(ff);
+		if (osFile != null) {
+		    DataHandler dh = new DataHandler(new FileDataSource(osFile));
+		    file.setAttachment(dh);
+		} else {
+		    file.setContents(ff.getFileData());
+		}
                 filesArrayReturn.add( file );
             }
             files = (InputFileType[]) filesArrayReturn.toArray(new InputFileType[filesArrayReturn.size()]);
@@ -334,7 +335,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             return null;
         }
         return files;
-	}
+    }
 
     /**
      * Given an appMetadata we return an array of InputFileType with all the files 
@@ -353,7 +354,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                 for ( int i = 0; i < numFile; i++ ){
                     ArgParam param = app.getArgFileSubmitted(i);
                     files[i] = new InputFileType();
-					FormFile ff = param.getFile();
+		    FormFile ff = param.getFile();
                     if (ff != null) {
                         files[i].setName(ff.getFileName());
                         File osFile = getStoredFile(ff);
@@ -384,36 +385,36 @@ public class LaunchJobAction extends MappingDispatchAction{
      *
      * @param file FormFile whose path is desired
      * @return null if FormFile is in memory, else absolute path
-    */
+     */
     private File getStoredFile(FormFile file) {
-    try {
-        File osFile = null;
+	try {
+	    File osFile = null;
 
-        // returned class should be CommonsMultipartRequestHandler.CommonsFormFile
-        Class formClass = file.getClass();
-        Field fileItemField = formClass.getDeclaredField("fileItem");
-        fileItemField.setAccessible(true);
-        Object o = fileItemField.get(file);
-        if (o instanceof DiskFileItem) {
-        DiskFileItem df = (DiskFileItem) o;
-        if (df.isInMemory()) {
-			log.debug("FormFile is actually in memory - " + "no need to write it out to File");
-            return null;
-        } else {
-            osFile = df.getStoreLocation();
-            String path = osFile.getAbsolutePath();
-            log.debug("FormFile found at absolute path: " + path);
-            return osFile;
-        }
-        } else {
-            log.error("Can't retrieve stored File for FormFile");
-            return null;
-        }
-    } catch (Exception e) {
-        log.error("Can't retrieve stored File for FormFile");
-        log.error(e);
-        return null;
-    }
+	    // returned class should be CommonsMultipartRequestHandler.CommonsFormFile
+	    Class formClass = file.getClass();
+	    Field fileItemField = formClass.getDeclaredField("fileItem");
+	    fileItemField.setAccessible(true);
+	    Object o = fileItemField.get(file);
+	    if (o instanceof DiskFileItem) {
+		DiskFileItem df = (DiskFileItem) o;
+		if (df.isInMemory()) {
+		    log.debug("FormFile is actually in memory - " + "no need to write it out to File");
+		    return null;
+		} else {
+		    osFile = df.getStoreLocation();
+		    String path = osFile.getAbsolutePath();
+		    log.debug("FormFile found at absolute path: " + path);
+		    return osFile;
+		}
+	    } else {
+		log.error("Can't retrieve stored File for FormFile");
+		return null;
+	    }
+	} catch (Exception e) {
+	    log.error("Can't retrieve stored File for FormFile");
+	    log.error(e);
+	    return null;
+	}
     }
 }
 
