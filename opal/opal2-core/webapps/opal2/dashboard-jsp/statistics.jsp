@@ -18,7 +18,6 @@
     <script src="scripts/jquery.corner.js" language="javascript" type="text/javascript" ></script>
 	<script language="javascript" type="text/javascript" >
 
-    <script type="text/javascript">
         function uncheckAll(){
             var selectedElem = document.getElementsByName("servicesName");
             for (i=0; i < selectedElem.length; i++){
