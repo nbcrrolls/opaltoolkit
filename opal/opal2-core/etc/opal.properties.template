@@ -18,6 +18,10 @@ mpi.run=/path/to/your/mpi
 # modify the opal.xml accordingly
 # working.dir=opal-jobs
 
+# by default, opal doesn't allow the use of absolute paths in the command-line
+# set the following parameter to allow some exceptions
+# allowed.path.prefixes=/db/, /whatever/dir/, /another/one/
+
 ## BEGIN: email configuration for server
 ##        To be used for notifying users
 ## -------------------------------------------
