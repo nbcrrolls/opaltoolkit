@@ -101,6 +101,12 @@ public class AppServiceImpl
     private static String[] blackListIP;
     private static String[] whiteListIP;
 
+    /**
+     * The properties for allowing certain prefixes in command-line
+     */
+    private static String allowedDirsString;
+    private static String[] allowedDirs;
+
     // the configuration information for the application
     private String serviceName;
     private AppConfigType config;
@@ -201,6 +207,14 @@ public class AppServiceImpl
 	    } else {
 		whiteListIP = new String[0];
 	    }
+	}
+
+	// process command-line path prefixes
+	allowedDirsString = props.getProperty("allowed.path.prefixes");
+	if (allowedDirsString != null) {
+	    allowedDirs = allowedDirsString.split("\\s*,\\s*");
+	} else {
+	    allowedDirs = new String[0];
 	}
     }
 
@@ -644,13 +658,28 @@ public class AppServiceImpl
 	    StringTokenizer argTokens = new StringTokenizer(args);
 	    while (argTokens.hasMoreTokens()) {
 		String next = argTokens.nextToken();
-		// must not begin with "/" or "~"
+
+		// must not begin with "/" or "~", unless allowed
 		if (next.startsWith(File.separator) ||
 		    (next.startsWith("~"))) {
-		    String msg = "Arguments are not allowed to begin with: " +
-			File.separator + " or " + "~";
-		    logger.error(msg);
-		    throw new FaultType(msg);
+		    
+		    // some dirs are allowed
+		    boolean allowed = false;
+		    for (int i = 0; i < allowedDirs.length; i++) {
+			// logger.debug("Comparing command-line arg with: " +
+			//	     allowedDirs[i]);
+			if (next.startsWith(allowedDirs[i])) {
+			    allowed = true;
+			    break;
+			}
+		    }
+		    
+		    if (!allowed) {
+			String msg = "Arguments are not allowed to begin with: " +
+			    File.separator + " or " + "~";
+			logger.error(msg);
+			throw new FaultType(msg);
+		    }
 		}
 
 		// must not include ".."
