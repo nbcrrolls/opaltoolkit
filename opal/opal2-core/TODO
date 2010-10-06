@@ -1,7 +1,6 @@
-* Addition of utility services (addition to WSDL)
-  * Server load, queue length, data lifetime, server information
-* Addition of the above statistics to the Dashboard
+
 * Opal MetaService - submission of jobs to other Opal servers
+* Addition of system statistics to Opal Dashboard
 
 * User-based accounting for jobs
   * Specification of limits
