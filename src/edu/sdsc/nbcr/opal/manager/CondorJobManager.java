@@ -185,12 +185,13 @@ public class CondorJobManager implements OpalJobManager {
 	    } else {
 		jd.addAttribute("universe", "vanilla");
 	    }
+	    jd.addAttribute("getenv", "true");
 	    jd.addAttribute("executable", cmd);
 	    jd.addAttribute("arguments", args);
 	    jd.addAttribute("initialdir", workingDir);
 	    jd.addAttribute("output", workingDir + "/stdout.txt");
 	    jd.addAttribute("error", workingDir + "/stderr.txt");
-	    jd.addAttribute("should_transfer_files", "yes");
+	    jd.addAttribute("should_transfer_files", "if_needed");
 	    jd.addAttribute("when_to_transfer_output", "on_exit");
 	    condor.setLogFile(workingDir + "/condor.log",
 			      5);
