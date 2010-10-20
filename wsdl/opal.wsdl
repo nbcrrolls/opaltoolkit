@@ -237,6 +237,8 @@
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
 	  <xsd:element name="jobManagerFQCN" type="xsd:string" minOccurs="0"/>
+	  <xsd:element name="drmaaPE" type="xsd:string" minOccurs="0"/>
+	  <xsd:element name="drmaaQueue" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="globusGatekeeper" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="gridftpBase" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
