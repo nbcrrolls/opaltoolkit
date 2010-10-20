@@ -65,6 +65,8 @@ opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
 ## ------------------------------------------------
 # the parallel environment (PE) being used by DRMAA
 drmaa.pe=mpich
+# change the default DRMAA queue here
+# drmaa.queue=foo
 ## ------------------------------------------------
 ## END: information for the DRMAA job manager
 

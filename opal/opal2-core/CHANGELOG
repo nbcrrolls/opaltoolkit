@@ -5,6 +5,8 @@ Version 2.4
 - Additional operation added to Opal WSDL and implementation to get system
   information (number of jobs running/queued, job manager type, data
   lifetime, etc)
+- Ability to set the DRMAA queue and override it in the application
+  configuration
 - Bug fixes for:
   - Error message on Dashboard which was never reset
   - Job statistics page checking/unchecking boxes didn't work

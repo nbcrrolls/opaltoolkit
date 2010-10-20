@@ -192,13 +192,35 @@ public class DRMAAJobManager implements OpalJobManager {
 	// get the parallel environment being used
 	String drmaaPE = null;
 	if (config.isParallel()) {
-	    drmaaPE = props.getProperty("drmaa.pe");
+	    String appDrmaaPE = config.getDrmaaPE();
+	    if ((appDrmaaPE != null) && !appDrmaaPE.equals("")) {
+		drmaaPE = appDrmaaPE;
+    		logger.debug("Drmaa parallel environment defined at app level");
+	    }
+	    else {
+		drmaaPE = props.getProperty("drmaa.pe");
+    		logger.debug("Drmaa parallel environment defined at server level");
+	    }
+	    logger.debug("Using drmaa parallel environment "+drmaaPE);
 	    if (drmaaPE == null) {
 		String msg = "Can't find property drmaa.pe for running parallel job";
 		logger.error(msg);
 		throw new JobManagerException(msg);
 	    }
 	}
+	
+	// get the drmaa queue
+	String drmaaQueue = null;
+	String appDrmaaQueue = config.getDrmaaQueue();
+	if ((appDrmaaQueue != null) && !appDrmaaQueue.equals("")) {
+	    drmaaQueue = appDrmaaQueue;
+	    logger.debug("Drmaa parallel queue at app level");
+	}
+	else {
+	    drmaaQueue = props.getProperty("drmaa.queue");
+	    logger.debug("Drmaa parallel queue at server level");
+	}
+	logger.debug("Using drmaa queue "+drmaaQueue);
 
 	// get the hard run limit
 	long hardLimit = 0;
@@ -212,10 +234,14 @@ public class DRMAAJobManager implements OpalJobManager {
 	    logger.debug("Working directory: " + workingDir);
 	    
 	    JobTemplate jt = session.createJobTemplate();
-	    if (config.isParallel()) {
-		String nativeSpec = "-pe " + drmaaPE + " " + numProcs;
-		jt.setNativeSpecification(nativeSpec);
+	    String nativeSpec = "";
+	    if ((drmaaQueue != null) && !drmaaQueue.equals("")) {
+		nativeSpec += "-q " + drmaaQueue + " ";
 	    }
+	    if (config.isParallel()) {
+		nativeSpec += "-pe " + drmaaPE + " " + numProcs;
+	    }
+	    jt.setNativeSpecification(nativeSpec);
 	    jt.setRemoteCommand(cmd);
 	    jt.setArgs(Arrays.asList(argsArray));
 	    jt.setWorkingDirectory(workingDir);
@@ -322,7 +348,7 @@ public class DRMAAJobManager implements OpalJobManager {
 	// update status
 	int exitValue;
 	try {
-	  exitValue = jobInfo.getExitStatus();
+	    exitValue = jobInfo.getExitStatus();
 	}
 	catch (DrmaaException e) {
 	    logger.error("Can't get exit value from DRMAA - setting it to 100");
