@@ -62,6 +62,15 @@
 
 	<many-to-one name="job" column="job_id" class="JobInfo" not-null="true"/>
     </class>
+
+    <class name="ServiceStatus" table="service_status">
+        <id name="serviceName" column="service_name" type="string">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="status" type="string" column="status" not-null="true"/>
+    </class>
+
     <sql-query name="exectime">
     <![CDATA[ 
         select jobInfo.start_time_date as date,  

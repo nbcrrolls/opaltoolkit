@@ -216,7 +216,7 @@ public class PlotterServlet extends HttpServlet
             }   
         if ( (startDate == null) || (endDate == null)) {
             //no date provided let's put the default
-            log.info("No start and end date provided.");
+            log.debug("No start and end date provided.");
             endDate = DateHelper.getEndDate();
             startDate = DateHelper.getStartDate();
         }
