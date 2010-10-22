@@ -229,6 +229,7 @@ Author:
     <copy tofile="${project.home}/etc/hibernate-opal.cfg.xml.tmp" file="${project.home}/etc/hibernate-opal.cfg.xml" />
     <!-- let's modify hibernate-opal.cfg.xml before moving it to tomcat -->
     <replace file="${project.home}/etc/hibernate-opal.cfg.xml.tmp" token="jdbc:hsqldb:file:data/opaldb" value="jdbc:hsqldb:file:${tomcat.WEB-INF}/data/opaldb"/>
+    <copy file="${project.home}/etc/hibernate-opal.cfg.xml.tmp" tofile="${project.home}/etc/hibernate-opal.cfg.xml"/>
     <move file="${project.home}/etc/hibernate-opal.cfg.xml.tmp" tofile="${tomcat.WEB-INF}/classes/hibernate-opal.cfg.xml"/>
 
     <copy todir="${tomcat.WEB-INF}/classes">
