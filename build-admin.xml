@@ -68,6 +68,7 @@ Author:
     <!-- Moving the template file  -->
     <move file="${build.dist.base}/etc/opal.properties.template" tofile="${build.dist.base}/etc/opal.properties"/>
     <move file="${build.dist.base}/build.properties.template" tofile="${build.dist.base}/build.properties"/>
+    <move file="${build.dist.base}/etc/hibernate-opal.cfg.xml.template" tofile="${build.dist.base}/etc/hibernate-opal.cfg.xml"/>
 
 
     <!-- adjusting text files to local conventions -->
