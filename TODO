@@ -1,6 +1,5 @@
 
 * Opal MetaService - submission of jobs to other Opal servers
-* Updating of service status in DB (active, retired, inactive)
 * Addition of system statistics to Opal Dashboard
 
 * User-based accounting for jobs

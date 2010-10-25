@@ -1,4 +1,6 @@
 Version 2.4
+- Updated database schema to support ACTIVE/INACTIVE service status to be
+  used while plotting usage information. Feature Not available for HSQL DB
 - A set of absolute paths now accessible to applications via the
   opal.properties. In the past applications only had access to the current
   working directory
