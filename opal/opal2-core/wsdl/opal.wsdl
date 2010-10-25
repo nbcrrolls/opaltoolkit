@@ -242,7 +242,7 @@
 	  <xsd:element name="globusGatekeeper" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="gridftpBase" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
-	  <xsd:element name="metaServiceConfig" type="xsd:string"/>
+	  <xsd:element name="metaServiceConfig" type="xsd:string" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 

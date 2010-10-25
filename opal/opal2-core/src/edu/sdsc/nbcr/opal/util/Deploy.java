@@ -9,6 +9,9 @@ import java.io.FileOutputStream;
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.common.TypeDeserializer;
 
+import edu.sdsc.nbcr.opal.state.HibernateUtil;
+import edu.sdsc.nbcr.opal.state.ServiceStatus;
+
 /**
  *
  * Utility class for deployment of Opal services
@@ -159,5 +162,12 @@ public class Deploy {
 	FileOutputStream fOut = new FileOutputStream(wsddFinal);
 	fOut.write(finalData.getBytes());
 	fOut.close();
+
+	// updating service status in database
+	logger.info("Updating service status in database to ACTIVE");
+	ServiceStatus serviceStatus = new ServiceStatus();
+	serviceStatus.setServiceName(serviceName);
+	serviceStatus.setStatus(ServiceStatus.STATUS_ACTIVE);
+	HibernateUtil.saveServiceStatus(serviceStatus);
     }
 }

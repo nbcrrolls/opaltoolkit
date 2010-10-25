@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import edu.sdsc.nbcr.opal.state.HibernateUtil;
+import edu.sdsc.nbcr.opal.state.ServiceStatus;
+
 /**
  *
  * Utility class for undeployment of Opal services
@@ -98,5 +101,11 @@ public class Undeploy {
 	FileOutputStream fOut = new FileOutputStream(wsddFinal);
 	fOut.write(finalData.getBytes());
 	fOut.close();
+
+	logger.info("Updating service status in database to INACTIVE");
+	ServiceStatus serviceStatus = new ServiceStatus();
+	serviceStatus.setServiceName(serviceName);
+	serviceStatus.setStatus(ServiceStatus.STATUS_INACTIVE);
+	HibernateUtil.saveServiceStatus(serviceStatus);
     }
 }
