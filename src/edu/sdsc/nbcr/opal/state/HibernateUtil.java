@@ -3,6 +3,7 @@ package edu.sdsc.nbcr.opal.state;
 import org.hibernate.Session;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.HibernateException;
 
@@ -645,7 +646,7 @@ public class HibernateUtil {
 
 
     /**
-     * Saves the service status in DB
+     * Saves the service status in DB, not supported for HSQL DB
      *
      * @param status The service status to be saved
      * @return true if status is saved successfully
@@ -655,10 +656,23 @@ public class HibernateUtil {
         throws StateManagerException {
 	logger.info("called");
 
+	// return false if HSQL DB is being used
+	Configuration conf = new Configuration();
+	conf = conf.configure(confFile);
+	String dialect = 
+	    conf.getProperty("dialect");
+	if (dialect == null) {
+	    logger.error("Can't figure out the type of database being used");
+	    return false;
+	} else if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
+	    logger.error("Update of service status not supported for HSQL DB");
+	    return false;
+	}
+
 	try {
 	    Session session = getSessionFactory().openSession();
 	    session.beginTransaction();
-	    session.save(status);
+	    session.saveOrUpdate(status);
 	    session.getTransaction().commit();
 	    session.close();
 	} catch (HibernateException ex) {
