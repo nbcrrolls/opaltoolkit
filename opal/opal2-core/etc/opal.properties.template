@@ -60,6 +60,7 @@ opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
 # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CSFJobManager
 # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CondorJobManager
 # opal.jobmanager=edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager
+# opal.jobmanager=edu.sdsc.nbcr.opal.manager.MetaServiceJobManager.java
 
 ## BEGIN: information for the DRMAA job manager
 ## ------------------------------------------------
