@@ -1,16 +1,70 @@
 package edu.sdsc.nbcr.opal.manager;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.DataInputStream;
+import java.io.FileNotFoundException;
+
+import java.lang.Math;
+import java.lang.String;
+
+import java.net.MalformedURLException;
+
+import java.rmi.RemoteException;
+
 import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Vector;
+
+import javax.xml.rpc.ServiceException;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 
 import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
+
+import org.apache.log4j.Logger;
+
+import edu.sdsc.nbcr.opal.*;
+
+import org.apache.axis.types.URI;
+import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.axis.MessageContext;
+import org.apache.axis.handlers.soap.SOAPService;
+import org.apache.axis.description.ServiceDesc;
+
 
 /**
  * Implementation of the Opal MetaService
  */
 public class MetaServiceJobManager implements OpalJobManager {
 
-    
+    private static Logger logger = Logger.getLogger(DRMAAJobManager.class.getName());    
+
+    private Properties props; // the container properties being passed
+    private Properties props_meta;
+    private AppConfigType config; // the application configuration    
+    private StatusOutputType status; // current status 
+    private String handle; 
+    private String remoteJobID;
+    private String remote_url = null;
+    private String remoteBaseURL = null;
+    private String workdir = null;
+    private AppServicePortType appServicePort;
+    private boolean started = false; // whether the execution has started 
+    private volatile boolean done = false; // whether the execution is complete
+
     /**
      * Initialize the Job Manager for a particular job
      *
@@ -21,11 +75,19 @@ public class MetaServiceJobManager implements OpalJobManager {
      * 
      * @throws JobManagerException if there is an error during initialization
      */
-    public void initialize(Properties props,
+    public void initialize(Properties props, 
 			   AppConfigType config,
 			   String handle)
 	throws JobManagerException {
 	// TODO: read the metaservice configuration as well
+
+        logger.info("called");
+
+        this.props = props;
+        this.config = config;
+        this.handle = handle;
+
+        status = new StatusOutputType();
     }
     
     /**
@@ -53,8 +115,181 @@ public class MetaServiceJobManager implements OpalJobManager {
 			    Integer numproc, 
 			    String workingDir)
 	throws JobManagerException {
-	// TODO: pick one of the remote services and launch job
-	return null;
+	logger.info ("called");
+
+	//	String remoteJobID = null;
+	//	String remoteBaseURL = null;
+	workdir = workingDir;
+
+        // make sure we have all parameters we need
+        if (config == null) {
+            String msg = "Can't find application configuration - "
+                + "Plugin not initialized correctly";
+            logger.error(msg);
+            throw new JobManagerException(msg);
+        }
+
+        // get the number of processors available
+        String systemProcsString = props.getProperty("num.procs");
+        int systemProcs = 0;
+        if (systemProcsString != null) {
+            systemProcs = Integer.parseInt(systemProcsString);
+        }
+
+	String mscFilePath = config.getMetaServiceConfig();
+        File file = new File(mscFilePath);
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        DataInputStream dis = null;
+	String line;
+	String url;
+	Integer procs;
+	String [] remote_urls;
+	Integer [] remote_procs;
+	Map <String, Integer> url_proc_map = new HashMap<String, Integer>();
+
+        try {
+            fis = new FileInputStream(file);
+            bis = new BufferedInputStream(fis);
+            dis = new DataInputStream(bis);
+
+            while (dis.available() != 0) {
+                line = dis.readLine();
+                /*StringTokenizer st = new StringTokenizer(line);
+		url = st.nextToken();
+		procs = new Integer(st.nextToken());
+		*/
+		
+		int pos = line.indexOf(" ");
+
+		if (pos > 0) {
+		    url = line.substring(0, pos);
+		    procs = new Integer(line.substring(pos+1));
+		    
+		    AppServiceLocator asl = new AppServiceLocator();
+		    AppMetadataType amt;
+		
+		    try {
+			appServicePort = asl.getAppServicePort(new java.net.URL(url));
+			amt = appServicePort.getAppMetadata(new AppMetadataInputType());
+
+			if (procs >= systemProcs) 
+			    url_proc_map.put(url, procs);
+		    } catch (Exception e) {
+			e.printStackTrace();
+		    } 
+		}
+            }
+            fis.close();
+            bis.close();
+            dis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+	if (url_proc_map.size() == 0) {
+	    logger.info("ERROR: No suitable remote hosts found for the application");
+	    // need to find out how to exit
+	}
+
+	Set urlset = url_proc_map.entrySet();
+	Iterator it = urlset.iterator();
+	Random r = new Random();
+	Integer rint = Math.abs(r.nextInt() % url_proc_map.size());
+	Integer counter = 0;
+
+	while (it.hasNext()) {
+	    Map.Entry kv = (Map.Entry)it.next();
+	    
+	    if (counter == rint) {
+		remote_url = kv.getKey().toString();
+		break;
+	    }
+
+	    counter++;
+	}
+
+	logger.info("Using remote URL: " + remote_url);
+
+        // create list of arguments
+        String args = config.getDefaultArgs();
+        if (args == null) {
+            args = argList;
+        } else {
+            String userArgs = argList;
+            if (userArgs != null)
+                args += " " + userArgs;
+        }
+        if (args != null) {
+            args = args.trim();
+        }
+
+	AppServiceLocator asl = new AppServiceLocator();
+	//	AppServicePortType appServicePort;
+	AppMetadataType amt;
+	JobInputType in = new JobInputType();
+
+	if (args != null)
+	    in.setArgList(args);
+
+	if (numproc != null)
+	    in.setNumProcs(numproc);
+
+	File dir = new File(workingDir);
+	String [] infiles = dir.list();
+	Vector inputFileVector = new Vector();
+
+	if (dir != null) {
+	    for (int j = 0; j < infiles.length; j++) {
+		DataHandler dh = new DataHandler(new FileDataSource(workingDir + File.separator + infiles[j]));
+		InputFileType infile = new InputFileType();
+		infile.setName(infiles[j]);
+		infile.setAttachment(dh);
+		inputFileVector.add(infile);
+	    }
+	}
+
+	int arraySize = inputFileVector.size();
+
+	if (arraySize > 0) {
+	    InputFileType [] infileArray = new InputFileType[arraySize];
+
+	    for (int k = 0; k < arraySize; k++) 
+		infileArray[k] = (InputFileType) inputFileVector.get(k);
+
+	    in.setInputFile(infileArray);
+	}
+
+	asl = new AppServiceLocator();
+
+	try {
+	    appServicePort = asl.getAppServicePort(new java.net.URL(remote_url));
+	    JobSubOutputType subOut = appServicePort.launchJob(in);
+	    remoteJobID = subOut.getJobID();
+	    StatusOutputType remoteStatus = appServicePort.queryStatus(remoteJobID);
+	    remoteBaseURL = remoteStatus.getBaseURL().toString();
+	    
+	    logger.info("LaunchJob Remote Job URL: " + remoteBaseURL);
+	} catch (MalformedURLException e) {
+	    e.printStackTrace();
+	} catch (ServiceException e) {
+	    e.printStackTrace();
+	} catch (FaultType e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
+	    e.printStackTrace();
+	}
+
+	started = true;
+
+	handle = remoteBaseURL;
+	handle = remoteJobID;
+
+	return handle;
     }
 
     /**
@@ -65,8 +300,34 @@ public class MetaServiceJobManager implements OpalJobManager {
      */
     public StatusOutputType waitForActivation() 
 	throws JobManagerException {
-	// TODO: poll for activation
-	return null;
+        logger.info("called");
+
+        // check if this process has been started already                                                                                                       
+        if (!started) {
+            String msg = "Can't wait for a remote job that hasn't be started";
+            logger.error(msg);
+            throw new JobManagerException(msg);
+	}
+
+	try {
+	    StatusOutputType status = appServicePort.queryStatus(remoteJobID);
+	    int code = appServicePort.queryStatus(remoteJobID).getCode();
+	
+	    while (code == 1) {
+		status = appServicePort.queryStatus(remoteJobID);
+		code = status.getCode();
+		Thread.sleep(3000);
+	    }
+	} catch (RemoteException e) {
+	    logger.error("RemoteException in WaitForActivation - " + e.getMessage());
+	} catch (Exception e) {
+	    logger.error("Exception in WaitForActivation - " + e.getMessage());
+	}
+
+	status.setCode(2);
+	status.setMessage("Job active on remote host (url : " + remote_url + ")<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>");
+
+	return status;
     }
 
     /**
@@ -77,8 +338,105 @@ public class MetaServiceJobManager implements OpalJobManager {
      */
     public StatusOutputType waitForCompletion() 
 	throws JobManagerException {
+	logger.info("called");
 	// TODO: poll for completion and download results
-	return null;
+
+        // check if this process has been started already                                                                                                        
+        if (!started) {
+            String msg = "Can't wait for a remote job that hasn't be started";
+            logger.error(msg);
+            throw new JobManagerException(msg);
+        }
+
+	int code = -1;
+
+	try {
+	    StatusOutputType status = appServicePort.queryStatus(remoteJobID);
+	    code = appServicePort.queryStatus(remoteJobID).getCode();
+	
+	    while (code != 4 && code != 8) {
+		status = appServicePort.queryStatus(remoteJobID);
+		code = status.getCode();
+		status.setCode(code);
+		Thread.sleep(3000);
+	    }
+	} catch (RemoteException e) {
+	    logger.error("RemoteException in WaitForActivation - " + e.getMessage());
+	} catch (Exception e) {
+	    logger.error("Exception in WaitForActivation - " + e.getMessage());
+	}
+
+	try {
+	    JobOutputType out = appServicePort.getOutputs(remoteJobID);
+	    OutputFileType [] outfile = out.getOutputFile();
+	    //URL filename = null;
+	    //String fileurl;
+
+	    // This assume flat directory structures and no sub directories.  This needs to be changed
+
+	    if (outfile != null) {
+		for (int j = 0;  j < outfile.length; j++) {
+		    BufferedInputStream in = new BufferedInputStream(new java.net.URL(outfile[j].getUrl().toString()).openStream());
+		    FileOutputStream fos = new FileOutputStream(workdir + File.separator + outfile[j].getName());
+		    java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+		    byte [] data = new byte[1024];
+		    int x = 0;
+		    
+		    while ((x = in.read(data, 0, 1024)) >= 0) 
+			bout.write(data, 0, x);
+
+		    bout.close();
+		    in.close();
+		}
+	    }
+
+	    String [] stdfiles = {"stderr.txt", "stdout.txt"};
+
+	    try {
+		for (int i = 0; i < stdfiles.length; i++) {
+		    BufferedInputStream in = new BufferedInputStream(new java.net.URL(remoteBaseURL + "/" + stdfiles[i]).openStream());
+		    FileOutputStream fos = new FileOutputStream(workdir + File.separator + stdfiles[i]);
+		    java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+		    byte [] data = new byte[1024];
+		    int x = 0;
+		    
+		    while ((x = in.read(data, 0, 1024)) >= 0) 
+			bout.write(data, 0, x);
+		    
+		    bout.close();
+		    in.close();
+		}
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+
+
+	} catch (RemoteException e) {
+	    logger.error("RemoteException in WaitForCompletion - " + e.getMessage());
+	} catch (Exception e) {
+	    logger.error("Exception in WaitForCompletion - " + e.getMessage());
+	}
+
+
+	String smsg;
+
+	if (code == 8){
+	    smsg = "Job successfully completed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
+	    logger.info(smsg);
+	    status.setCode(8);
+	    status.setMessage(smsg);
+	    /*	    try {
+	       Thread.sleep(300000);
+	       } catch (Exception e) {}; */
+	} 
+	else {
+	    smsg = "Job failed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
+	    logger.info(smsg);
+	    status.setCode(4);
+	    status.setMessage(smsg);
+	}
+
+        return status;
     }
 
     /**
