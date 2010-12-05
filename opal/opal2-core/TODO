@@ -2,6 +2,9 @@
 * Opal MetaService - submission of jobs to other Opal servers
 * Addition of system statistics to Opal Dashboard
 
+* Bug fix for destroy() operation using the DRMAA job manager
+  * session.wait() apparently never terminates after a job is destroyed
+
 * User-based accounting for jobs
   * Specification of limits
   * Job history per user
