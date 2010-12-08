@@ -30,7 +30,15 @@ file: <filename>opal.jobmanager</filename> to
 <filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename>, and
 <filename>drmaa.pe</filename> to the name of the parallel environment (PE)
 to be used to submit parallel jobs. You can ignore drmaa.pe if you do not
-plan on supporting parallel jobs. </para></listitem>
+plan on supporting parallel jobs. You can optionally set a DRMAA queue for
+job submission by setting the <filename>drmaa.queue</filename> property.
+</para>
+
+<para>Note that the <filename>drmaa.pe</filename> and the
+<filename>drmaa.queue</filename> can also be overridden on a
+per-application basis within the application configuration file.</para>
+
+</listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>

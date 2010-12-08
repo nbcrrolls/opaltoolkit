@@ -75,6 +75,12 @@ can be in any language.</para>
    The operation blocks until the remote execution is complete, and returns
    job outputs (as described above) as the response. This operation may
    only be appropriate for jobs that are not long running.</para></listitem>
+
+   <listitem><para>Get system information
+   (<filename>getSystemInfo</filename>): This operation returns basic
+   system information for the Opal server, including the number of total
+   and free CPUs, number of jobs running, number of jobs queued, the job
+   manager being used, etc.</para></listitem>
 </orderedlist>
 
 <para>
