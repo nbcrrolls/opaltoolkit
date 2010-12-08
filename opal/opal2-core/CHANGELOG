@@ -1,14 +1,14 @@
 Version 2.4
-- Updated database schema to support ACTIVE/INACTIVE service status to be
-  used while plotting usage information. Feature Not available for HSQL DB
-- A set of absolute paths now accessible to applications via the
-  opal.properties. In the past applications only had access to the current
-  working directory
 - Additional operation added to Opal WSDL and implementation to get system
   information (number of jobs running/queued, job manager type, data
   lifetime, etc)
+- Updated database schema to support ACTIVE/INACTIVE service status to be
+  used while plotting usage information. Feature not available for HSQL DB
 - Ability to set the DRMAA queue and override it in the application
   configuration
+- A set of absolute paths now accessible to applications via the
+  opal.properties. In the past applications only had access to the current
+  working directory
 - Bug fixes for:
   - Error message on Dashboard which was never reset
   - Job statistics page checking/unchecking boxes didn't work

@@ -18,19 +18,27 @@ url="http://localhost:8080/opal2/dashboard">http://servername:8080/opal2/dashboa
 <para>
 The Opal dashboard provides the following tabs:</para>
 <itemizedlist>
-        <listitem><para><command>Summary Home</command>: This
+	<listitem><para><command>Home</command>: This provides
+	general information about Opal, and an overview of the rest of the
+	functionality of the Dashboard.</para></listitem>
+
+        <listitem><para><command>Server Info</command>: This
         provides general information about the Opal installation, such as
         server configuration, versions, etc.</para>
 
-	<graphic fileref="images/summary_home.png" scale=50></graphic>
+	<graphic fileref="images/server_info.png" scale=50></graphic>
 	</listitem>
 
-        <listitem><para><command>Statistics</command>: This provides
+        <listitem><para><command>Usage Statistics</command>: This provides
         charts with usage statistics, errors and average execution times.
         The charts are created dynamically based on user inputs, such as a
-        time range and particular services of interest.</para>
+        time range and particular services of interest. If a database
+        other than HSQL DB is used, the charts will only include services
+        that are currently active. In other words, services that have been
+        undeployed will not be displayed. If HSQL DB is used, then all
+        services that have ever been deployed will be displayed.</para>
 
-	<para>For instance, the following screenshot displays the number of
+	<para>The following screenshot displays the number of
 	jobs executed per day over a specified timeframe. Users can select
 	a time window, as well the services that they would like to be
 	plotted.</para>
@@ -45,9 +53,9 @@ The Opal dashboard provides the following tabs:</para>
         applications to access submission forms. An Atom feed for the list
         of applications is also available.</para></listitem>
 
-	<listitem><para><command>About Opal</command>: This provides
-        relevant information about Opal such as documentation, funding
-        sources, etc.</para></listitem>
+	<listitem><para><command>Documentation</command>: This provides
+        relevant information about Opal such as documentation, websites,
+        tutorials, publications, etc.</para></listitem>
 </itemizedlist>
 
 <para> The list of installed applications is generated dynamically by

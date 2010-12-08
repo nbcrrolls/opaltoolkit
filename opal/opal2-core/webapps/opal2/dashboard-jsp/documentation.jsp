@@ -70,7 +70,7 @@
       <tr>
         <td width=20% class="boxBodyRight colColor infoTitle">Opal Contributors: </td>
        <td class="boxBody colColor">Sriram Krishnan, Luca Clementi, Wes Goodman, 
-       Jane Ren, Nadya Williams, Anthony Bretaudeau, Karan Bhatia, Wilfred Li, and Peter Arzberger </td>
+       Jane Ren, Nadya Williams, Anthony Bretaudeau, Yuan Luo, Karan Bhatia, Wilfred Li, and Peter Arzberger </td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Websites: </td>
