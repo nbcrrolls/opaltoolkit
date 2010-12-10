@@ -36,6 +36,7 @@ import org.apache.axis.description.ServiceDesc;
 import java.sql.PreparedStatement;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 import org.globus.gram.GramJob;
 
@@ -500,6 +501,88 @@ public class AppServiceImpl
 	long t1 = System.currentTimeMillis();
 	logger.debug("Query execution time: " + (t1-t0) + " ms");
 	return stats;
+    }
+
+    public File [] getAllOutputs(String workingDir) 
+	throws FaultType {
+
+	File f = new File(workingDir);
+	File[] outputFiles_base_dir = f.listFiles();
+	File [] outputFiles;
+	File [] outputTest = f.listFiles();
+            
+	Boolean nested = false;
+
+	for (int i = 0; i < outputTest.length; i++) 
+	    if (outputTest[i].isDirectory()) {
+		nested = true;
+		break;
+	    }
+            	
+	if (!nested) {
+	    outputFiles = f.listFiles();
+	} 
+	else {
+	    Stack ds = new Stack();
+	    Stack dirs = new Stack();
+	    Stack allfiles = new Stack();
+
+	    for (int i = 0; i < outputTest.length; i++) {
+		ds.push(outputTest[i]);
+	    }
+                
+	    while (!ds.empty()) {
+		File temp_file = (File)ds.pop();
+                    
+		if (temp_file.isDirectory()) {
+		    dirs.push(temp_file);
+		    File[] newfiles = temp_file.listFiles();
+                    
+		    for (int j = 0; j < newfiles.length; j++) {
+			String newpath = temp_file.getAbsolutePath() + File.separator + newfiles[j].getName();
+			ds.push(new File(newpath));
+		    } 
+		} 
+	    }
+
+	    int numFiles = 2;
+
+	    Stack dirscopy = new Stack();
+
+	    while (!dirs.empty()) {
+		File d = (File)dirs.pop();
+		dirscopy.push(d);
+		File [] outFiles = d.listFiles();
+                    
+		for (int k =0; k < outFiles.length; k++) {
+		    if (!outFiles[k].isDirectory()) {
+			numFiles++;
+		    }
+		}
+	    }
+
+	    outputFiles = new File[numFiles];
+	    int c = 2;
+
+	    outputFiles[0] = new File(f + File.separator + "stdout.txt");
+	    outputFiles[1] = new File(f + File.separator + "stderr.txt");
+                
+	    while (!dirscopy.empty()) {
+		File d = (File)dirscopy.pop();
+		File [] outFiles = d.listFiles();
+                    
+
+		for (int j = 0; j < outFiles.length; j++) {
+		    if (!outFiles[j].isDirectory()) {
+			outputFiles[c] = outFiles[j];
+			c++;
+		    }
+		}
+	    }
+
+	}
+
+	return outputFiles;
     }
 
     /**
@@ -1041,7 +1124,8 @@ public class AppServiceImpl
 
 	    // get a list of files
 	    File f = new File(workingDir);
-	    File[] outputFiles = f.listFiles();
+	    //File[] outputFiles = f.listFiles();
+	    File [] outputFiles = getAllOutputs(workingDir);
 	    
 	    // Create a buffer for reading the files
 	    byte[] buf = new byte[1024];
@@ -1085,7 +1169,8 @@ public class AppServiceImpl
 
 	try {
 	    File f = new File(workingDir);
-	    File[] outputFiles = f.listFiles();
+	    //File[] outputFiles = f.listFiles();
+	    File[] outputFiles = getAllOutputs(workingDir);
 	
 	    OutputFileType[] outputFileObj = new OutputFileType[outputFiles.length-2];
 	    int j = 0;
