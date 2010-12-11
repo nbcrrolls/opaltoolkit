@@ -368,16 +368,34 @@ public class MetaServiceJobManager implements OpalJobManager {
 
 	try {
 	    JobOutputType out = appServicePort.getOutputs(remoteJobID);
+	    //appServicePort.getAllOutputs("doh");
 	    OutputFileType [] outfile = out.getOutputFile();
 	    //URL filename = null;
 	    //String fileurl;
 
-	    // This assume flat directory structures and no sub directories.  This needs to be changed
+	    String [] relPath;
+	    String outPath;
 
 	    if (outfile != null) {
+		relPath = new String[outfile.length];
+		
 		for (int j = 0;  j < outfile.length; j++) {
+		    String u = outfile[j].getUrl().toString();
+		    int index = u.indexOf('/' + remoteJobID + '/');
+		    relPath[j] = u.substring(index + remoteJobID.length() + 2);
+		    
 		    BufferedInputStream in = new BufferedInputStream(new java.net.URL(outfile[j].getUrl().toString()).openStream());
-		    FileOutputStream fos = new FileOutputStream(workdir + File.separator + outfile[j].getName());
+
+		    if (relPath[j].indexOf("/") != -1) {
+			index = relPath[j].lastIndexOf("/");
+			String d = workdir + File.separator + relPath[j].substring(0, index);
+			boolean b = new File(d).mkdirs();
+			outPath = workdir + File.separator + relPath[j];
+		    }
+		    else  
+			outPath = workdir + File.separator + outfile[j].getName();
+
+		    FileOutputStream fos = new FileOutputStream(outPath);
 		    java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
 		    byte [] data = new byte[1024];
 		    int x = 0;
@@ -390,7 +408,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 		}
 	    }
 
-	    String [] stdfiles = {"stderr.txt", "stdout.txt"};
+	    String [] stdfiles = {"stdout.txt", "stderr.txt"};
 
 	    try {
 		for (int i = 0; i < stdfiles.length; i++) {
