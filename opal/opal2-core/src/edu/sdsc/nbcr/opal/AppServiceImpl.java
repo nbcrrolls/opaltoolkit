@@ -1363,80 +1363,52 @@ public class AppServiceImpl
     private File [] getAllOutputs(String workingDir) 
 	throws FaultType {
 
-	File f = new File(workingDir);
-	File[] outputFiles_base_dir = f.listFiles();
-	File [] outputFiles;
-	File [] outputTest = f.listFiles();
-            
-	Boolean nested = false;
 
-	for (int i = 0; i < outputTest.length; i++) 
-	    if (outputTest[i].isDirectory()) {
-		nested = true;
-		break;
+	File wd = new File(workingDir);
+	File [] top_files = wd.listFiles();
+	Stack checks = new Stack();
+	Stack ofs = new Stack();
+
+	for (int i = 0; i < top_files.length; i++) 
+	    checks.push(top_files[i]);
+
+	while (!checks.empty()) {
+	    File temp_file = (File)checks.pop();
+
+	    if (temp_file.isDirectory()) {
+		File [] dir_files = temp_file.listFiles();
+		
+		for (int i = 0; i < dir_files.length; i++) 
+		    checks.push(dir_files[i]);
 	    }
-            	
-	if (!nested) {
-	    outputFiles = f.listFiles();
-	} 
-	else {
-	    Stack ds = new Stack();
-	    Stack dirs = new Stack();
-	    Stack allfiles = new Stack();
+	    else
+		ofs.push(temp_file);	
+	}
 
-	    for (int i = 0; i < outputTest.length; i++) {
-		ds.push(outputTest[i]);
+	int numFiles = ofs.size();
+	File [] outputFiles = new File[numFiles];
+	int c = 0;
+
+	File stdout = new File(wd.getAbsolutePath() + File.separator + "stdout.txt");
+	File stderr = new File(wd.getAbsolutePath() + File.separator + "stderr.txt");
+
+	if (stdout.exists()) {
+	    outputFiles[c] = stdout;
+	    c++;
+	}
+	if (stderr.exists()) {
+	    outputFiles[c] = stderr;
+	    c++;
+	}
+
+	while (!ofs.empty()) {
+	    File addFile = (File)ofs.pop();
+
+	    if ( (!addFile.getAbsolutePath().equals(stdout.getAbsolutePath())) &&
+		 (!addFile.getAbsolutePath().equals(stderr.getAbsolutePath())) ) {
+		outputFiles[c] = addFile;
+		c++;
 	    }
-                
-	    while (!ds.empty()) {
-		File temp_file = (File)ds.pop();
-                    
-		if (temp_file.isDirectory()) {
-		    dirs.push(temp_file);
-		    File[] newfiles = temp_file.listFiles();
-                    
-		    for (int j = 0; j < newfiles.length; j++) {
-			String newpath = temp_file.getAbsolutePath() + File.separator + newfiles[j].getName();
-			ds.push(new File(newpath));
-		    } 
-		} 
-	    }
-
-	    int numFiles = 2;
-
-	    Stack dirscopy = new Stack();
-
-	    while (!dirs.empty()) {
-		File d = (File)dirs.pop();
-		dirscopy.push(d);
-		File [] outFiles = d.listFiles();
-                    
-		for (int k =0; k < outFiles.length; k++) {
-		    if (!outFiles[k].isDirectory()) {
-			numFiles++;
-		    }
-		}
-	    }
-
-	    outputFiles = new File[numFiles];
-	    int c = 2;
-
-	    outputFiles[0] = new File(f + File.separator + "stdout.txt");
-	    outputFiles[1] = new File(f + File.separator + "stderr.txt");
-                
-	    while (!dirscopy.empty()) {
-		File d = (File)dirscopy.pop();
-		File [] outFiles = d.listFiles();
-                    
-
-		for (int j = 0; j < outFiles.length; j++) {
-		    if (!outFiles[j].isDirectory()) {
-			outputFiles[c] = outFiles[j];
-			c++;
-		    }
-		}
-	    }
-
 	}
 
 	return outputFiles;
