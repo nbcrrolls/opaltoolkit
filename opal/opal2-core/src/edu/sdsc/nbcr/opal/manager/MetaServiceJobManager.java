@@ -452,7 +452,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	else {
 	    smsg = "Job failed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
 	    logger.info(smsg);
-	    status.setCode(GramJob.STATUS_FAILUED);
+	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage(smsg);
 	}
 
@@ -468,6 +468,8 @@ public class MetaServiceJobManager implements OpalJobManager {
     public StatusOutputType destroyJob()
 	throws JobManagerException {
 	// TODO: kill remote opal job
+	
 	return null;
+
     }
 }
