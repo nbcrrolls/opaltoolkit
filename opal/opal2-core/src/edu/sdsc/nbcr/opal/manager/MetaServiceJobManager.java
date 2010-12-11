@@ -231,7 +231,6 @@ public class MetaServiceJobManager implements OpalJobManager {
         }
 
 	AppServiceLocator asl = new AppServiceLocator();
-	//	AppServicePortType appServicePort;
 	AppMetadataType amt;
 	JobInputType in = new JobInputType();
 
@@ -467,9 +466,16 @@ public class MetaServiceJobManager implements OpalJobManager {
      */
     public StatusOutputType destroyJob()
 	throws JobManagerException {
-	// TODO: kill remote opal job
-	
-	return null;
 
+	try {
+	    appServicePort.destroy(remoteJobID);	    
+	    logger.info("Remote job killed on user request: " + remoteBaseURL);
+	    status.setCode(GramJob.STATUS_FAILED);
+	    status.setMessage("Remote destroyed on user request");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} 
+
+        return status;
     }
 }
