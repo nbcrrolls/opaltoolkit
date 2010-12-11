@@ -44,6 +44,8 @@ import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.soap.SOAPService;
 import org.apache.axis.description.ServiceDesc;
 
+import org.globus.gram.GramJob;
+
 
 /**
  * Implementation of the Opal MetaService
@@ -313,7 +315,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	    StatusOutputType status = appServicePort.queryStatus(remoteJobID);
 	    int code = appServicePort.queryStatus(remoteJobID).getCode();
 	
-	    while (code == 1) {
+	    while (code == GramJob.STATUS_PENDING) {
 		status = appServicePort.queryStatus(remoteJobID);
 		code = status.getCode();
 		Thread.sleep(3000);
@@ -324,7 +326,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	    logger.error("Exception in WaitForActivation - " + e.getMessage());
 	}
 
-	status.setCode(2);
+	status.setCode(GramJob.STATUS_ACTIVE);
 	status.setMessage("Job active on remote host (url : " + remote_url + ")<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>");
 
 	return status;
@@ -354,7 +356,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	    StatusOutputType status = appServicePort.queryStatus(remoteJobID);
 	    code = appServicePort.queryStatus(remoteJobID).getCode();
 	
-	    while (code != 4 && code != 8) {
+	    while (code != GramJob.STATUS_DONE && code != GramJob.STATUS_FAILED) {
 		status = appServicePort.queryStatus(remoteJobID);
 		code = status.getCode();
 		status.setCode(code);
@@ -438,10 +440,10 @@ public class MetaServiceJobManager implements OpalJobManager {
 
 	String smsg;
 
-	if (code == 8){
+	if (code == GramJob.STATUS_DONE){
 	    smsg = "Job successfully completed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
 	    logger.info(smsg);
-	    status.setCode(8);
+	    status.setCode(GramJob.STATUS_DONE);
 	    status.setMessage(smsg);
 	    /*	    try {
 	       Thread.sleep(300000);
@@ -450,7 +452,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	else {
 	    smsg = "Job failed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
 	    logger.info(smsg);
-	    status.setCode(4);
+	    status.setCode(GramJob.STATUS_FAILUED);
 	    status.setMessage(smsg);
 	}
 
