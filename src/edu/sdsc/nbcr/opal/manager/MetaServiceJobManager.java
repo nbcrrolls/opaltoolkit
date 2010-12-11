@@ -178,7 +178,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 			if (procs >= systemProcs) 
 			    url_proc_map.put(url, procs);
 		    } catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		    } 
 		}
             }
@@ -186,11 +186,11 @@ public class MetaServiceJobManager implements OpalJobManager {
             bis.close();
             dis.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+	    logger.error(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+	    logger.error(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+	    logger.error(e.getMessage());
         }
 
 	if (url_proc_map.size() == 0) {
@@ -276,13 +276,13 @@ public class MetaServiceJobManager implements OpalJobManager {
 	    
 	    logger.info("LaunchJob Remote Job URL: " + remoteBaseURL);
 	} catch (MalformedURLException e) {
-	    e.printStackTrace();
+	    logger.error(e.getMessage());
 	} catch (ServiceException e) {
-	    e.printStackTrace();
+	    logger.error(e.getMessage());
 	} catch (FaultType e) {
-	    e.printStackTrace();
+	    logger.error(e.getMessage());
 	} catch (RemoteException e) {
-	    e.printStackTrace();
+	    logger.error(e.getMessage());
 	}
 
 	started = true;
@@ -426,7 +426,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 		    in.close();
 		}
 	    } catch (Exception e) {
-		e.printStackTrace();
+		logger.error(e.getMessage());
 	    }
 
 
@@ -473,7 +473,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage("Remote destroyed on user request");
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    logger.error(e.getMessage());
 	} 
 
         return status;
