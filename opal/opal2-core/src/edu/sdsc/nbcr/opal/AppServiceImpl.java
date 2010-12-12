@@ -1061,7 +1061,11 @@ public class AppServiceImpl
 		    FileInputStream in = new FileInputStream(outputFiles[i]);
 		    
 		    // Add ZIP entry to output stream.
-		    out.putNextEntry(new ZipEntry(outputFiles[i].getName()));
+		    String absolutePath = outputFiles[i].getPath();
+		    int start = absolutePath.indexOf(jobID);
+		    String relativePath = 
+			absolutePath.substring(start + jobID.length() + 1);
+		    out.putNextEntry(new ZipEntry(relativePath));
 		    
 		    // Transfer bytes from the file to the ZIP file
 		    int len;
