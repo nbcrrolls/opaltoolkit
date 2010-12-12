@@ -11,8 +11,10 @@ Version 2.4
   working directory
 - getOutputs() operation now supports recursive listing of output directories
 - Bug fixes for:
-  - Error message on Dashboard which was never reset
-  - Job statistics page checking/unchecking boxes didn't work
+  - Error messages on Dashboard which were never reset
+  - Usage Statistics fixes
+    - Checking/unchecking boxes, which didn't work in the prior release
+    - Error in the calculation of jobs when the services had similar names
 
 Version 2.3.1
 - Bug fixes for
