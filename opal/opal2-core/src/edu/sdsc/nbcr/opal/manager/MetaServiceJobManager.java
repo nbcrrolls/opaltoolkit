@@ -131,13 +131,6 @@ public class MetaServiceJobManager implements OpalJobManager {
             throw new JobManagerException(msg);
         }
 
-        // get the number of processors available
-        String systemProcsString = props.getProperty("num.procs");
-        int systemProcs = 0;
-        if (systemProcsString != null) {
-            systemProcs = Integer.parseInt(systemProcsString);
-        }
-
 	String mscFilePath = config.getMetaServiceConfig();
         File file = new File(mscFilePath);
         FileInputStream fis = null;
@@ -175,7 +168,9 @@ public class MetaServiceJobManager implements OpalJobManager {
 			appServicePort = asl.getAppServicePort(new java.net.URL(url));
 			amt = appServicePort.getAppMetadata(new AppMetadataInputType());
 
-			if (procs >= systemProcs) 
+			if (config.isParallel() && procs >= numproc.intValue()) 
+			    url_proc_map.put(url, procs);
+			else 
 			    url_proc_map.put(url, procs);
 		    } catch (Exception e) {
 			logger.error(e.getMessage());
