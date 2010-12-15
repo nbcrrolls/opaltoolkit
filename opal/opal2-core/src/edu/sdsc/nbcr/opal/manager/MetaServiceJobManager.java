@@ -132,6 +132,14 @@ public class MetaServiceJobManager implements OpalJobManager {
         }
 
 	String mscFilePath = config.getMetaServiceConfig();
+
+
+	if (mscFilePath == null) {
+            String msg = "<metaServiceConfig> not defined in app config";
+            logger.error(msg);
+            throw new JobManagerException(msg);
+	}
+
         File file = new File(mscFilePath);
         FileInputStream fis = null;
         BufferedInputStream bis = null;
