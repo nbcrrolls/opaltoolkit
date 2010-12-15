@@ -158,12 +158,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 
             while (dis.available() != 0) {
                 line = dis.readLine();
-                /*StringTokenizer st = new StringTokenizer(line);
-		url = st.nextToken();
-		procs = new Integer(st.nextToken());
-		*/
-		
-		int pos = line.indexOf(" ");
+		int pos = line.indexOf(" " );
 
 		if (pos > 0) {
 		    url = line.substring(0, pos);
@@ -176,15 +171,18 @@ public class MetaServiceJobManager implements OpalJobManager {
 			appServicePort = asl.getAppServicePort(new java.net.URL(url));
 			amt = appServicePort.getAppMetadata(new AppMetadataInputType());
 
-			if (config.isParallel() && procs >= numproc.intValue()) 
-			    url_proc_map.put(url, procs);
-			else 
+			if (config.isParallel()) {
+			    if (procs >= numproc.intValue()) 
+				url_proc_map.put(url, procs);
+			}
+			else
 			    url_proc_map.put(url, procs);
 		    } catch (Exception e) {
 			logger.error(e.getMessage());
 		    } 
 		}
             }
+
             fis.close();
             bis.close();
             dis.close();
@@ -197,8 +195,11 @@ public class MetaServiceJobManager implements OpalJobManager {
         }
 
 	if (url_proc_map.size() == 0) {
-	    logger.info("ERROR: No suitable remote hosts found for the application");
-	    // need to find out how to exit
+            String msg = "No suitable remote hosts found for the application: ";
+	    msg += "num procs requested larger than available OR ";
+	    msg += "or no remote hosts defined in meta service config";
+            logger.error(msg);
+            throw new JobManagerException(msg);
 	}
 
 	Set urlset = url_proc_map.entrySet();
