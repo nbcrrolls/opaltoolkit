@@ -135,7 +135,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 
 
 	if (mscFilePath == null) {
-            String msg = "<metaServiceConfig> not defined in app config";
+            String msg = "metaServiceConfig tag not defined in app config";
             logger.error(msg);
             throw new JobManagerException(msg);
 	}
