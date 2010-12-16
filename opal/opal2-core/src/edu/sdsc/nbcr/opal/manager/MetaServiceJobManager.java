@@ -197,7 +197,8 @@ public class MetaServiceJobManager implements OpalJobManager {
 	if (url_proc_map.size() == 0) {
             String msg = "No suitable remote hosts found for the application: ";
 	    msg += "num procs requested larger than available OR ";
-	    msg += "or no remote hosts defined in meta service config";
+	    msg += "num procs unspecified for host in meta service config OR ";
+	    msg += "no remote hosts defined in meta service config";
             logger.error(msg);
             throw new JobManagerException(msg);
 	}
