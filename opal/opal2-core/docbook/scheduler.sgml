@@ -300,6 +300,41 @@ on a particular resource using the <filename>$APPNAME</filename>.
 
 </section>
 
+
+<section id="meta-service-scheduler" xreflabel="Meta Service Scheduler Setup">
+<title>Using Meta Service</title>
+
+<para>
+The Opal meta service plugin can be used to send jobs to various remote 
+Opal services.  You can define several remote hosts for a particular
+web service, and the web service will run on a random host chosen from this 
+set of remote hosts.  In a future Opal release, we may enhance the 
+meta scheduling algorithm.
+</para>
+
+<para>
+The &lt;metaServiceConfig&gt; tag in the application configuration file
+is used to define the location of the meta service configuration file
+for the particular service.  For example, 
+<screen>
+&lt;metaServiceConfig&gt;/home/opaluser/meta/pdb2pqr.txt&lt;/metaServiceConfig&gt;
+</screen>
+</para>
+
+<para>
+The meta service configuration file contains one or more lines, where each
+line contains a remote Opal service URL followed by a space and then the 
+number of processors on that remote Opal service.  Please use 1 as the 
+number of processors for serial services.  The sample file below defines
+the remote hosts for the Pdb2pqr meta service.
+<screen>
+http://kryptonite.nbcr.net/opal2/services/pdb2pqr_1.7 1
+http://ws.nbcr.net/opal2/services/Pdb2pqrOpalService 1
+</screen>
+</para>
+
+</section>
+
 <section id="jobmanager-howto" xreflabel="Writing Your Own Job Manager">
 <title>Writing Your Own Job Manager</title>
 
