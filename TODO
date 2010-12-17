@@ -4,6 +4,7 @@
 
 * Bug fix for destroy() operation using the DRMAA job manager
   * session.wait() apparently never terminates after a job is destroyed
+* Support for Tomcat 6 and 7
 
 * User-based accounting for jobs
   * Specification of limits
