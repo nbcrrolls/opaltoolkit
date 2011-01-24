@@ -448,7 +448,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	    smsg = "Job successfully completed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
 	    logger.info(smsg);
 	    status.setCode(GramJob.STATUS_DONE);
-	    status.setMessage(smsg);
+	    status.setMessage("Job successfully completed on remote server");
 	    /*	    try {
 	       Thread.sleep(300000);
 	       } catch (Exception e) {}; */
