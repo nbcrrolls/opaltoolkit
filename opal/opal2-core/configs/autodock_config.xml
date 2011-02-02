@@ -91,7 +91,7 @@ your installation
 
     </types>
   </metadata>
-  <binaryLocation>/home/apbs_user/Software/opal-bins/run_autodock.py</binaryLocation>
+  <binaryLocation>/share/apps/bins/run_autodock.py</binaryLocation>
   <parallel>false</parallel>
 </appConfig>
 

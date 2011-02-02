@@ -71,6 +71,6 @@
     </types>
 
   </metadata>
-  <binaryLocation>/home/install/usr/apps/autodock-4.0.1/bin/autogrid4</binaryLocation>
+  <binaryLocation>/opt/bio/autodocksuite/bin/autogrid4</binaryLocation>
   <parallel>false</parallel>
 </appConfig>

@@ -92,7 +92,7 @@
     </types>
 
   </metadata>
-  <binaryLocation>/home/clem/meme/bin/bin/tomtom</binaryLocation>
+  <binaryLocation>/opt/meme//bin/tomtom</binaryLocation>
   <defaultArgs></defaultArgs>
   <parallel>false</parallel>
 </appConfig>

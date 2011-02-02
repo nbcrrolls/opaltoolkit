@@ -1,6 +1,6 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
 	   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <metadata>
+  <metadata appName="babel">
     <usage><![CDATA[Open Babel is a command line utility designed to interconvert between many file formats used in molecular modeling, computational chemistry, and many related areas]]></usage>
     <info xsd:type="xsd:string">
       <![CDATA[
@@ -202,7 +202,7 @@
     </types>
 
   </metadata>
-  <binaryLocation>/Users/sriramkrishnan/bin/babel</binaryLocation>
+  <binaryLocation>/opt/babel/bin/babel</binaryLocation>
   <defaultArgs></defaultArgs>
   <parallel>false</parallel>
 </appConfig>

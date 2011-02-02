@@ -1,5 +1,5 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <metadata>
+  <metadata appName="MEME">
     <usage><![CDATA[MEME is a tool for discovering motifs in a group of related DNA or protein sequences]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
@@ -45,6 +45,6 @@
     ]]>
     </info>
   </metadata>
-  <binaryLocation>/usr/local/various/meme_3.5.7_binaries/bin/meme</binaryLocation>
+  <binaryLocation>/opt/meme/bin/meme</binaryLocation>
   <parallel>false</parallel>
 </appConfig>
