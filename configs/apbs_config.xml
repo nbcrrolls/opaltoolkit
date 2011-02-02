@@ -1,8 +1,8 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <metadata>
+  <metadata appName="APBS">
     <usage><![CDATA[apbs <apbs.in>]]></usage>
   </metadata>
-  <binaryLocation>/Users/sriramkrishnan/Projects/fetk-parallel/bin/powerpc-apple-darwin8.2.0/apbs</binaryLocation>
+  <binaryLocation>/opt/apbs/bin/apbs</binaryLocation>
   <parallel>true</parallel>
 </appConfig>

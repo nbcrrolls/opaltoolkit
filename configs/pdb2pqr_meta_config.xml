@@ -1,7 +1,7 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <!-- metadata about the application being wrapped -->
-  <metadata appName="PDB2PQR_MetaService">
+  <metadata appName="PDB2PQR">
     <usage>PDB2PQR is a Python software package that automates many of the common tasks of preparing structures for continuum electrostatics calculations, providing a platform-independent utility for converting protein files in PDB format to PQR format.</usage>
     <info>
     <![CDATA[
@@ -248,7 +248,7 @@
   <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
 
   <!-- meta service configuration file location -->
-  <metaServiceConfig>/opt/opal-ws-2.4/configs/pdb2pqr_meta.txt</metaServiceConfig>
+  <metaServiceConfig>/opt/opal/configs/pdb2pqr_meta.txt</metaServiceConfig>
 
   <!-- whether this application is serial or parallel -->
   <parallel>false</parallel>

@@ -236,16 +236,16 @@
   </metadata>
 
   <!-- location of execution on the server -->
-  <binaryLocation>/Users/sriramkrishnan/bin/pdb2pqr.sh</binaryLocation>
+  <binaryLocation>/opt/pdb2pqr/pdb2pqr.py</binaryLocation>
   
   <!-- list of default arguments -->
   <defaultArgs>--verbose</defaultArgs>
 
   <!-- whether to validate command-line arguments using type information above -->
-  <validateArgs>true</validateArgs>
+<!--  <validateArgs>true</validateArgs>  -->
 
   <!-- overrule default job manager, if need be -->
-  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
+  <!-- <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN> -->
 
   <!-- whether this application is serial or parallel -->
   <parallel>false</parallel>

@@ -16,9 +16,10 @@
 import sys, commands, os
 
 #insert here the location of you autodock executable 
-AUTODOCK = '''/home/install/usr/apps/autodock-4.0.1/bin/autodock4'''
+AUTODOCK = '/opt/bio/autodocksuite/bin/autodock4'
+
 #insert here the location of this script
-CURRENTBIN = '''/home/apbs_user/Software/opal-bins/run_autodock.py ''';
+CURRENTBIN = '/share/apps/bin/run_autodock.py';
 
 numdirs = -2
 

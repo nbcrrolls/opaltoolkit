@@ -1,5 +1,5 @@
 <appConfig xmlns="http://nbcr.sdsc.edu/opal/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <metadata>
+  <metadata appName="MAST">
     <usage><![CDATA[MAST is a tool for searching biological sequence databases for sequences that contain one or more of a group of known motifs]]></usage>
     <info xsd:type="xsd:string">
     <![CDATA[
@@ -50,6 +50,6 @@
     ]]>
     </info>
   </metadata>
-  <binaryLocation>/Users/sriramkrishnan/Projects/meme354/bin/mast</binaryLocation>
+  <binaryLocation>/opt/meme/bin/mast</binaryLocation>
   <parallel>false</parallel>
 </appConfig>
