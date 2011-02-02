@@ -3,18 +3,14 @@
 <![%html;[
 <!ENTITY % print "IGNORE">
 <!ENTITY docbook.dsl SYSTEM 
-"/usr/share/sgml/docbook/stylesheet/dsssl/modular/html/docbook.dsl" CDATA dsssl>
+"/usr/share/sgml/docbook/dsssl-stylesheets/html/docbook.dsl" CDATA dsssl>
 ]]>
 <!ENTITY % print "INCLUDE">
 <![%print;[
 <!ENTITY docbook.dsl SYSTEM 
-"/usr/share/sgml/docbook/stylesheet/dsssl/modular/print/docbook.dsl" CDATA dsssl>
+"/usr/share/sgml/docbook/dsssl-stylesheets/print/docbook.dsl" CDATA dsssl>
 ]]>
 ]>
-
-;; place in the two line above the path to your system docbook dsl files
-;; the first one should point to html/docbook.dsl 
-;; the second one should point to print/docbook.dsl
 
 <style-sheet>
 
