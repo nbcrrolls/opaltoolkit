@@ -6,7 +6,7 @@ to use this interface you need to use a wrapper script to invoke autodock
 the script is run_autodock.py in this directory. Modify it accordingly to 
 your installation
 -->
-  <metadata appName="Autodock">
+  <metadata appName="AutoDock">
     <usage><![CDATA[Autodock performs the docking of the ligand to a set of grids describing the target protein]]></usage>
     <info>
     <![CDATA[
