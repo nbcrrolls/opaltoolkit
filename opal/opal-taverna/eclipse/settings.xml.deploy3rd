@@ -1,0 +1,21 @@
+<!--
+   This file is used to deploy a third party dependent jar to a Maven FTP site
+   In this case, the ftp host name is vm6.ucsd.edu and the username is ftp
+
+   You may have to add wagon-ftp.jar and commons-net.jar to Maven
+   The versions that worked for me were 
+      wagon-ftp-1.0-beta-7.jar
+      commons-net-2.2.jar
+ -->
+
+<settings xmlns="http://maven.apache.org/POM/4.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>vm6.ucsd.edu</id>
+      <username>ftp</username>
+      <password></password>
+    </server>
+  </servers>
+</settings>
