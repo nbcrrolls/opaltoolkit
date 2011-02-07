@@ -246,12 +246,15 @@ And make sure that the "param-name" is set to true as follows:
 </screen>
 </para></listitem>
 
-<listitem><para>Run the Tomcat server by changing to the $CATALINA_HOME/bin directory,
-and running the appropriate command (bat on Windows, sh on Unix):
+<listitem><para>Set your JAVA_OPTS to "-Djava.awt.headless=true" to enable
+Tomcat to run in headless mode. Run the Tomcat server by changing to the
+$CATALINA_HOME/bin directory, and running the appropriate command (bat on
+Windows, sh on Unix):
 <screen>
     ./startup.bat|sh
 </screen>
-</para> </listitem>
+</para>
+</listitem>
 
 <listitem><para>Validate that Opal has been installed correctly by clicking
 on <ulink type="http" url="http://localhost:8080/opal2/happyaxis.jsp">
