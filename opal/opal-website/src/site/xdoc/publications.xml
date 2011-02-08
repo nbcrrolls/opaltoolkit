@@ -7,6 +7,7 @@
     <section name="Publications">
       <p> Publications &amp; Reports: </p>
       <ul>
+        <li><b>Opal web services for biomedical applications.</b> Jingyuan Ren, Nadya Williams, Luca Clementi, Sriram Krishnan and Wilfred W. Li.  Nucleic Acids Research, 2010, Vol. 38, Web Server issue. Published online 6 June 2010 (<a href="publications/W724-31.pdf">pdf</a>)</li>
         <li><b>Design and Evaluation of Opal2: A Toolkit for Scientific Software as a Service.</b> Sriram Krishnan, Luca Clementi, Jingyuan Ren, Philip Papadopoulos and Wilfred Li. In proceedings of the 2009 IEEE Congress on Services (SERVICES-1 2009), July, 2009. (<a href="publications/opal2_icws.pdf">pdf</a>)</li>
         <li><b>Providing Dynamic Virtualized Access to Grid Resources via the Web 2.0 Paradigm</b> Luca Clementi, Zhaohui Ding, Sriram Krishnan, Xiaohui Wei, Peter W. Arzberger, and Wilfred Li. GCE07, Grid Computing Environments Workshop (Supercomputing 2007), November 2007. <a href="http://www.collab-ogce.org/gce07/index.php/Main_Page">Conference Website</a></li>
         <li><b>Opal: Simple Web Services Wrappers for Scientific Applications.</b> Sriram Krishnan, Brent Stearn, Karan Bhatia, Kim K. Baldridge, Wilfred Li, and Peter Arzberger. In proceedings of ICWS 2006, IEEE International Conference on Web Services, September 2006 (<a href="publications/SDSC-TR-2006-5-opal.pdf">pdf</a>)</li>
