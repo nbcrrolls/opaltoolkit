@@ -53,10 +53,11 @@
     <section name="Developers and Affiliations">
       <ul>
         <li>Sriram Krishnan: sriram A T sdsc.edu, Lead Developer</li>
-        <li>Nadya Williams: nadya A T sdsc.edu, Dashboard, Dynamic GUI Generation</li>
-        <li>Luca Clementi: clem A T sdsc.edu, Dashboard, Dynamic GUI Generation</li>
-        <li>Wes Goodman: wgoodman A T ucsd.edu, Perl and Python clients</li>
-        <li>Jane Ren: j2ren A T ucsd.edu, Rocks Rolls</li>
+        <li>Jane Ren: j2ren A T ucsd.edu, MetaServer plug-in, CSF4 plug-in </li>
+        <li>Nadya Williams: nadya A T sdsc.edu, Dashboard, Dynamic GUI Generation, Rocks rolls</li>
+        <li>Luca Clementi: Dashboard, Dynamic GUI Generation</li>
+        <li>Wes Goodman: Perl and Python clients</li>
+		<li>Luo Yuan: CSF4 plug-in</li>
       </ul>
     </section>
   </body>
