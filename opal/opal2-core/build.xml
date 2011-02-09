@@ -96,7 +96,6 @@ Author:
   <!-- Clean build directory -->
   <target name="clean">
     <delete dir="${build}"/>
-    <delete dir="${docs}"/>
   </target>
 
   <!-- Generate stubs if necessary -->
