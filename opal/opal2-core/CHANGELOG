@@ -11,7 +11,7 @@ Version 2.4
   working directory
 - getOutputs() operation now supports recursive listing of output
   directories
-- a MetaService job manager for submission of jobs to other Opal servers
+- A MetaService job manager for submission of jobs to other Opal servers
 - Bug fixes for:
   - Error messages on Dashboard which were never reset
   - Usage Statistics fixes
