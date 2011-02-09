@@ -4,23 +4,45 @@
      opal-core/webapps/opal/WEB-INF/web.xml
      opal-core/CHANGELOG
      opal-core/docbook/index.sgml
-   If it is a major release update also the documentation page of the web site:
-     opal-website/src/site/xdoc/documentation.xml
+     If it is a major release, update the web site documentation page:
+       opal-website/src/site/xdoc/documentation.xml
 
  - Regenerate the web site and upload it
-   From the opal-website run:
+   1 From the opal-website run:
      mvn site
-   sync the opal-website/target/site directory with the web site directory
+   2 Upload  contents of the opal-website/target/site/ to the web site 
+     /var/www/html/software/opal/ (on www.nbcr.net)
 
  - Tag the SVN with the version number:
-     svn cp https://lclement@opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit/trunk/opal/opal-core https://lclement@opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit/tags/opal-core-<version number>
+     svn cp \
+	   https://opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit/trunk/opal/opal2-core \
+	   https://opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit/tags/opal2-core-<version number>
 
- - Use ant -f build-admin.xml dist to create a new package to upload on SF
+ - Create a new package for upload on SourceForge
+    cd opal2-core
+	cp build.properties.template build.properties
+    ant -f build-admin.xml dist 
+	use file build/dist/opal-ws-<version>.tar.gz for upload in next section.
 
+Udates on SourceForge
  - Upload the package on SF
+   create RELEASE_NOTES file from the trunk/opal/opal2-core/Changelog (info for version)
+   go to https://sourceforge.net/projects/opaltoolkit/files/
+   under "Name" click on directory opal2-core-java
+   click on "Add Folder"
+   click on "Add FIle" and upload RELEASE_NOTES file
+   click on "Add File" and upload opal-ws-<version>.tar.gz
+                       on "Info" icon select all platforms. 
+   after upload is done click on Summary to check the uploaded file
+
+ - Post news on the SourceForge web page
+   go to Develop->News and click on Submit
+     type Opal <version> release in Subject section
+	 type release announcement in Details section
+	 submit
 
  - Send an e-mail on opal mailing list
+    https://lists.sourceforge.net/lists/admin/opaltoolkit-users
 
- - Post a news on the SF/Opal web page
 
 
