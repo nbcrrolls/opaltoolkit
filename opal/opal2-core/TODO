@@ -1,5 +1,4 @@
 
-* Opal MetaService - submission of jobs to other Opal servers
 * Addition of system statistics to Opal Dashboard
 
 * Bug fix for destroy() operation using the DRMAA job manager
