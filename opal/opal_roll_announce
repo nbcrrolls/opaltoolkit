@@ -1,0 +1,32 @@
+
++-------------------------------------------------------------------------+
+
+                     Opal Roll 5.4 Release Announcement
+
++-------------------------------------------------------------------------+
+
+The National Biomedical Computation Resource  at University of California,
+San Diego is pleased to announce the availability of Opal Roll package for 
+Rocks clusters version 5.4
+
+The Opal Toolkit provides a mechanism rapid wrapping existing scientific 
+applications as Web services and exposing the services to various clients. 
+It includes job and data management and state management (by storing the 
+service state via Hibernate into MySQL). The applications are deployed as 
+services and are available to end users via a remote access.
+
+The Opal Roll simplifies Opal Toolkit deployment and integration on  Rocks 
+clusters (http://www.rocksclusters.org). More information about Opal Toolkit
+can be found at http://apbs.sourceforge.net/ or at http://opal.nbcr.net.
+
+This Opal Roll contains the latest Opal Toolkit version 2.4, apache tomcat 
+version 5.5.17 and tomcat-connectors version 1.2.31.  It requires SGE roll 
+to be installed. 
+
+The Opal Roll can be downloaded from NBCR download site
+http://www.nbcr.net/software/downloads/rolls and the Roll documentation 
+including installation and usage information is available at
+http://nbcr.net/software/doc/opal-roll/5.4
+
+Questions or comments about the roll may be directed to NBCR support
+support@nbcr.net
