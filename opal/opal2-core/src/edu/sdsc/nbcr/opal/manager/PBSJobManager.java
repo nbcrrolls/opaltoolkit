@@ -275,7 +275,7 @@ public class PBSJobManager implements OpalJobManager {
                 // print job status
                 jobState = Job.getJobStatus(handle);
                 logger.debug("Received job status: " + jobState);
-		if (jobState.equals("C") || jobState.equals("E")) {
+		if (jobState.equals("C")) {
 		    // execution complete
 		    break;
 		}
