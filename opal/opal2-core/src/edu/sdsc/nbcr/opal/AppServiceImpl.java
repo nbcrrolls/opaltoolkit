@@ -1131,9 +1131,6 @@ public class AppServiceImpl
 
 		    next.setName(relativePath);
 
-		    logger.info("RP: " + relativePath);
-
-		    
 		    next.setUrl(new URI(tomcatURL +
 					jobID +
 					"/" +
@@ -1387,8 +1384,6 @@ public class AppServiceImpl
 
     private File [] getAllOutputs(String workingDir) 
 	throws FaultType {
-
-        logger.info ("****************getAllOutputs called");
 
 	File wd = new File(workingDir);
 	File [] top_files = wd.listFiles();
