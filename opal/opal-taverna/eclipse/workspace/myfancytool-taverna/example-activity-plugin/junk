@@ -1,0 +1,116 @@
++ Error stacktraces are turned on.
+[INFO] Scanning for projects...
+Downloading: http://www.mygrid.org.uk/maven/repository/uk/ac/manchester/cs/img/myfancytool/myfancytool-taverna/0.0.1-SNAPSHOT/myfancytool-taverna-0.0.1-SNAPSHOT.jar
+[INFO] Unable to find resource 'uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT' in repository mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Plugin could not be found - check that the goal name is correct: Unable to download the artifact from any repository
+
+Try downloading the file manually from the project website.
+
+Then, install it using the command: 
+    mvn install:install-file -DgroupId=uk.ac.manchester.cs.img.myfancytool -DartifactId=myfancytool-taverna -Dversion=0.0.1-SNAPSHOT -Dpackaging=maven-plugin -Dfile=/path/to/file
+
+Alternatively, if you host your own repository you can deploy the file there: 
+    mvn deploy:deploy-file -DgroupId=uk.ac.manchester.cs.img.myfancytool -DartifactId=myfancytool-taverna -Dversion=0.0.1-SNAPSHOT -Dpackaging=maven-plugin -Dfile=/path/to/file -Durl=[url] -DrepositoryId=[id]
+
+
+  uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT
+
+from the specified remote repositories:
+  central (http://repo1.maven.org/maven2),
+  mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+
+
+  uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT
+
+from the specified remote repositories:
+  central (http://repo1.maven.org/maven2),
+  mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Trace
+org.apache.maven.lifecycle.LifecycleExecutionException: Plugin could not be found - check that the goal name is correct: Unable to download the artifact from any repository
+
+Try downloading the file manually from the project website.
+
+Then, install it using the command: 
+    mvn install:install-file -DgroupId=uk.ac.manchester.cs.img.myfancytool -DartifactId=myfancytool-taverna -Dversion=0.0.1-SNAPSHOT -Dpackaging=maven-plugin -Dfile=/path/to/file
+
+Alternatively, if you host your own repository you can deploy the file there: 
+    mvn deploy:deploy-file -DgroupId=uk.ac.manchester.cs.img.myfancytool -DartifactId=myfancytool-taverna -Dversion=0.0.1-SNAPSHOT -Dpackaging=maven-plugin -Dfile=/path/to/file -Durl=[url] -DrepositoryId=[id]
+
+
+  uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT
+
+from the specified remote repositories:
+  central (http://repo1.maven.org/maven2),
+  mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+
+
+  uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT
+
+from the specified remote repositories:
+  central (http://repo1.maven.org/maven2),
+  mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+
+
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.findExtensions(DefaultLifecycleExecutor.java:238)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLifecycleExecutor.java:178)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:328)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:138)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:362)
+	at org.apache.maven.cli.compat.CompatibleMain.main(CompatibleMain.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+	at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+	at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+	at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+Caused by: org.apache.maven.plugin.PluginNotFoundException: Plugin could not be found - check that the goal name is correct: Unable to download the artifact from any repository
+
+Try downloading the file manually from the project website.
+
+Then, install it using the command: 
+    mvn install:install-file -DgroupId=uk.ac.manchester.cs.img.myfancytool -DartifactId=myfancytool-taverna -Dversion=0.0.1-SNAPSHOT -Dpackaging=maven-plugin -Dfile=/path/to/file
+
+Alternatively, if you host your own repository you can deploy the file there: 
+    mvn deploy:deploy-file -DgroupId=uk.ac.manchester.cs.img.myfancytool -DartifactId=myfancytool-taverna -Dversion=0.0.1-SNAPSHOT -Dpackaging=maven-plugin -Dfile=/path/to/file -Durl=[url] -DrepositoryId=[id]
+
+
+  uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT
+
+from the specified remote repositories:
+  central (http://repo1.maven.org/maven2),
+  mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+
+
+  uk.ac.manchester.cs.img.myfancytool:myfancytool-taverna:maven-plugin:0.0.1-SNAPSHOT
+
+from the specified remote repositories:
+  central (http://repo1.maven.org/maven2),
+  mygrid-repository (http://www.mygrid.org.uk/maven/repository)
+
+
+	at org.apache.maven.plugin.DefaultPluginManager.verifyVersionedPlugin(DefaultPluginManager.java:253)
+	at org.apache.maven.plugin.DefaultPluginManager.verifyPlugin(DefaultPluginManager.java:184)
+	at org.apache.maven.plugin.DefaultPluginManager.loadPluginFully(DefaultPluginManager.java:1626)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.loadPluginFully(DefaultLifecycleExecutor.java:1582)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.findArtifactTypeHandlersInPlugins(DefaultLifecycleExecutor.java:1468)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.findExtensions(DefaultLifecycleExecutor.java:222)
+	... 13 more
+Caused by: org.apache.maven.wagon.ResourceDoesNotExistException: Unable to download the artifact from any repository
+	at org.apache.maven.artifact.manager.DefaultWagonManager.getArtifact(DefaultWagonManager.java:404)
+	at org.apache.maven.artifact.resolver.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:216)
+	at org.apache.maven.artifact.resolver.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:90)
+	at org.apache.maven.plugin.DefaultPluginManager.verifyVersionedPlugin(DefaultPluginManager.java:212)
+	... 18 more
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: < 1 second
+[INFO] Finished at: Tue Jan 11 16:56:32 PST 2011
+[INFO] Final Memory: 3M/81M
+[INFO] ------------------------------------------------------------------------

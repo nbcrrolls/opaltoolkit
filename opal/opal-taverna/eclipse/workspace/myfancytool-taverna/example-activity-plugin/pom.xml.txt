@@ -1,0 +1,111 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+   <groupId>com.example.taverna.plugins</groupId> 
+  <artifactId>myfancytool-taverna</artifactId>
+  <packaging>taverna-plugin</packaging>
+  <name>Example Activity</name>
+  <version>0.0.1-SNAPSHOT</version>
+  <description>My Taverna plugin that does cool stuff</description>
+
+ 
+  <!-- The repository that your jars are deployed to -->
+
+	<repositories>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>mygrid-repository</id>
+			<name>myGrid Repository</name>
+			<url>http://vm6.ucsd.edu/maven2</url> 
+		</repository>
+	</repositories>
+ 
+  <!-- The repository for the Maven plugin -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>mygrid-repository</id>
+      <name>myGrid Repository</name>
+      <url>http://www.mygrid.org.uk/maven/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+ 
+  <!-- Configure the Maven plugin -->
+  <build>
+    <plugins>
+      <plugin>
+<!--       <groupId>net.sf.taverna.t2.maven.plugins</groupId> -->
+<!--        <groupId>uk.ac.manchester.cs.img.myfancytool</groupId>  -->
+<!--        <artifactId>maven-taverna-plugin</artifactId> -->
+<!--        <artifactId>myfancytool-taverna</artifactId> -->
+<!--        <version>0.0.1-SNAPSHOT</version> -->
+        <groupId>net.sf.taverna.t2.maven.plugins</groupId>
+        <artifactId>maven-taverna-plugin</artifactId>
+        <version>0.1.1</version>
+
+        <extensions>true</extensions>
+        <configuration>
+          <provider>vm6.ucsd.edu/maven2</provider>
+          <tavernaVersion>2.2.0</tavernaVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ftp</artifactId>
+        <version>1.0-beta-7</version>
+      </extension>
+    </extensions>
+
+
+
+  </build>
+ 
+
+  <!-- The location of your plugin site -->
+  <!--
+  <distributionManagement>
+    <repository>
+      <id>my-plugin-site</id>
+      <name>My Plugin Site</name>
+      <url>ftp://vm6.ucsd.edu/pub/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>my-test-plugin-site</id>
+      <name>My Test Plugin Site</name>
+      <url>file:///var/www/taverna/test-plugins/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  -->
+
+  <distributionManagement>
+    <repository>
+      <id>example-ftp</id>
+      <name>myGrid Repository</name>
+      <url>ftp://vm6.ucsd.edu/pub/maven2</url>
+    </repository>
+  </distributionManagement>
+ 
+  <!-- The jars for your plugin code -->
+  <dependencies>
+    <dependency>
+      <groupId>uk.ac.manchester.cs.img.myfancytool</groupId>
+      <artifactId>example-activity</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>uk.ac.manchester.cs.img.myfancytool</groupId>
+      <artifactId>example-activity-ui</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+ 
+</project>
+
+
+
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugins:plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://taverna.sf.net/2008/xml/plugins http://taverna.sourceforge.net/2008/xml/plugins/plugins-2008-10-16.xsd" xmlns:plugins="http://taverna.sf.net/2008/xml/plugins">
+<provider>vm6.ucsd.edu/maven2</provider>
+<identifier>com.example.taverna.plugins.opal-taverna</identifier>
+<version>0.0.1</version>
+<name>Opal Taverna Plugin</name>
+<description>Opal Taverna plugin for using Opal web services</description>
+<enabled>true</enabled>
+<repositories>
+<repository>http://vm6.ucsd.edu/maven2</repository>
+<repository>http://repo1.maven.org/maven2</repository>
+<repository>http://www.mygrid.org.uk/maven/snapshot-repository</repository>
+<repository>http://repository.codehaus.org</repository>
+</repositories>
+<profile>
+<dependency>
+<groupId>edu.sdsc.nbcr</groupId>
+<artifactId>opal-activity</artifactId>
+<version>0.0.1</version>
+</dependency>
+<dependency>
+<groupId>edu.sdsc.nbcr</groupId>
+<artifactId>opal-activity-ui</artifactId>
+<version>0.0.1</version>
+</dependency>
+</profile>
+<compatibility>
+<application>
+<version>2.2.0</version>
+</application>
+</compatibility>
+</plugins:plugin>
