@@ -1093,26 +1093,47 @@ public class AppServiceImpl
 	    File f = new File(workingDir);
 	    //File[] outputFiles = f.listFiles();
 	    File[] outputFiles = getAllOutputs(workingDir);
-	
-	    OutputFileType[] outputFileObj = new OutputFileType[outputFiles.length-2];
+	    int count = 0;
+	    OutputFileType [] outputFileObj = null;
+
+	    for (int i = 0; i < outputFiles.length; i++) 
+		if (outputFiles[i].getAbsolutePath().equals(stdOutFile.getAbsolutePath()) || 
+		    outputFiles[i].getAbsolutePath().equals(stdErrFile.getAbsolutePath()))
+		    count++;
+	   
+	    if (count == 2) 
+		outputFileObj = new OutputFileType[outputFiles.length-2];
+	    else if (count == 1) 
+		outputFileObj = new OutputFileType[outputFiles.length-1];
+	    else if (count == 0)
+		outputFileObj = new OutputFileType[outputFiles.length];
+
 	    int j = 0;
 	    for (int i = 0; i < outputFiles.length; i++) {
-		if (outputFiles[i].getName().equals("stdout.txt")) {
+		if (outputFiles[i].getAbsolutePath().equals(stdOutFile.getAbsolutePath())) {
 		    outputs.setStdOut(new URI(tomcatURL +
 					      jobID + 
 					      "/stdout.txt"));
-		} else if (outputFiles[i].getName().equals("stderr.txt")) {
+		}
+		else if (outputFiles[i].getAbsolutePath().equals(stdErrFile.getAbsolutePath())) {
 		    outputs.setStdErr(new URI(tomcatURL +
 					      jobID + 
 					      "/stderr.txt"));
-		} else {
+		}
+		else {
 		    // NOTE: all input files will also be duplicated here
 		    OutputFileType next = new OutputFileType();
-		    next.setName(outputFiles[i].getName());
+		    //next.setName(outputFiles[i].getName());
 		    String absolutePath = outputFiles[i].getPath();
 		    int start = absolutePath.indexOf(jobID);
 		    String relativePath = 
 			absolutePath.substring(start + jobID.length() + 1);
+
+		    next.setName(relativePath);
+
+		    logger.info("RP: " + relativePath);
+
+		    
 		    next.setUrl(new URI(tomcatURL +
 					jobID +
 					"/" +
@@ -1129,7 +1150,7 @@ public class AppServiceImpl
 	    } catch (StateManagerException se) {
 		logger.error(se.getMessage());
 		throw new FaultType(se.getMessage());
-	    }
+            }
 	} catch (IOException e) {
 	    // log exception
 	    logger.error(e);
@@ -1367,6 +1388,7 @@ public class AppServiceImpl
     private File [] getAllOutputs(String workingDir) 
 	throws FaultType {
 
+        logger.info ("****************getAllOutputs called");
 
 	File wd = new File(workingDir);
 	File [] top_files = wd.listFiles();
@@ -1392,27 +1414,11 @@ public class AppServiceImpl
 	int numFiles = ofs.size();
 	File [] outputFiles = new File[numFiles];
 	int c = 0;
-
-	File stdout = new File(wd.getAbsolutePath() + File.separator + "stdout.txt");
-	File stderr = new File(wd.getAbsolutePath() + File.separator + "stderr.txt");
-
-	if (stdout.exists()) {
-	    outputFiles[c] = stdout;
-	    c++;
-	}
-	if (stderr.exists()) {
-	    outputFiles[c] = stderr;
-	    c++;
-	}
-
+	
 	while (!ofs.empty()) {
-	    File addFile = (File)ofs.pop();
-
-	    if ( (!addFile.getAbsolutePath().equals(stdout.getAbsolutePath())) &&
-		 (!addFile.getAbsolutePath().equals(stderr.getAbsolutePath())) ) {
-		outputFiles[c] = addFile;
-		c++;
-	    }
+	    File of  = (File)ofs.pop();
+	    outputFiles[c] = of;
+	    c++;
 	}
 
 	return outputFiles;
