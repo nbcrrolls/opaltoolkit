@@ -1,6 +1,7 @@
 package edu.sdsc.nbcr.opal;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.BufferedOutputStream;
@@ -1042,7 +1043,6 @@ public class AppServiceImpl
 
 	    // get a list of files
 	    File f = new File(workingDir);
-	    //File[] outputFiles = f.listFiles();
 	    File [] outputFiles = getAllOutputs(workingDir);
 	    
 	    // Create a buffer for reading the files
@@ -1091,7 +1091,6 @@ public class AppServiceImpl
 
 	try {
 	    File f = new File(workingDir);
-	    //File[] outputFiles = f.listFiles();
 	    File[] outputFiles = getAllOutputs(workingDir);
 	    int count = 0;
 	    OutputFileType [] outputFileObj = null;
@@ -1139,6 +1138,7 @@ public class AppServiceImpl
 		    outputFileObj[j++] = next;
 		}
 	    }
+
 	    outputs.setOutputFile(outputFileObj);
 
 	    // update the outputs table
@@ -1385,11 +1385,17 @@ public class AppServiceImpl
     private File [] getAllOutputs(String workingDir) 
 	throws FaultType {
 
+	FileFilter fileFilter = new FileFilter() {
+		public boolean accept(File file) {
+		    return file.canRead();
+		}
+	    };
+
 	File wd = new File(workingDir);
-	File [] top_files = wd.listFiles();
+	File [] top_files = wd.listFiles(fileFilter);
 	Stack checks = new Stack();
 	Stack ofs = new Stack();
-
+	
 	for (int i = 0; i < top_files.length; i++) 
 	    checks.push(top_files[i]);
 
@@ -1397,7 +1403,7 @@ public class AppServiceImpl
 	    File temp_file = (File)checks.pop();
 
 	    if (temp_file.isDirectory()) {
-		File [] dir_files = temp_file.listFiles();
+		File [] dir_files = temp_file.listFiles(fileFilter);
 		
 		for (int i = 0; i < dir_files.length; i++) 
 		    checks.push(dir_files[i]);
