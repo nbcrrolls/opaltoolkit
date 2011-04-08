@@ -331,7 +331,7 @@ public class MetaServiceJobManager implements OpalJobManager {
 	}
 
 	status.setCode(GramJob.STATUS_ACTIVE);
-	status.setMessage("Job active on remote host (url : " + remote_url + ")<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>");
+	status.setMessage("Job active on remote: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>");
 
 	return status;
     }
@@ -445,16 +445,16 @@ public class MetaServiceJobManager implements OpalJobManager {
 	String smsg;
 
 	if (code == GramJob.STATUS_DONE){
-	    smsg = "Job successfully completed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
+	    smsg = "Successfully completed on remote: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
 	    logger.info(smsg);
 	    status.setCode(GramJob.STATUS_DONE);
-	    status.setMessage("Job successfully completed on remote server");
+	    status.setMessage(smsg);
 	    /*	    try {
 	       Thread.sleep(300000);
 	       } catch (Exception e) {}; */
 	} 
 	else {
-	    smsg = "Job failed on remote server using " + remote_url + "<BR>" + "Remote output URL: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
+	    smsg = "Failed on remote: <A HREF=" + remoteBaseURL + ">" + remoteBaseURL + "</A>";
 	    logger.info(smsg);
 	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage(smsg);
