@@ -1387,7 +1387,15 @@ public class AppServiceImpl
 
 	FileFilter fileFilter = new FileFilter() {
 		public boolean accept(File file) {
-		    return file.canRead();
+		    boolean a = true;
+
+		    try {
+			a = file.canRead() && file.getAbsolutePath().equals(file.getCanonicalPath());
+		    } catch (IOException e) {
+			logger.error(e);
+		    }
+		    
+		    return a;
 		}
 	    };
 
