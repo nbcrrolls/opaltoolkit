@@ -41,7 +41,7 @@ if you don't have the appropriate version already.
 as follows:</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
     tar zxvf opal-py-$VERSION.tar.gz</pre>
    </FONT></TD></TR>
@@ -182,7 +182,7 @@ For example, to launch the remote PDB2PQR Opal Serivce on
 following command (assuming you have the input file
 <A HREF="http://www.nbcr.net/ws_help/PDB2PQR/sample_inputs/1hpx.pdb"><tt>1hpx.pdb</tt></A> in your directory):<P>
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
    python GenericServiceClient.py -l http://ws.nbcr.net/opal2/services/Pdb2pqrOpalService \
    -r launchJob -a "--ff=amber 1hpx.pdb output.pqr" -f 1hpx.pdb </pre>
@@ -212,7 +212,7 @@ lines of code, it is probably because the Python interpreter can not find
 the stubs (AppService_client.py and AppService_types.py).</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
 import AppService_client
 from AppService_types import ns0
@@ -226,7 +226,7 @@ appServicePort = appLocator.getAppServicePort(url)</pre>
 as follows.</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
 #creating the input request
 req = AppService_client.launchJobRequest()
@@ -259,7 +259,7 @@ the end of the application.
 </p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
 #launch a remote job
 resp = appServicePort.launchJob(req)
@@ -292,7 +292,7 @@ instead of the <i>_content</i>. Below is an example of setting up an input file 
 an attachment. For a full working example see ApbsClient.py.</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
 inputFile1 = ns0.InputFileType_Def('inputFile')
 inputFile1._name = 'ion.xml'
@@ -311,7 +311,7 @@ snippet of code from shows how to access a secure Opal
 service from Python.</p>
 
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
-   <TR><TD><FONT COLOR="#000000"
+   <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
 # set the locations for the X509 certificate and key
 cert = "location of X509 certificate"
