@@ -1,0 +1,32 @@
+<!-- Indices written at Mon, 14 Feb 2011 22:54:54 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 3 times in query history -->
+    <datastore-index kind="GroupData" ancestor="true" source="auto">
+        <property name="groups_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 12 times in query history -->
+    <datastore-index kind="ArgParamData" ancestor="true" source="auto">
+        <property name="GargParams_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 6 times in query history -->
+    <datastore-index kind="ArgFlagData" ancestor="true" source="auto">
+        <property name="GargFlags_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="JobArgFlagData" ancestor="false" source="auto">
+        <property name="JobID" direction="asc"/>
+        <property name="position" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="JobArgParamData" ancestor="false" source="auto">
+        <property name="JobID" direction="asc"/>
+        <property name="position" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

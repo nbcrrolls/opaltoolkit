@@ -1,0 +1,270 @@
+!SESSION 2011-01-26 15:36:02.062 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2011-01-26 15:36:23.218
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle.1.4.0_1.4.0.v201012021502
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2011-01-26 15:36:23.281
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.2.1.1_2.1.1.v201012170127
+!SESSION 2011-01-26 15:37:21.031 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.ui 4 4 2011-01-26 15:40:01.812
+!MESSAGE Invalid preference page path: CSS Files
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-01-26 15:41:44.281
+!MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+!SESSION 2011-01-26 15:45:09.453 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY com.google.gdt.eclipse.core 1 0 2011-01-26 15:45:11.859
+!MESSAGE Scheduled rebuild of project opalappcherry because of plugin update (current version: 1.4.2.v201012211742)
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-01-26 15:46:39.484
+!MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+!SESSION 2011-01-26 15:48:26.359 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-01-26 15:48:29.921
+!MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+
+!ENTRY org.eclipse.ui 4 4 2011-01-26 15:50:05.125
+!MESSAGE Invalid preference page path: CSS Files
+
+!ENTRY com.google.appengine.eclipse.core 1 0 2011-01-26 15:53:04.250
+!MESSAGE opalappcherry successfully deployed to Google App Engine
+!SESSION 2011-02-14 11:04:42.953 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-02-14 14:48:20.765
+!MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+!SESSION 2011-05-19 16:14:35.921 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2011-05-19 16:14:39.562
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.google.gdt.eclipse.core 4 0 2011-05-19 16:15:00.218
+!MESSAGE The site.xml file downloaded from the update site does not contain any <feature> elements with an id of 'com.google.appengine.eclipse.sdkbundle.e36.feature.1.4.0'. Unable to determine if there are updates available.
+!SESSION 2011-05-19 16:15:13.406 -----------------------------------------------
+eclipse.buildId=M20100909-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2011-05-19 16:15:14.546
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.jdt.core 4 4 2011-05-19 16:15:19.468
+!MESSAGE JavaBuilder handling ImageBuilderInternalException while building: opalappcherry
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:799)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.cleanOutputFolders(BatchImageBuilder.java:114)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.build(BatchImageBuilder.java:46)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.buildAll(JavaBuilder.java:254)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.build(JavaBuilder.java:173)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:311)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:343)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:144)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:242)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Could not delete '/opalappcherry/war/WEB-INF/classes/cherry'.
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:270)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1940)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.cleanOutputFolders(BatchImageBuilder.java:114)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.build(BatchImageBuilder.java:46)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.buildAll(JavaBuilder.java:254)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.build(JavaBuilder.java:173)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:311)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:343)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:144)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:242)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\AppMetadataData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ArgFlagData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ArgParamData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GeneralFunction.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GetStaticsEnvelope.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GetURLFile.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GroupData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\Job.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobArgFlagData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobArgParamData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobInputFile.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\LanchJobEnvelope.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\OpalappcherryServlet.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\OpalGoogleAppServlet.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\PMF.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\QueryStatusEnvelope.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\RefreshJob.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ServiceData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapClient.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapGetJobStatistics.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapLanuchJob.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapQueryStatus.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\Upload.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2011-05-19 16:15:19.468
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 2 org.eclipse.core.resources 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete '/opalappcherry/war/WEB-INF/classes/cherry'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:270)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1940)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:786)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.cleanOutputFolders(BatchImageBuilder.java:114)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.build(BatchImageBuilder.java:46)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.buildAll(JavaBuilder.java:254)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.build(JavaBuilder.java:173)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:629)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:172)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:203)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:255)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:258)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:311)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:343)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:144)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:242)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\AppMetadataData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ArgFlagData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ArgParamData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GeneralFunction.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GetStaticsEnvelope.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GetURLFile.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GroupData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\Job.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobArgFlagData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobArgParamData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobInputFile.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\LanchJobEnvelope.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\OpalappcherryServlet.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\OpalGoogleAppServlet.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\PMF.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\QueryStatusEnvelope.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\RefreshJob.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ServiceData.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapClient.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapGetJobStatistics.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapLanuchJob.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapQueryStatus.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\Upload.class.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda.
+Contains: Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry.
+!SUBENTRY 3 org.eclipse.core.resources 4 273 2011-05-19 16:15:19.468
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 4 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\AppMetadataData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ArgFlagData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ArgParamData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GeneralFunction.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GetStaticsEnvelope.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GetURLFile.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\GroupData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\Job.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobArgFlagData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobArgParamData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\JobInputFile.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\LanchJobEnvelope.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\OpalappcherryServlet.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\OpalGoogleAppServlet.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\PMF.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\QueryStatusEnvelope.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\RefreshJob.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\ServiceData.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapClient.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapGetJobStatistics.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapLanuchJob.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\SoapQueryStatus.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan\Upload.class.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda\lan.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry\glenda.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2011-05-19 16:15:19.468
+!MESSAGE Could not delete: C:\Documents and Settings\Jren\My Documents\workspace2\opalappcherry\war\WEB-INF\classes\cherry.

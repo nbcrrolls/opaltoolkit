@@ -1,0 +1,5 @@
+#Wed Jan 26 15:53:37 PST 2011
+PREF_VM_INSTALL_SYSTEM_PROPERTY.org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType.1296085157406.java.specification.version=1.6
+PREF_VM_INSTALL_SYSTEM_PROPERTY.org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType.1296085206828.java.specification.version=1.6
+eclipse.preferences.version=1
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1296085206828" defaultVMConnector\="">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1296085157406" javadocURL\="http\://java.sun.com/javase/6/docs/api/" name\="jre6" path\="C\:\\Program Files\\Java\\jre6"/>\r\n<vm id\="1296085206828" javadocURL\="http\://java.sun.com/javase/6/docs/api/" name\="jdk1.6.0_23" path\="C\:\\Program Files\\Java\\jdk1.6.0_23"/>\r\n</vmType>\r\n</vmSettings>\r\n

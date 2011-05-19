@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><getAppConfigOutput xmlns="http://nbcr.sdsc.edu/opal/types"><metadata appName="Autodock4.2.1" xmlns=""><usage>Autodock performs the docking of the ligand to a set of grids describing the target protein. Version 4.2.1.
+&lt;BR&gt;&lt;A HREF=&quot;http://www.nbcr.net/ws_help/Autodock/&quot;&gt;
+Tutorial: http://www.nbcr.net/ws_help/Autodock/&lt;/A&gt;
+</usage><info>
+    
+     autodock -p &lt;parameter.in&gt;
+
+	./autodock4     -p parameter_filename
+			-l log_filename
+           		-o (Use old PDBQ format, charge q in columns 55-61)
+		        -k (Keep original residue numbers)
+		        -i (Ignore header-checking)
+		        -t (Parse the PDBQ file to check torsions, then stop.)
+           		-c &lt; command_file (Command mode, by file)
+	 	 	-c | control_program (Command mode, by control_program)
+    
+    </info><types><flags><flag><id>o</id><tag>-o</tag><textDesc>Use old PDBQ format, charge q in columns 55-61</textDesc></flag><flag><id>k</id><tag>-k</tag><textDesc>Keep original residue numbers</textDesc></flag><flag><id>i</id><tag>-i</tag><textDesc>Ignore header-checking</textDesc></flag><flag><id>t</id><tag>-t</tag><textDesc>Parse the PDBQ file to check torsions, then stop</textDesc></flag></flags><taggedParams><param><id>p</id><tag>-p</tag><paramType>FILE</paramType><ioType>INPUT</ioType><required>true</required><semanticType>DPF</semanticType><textDesc>Parameter Filename</textDesc></param><param><id>l</id><tag>-l</tag><paramType>FILE</paramType><ioType>OUTPUT</ioType><required>true</required><semanticType>LOG</semanticType><textDesc>Name of the log file</textDesc></param></taggedParams><untaggedParams><param><id>pdbq</id><paramType>FILE</paramType><ioType>INPUT</ioType><required>true</required><semanticType>PDBQ</semanticType><textDesc>Ligand PDBQT file</textDesc></param><param><id>url</id><paramType>STRING</paramType><required>true</required><semanticType>PDBQ</semanticType><textDesc>URL where to fetch the MAP files</textDesc></param></untaggedParams></types></metadata><binaryLocation xmlns="">/home/apbs_user/Software/opal-bins/run_autodock4_2_1.py</binaryLocation><parallel xmlns="">false</parallel></getAppConfigOutput></soapenv:Body></soapenv:Envelope>
