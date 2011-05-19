@@ -1,0 +1,10 @@
+1.  Stuff only worked on Cherry's google account. 
+    Someone needs to work on this more so it can be deployed on the GAE.
+2.  Need support for basic jobs (advance job support is done) 
+3.  Need support for job history
+4.  Need more testing
+    -- is file upload supported?
+    -- parallel jobs supported?
+    -- etc
+5.  Did I forget something???
+
