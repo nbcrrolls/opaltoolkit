@@ -1299,8 +1299,8 @@ public class AppServiceImpl
 // 		}
 
 		try {
-		    FileUtils.moveFile(attachFile, f);
-		} catch (IOException e) {
+		    attachFile.renameTo(f);
+		} catch (Exception e) {
 		    String msg = "Unable to copy attachment correctly: " +dh.getName();
 		    logger.error(msg);
 		    throw new FaultType(msg);
