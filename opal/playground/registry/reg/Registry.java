@@ -40,15 +40,25 @@ import org.apache.axis.MessageContext;
 
 
 public class Registry {
+    public static String registry_path = 
+	"/var/www/html/registry/registry.xml";
+
+    public static String [] siv = 
+        {"numCpuTotal", "numCpuFree", "numJobsRunning", "numJobsQueued"};
+
     public static void main(String[] args) {
 	String hostfile = "hosts.txt";
 	String [] hosts = null; 
 
 	while (true) {
 	    hosts = getHostList(hostfile);
-	    refreshHosts(hosts);
-	    makeRegistryXML("/var/www/html/registry/registry.xml");
-	    System.out.println("Going to sleep for 30 seconds");
+
+	    for (int i = 0; i < hosts.length; i++)
+		updateHostInfo(hosts[i]);
+
+	    makeRegistryXML(registry_path);
+
+  	    System.out.println("Going to sleep for 30 seconds");
 
 	    try {
 		Thread.sleep(30000);
@@ -75,7 +85,7 @@ public class Registry {
 	    while (dis.available() != 0) {
 		line = dis.readLine();
 		
-		if (line.indexOf("opal") != -1)
+		if (line.indexOf("opal") != -1 && line.indexOf("#") == -1)
 		    hostset.add(line);
 	    }
 
@@ -101,34 +111,16 @@ public class Registry {
 	return hosts;
     }
 
-
-    public static String getInfo(String sws, String query) {
-	int pos;
-	String tmp;
-	
-	if (query != "numCpuTotal" && query != "numCpuFree" && query != "numJobsRunning" && query != "numJobsQueued") {
-	    System.out.println("ERROR: Invalid query in getInfo()");
-	    return "error";
-	}	    
-
-	pos = sws.indexOf("<" + query);
-	tmp = sws.substring(pos);
-	pos = tmp.indexOf(">");
-	tmp = tmp.substring(pos+1);
-	pos = tmp.indexOf("<");
-	tmp = tmp.substring(0, pos);
-
-	return tmp;
-    }
-
-    public static String getSystemInfo(String url) {
+    public static int [] getSystemInfo(String url) {
 	StringWriter sw = new StringWriter();
+	String sws, tmp;
+	int pos;
+	int [] si = new int[siv.length];
 
 	try {
 	    AppServiceLocator asl = new AppServiceLocator();
 	    AppServicePortType appServicePort = asl.getAppServicePort(new java.net.URL(url));
 	    SystemInfoType sit = appServicePort.getSystemInfo(new SystemInfoInputType());
-
 	    
             TypeDesc typeDesc = sit.getTypeDesc();
             MessageContext mc = new MessageContext(new AxisClient());
@@ -146,7 +138,19 @@ public class Registry {
 	    e.printStackTrace();
 	}
 
-	return sw.toString();
+	sws = sw.toString();
+
+	for (int i = 0; i < siv.length; i++) {
+	    pos = sws.indexOf("<" + siv[i]);
+	    tmp = sws.substring(pos);
+	    pos = tmp.indexOf(">");
+	    tmp = tmp.substring(pos+1);
+	    pos = tmp.indexOf("<");
+	    tmp = tmp.substring(0, pos);
+	    si[i] = Integer.parseInt(tmp);
+	}
+
+	return si;
     }
 
     public static Set<String> getServices (String url) {
@@ -197,118 +201,73 @@ public class Registry {
 	return services;
     }
 
-    public static String setToStr(Set <String> s) {
-	Iterator it = s.iterator();
-	String str = "";
-
-	while (it.hasNext()) {
-	    str += it.next() + " ";
-	}
-
-	return str;
-    }
-
-    public static void refreshHosts(String [] hosts) {
+    public static void updateHostInfo(String host) {	
+	int numCpuTotal = 0;
+	int numCpuFree = 0; 
+	int numJobsRunning = 0;
+	int numJobsQueued = 0;
+	
 	Session session = null;
 	Transaction tx = null;
-	Iterator it, it2;
+	
+	Set services = getServices(host);
+	Iterator sit = services.iterator();
 
-	Map <String, Set<String>> hsm = new HashMap<String, Set<String>>();
-	Set <String> dh = new HashSet<String>();
-	Set s;
-	int numCpuTotal;
-	int numCpuFree;
-	int numJobsRunning;
-	int numJobsQueued;
-
-	for (int i = 0; i < hosts.length; i++) {
-	    Set services = getServices(hosts[i]);
-	    hsm.put(hosts[i], services);
+	if (sit.hasNext()) {
+	    int [] si = getSystemInfo((String)sit.next());
+	    numCpuTotal = si[0];
+	    numCpuFree = si[1];
+	    numJobsRunning = si[2];
+	    numJobsQueued = si[3];
 	}
 
-	s = hsm.entrySet();
-	it = s.iterator();
-
-	while (it.hasNext()) {
-	    Map.Entry kv = (Map.Entry)it.next();
-	    String k = (String) kv.getKey();
-	    Set<String> v = (Set<String>) kv.getValue();
-	}
-
-	try{ 
-	    SessionFactory sessionFactory = new 
-		Configuration().configure().buildSessionFactory();
+	try { 
+	    SessionFactory sessionFactory = 
+		new Configuration().configure().buildSessionFactory();
 	    session = sessionFactory.openSession();
 	    tx = session.beginTransaction();
+	    List dl =
+		session.createQuery("select url from Host where host="+"\'"+host+"\'").list();
+	    Iterator dit = dl.iterator();
+	    sit = services.iterator();
 
-	    List dl = session.createQuery("from Host").list();
+	    while (dit.hasNext()) {
+		String du = (String)dit.next();
+		
+		if (!services.contains(du))
+		    session.createQuery("delete from Host where url=\'"+du+"\'");
+	    }	
 
-	    it = dl.iterator();
-	    
-	    while (it.hasNext()) {
-		Host h = (Host)it.next();
-		String hn = h.getName();
-		String hs;
+	    while (sit.hasNext()) {
+		String s = (String)sit.next();
 
-		dh.add(hn);
-
-		if (hsm.containsKey(hn)) {
-		    hs = hsm.get(hn).iterator().next();
+		if (dl.contains(s) == false) {
+		    Host h = new Host();
+		    String name = s.substring(s.lastIndexOf('/')+1, s.length()-1);
 		    
-		    String si = getSystemInfo(hs);
-		    numCpuTotal = Integer.parseInt(getInfo(si, "numCpuTotal"));
-		    numCpuFree = Integer.parseInt(getInfo(si, "numCpuFree"));
-		    numJobsRunning = Integer.parseInt(getInfo(si, "numJobsRunning"));
-		    numJobsQueued = Integer.parseInt(getInfo(si, "numJobsQueued"));
-		    
+		    h.setName(name);
+		    h.setUrl(s);
+		    h.setHost(host);
 		    h.setNumCpuTotal(numCpuTotal);
-		    h.setNumCpuFree(numCpuFree);		
+		    h.setNumCpuFree(numCpuFree);
 		    h.setNumJobsRunning(numJobsRunning);
 		    h.setNumJobsQueued(numJobsQueued);
-		    h.setServices(setToStr(hsm.get(hn)));
-
-		    session.update(h);
-		}
-		else 
-		    session.delete(h);
-	    }
-
-	    s = hsm.entrySet();
-	    it = s.iterator();
-	    
-	    while (it.hasNext()) {
-		Map.Entry kv = (Map.Entry)it.next();
-		String k = (String) kv.getKey();
-		Set<String> v = (Set<String>) kv.getValue();
-		String hs = v.iterator().next();
-		Host h = new Host();
-
-		if (!(dh.contains(k))) {
-		    String si = getSystemInfo(hs);
-		    numCpuTotal = Integer.parseInt(getInfo(si, "numCpuTotal"));
-		    numCpuFree = Integer.parseInt(getInfo(si, "numCpuFree"));
-		    numJobsRunning = Integer.parseInt(getInfo(si, "numJobsRunning"));
-		    numJobsQueued = Integer.parseInt(getInfo(si, "numJobsQueued"));
-		    
-		    h.setName(k);
-		    h.setNumCpuTotal(numCpuTotal);
-		    h.setNumCpuFree(numCpuFree);		
-		    h.setNumJobsRunning(numJobsRunning);
-		    h.setNumJobsQueued(numJobsQueued);
-		    h.setServices(setToStr(hsm.get(k)));
 
 		    session.save(h);
 		}
+		else {
+		    String snv = "numCpuTotal=\'"+numCpuTotal+"\',numCpuFree=\'"+numCpuFree+
+			"\',numJobsRunning=\'"+numJobsRunning+"\',numJobsQueued=\'"+numJobsQueued+"\'";
+		    session.createQuery("update Host set "+snv+" where url="+"\'"+s+"\'");
+		}
 	    }
-
-	    tx.commit();
-	    session.flush(); 
 	} catch (HibernateException hne) {
 	    throw new ExceptionInInitializerError(hne);
-	}catch(Exception e){
+	} catch(Exception e){
 	    e.printStackTrace();
 	} finally {
 	    if(session != null){
+		tx.commit();
 		session.flush();
 		session.close();
 	    }
@@ -317,9 +276,9 @@ public class Registry {
     }
 
     public static void makeRegistryXML (String filename) {
-	String name_db, services_db;
+	String name_db, url_db, hostname_db;
 	int numCpuTotal_db, numCpuFree_db, numJobsRunning_db, numJobsQueued_db;
-	Element host, name, numCpuTotal, numCpuFree, numJobsRunning, numJobsQueued, services;
+	Element host, hostname, url, name, numCpuTotal, numCpuFree, numJobsRunning, numJobsQueued;
 	Session session = null;
 
         try{
@@ -327,7 +286,7 @@ public class Registry {
 	    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
  
 	    Document doc = docBuilder.newDocument();
-	    Element rootElement = doc.createElement("hosts");
+	    Element rootElement = doc.createElement("webservices");
 	    doc.appendChild(rootElement);
 
             SessionFactory sessionFactory = new
@@ -335,25 +294,33 @@ public class Registry {
             session = sessionFactory.openSession();
 
             List dl = session.createQuery("from Host").list();
-	    
 	    Iterator it = dl.iterator();
 	    
 	    while (it.hasNext()) {
 		Host h = (Host)it.next();
+		url_db = h.getUrl();
 		name_db = h.getName();
+		hostname_db = h.getHost();
 		numCpuTotal_db = h.getNumCpuTotal();
 		numCpuFree_db = h.getNumCpuFree();
 		numJobsRunning_db = h.getNumJobsRunning();
 		numJobsQueued_db = h.getNumJobsQueued();
-		services_db = h.getServices();
 
-		host = doc.createElement("host");
+		host = doc.createElement("webservice");
 		rootElement.appendChild(host);
 
+		url = doc.createElement("url");
+		url.appendChild(doc.createTextNode(url_db));
+		host.appendChild(url);
+ 
 		name = doc.createElement("name");
 		name.appendChild(doc.createTextNode(name_db));
 		host.appendChild(name);
- 
+
+		hostname = doc.createElement("host");
+		hostname.appendChild(doc.createTextNode(hostname_db));
+		host.appendChild(hostname);
+
 		numCpuTotal = doc.createElement("numCpuTotal");
 		numCpuTotal.appendChild(doc.createTextNode(String.valueOf(numCpuTotal_db)));
 		host.appendChild(numCpuTotal);
@@ -369,10 +336,6 @@ public class Registry {
 		numJobsQueued = doc.createElement("numJobsQueued");
 		numJobsQueued.appendChild(doc.createTextNode(String.valueOf(numJobsQueued_db)));
 		host.appendChild(numJobsQueued);
-
-	        services = doc.createElement("services");
-		services.appendChild(doc.createTextNode(services_db));
-		host.appendChild(services);
 	    }
 
 	    TransformerFactory transformerFactory = TransformerFactory.newInstance();
