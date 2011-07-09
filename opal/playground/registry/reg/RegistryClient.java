@@ -92,11 +92,6 @@ public class RegistryClient {
 		    NodeList numJobsQueued = numJobsQueuedElmnt.getChildNodes();
 		    h.setNumJobsQueued(Integer.parseInt(((Node) numJobsQueued.item(0)).getNodeValue()));
 
-		    NodeList servicesElmntLst = fstElmnt.getElementsByTagName("services");
-		    Element servicesElmnt = (Element) servicesElmntLst.item(0);
-		    NodeList services = servicesElmnt.getChildNodes();
-		    h.setServices(((Node) services.item(0)).getNodeValue());
-
 		    hs.push(h);
 		}
 	    }

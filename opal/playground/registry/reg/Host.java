@@ -1,11 +1,12 @@
 public class Host {
     private long id;
     private String name;
+    private String url;
+    private String host;
     private int numCpuTotal;
     private int numCpuFree;
     private int numJobsRunning;
     private int numJobsQueued;
-    private String services;
 
     public long getId() {
 	return id;
@@ -19,6 +20,20 @@ public class Host {
     }
     public void setName(String name) {
 	this.name = name;
+    }
+
+    public String getUrl() {
+	return url;
+    }
+    public void setUrl(String url) {
+	this.url = url;
+    }
+
+    public String getHost() {
+	return host;
+    }
+    public void setHost(String host) {
+	this.host = host;
     }
 
     public int getNumCpuTotal() {
@@ -48,13 +63,5 @@ public class Host {
     }
     public void setNumJobsQueued(int numJobsQueued) {
 	this.numJobsQueued = numJobsQueued;
-    }
-
-    public String getServices() {
-	return services;
-    }
-
-    public void setServices(String s) {
-	this.services = s;
     }
 }

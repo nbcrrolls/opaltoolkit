@@ -3,15 +3,16 @@
 "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-<class name="Host" table="HOSTS">
+<class name="Host" table="WebServices">
 <id name="id" column="id" type="long">
 <generator class="increment"/> 
 </id>
 <property name="name" column="name"/>
+<property name="url" column="url"/>
+<property name="host" column="host"/>
 <property name="numCpuTotal" column="numCpuTotal"/>
 <property name="numCpuFree" column="numCpuFree"/>
 <property name="numJobsRunning" column="numJobsRunning"/>
 <property name="numJobsQueued" column="numJobsQueued"/>
-<property name="services" column="services"/>
 </class>
 </hibernate-mapping>

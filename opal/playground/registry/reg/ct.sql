@@ -1,12 +1,14 @@
-USE Emp;
+CREATE DATABASE WS; 
 
-CREATE TABLE `HOSTS` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(250) default NULL,
+USE WS;
+
+CREATE TABLE `WebServices` (
+  `name` varchar(256),
+  `url` varchar(512),
+  `host` varchar(128),
   `numCpuTotal` int(8),
   `numCpuFree` int(8),
   `numJobsRunning` int(8),
   `numJobsQueued` int(8),	
-  `services` varchar(65536),
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`url`)
 )

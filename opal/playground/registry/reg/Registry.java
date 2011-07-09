@@ -185,7 +185,7 @@ public class Registry {
 			sn = s.substring(lslash + 1);                                   
                                                                                                         
 			if (!sn.equals("Version") && !sn.equals("AdminService")) 
-			    services.add(url + "/" + sn + " ");
+			    services.add(url + "/" + sn);
 		    }
 		}
                             
@@ -212,9 +212,10 @@ public class Registry {
 	
 	Set services = getServices(host);
 	Iterator sit = services.iterator();
-
+	
 	if (sit.hasNext()) {
-	    int [] si = getSystemInfo((String)sit.next());
+	    String sn = (String)sit.next();
+	    int [] si = getSystemInfo(sn);
 	    numCpuTotal = si[0];
 	    numCpuFree = si[1];
 	    numJobsRunning = si[2];
@@ -233,7 +234,7 @@ public class Registry {
 
 	    while (dit.hasNext()) {
 		String du = (String)dit.next();
-		
+
 		if (!services.contains(du))
 		    session.createQuery("delete from Host where url=\'"+du+"\'");
 	    }	
@@ -243,7 +244,7 @@ public class Registry {
 
 		if (dl.contains(s) == false) {
 		    Host h = new Host();
-		    String name = s.substring(s.lastIndexOf('/')+1, s.length()-1);
+		    String name = s.substring(s.lastIndexOf('/')+1, s.length());
 		    
 		    h.setName(name);
 		    h.setUrl(s);

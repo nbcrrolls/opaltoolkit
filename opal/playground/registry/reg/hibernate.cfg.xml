@@ -28,7 +28,7 @@
 
 	<!-- Database connection settings for MySQL -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property> 
-        <property name="connection.url">jdbc:mysql://localhost/Emp?autoReconnect=true</property> 
+        <property name="connection.url">jdbc:mysql://localhost/WS?autoReconnect=true</property> 
         <property name="connection.username">jren</property> 
         <property name="connection.password">spiderpig</property> 
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property> 
