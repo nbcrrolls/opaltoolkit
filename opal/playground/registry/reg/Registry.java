@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -232,6 +233,12 @@ public class Registry {
 	    Iterator dit = dl.iterator();
 	    sit = services.iterator();
 
+	    List dul = new ArrayList();
+	    Iterator dit2 = dl.iterator();
+
+	    while (dit2.hasNext())
+		dul.add(((String)dit2.next()).toUpperCase());
+
 	    while (dit.hasNext()) {
 		String du = (String)dit.next();
 
@@ -242,7 +249,7 @@ public class Registry {
 	    while (sit.hasNext()) {
 		String s = (String)sit.next();
 
-		if (dl.contains(s) == false) {
+		if (dul.contains(s.toUpperCase()) == false) {
 		    Host h = new Host();
 		    String name = s.substring(s.lastIndexOf('/')+1, s.length());
 		    
