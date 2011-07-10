@@ -44,6 +44,33 @@ public class Registry {
     public static String registry_path = 
 	"/var/www/html/registry/registry.xml";
 
+    private static SessionFactory sessionFactory = null;
+    private static String confFile = "hibernate.cfg.xml";
+
+    private static SessionFactory buildSessionFactory() {
+        try {
+            Configuration conf = new Configuration();
+            conf = conf.configure(confFile);
+            SessionFactory sessionFactoryTemp = conf.buildSessionFactory();
+            return sessionFactoryTemp;
+        } catch (HibernateException ex) {
+            System.out.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public static void setConfFile(String conf){
+        confFile = conf;
+    }
+
+    public static SessionFactory getSessionFactory() {
+        if ( sessionFactory == null ) {
+            sessionFactory = buildSessionFactory();
+        }
+        return sessionFactory;
+    }
+
+
     public static String [] siv = 
         {"numCpuTotal", "numCpuFree", "numJobsRunning", "numJobsQueued"};
 
@@ -224,10 +251,9 @@ public class Registry {
 	}
 
 	try { 
-	    SessionFactory sessionFactory = 
-		new Configuration().configure().buildSessionFactory();
-	    session = sessionFactory.openSession();
-	    tx = session.beginTransaction();
+	    session = getSessionFactory().openSession();
+	    session.beginTransaction();
+
 	    List dl =
 		session.createQuery("select url from Host where host="+"\'"+host+"\'").list();
 	    Iterator dit = dl.iterator();
@@ -269,14 +295,14 @@ public class Registry {
 		    session.createQuery("update Host set "+snv+" where url="+"\'"+s+"\'");
 		}
 	    }
+
+	    session.getTransaction().commit();
 	} catch (HibernateException hne) {
 	    throw new ExceptionInInitializerError(hne);
 	} catch(Exception e){
 	    e.printStackTrace();
 	} finally {
 	    if(session != null){
-		tx.commit();
-		session.flush();
 		session.close();
 	    }
 
@@ -297,9 +323,7 @@ public class Registry {
 	    Element rootElement = doc.createElement("webservices");
 	    doc.appendChild(rootElement);
 
-            SessionFactory sessionFactory = new
-                Configuration().configure().buildSessionFactory();
-            session = sessionFactory.openSession();
+	    session = getSessionFactory().openSession();
 
             List dl = session.createQuery("from Host").list();
 	    Iterator it = dl.iterator();
