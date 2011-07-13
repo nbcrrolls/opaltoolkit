@@ -1,8 +1,8 @@
-CREATE DATABASE WS; 
+CREATE DATABASE OpalServices; 
 
-USE WS;
+USE OpalServices;
 
-CREATE TABLE `WebServices` (
+CREATE TABLE `Registry` (
   `name` varchar(256),
   `url` varchar(512),
   `host` varchar(128),

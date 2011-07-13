@@ -1,2 +1,2 @@
 http://kryptonite.nbcr.net/opal2/services
-#http://rocce-vm0.ucsd.edu/opal2/services
+http://rocce-vm0.ucsd.edu/opal2/services

@@ -255,7 +255,7 @@ public class Registry {
 	    session.beginTransaction();
 
 	    List dl =
-		session.createQuery("select url from Host where host="+"\'"+host+"\'").list();
+		session.createQuery("select url from OpalService where host="+"\'"+host+"\'").list();
 	    Iterator dit = dl.iterator();
 	    sit = services.iterator();
 
@@ -269,14 +269,14 @@ public class Registry {
 		String du = (String)dit.next();
 
 		if (!services.contains(du))
-		    session.createQuery("delete from Host where url=\'"+du+"\'");
+		    session.createQuery("delete from OpalService where url=\'"+du+"\'");
 	    }	
 
 	    while (sit.hasNext()) {
 		String s = (String)sit.next();
 
 		if (dul.contains(s.toUpperCase()) == false) {
-		    Host h = new Host();
+		    OpalService h = new OpalService();
 		    String name = s.substring(s.lastIndexOf('/')+1, s.length());
 		    
 		    h.setName(name);
@@ -292,10 +292,10 @@ public class Registry {
 		else {
 		    String snv = "numCpuTotal=\'"+numCpuTotal+"\',numCpuFree=\'"+numCpuFree+
 			"\',numJobsRunning=\'"+numJobsRunning+"\',numJobsQueued=\'"+numJobsQueued+"\'";
-		    session.createQuery("update Host set "+snv+" where url="+"\'"+s+"\'");
+		    session.createQuery("update OpalService set "+snv+" where url="+"\'"+s+"\'");
 		}
 	    }
-
+	    
 	    session.getTransaction().commit();
 	} catch (HibernateException hne) {
 	    throw new ExceptionInInitializerError(hne);
@@ -320,16 +320,16 @@ public class Registry {
 	    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
  
 	    Document doc = docBuilder.newDocument();
-	    Element rootElement = doc.createElement("webservices");
+	    Element rootElement = doc.createElement("opalservices");
 	    doc.appendChild(rootElement);
 
 	    session = getSessionFactory().openSession();
 
-            List dl = session.createQuery("from Host").list();
+            List dl = session.createQuery("from OpalService").list();
 	    Iterator it = dl.iterator();
 	    
 	    while (it.hasNext()) {
-		Host h = (Host)it.next();
+		OpalService h = (OpalService)it.next();
 		url_db = h.getUrl();
 		name_db = h.getName();
 		hostname_db = h.getHost();
@@ -338,7 +338,7 @@ public class Registry {
 		numJobsRunning_db = h.getNumJobsRunning();
 		numJobsQueued_db = h.getNumJobsQueued();
 
-		host = doc.createElement("webservice");
+		host = doc.createElement("opalservice");
 		rootElement.appendChild(host);
 
 		url = doc.createElement("url");

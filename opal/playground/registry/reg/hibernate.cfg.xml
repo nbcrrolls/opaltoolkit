@@ -28,7 +28,7 @@
 
 	<!-- Database connection settings for MySQL -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property> 
-        <property name="connection.url">jdbc:mysql://localhost/WS?autoReconnect=true</property> 
+        <property name="connection.url">jdbc:mysql://localhost/OpalServices?autoReconnect=true</property> 
         <property name="connection.username">jren</property> 
         <property name="connection.password">spiderpig</property> 
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property> 
@@ -70,7 +70,7 @@
         <property name="hbm2ddl.auto">update</property>
 
 	<!-- the mapping files -->
-        <mapping resource="Host.hbm.xml"/>
+        <mapping resource="OpalService.hbm.xml"/>
 
     </session-factory>
 

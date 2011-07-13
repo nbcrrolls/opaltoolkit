@@ -1,4 +1,4 @@
-public class Host {
+public class OpalService {
     private long id;
     private String name;
     private String url;
