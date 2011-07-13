@@ -42,15 +42,16 @@ import org.apache.axis.MessageContext;
 public class RegistryClient {
     public static void main(String[] args) {
 	String reg_xml = "http://webbybacon.ucsd.edu/registry/registry.xml";
-	Host [] hosts = getHosts(reg_xml);
+	OpalService [] os = getOpalServiceInfo(reg_xml);
 
-	for (int i = 0; i < hosts.length; i++) {
-	    System.out.println("SERVER: " + hosts[i].getName());
-	    System.out.println("SERVER: " + hosts[i].getNumCpuTotal());
+	for (int i = 0; i < os.length; i++) {
+	    System.out.println("************************************");
+	    System.out.println("URL:         " + os[i].getUrl());
+	    System.out.println("Name:        " + os[i].getName());
+	    System.out.println("NumCpuTotal: " + os[i].getNumCpuTotal());
 	}
     }
-
-    public static Host [] getHosts(String url) {
+    public static OpalService [] getOpalServiceInfo (String url) {
 	Stack hs = new Stack();
 
 	try {
@@ -59,18 +60,24 @@ public class RegistryClient {
 	    Document doc = db.parse(url);
 	    doc.getDocumentElement().normalize();
 
-	    NodeList nodeList = doc.getElementsByTagName("host");
+	    NodeList nodeList = doc.getElementsByTagName("opalservice");
 
 	    for (int i = 0; i < nodeList.getLength(); i++) {
-		Host h = new Host();
+		OpalService h = new OpalService();
 		Node fstNode = nodeList.item(i);
 
 		if (fstNode.getNodeType() == Node.ELEMENT_NODE) {
 		    Element fstElmnt = (Element) fstNode;
+
 		    NodeList nameElmntLst = fstElmnt.getElementsByTagName("name");
 		    Element nameElmnt = (Element) nameElmntLst.item(0);
 		    NodeList name = nameElmnt.getChildNodes();
 		    h.setName(((Node) name.item(0)).getNodeValue());
+
+		    NodeList urlElmntLst = fstElmnt.getElementsByTagName("url");
+		    Element urlElmnt = (Element) urlElmntLst.item(0);
+		    NodeList urln = urlElmnt.getChildNodes();
+		    h.setUrl(((Node) urln.item(0)).getNodeValue());
 
 		    NodeList numCpuTotalElmntLst = fstElmnt.getElementsByTagName("numCpuTotal");
 		    Element numCpuTotalElmnt = (Element) numCpuTotalElmntLst.item(0);
@@ -100,17 +107,17 @@ public class RegistryClient {
 	    e.printStackTrace();
 	}
 
-	Host [] hosts = new Host[hs.size()];
+	OpalService [] os = new OpalService[hs.size()];
 
 	Iterator it = hs.iterator();
 	int i = 0;
 	
 	while (it.hasNext()) {
-	    hosts[i] = (Host)it.next();
+	    os[i] = (OpalService)it.next();
 	    i++;
 	}
 
-	return hosts;
+	return os;
     }
 
 }
