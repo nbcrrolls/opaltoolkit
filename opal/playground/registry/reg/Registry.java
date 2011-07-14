@@ -260,6 +260,7 @@ public class Registry {
 	    sit = services.iterator();
 
 	    List dul = new ArrayList();
+	    List sul = new ArrayList();
 	    Iterator dit2 = dl.iterator();
 
 	    while (dit2.hasNext())
@@ -274,8 +275,10 @@ public class Registry {
 
 	    while (sit.hasNext()) {
 		String s = (String)sit.next();
+		String su = s.toUpperCase();
 
-		if (dul.contains(s.toUpperCase()) == false) {
+		if (dul.contains(su) == false && sul.contains(su) == false) {
+		    sul.add(su);
 		    OpalService h = new OpalService();
 		    String name = s.substring(s.lastIndexOf('/')+1, s.length());
 		    
