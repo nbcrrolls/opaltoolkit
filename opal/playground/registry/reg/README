@@ -1,0 +1,17 @@
+Please also see todo.txt
+
+1. Use ct.sql to create database
+2. Modify variable registry_path to set it to where you want
+   the registry xml to be
+3. Modify hosts.txt to add your own hosts
+
+Registry is the code is writes/updates the registry xml, it 
+freshes the stuff every 30 seconds
+
+RegistryClient is just an example of how to get some info
+from the registry.
+
+In RegistryClient.java, modify variable reg_xml
+
+cmd.sh is an example of compiling and running the stuff.  
+This can be improved.

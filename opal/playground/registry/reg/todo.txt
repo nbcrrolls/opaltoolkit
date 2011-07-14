@@ -1,0 +1,7 @@
+* make db automatically created with hibernate
+* the current hibernate stuff is case-insensitive.  So 
+  if you had two services Pdb2pqr and PDB2PQR, then one
+  will be missing from the Registry.  This is also a problem
+  for the Opal server code.
+
+More stuff...
