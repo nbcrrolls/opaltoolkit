@@ -1,0 +1,54 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="Ligand DB Retrieve">
+    <usage><![CDATA[
+TBD
+]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+    TBD
+    ]]>
+    </info>
+
+    <types>
+    <!-- list of flags -->
+    <flags>
+    </flags>
+
+    <!-- list of tagged parameters -->
+    <taggedParams>
+        <param>
+            <id>username</id>
+            <tag>-username</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>User Name (Email)</textDesc>
+        </param>
+        <param>
+            <id>password</id>
+            <tag>-password</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Password</textDesc>
+        </param>
+    </taggedParams>
+
+    <groups>
+        <group>
+            <name>user_info</name>
+            <elements>username password</elements>
+            <required>true</required>
+            <textDesc>Authentication Information</textDesc>
+        </group>
+    </groups>
+
+    </types>
+  </metadata>
+<!--  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN> -->
+  <metaServiceConfig>/opt/opal/configs/ligand_db_retrieve_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <parallel>false</parallel>
+</appConfig>

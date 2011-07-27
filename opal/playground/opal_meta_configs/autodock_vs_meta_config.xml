@@ -1,0 +1,248 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="AutoDock Virtual Screening">
+    <usage><![CDATA[This Application perform vrtual screening against a library. 
+<BR>
+<A HREF=http://www.nbcr.net/ws_help/AutodockScreening/>
+Tutorial: http://www.nbcr.net/ws_help/AutodockScreening/
+</A>
+]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+run_screening.sh -u|--url URL_autogrid_run [-d workingdir] [-i|--inputrec receptor_file_name]
+
+
+    -i --inputrec     file name of the receptor, the file has to be in pdbqt format
+    -u --url          URL where to fetch the file from the autogrid run
+    -d                set the directory where all the file will be placed
+                      if not present it will use pwd
+    -ga_pop_size      This is the number of individuals in the population. This is the number of individuals in the population.
+                      and its associated phenotype. Typical values range from 50 to 200. Default 50
+    -ga_num_evals     This is the maximum number of energy evaluations that a GA run should make. Default 250000
+    -ga_num_generations This is the maximum number of generations that a GA or LGA run should last. Deafult 27000
+    -ga_run           This command invokes the new hybrid, Lamarckian genetic algorithm search engine, and performs
+                      the requested number of dockings. Default 10
+    -email            The user e-mail for e-mail notification
+]]>
+    </info>
+    <types>
+    <!-- list of flags -->
+    <flags>
+    </flags>
+
+    <!-- list of tagged parameters -->
+    <taggedParams>
+        <param>
+            <id>filter_file</id>
+            <tag>-filter_file</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>File containing names of a subset of ligands
+            &lt;a href=http://kryptonite.nbcr.net/filter.example&gt;(filter file example for NCI_DS1)&lt;/a&gt;
+            </textDesc>
+        </param>
+        <param>
+            <id>filter_file_url</id>
+            <tag>-filter_file_url</tag>
+            <ioType>INPUT</ioType>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>URL to file containing names of a subset of ligands
+            </textDesc>
+        </param>
+
+        <param>
+            <id>u</id>
+            <tag>-u</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType>URL</semanticType>
+            <textDesc>URL from where the autogrid files will be downloaded
+            &lt;br&gt;
+            (Ex 1. use http://kryptonite.nbcr.net/app1256780764236 with NCI_DS1)
+            &lt;br&gt;
+            (Ex 2. use http://kryptonite.nbcr.net/app1258313717575 with sample - only 6 ligands)
+            </textDesc>
+        </param>
+
+        <param>
+            <id>utar</id>
+            <tag>-utar</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Upload autogrid file tarball (in tar.gz format)</textDesc>
+        </param>
+
+        <param>
+            <id>urllib</id>
+            <tag>--urllib</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>URL containing PDBQT database</textDesc>
+        </param>
+        <param>
+            <id>userlib</id>
+            <tag>--userlib</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>
+            &lt;BR&gt;
+            &lt;A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=File_Compression&gt;
+            Upload your library (in tar.gz format)
+            &lt;/A&gt;
+            </textDesc>
+        </param>
+        <param>
+            <id>lib</id>
+            <tag>--lib</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <value>sample</value>
+            <value>NCIDS_SC</value>
+            <value>NCI_DS1</value>
+            <value>NCI_DS2</value>
+            <value>human_metabolome</value> 
+            <value>chembridge_building_blocks</value>
+            <value>drugbank_nutraceutics</value>
+            <value>drugbank_smallmol</value>
+<!--            <value>TopLigandsForN1</value> -->
+<!--            <value>asinex</value> -->
+            <value>fda_approved</value>
+<!--            <value>otava</value> -->
+<!--            <value>zinc_natural_products</value>  -->
+            <value>zinc_natural_products_0</value> 
+            <value>zinc_natural_products_1</value> 
+            <semanticType>Library</semanticType>
+            <textDesc>Existing library to be used for screening
+            &lt;BR&gt;
+            &lt;A HREF=https://www.nbcr.net/pub/wiki/index.php?title=Virtual_Screening_Libraries&gt;
+            Click here for moreinformation about each library
+            &lt;/A&gt;
+            </textDesc>
+        </param>
+
+        <param>
+            <id>dpf</id>
+            <tag>--dpf</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Upload your Template DPF</textDesc>
+        </param>
+
+        <param>
+            <id>ga_pop_size</id>
+            <tag>-ga_pop_size</tag>
+            <paramType>INT</paramType>
+            <required>false</required>
+            <semanticType>int</semanticType>
+            <textDesc>This is the number of individuals in the population. Default 50.</textDesc>
+        </param>
+
+        <param>
+            <id>ga_num_evals</id>
+            <tag>-ga_num_evals</tag>
+            <paramType>INT</paramType>
+            <required>false</required>
+            <semanticType>int</semanticType>
+            <textDesc>This is the maximum number of energy evaluations that a GA run should make. Default 250000</textDesc>
+        </param>
+
+        <param>
+            <id>ga_num_generations</id>
+            <tag>-ga_num_generations</tag>
+            <paramType>INT</paramType>
+            <required>false</required>
+            <semanticType>int</semanticType>
+            <textDesc>This is the maximum number of generations that a GA or LGA run should last.</textDesc>
+        </param>
+
+        <param>
+            <id>ga_run</id>
+            <tag>-ga_run</tag>
+            <paramType>INT</paramType>
+            <required>false</required>
+            <semanticType>int</semanticType>
+            <textDesc>The number of final conformations. Default 10</textDesc>
+        </param>
+
+        <param>
+            <id>email</id>
+            <tag>-email</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType>EMAIL</semanticType>
+            <textDesc>Email to send you a separate link to full results if your email is authorized</textDesc>
+        </param>
+        <param>
+            <id>sched</id>
+            <tag>--scheduler</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <value>SGE</value>
+            <value>CSF</value>
+            <default>SGE</default>
+            <semanticType></semanticType>
+            <textDesc>Scheduler to be used</textDesc>
+        </param>  
+    </taggedParams>
+
+    <!-- list of implicit parameters -->
+    <untaggedParams>
+    </untaggedParams>
+    <groups>
+      <group>
+        <name>scheduler</name>
+        <elements>sched</elements>
+        <textDesc>Scheduler</textDesc>
+      </group>
+      <group>
+        <name>inputParam</name>
+        <elements>u utar</elements>
+        <required>true</required>
+        <exclusive>true</exclusive>
+        <textDesc>Required Autogrid Files (choose one of the following)</textDesc>
+      </group>
+      <group>
+        <name>DPF</name>
+        <elements>dpf</elements>
+        <required>false</required>
+        <textDesc>DPF</textDesc>
+      </group>
+      <group>
+        <name>library</name>
+        <elements>lib urllib userlib</elements>
+        <required>true</required>
+        <textDesc>Library (choose one of the following)</textDesc>
+      </group>
+      <group>
+        <name>filtered_list</name>
+        <elements>filter_file filter_file_url</elements>
+        <required>false</required>
+        <exclusive>true</exclusive>
+        <textDesc>Only work with a subset of ligand from the library</textDesc>
+      </group>
+      <group>
+        <name>optionalParam</name>
+        <elements>ga_pop_size ga_num_evals ga_num_generations ga_run email</elements>
+        <textDesc>Other optional paramters</textDesc>
+      </group>
+    </groups>
+
+  </types>
+  </metadata>
+<!--  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>-->
+  <metaServiceConfig>/opt/opal/configs/autodock_vs_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <parallel>false</parallel>
+</appConfig>

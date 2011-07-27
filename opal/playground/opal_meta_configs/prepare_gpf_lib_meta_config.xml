@@ -1,0 +1,278 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="Prepare GPF for Library">
+    <usage><![CDATA[This application is used to create a GPF to run a screaning against a library
+<BR>
+<A HREF=http://www.nbcr.net/ws_help/PrepareGPF_VS/>
+ Tutorial: http://www.nbcr.net/ws_help/PrepareGPF_VS/
+</A>
+]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+Usage: prepare_gpf4.py -l pdbqt_file -r pdbqt_file 
+     -l ligand_filename
+     -r receptor_filename
+
+Optional parameters:
+    [-i reference_gpf_filename]
+    [-o output_gpf_filename]
+    [-x flexres_filename]
+    [-p parameter=newvalue]
+    [-d directory of ligands to use to set types]
+    [-v]
+
+
+    ]]>
+    </info>
+    <types>
+    <!-- list of flags -->
+    <flags>
+       <flag>
+            <id>v</id>
+            <tag>-v</tag>
+            <textDesc>Verbose</textDesc>
+       </flag>
+    </flags>
+
+    <!-- list of tagged parameters -->
+    <taggedParams>
+        <param>
+            <id>filter_file</id>
+            <tag>-filter_file</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>File containing names of a subset of ligands
+            </textDesc>
+        </param>
+        <param>
+            <id>filter_file_url</id>
+            <tag>-filter_file_url</tag>
+            <ioType>INPUT</ioType>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>URL to file containing names of a subset of ligands
+            </textDesc>
+        </param>
+        <param>
+            <id>lib</id>
+            <tag>--lib</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+	    <value>sample</value>
+	    <value>NCIDS_SC</value>
+            <value>NCI_DS1</value>
+            <value>NCI_DS2</value>
+            <value>oldNCI</value>
+            <value>human_metabolome</value>
+            <value>chembridge_building_blocks</value>
+            <value>drugbank_nutraceutics</value>
+            <value>drugbank_smallmol</value>
+<!--            <value>asinex</value> -->
+            <value>fda_approved</value>
+<!--            <value>otava</value>  -->
+            <value>zinc_natural_products</value> 
+            <semanticType></semanticType>
+            <textDesc>Existing library to be used for screening
+            &lt;BR&gt;
+            &lt;A HREF=https://www.nbcr.net/pub/wiki/index.php?title=Virtual_Screening_Libraries&gt;
+            Click here for more information about each library
+            &lt;/A&gt;
+            </textDesc>
+        </param>
+        <param>
+            <id>urllib</id>
+            <tag>--urllib</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>
+            &lt;BR&gt;
+            &lt;A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=File_Compression&gt;
+            URL to ligand PDBQT tar.gz or zip
+            &lt;/A&gt;
+            </textDesc>
+        </param>
+        <param>
+            <id>userlib</id>
+            <tag>--userlib</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>
+            &lt;BR&gt;
+            &lt;A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=File_Compression&gt;
+            Upload your library as a tar.gz or zip file
+            &lt;/A&gt;
+            </textDesc>
+        </param>
+        <param>
+            <id>singlelib</id>
+            <tag>--singlelib</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>
+            Single library file
+            </textDesc>
+        </param>
+        <param>
+            <id>gpf</id>
+            <tag>--gpf</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Upload GPF template</textDesc>
+        </param>
+
+        <param>
+            <id>o</id>
+            <tag>-o</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Output GPF file name</textDesc>
+        </param>
+        <param>
+            <id>p</id>
+            <tag>-p</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Additional parameters (in the form parametername=value)</textDesc>
+        </param>
+        <param>
+            <id>r</id>
+            <tag>-r</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType>MOLECULE</semanticType>
+            <textDesc>The receptor molucule in (PDBQT format)</textDesc>
+        </param>
+        <param>
+            <id>r_url</id>
+            <tag>-r_url</tag>
+            <ioType>INPUT</ioType>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType>MOLECULE</semanticType>
+            <textDesc>URL to the receptor molucule</textDesc>
+        </param>
+
+        <param>
+            <id>xpoints</id>
+            <tag>-xpoints</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+<!--            <default>40</default> -->
+            <textDesc>Number of points in x-dimension</textDesc>
+        </param>
+        <param>
+            <id>ypoints</id>
+            <tag>-ypoints</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+<!--            <default>40</default> -->
+            <textDesc>Number of points in y-dimension</textDesc>
+        </param>
+        <param>
+            <id>zpoints</id>
+            <tag>-zpoints</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+<!--            <default>40</default> -->
+            <textDesc>Number of points in z-dimension</textDesc>
+        </param>
+        <param>
+            <id>xcenter</id>
+            <tag>-xcenter</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <default>auto</default>
+            <textDesc>x center</textDesc> 
+        </param>
+        <param>
+            <id>ycenter</id>
+            <tag>-ycenter</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <default>auto</default>
+            <textDesc>y center</textDesc> 
+        </param>
+        <param>
+            <id>zcenter</id>
+            <tag>-zcenter</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <default>auto</default>
+            <textDesc>z center</textDesc> 
+        </param>
+
+   </taggedParams>
+
+        <groups>
+          <group>
+            <name>receptor</name>
+            <elements>r r_url</elements>
+            <required>true</required>          
+            <exclusive>true</exclusive>
+            <textDesc>Required Receptor (choose one of the following)</textDesc>
+          </group>
+          <group>
+            <name>library</name>
+            <elements>lib urllib userlib singlelib</elements>
+            <required>true</required> 
+            <textDesc>Library (choose one of the following)</textDesc>
+          </group>
+          <group>
+            <name>gpf</name>
+            <elements>gpf</elements>
+            <required>false</required>
+            <textDesc>GPF template</textDesc>
+          </group>
+
+          <group>
+            <name>num_points</name>
+            <elements>xpoints ypoints zpoints</elements>
+            <required>false</required>
+            <textDesc>Number of points</textDesc>
+          </group>
+          <group>
+            <name>center_grid</name>
+            <elements>xcenter ycenter zcenter</elements>
+            <required>false</required>
+            <textDesc>Center grid box (auto is used if not all xyz centers are specified)</textDesc>
+          </group>
+          <group>
+            <name>filtered_list</name>
+            <elements>filter_file filter_file_url</elements>
+            <required>false</required>
+            <exclusive>true</exclusive>
+            <textDesc>Only work with a subset of ligand from the library</textDesc>
+          </group>
+          <group>
+            <name>opt</name>
+            <elements>p o v</elements>
+            <required>false</required>
+            <textDesc>Optional paramters</textDesc>
+          </group>
+        </groups>
+    </types>
+  </metadata>
+  <metaServiceConfig>/opt/opal/configs/prepare_gpf_lib_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <parallel>false</parallel>
+</appConfig>

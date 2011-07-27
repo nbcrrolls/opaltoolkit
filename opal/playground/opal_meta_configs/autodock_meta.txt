@@ -1,0 +1,2 @@
+http://ws.nbcr.net/opal2/services/Autodock_4.2.1 1
+http://kryptonite.nbcr.net/opal2/services/AutodockOpalService  1

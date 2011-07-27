@@ -1,0 +1,157 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="Prepare Ligand Library">
+    <usage><![CDATA[Prepare ligand is used to convert mol2 files into pdbqt files.]]></usage>
+    <info>
+    <![CDATA[
+TBD
+    ]]>
+    </info>
+
+    <types>
+      <!-- list of flags -->
+      <flags>
+        <flag>
+            <id>v</id>
+            <tag>-v</tag>
+            <textDesc>Verbose output</textDesc>
+        </flag>
+        <flag>
+            <id>C</id>
+            <tag>-C</tag>
+            <textDesc>do not add charges (default is to add gasteiger charges)</textDesc>
+        </flag>
+        <flag>
+            <id>F</id>
+            <tag>-F</tag>
+            <textDesc>check for and use largest non-bonded fragment (default is not to do this)</textDesc>
+        </flag>
+        <flag>
+            <id>M</id>
+            <tag>-M</tag>
+            <textDesc>interactive (default is automatic)</textDesc>
+        </flag>
+        <flag>
+            <id>Z</id>
+            <tag>-Z</tag>
+            <textDesc>inactivate all active torsions (default is leave active)</textDesc>
+        </flag>
+        <flag>
+            <id>g</id>
+            <tag>-g</tag>
+            <textDesc>attach all nonbonded fragments (default is not to do this)</textDesc>
+        </flag>
+      </flags>
+
+      <!-- list of tagged parameters -->
+      <taggedParams>
+        <param>
+          <id>d</id>
+          <tag>-d</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>dictionary to write types list and number of active torsions</textDesc>
+        </param>
+        <param>
+          <id>A</id>
+          <tag>-A</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>type(s) of repairs to make</textDesc>
+          <value>bonds_hydrogens</value>
+          <value>bonds</value>
+          <value>hydrogens</value>
+        </param>
+        <param>
+          <id>p</id>
+          <tag>-p</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>preserve input charges on atom type, eg -p Zn</textDesc>
+        </param>
+        <param>
+          <id>U</id>
+          <tag>-U</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>cleanup type</textDesc>
+          <value>nphs_lps</value>
+          <value>nphs</value>
+          <value>lps</value>
+        </param>
+        <param>
+          <id>B</id>
+          <tag>-B</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>type(s) of bonds to allow to rotate</textDesc>
+        </param>
+        <param>
+          <id>R</id>
+          <tag>-R</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>index for root</textDesc>
+        </param>
+        <param>
+          <id>I</id>
+          <tag>-I</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>string of bonds to inactivate composed of of zero-based atom indices&lt;BR&gt;eg 5_13_2_10 will inactivate atoms[5]-atoms[13] bond
+&lt;BR&gt;and atoms[2]-atoms[10] bond, default is none
+</textDesc>
+        </param>
+
+        <param>
+          <id>userlib</id>
+          <tag>-userlib</tag>
+          <paramType>FILE</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>Upload your tarball or zip file</textDesc>
+        </param>
+        <param>
+          <id>urllib</id>
+          <tag>-urllib</tag>
+          <paramType>STRING</paramType>
+          <ioType>INPUT</ioType>
+          <semanticType></semanticType>
+          <textDesc>URL to tarball or zip file</textDesc>
+        </param>
+      </taggedParams>
+
+      <!-- list of implicit parameters -->
+      <untaggedParams>
+      </untaggedParams>
+
+        <groups>
+          <group>
+            <name>ligand_lib</name>
+            <elements>userlib urllib</elements>
+            <required>true</required>
+            <exclusive>true</exclusive>
+            <textDesc>Library</textDesc>
+          </group>
+          <group>
+            <name>opt</name>
+            <elements>v d A C p U B R P F M I Z g</elements>
+            <required>false</required>
+            <exclusive>false</exclusive>
+            <textDesc>Optional Parameters</textDesc>
+          </group>
+        </groups>
+    </types>
+  </metadata>
+  <metaServiceConfig>/opt/opal/configs/prepare_ligand_lib_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <parallel>false</parallel>
+</appConfig>

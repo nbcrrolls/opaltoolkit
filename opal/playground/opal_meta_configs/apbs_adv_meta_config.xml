@@ -1,0 +1,97 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="APBS 1.2.1b">
+    <usage><![CDATA[Adaptive Poisson-Boltzmann Solver (APBS) is a software package for the numerical solution of the Poisson-Boltzmann equation (PBE), one of the most popular continuum models for describing electrostatic interactions between molecular solutes in salty, aqueous media. 
+<BR><A HREF=http://www.nbcr.net/ws_help/APBS_SERIAL>Tutorial: http://www.nbcr.net/ws_help/APBS_SERIAL</A>
+<BR>
+apbs version: 1.2.1
+]]></usage>
+    <info>
+    <![CDATA[
+        apbs [options] apbs.in
+
+        where apbs.in is a formatted input file and [options] are:
+
+	--output-file=<name>     Enables output logging to the path
+        			 listed in <name>.  Uses flat-file
+        			 format is --output-format is not used.
+	--output-format=<type>   Specifies format for logging.  Options
+        			 for type are either "xml" or "flat".
+	--help                   Display this help information.
+	--version                Display the current APBS version.
+    ]]>
+    </info>
+
+    <types> 
+        <!-- list of flags -->
+        <flags>
+        </flags>
+    
+        <!-- list of tagged parameters -->
+        <taggedParams>
+        </taggedParams>
+    
+        <!-- list of untagged parameters, in order -->
+        <taggedParams>
+            <param>
+                <id>molecule</id>
+                <tag>-molecule</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Input molecule</textDesc>
+            </param>
+            <param>
+                <id>config</id>
+                <tag>-config</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Configuration file</textDesc>
+            </param>
+            <param>
+                <id>outfile</id>
+                <tag>-outfile</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Output file name</textDesc>
+            </param>            
+            <param>
+                <id>outformat</id>
+                <tag>-outformat</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <value>xml</value>
+                <value>flat</value>
+                <textDesc>Output file format</textDesc>
+            </param>            
+            <param>
+                <id>dxfile</id>
+                <tag>-dxfile</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>DX output file name</textDesc>
+            </param>            
+        </taggedParams>
+
+        <groups>
+          <group>
+            <name>input</name>
+            <elements>molecule config</elements>
+            <required>true</required>
+            <textDesc>Input information</textDesc>
+          </group>
+
+          <group>
+            <name>output</name>
+            <elements>outfile outformat dxfile</elements>
+            <required>false</required>
+            <textDesc>Output information</textDesc>
+          </group>
+        </groups>
+
+      </types>
+  </metadata>
+  <metaServiceConfig>/opt/opal/configs/apbs_adv_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <parallel>false</parallel>
+</appConfig>

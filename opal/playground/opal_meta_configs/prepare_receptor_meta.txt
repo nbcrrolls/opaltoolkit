@@ -1,0 +1,2 @@
+http://ws.nbcr.net/opal2/services/PrepareReceptorOpalService 1
+http://kryptonite.nbcr.net/opal2/services/PrepareReceptorOpalService 1

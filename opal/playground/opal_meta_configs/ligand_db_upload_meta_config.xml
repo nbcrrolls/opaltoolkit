@@ -1,0 +1,86 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="Ligand DB Upload">
+    <usage><![CDATA[
+TBD
+]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+    TBD
+    ]]>
+    </info>
+
+    <types>
+    <!-- list of flags -->
+    <flags>
+    </flags>
+
+    <!-- list of tagged parameters -->
+    <taggedParams>
+        <param>
+            <id>userlib</id>
+            <tag>-userlib</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>&lt;BR&gt;&lt;A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=File_Compression&gt;Upload a file
+            &lt;/A&gt;      
+            </textDesc>
+        </param>
+        <param>
+            <id>username</id>
+            <tag>-username</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>User Name (Email)</textDesc>
+        </param>
+        <param>
+            <id>password</id>
+            <tag>-password</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Password</textDesc>
+        </param>
+        <param>
+            <id>desc</id>
+            <tag>-desc</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Upload a file that contains description of your ligand DB
+            </textDesc>
+        </param>
+    </taggedParams>
+
+    <groups>
+        <group>
+            <name>user_info</name>
+            <elements>username password</elements>
+            <required>true</required>
+            <textDesc>Authentication Information</textDesc>
+        </group>
+        <group>
+            <name>user_file</name>
+            <elements>userlib</elements>
+            <required>true</required>
+            <textDesc>Ligand Database</textDesc>
+        </group>
+        <group>
+            <name>user_file_info</name>
+            <elements>desc</elements>
+            <required>false</required>
+            <textDesc>Optional Parameters</textDesc>
+        </group>
+    </groups>
+
+    </types>
+  </metadata>
+  <metaServiceConfig>/opt/opal/configs/ligand_db_upload_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <parallel>false</parallel>
+</appConfig>

@@ -1,0 +1,110 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="Prepare GPF 1.5.4">
+    <usage><![CDATA[This application is used to create a GPF.
+<BR><A HREF=http://www.nbcr.net/ws_help/PrepareGPF>
+Tutorial: http://www.nbcr.net/ws_help/PrepareGPF
+</A>
+]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+Usage: prepare_gpf4.py -l pdbqt_file -r pdbqt_file 
+     -l ligand_filename
+     -r receptor_filename
+
+Optional parameters:
+    [-i reference_gpf_filename]
+    [-o output_gpf_filename]
+    [-x flexres_filename]
+    [-p parameter=newvalue]
+    [-d directory of ligands to use to set types]
+    [-v]
+
+
+    ]]>
+    </info>
+    <types>
+    <!-- list of flags -->
+    <flags>
+       <flag>
+            <id>v</id>
+            <tag>-v</tag>
+            <textDesc>Verbose</textDesc>
+       </flag>
+    </flags>
+
+    <!-- list of tagged parameters -->
+    <taggedParams>
+
+        <param>
+            <id>o</id>
+            <tag>-o</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Output GPF file name</textDesc>
+        </param>
+
+        <param>
+            <id>p</id>
+            <tag>-p</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Additional parameters (they have to be in the form parametername=value)</textDesc>
+        </param>
+
+        <param>
+            <id>r</id>
+            <tag>-r</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>true</required>
+            <semanticType>MOLECULE</semanticType>
+            <textDesc>The receptor molucule (in PDBQT format)</textDesc>
+        </param>
+        <param>
+            <id>l</id>
+            <tag>-l</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>true</required>
+            <semanticType>MOLECULE</semanticType>
+            <textDesc>The ligand molucule (in PDBQT format)</textDesc>
+        </param>
+        <param>
+            <id>i</id>
+            <tag>-i</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>true</required>
+            <semanticType>MOLECULE</semanticType>
+            <textDesc>The GPF template</textDesc>
+        </param>
+    </taggedParams>
+
+    <!-- list of implicit parameters -->
+    <untaggedParams>
+
+    </untaggedParams>
+
+        <groups>
+          <group>
+            <name>requ</name>
+            <elements>r l i</elements>
+            <required>true</required>
+            <textDesc>Required parameters</textDesc>
+          </group>
+          <group>
+            <name>opt</name>
+            <elements>p o v</elements>
+            <textDesc>Optional parameters</textDesc>
+          </group>
+        </groups>
+
+    </types>
+  </metadata>
+  <metaServiceConfig>/opt/opal/configs/prepare_gpf_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+  <parallel>false</parallel>
+</appConfig>

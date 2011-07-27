@@ -1,0 +1,100 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- metadata about the application being wrapped -->
+  <metadata appName="TrajQR">
+    <usage>Traj QR </usage>
+    <info>
+    <![CDATA[
+    -compressed_pdbs   compressed file of the input PDB files (files.zip or files.tar.gz format)
+    -rmsd              RMSD cutoff
+    -qr_filename       output filename for the QR structure list
+    -qh_filename       output filename for the QH tree 
+    ]]>
+    </info>
+    
+    <!-- information about command-line arguments -->
+    <types> 
+        <!-- list of flags -->
+        <flags>
+            <flag>
+                <id>license</id>
+                <tag> </tag>
+                <textDesc>Accept</textDesc>
+            </flag>
+        </flags>
+    
+        <!-- list of untagged parameters -->
+        <untaggedParams>
+        </untaggedParams>
+    
+        <!-- list of tagged parameters, in order -->
+        <taggedParams>
+            <param>
+                <id>compressed_pdbs</id>
+                <tag>-compressed_pdbs</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc> Upload compressed file containing the PDB inut files (files.zip or files.tar.gz format)</textDesc>
+            </param>
+            <param>
+                <id>rmsd</id>
+                <tag>-rmsd</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>RMSD cutoff</textDesc>
+            </param>
+            <param>
+                <id>qr_filename</id>
+                <tag>-qr_filename</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>qr.out</default>
+                <textDesc>Filename for the QR structure</textDesc>
+            </param>            
+            <param>
+                <id>qh_filename</id>
+                <tag>-qh_filename</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <default>qh.tre</default>
+                <textDesc>Filename for the QH tree</textDesc>
+            </param>            
+        </taggedParams>
+
+        <!-- grouping of parameters -->
+        <groups>
+          <group>
+            <name>input</name>
+            <elements>compressed_pdbs rmsd</elements>
+            <required>true</required>
+            <textDesc>Input</textDesc>
+          </group>
+          <group>
+            <name>output</name>
+            <elements>qr_filename qh_filename</elements>
+            <required>true</required>
+            <textDesc>Output</textDesc>
+          </group>
+          <group>
+            <name>License</name>
+            <elements>license</elements>
+            <textDesc>Any published work which utilizes VMD/Multiseq shall include the following reference:&lt;br&gt; &lt;br&gt;
+                 Elijah Roberts, John Eargle, Dan Wright, and Zaida Luthey-Schulten. &lt;br&gt;
+                 MultiSeq: Unifying sequence and structure data for evolutionary analysis. BMC Bioinformatics. 2006,7:382. 
+            </textDesc>
+          </group>
+        </groups>
+    </types>
+
+  </metadata>
+
+  <metaServiceConfig>/opt/opal/configs/traj_qr_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+ 
+  <!-- whether to validate command-line arguments using type information above -->
+  <validateArgs>false</validateArgs>
+
+  <!-- whether this application is serial or parallel -->
+  <parallel>false</parallel>
+</appConfig>

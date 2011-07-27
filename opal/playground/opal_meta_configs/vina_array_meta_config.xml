@@ -1,0 +1,292 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="AutoDock Vina Screening">
+    <usage><![CDATA[AutoDock Vina SGE array parallel virtual screening.
+<BR>
+  Tutorial: 
+<A HREF=http://www.nbcr.net/ws_help/Vina_Parallel>
+http://www.nbcr.net/ws_help/Vina_Parallel
+</A>
+]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+TBD
+]]>
+    </info>
+    <types>
+    <!-- list of flags -->
+    <flags>
+    </flags>
+
+    <!-- list of tagged parameters -->
+    <taggedParams>
+        <param>
+            <id>receptor</id>
+            <tag>--receptor</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Rigid part of the receptor (PDBQT)
+            (&lt;A HREF=http://www.nbcr.net/ws_help/Vina_Parallel/sample_inputs/1jsn_mod.pdbqt&gt;sample receptor&lt;/A&gt;)
+            </textDesc>
+        </param>
+        <param>
+            <id>flex</id>
+            <tag>--flex</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Flexible side chains, if any (PDBQT)</textDesc>
+        </param>
+        <param>
+            <id>filter</id>
+            <tag>--filter</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Filter File</textDesc>
+        </param>
+        <param>
+            <id>ligand_db</id>
+            <tag>--ligand_db</tag>
+            <ioType>INPUT</ioType>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <value>sample</value>
+            <value>NCIDS_SC</value>
+            <value>NCI_DS1</value>
+            <value>NCI_DS2</value>
+            <value>human_metabolome</value>
+            <value>chembridge_building_blocks</value>
+            <value>drugbank_nutraceutics</value>
+            <value>drugbank_smallmol</value>
+            <value>asinex</value>
+            <value>fda_approved</value>
+            <value>otava</value>
+<!--            <value>zinc_natural_products</value>  -->
+            <value>zinc_natural_products_0</value>
+            <textDesc>Use existing ligand library on the server
+            &lt;BR&gt;
+            &lt;A HREF=https://www.nbcr.net/pub/wiki/index.php?title=Virtual_Screening_Libraries&gt;
+            Click here for more information about each library
+            &lt;/A&gt;
+            </textDesc>
+        </param>
+        <param>
+            <id>userlib</id>
+            <tag>--userlib</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Upload your own library (tar.gz or zip)
+        </textDesc>
+        </param>
+        <param>
+            <id>urllib</id>
+            <tag>--urllib</tag>
+            <ioType>INPUT</ioType>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Use ligand lib URL (must be url from the ligand upload service on kryptonite)
+        </textDesc>
+        </param>
+        <param>
+            <id>config</id>
+            <tag>--config</tag>
+            <ioType>INPUT</ioType>
+            <paramType>FILE</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Configuration File (&lt;A HREF=http://www.nbcr.net/ws_help/Vina_Parallel/sample_outputs/test.config&gt;sample configuration file)&lt;A&gt;</textDesc>
+
+        </param>
+        <param>
+            <id>center_x</id>
+            <tag>--center_x</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>X coordinate of the center</textDesc>
+        </param>
+        <param>
+            <id>user</id>
+            <tag>--user</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Your email (you will get an email to a secret link that contains all results, if you are authorized).</textDesc>
+        </param>
+        <param>
+            <id>center_y</id>
+            <tag>--center_y</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Y coordinate of the center</textDesc>
+        </param>
+        <param>
+            <id>center_z</id>
+            <tag>--center_z</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Z coordinate of the center</textDesc>
+        </param>
+        <param>
+            <id>size_x</id>
+            <tag>--size_x</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Size in the X dimension (angstroms)</textDesc>
+        </param>
+        <param>
+            <id>size_y</id>
+            <tag>--size_y</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Size in the Y dimension (angstroms)</textDesc>
+        </param>
+        <param>
+            <id>size_z</id>
+            <tag>--size_z</tag>
+            <paramType>STRING</paramType>
+            <required>true</required>
+            <semanticType></semanticType>
+            <textDesc>Size in the Z dimension (angstroms)</textDesc>
+        </param>
+        <param>
+            <id>out</id>
+            <tag>--out</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Output models (PDBQT), the default is chosen based on the ligand file name</textDesc>
+        </param>
+        <param>
+            <id>log</id>
+            <tag>--log</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Optionally, write log file</textDesc>
+        </param>
+        <param>
+            <id>cpu</id>
+            <tag>--cpu</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <value>1</value>
+            <value>2</value>
+            <textDesc>The number of CPUs to use (the default is to try to detect the number of CPUs or, failing that, use 1)</textDesc>
+        </param>
+        <param>
+            <id>seed</id>
+            <tag>--seed</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <semanticType></semanticType>
+            <textDesc>Explicit random seed</textDesc>
+        </param>
+        <param>
+            <id>exhaustiveness</id>
+            <tag>--exhaustiveness</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <value>4</value>
+            <value>5</value>
+            <value>6</value>
+            <value>7</value>
+            <value>8</value>
+            <semanticType></semanticType>
+            <textDesc>Exhaustiveness of the global search (roughly proptional to time): 1+</textDesc>
+        </param>
+        <param>
+            <id>num_modes</id>
+            <tag>--num_modes</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <value>4</value>
+            <value>5</value>
+            <value>6</value>
+            <value>7</value>
+            <value>8</value>
+            <value>9</value>
+            <value>10</value>
+            <semanticType></semanticType>
+            <textDesc>Maximum number of binding modes to generate</textDesc>
+        </param>
+        <param>
+            <id>energy_range</id>
+            <tag>--energy_range</tag>
+            <paramType>STRING</paramType>
+            <required>false</required>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <semanticType></semanticType>
+            <textDesc>Maximum energy difference between the best binding mode and the worst one displayed (kcal/mol)</textDesc>
+        </param>
+    </taggedParams>
+
+    <!-- list of implicit parameters -->
+    <untaggedParams>
+    </untaggedParams>
+
+    <groups>
+      <group>
+        <name>config</name>
+        <elements>config</elements>
+        <textDesc>Configuration File</textDesc>
+      </group>
+      <group>
+        <name>input_receptor</name>
+        <elements>receptor flex</elements>
+        <textDesc>Input Receptor</textDesc>
+      </group>
+      <group>
+        <name>input_ligands</name>
+<!--        <elements>ligand_db ligand_tarball ligand_url</elements>  -->
+        <elements>ligand_db userlib urllib filter</elements> 
+<!--        <exclusive>true</exclusive>-->
+        <textDesc>Input Ligands</textDesc>
+      </group>
+      <group>
+        <name>search_space</name>
+        <elements>center_x center_y center_z size_x size_y size_z</elements>
+        <textDesc>Search Space</textDesc>
+      </group>
+      <group>
+        <name>output</name>
+        <elements>out log</elements>
+        <textDesc>Output (optional)</textDesc>
+      </group>
+      <group>
+        <name>misc</name>
+        <elements>cpu seed exhaustiveness num_modes energy_range</elements>
+        <textDesc>Misc (optional)</textDesc>
+      </group>
+    </groups>
+
+  </types>
+  </metadata>
+<!--  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>-->
+  <metaServiceConfig>/opt/opal/configs/vina_array_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+  
+  <parallel>false</parallel>
+</appConfig>

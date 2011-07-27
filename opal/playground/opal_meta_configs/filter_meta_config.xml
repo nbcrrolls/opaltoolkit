@@ -1,0 +1,185 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- metadata about the application being wrapped -->
+  <metadata appName="Filter_Ligands">
+    <usage>This service filters ligands</usage>
+    <info>
+    <![CDATA[
+        TBD         
+    ]]>
+    </info>
+    
+    <!-- information about command-line arguments -->
+    <types> 
+        <!-- list of flags -->
+        <flags>
+        </flags>
+    
+        <!-- list of tagged parameters -->
+        <taggedParams>
+        </taggedParams>
+    
+        <!-- list of untagged parameters, in order -->
+        <taggedParams>
+            <param>
+                <id>lib</id>
+                <tag>-lib</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Choose existing library on the server</textDesc>
+                <value>sample</value>
+                <value>NCIDS_SC</value>
+                <value>NCI_DS1</value>
+                <value>NCI_DS2</value>
+                <value>oldNCI</value>
+                <value>human_metabolome</value>
+                <value>chembridge_building_blocks</value>
+                <value>drugbank_nutraceutics</value>
+                <value>drugbank_smallmol</value>
+<!--            <value>asinex</value> -->
+                <value>fda_approved</value>
+<!--            <value>otava</value>  -->
+<!--            <value>zinc_natural_products</value> -->
+<!--                <default>sample</default>-->
+            </param>
+            <param>
+                <id>userlib</id>
+                <tag>-userlib</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Upload your lib (in zip or tar.gz format)</textDesc>
+            </param>
+            <param>
+                <id>urllib</id>
+                <tag>-urllib</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Enter URL to the lib (must point to zip or tar.gz file)</textDesc>
+            </param>
+            <param>
+                <id>filter</id>
+                <tag>-filter</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Choose a filter type</textDesc>
+                <value>default</value>
+                <value>Lipinski-like</value>
+                <value>Drug-like</value>
+                <value>Drug-like-frag</value>
+                <value>custom</value>
+                <default>default</default>
+            </param>
+            <param>
+                <id>hbd_min</id>
+                <tag>-hbd_min</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Minimum number of hydrogen bond donors</textDesc>
+            </param>            
+            <param>
+                <id>hbd_max</id>
+                <tag>-hbd_max</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Maximum number of hydrogen bond donors</textDesc>
+            </param>   
+            <param>
+                <id>hba_min</id>
+                <tag>-hba_min</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Minimum number of hydrogen bond acceptors</textDesc>
+            </param>                     
+            <param>
+                <id>hba_max</id>
+                <tag>-hba_max</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Maximum number of hydrogen bond acceptors</textDesc>
+            </param>                     
+            <param>
+                <id>mw_min</id>
+                <tag>-mw_min</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Minimum molecular weight</textDesc>
+            </param>                     
+            <param>
+                <id>mw_max</id>
+                <tag>-mw_max</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Maximum molecular weight</textDesc>
+            </param>                     
+            <param>
+                <id>nat_min</id>
+                <tag>-nat_min</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Minimum number of heavy atoms</textDesc>
+            </param>                     
+            <param>
+                <id>nat_max</id>
+                <tag>-nat_max</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Maximum number of heavy atoms</textDesc>
+            </param>   
+            <param>
+                <id>torsdof_min</id>
+                <tag>-torsdof_min</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Minimum number of rotatable bonds</textDesc>
+            </param>                                       
+            <param>
+                <id>torsdof_max</id>
+                <tag>-torsdof_max</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Maximum number of rotatable bonds</textDesc>
+            </param>                                       
+        </taggedParams>
+
+        <!-- grouping of parameters -->
+        <groups>
+          <group>
+            <name>ligand_lib</name>
+            <elements>lib userlib urllib</elements>
+            <required>true</required>
+            <textDesc>Ligand Library to be Used (choose ONE of the options below)</textDesc>
+          </group>
+          <group>
+            <name>exist_filter</name>
+            <elements>filter</elements>
+            <exclusive>true</exclusive>
+            <required>true</required>
+            <textDesc>Select Existing Filter Type</textDesc>
+          </group>
+          <group>
+            <name>custome_filter</name>
+            <elements>hbd_min hbd_max hba_min hba_max mw_min mw_max nat_min nat_max torsdof_min torsdof_max</elements>
+            <required>true</required>
+            <exclusive>false</exclusive>
+            <textDesc>Customize Your Own Filter (all values are required and filter type is custom, values are ignored if filter type is not custom)</textDesc>
+          </group>
+        </groups>
+    </types>
+
+  </metadata>
+
+  <metaServiceConfig>/opt/opal/configs/filter_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  
+  <!-- whether to validate command-line arguments using type information above -->
+  <validateArgs>false</validateArgs>
+
+  <!-- overrule default job manager, if need be -->
+<!--
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>
+-->
+
+  <!-- whether this application is serial or parallel -->
+  <parallel>false</parallel>
+</appConfig>

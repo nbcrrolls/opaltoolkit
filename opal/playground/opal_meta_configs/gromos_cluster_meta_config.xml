@@ -1,0 +1,146 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- metadata about the application being wrapped -->
+  <metadata appName="GROMOS Clustering">
+    <usage>
+    Purpose: Determine clusters using g_gromos 
+    </usage>
+    <info>
+    <![CDATA[
+     First, prepare GROMOS clustering files: (1) trajectory, (2) first frame and (3) atom selection
+     given the trajectory and active site residue PDB files.  Then, run clustering using produced 
+     files and user-sapecified paramters: 
+         RMSD cutoff
+         method for cluster determination 
+         speccific output options 
+         expert options
+     NOTE: if you choose an RMSD cutoff that is too small, and all of the structures comprise their 
+     own cluster, the clustering algorithm will be unable to provide a working output. If this 
+     happens, choose a larger cutoff.
+    ]]>
+    </info>
+    
+    <!-- information about command-line arguments -->
+    <types> 
+        <!-- list of flags -->
+        <flags>
+        </flags>
+    
+        <untaggedParams>
+        </untaggedParams>
+    
+        <taggedParams>
+            <param>
+                <id>traj</id>
+                <tag>-traj</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>
+                Compressed trajectory pdb file. Examle: apo.pdb.gz
+                </textDesc>
+            </param>
+
+            <param>
+                <id>active</id>
+                <tag>-active</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>
+                Compressed active site residue pdb file. Examle: ars.pdb.gz
+                </textDesc>
+            </param>
+
+            <param>
+                <id>rmsd</id>
+                <tag>-rmsd</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <required>true</required>
+                <default>0.125</default>
+                <textDesc>RMSD cutoff</textDesc>
+            </param>
+
+            <param>
+                <id>default_options</id>
+                <tag>default_options</tag>
+                <paramType>STRING</paramType>
+                <default>-o -g -dist -ev -sz -tr -ntr -clid -cl</default>
+                <textDesc>Default </textDesc>
+            </param>
+
+            <param>
+                <id>expert_options</id>
+                <tag>expert_options</tag>
+                <paramType>STRING</paramType>
+                <textDesc>Expert options for g_gromos</textDesc>
+            </param>
+
+            <param>
+                <id>method</id>
+                <tag>-method</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>gromos</value>
+                <value>linkage</value>
+                <value>jarvis-patrick</value>
+                <value>monte-carlo</value>
+                <value>diagonalization</value>
+                <default>gromos</default>
+                <textDesc>Method for cluster determination</textDesc>
+            </param>
+
+            <param>
+                <id>prefix</id>
+                <tag>-prefix</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>
+                Base name to use for output files. Example: abc will create
+                &lt;BR&gt;(1) abc-traj.pdb: trajectory output file
+                &lt;BR&gt;(2) abc-fftraj.pdb: first frame of trajectory file
+                &lt;BR&gt;(3) abc-selection.ndx: atom selection file
+                &lt;BR&gt;If this option is omitted, base name of the input trajectory file is used
+                </textDesc>
+            </param>
+        </taggedParams>
+
+        <!-- grouping of parameters -->
+        <groups>
+
+          <group>
+            <name>required</name>
+            <elements>traj active rmsd method</elements>
+            <required>true</required>
+            <textDesc>Required input</textDesc>
+          </group>
+
+          <group>
+             <name>defaultOptions</name>
+             <elements>
+               default_options 
+             </elements>
+             <textDesc>Output options </textDesc>
+           </group>
+
+          <group>
+            <name>optional</name>
+            <elements> prefix expert_options </elements>
+            <required>false</required>
+            <textDesc>Optional Parameters</textDesc>
+          </group>
+
+        </groups>
+    </types>
+
+  </metadata>
+
+  <metaServiceConfig>/opt/opal/configs/gromos_cluster_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  
+  <!-- whether to validate command-line arguments using type information above -->
+  <!--  <validateArgs>true</validateArgs> -->
+
+  <!-- whether this application is serial or parallel -->
+  <parallel>false</parallel>
+</appConfig>

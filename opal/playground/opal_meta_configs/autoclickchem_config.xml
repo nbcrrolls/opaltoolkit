@@ -1,0 +1,79 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="AutoClickChem">
+    <usage><![CDATA[
+AutoClickChem is a computer program capable of performing click-chemistry reactions in silico. AutoClickChem can be used to produce large combinatorial libraries of compounds for use in virtual screens. As the compounds of these libraries are constructed according to the reactions of click chemistry, they can be easily synthesized for subsequent testing in biochemical assays. Additionally, in silico modeling of click-chemistry products may prove useful in rational drug design and drug optimization. 
+]]></usage>
+    <info>
+    <![CDATA[
+       python /path/to/autoclick/autoclick.py -reactants1 ${reactant1_zip} -reactants2 ${reactant2_zip} -input_file ${input_file}
+    ]]>
+    </info>
+
+    <types> 
+        <!-- list of flags -->
+        <flags>
+        </flags>
+    
+        <!-- list of tagged parameters -->
+        <untaggedParams>
+        </untaggedParams>
+    
+        <!-- list of untagged parameters, in order -->
+        <taggedParams>
+            <param>
+                <id>reactants1</id>
+                <tag>-reactants1</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Reactant 1 in PDB, MOL2, MOL/SDF, or XYZ format. Multiple files can be placed in one ZIP file. (Ex. 
+                &lt;A HREF=http://www.nbcr.net/ws_help/AUTOCLICK/sample_inputs/reactant1.zip&gt;
+                reactant1.zip
+                &lt;/A&gt;
+                ) (-reactants1 tag)</textDesc>
+            </param>
+            <param>
+                <id>reactants2</id>
+                <tag>-reactants2</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Reactant 2 in PDB, MOL2, MOL/SDF, or XYZ format. Multiple files can be placed in one ZIP file. (Ex. 
+                &lt;A HREF=http://www.nbcr.net/ws_help/AUTOCLICK/sample_inputs/reactant2.zip&gt;
+                reactant2.zip
+                &lt;/A&gt;
+                ) (-reactants2 tag)</textDesc>
+            </param>
+            <param>
+                <id>config</id>
+                <tag>-config</tag>
+                <paramType>FILE</paramType>
+                <ioType>INPUT</ioType>
+                <textDesc>Configuration file (Ex.
+                &lt;A HREF=http://www.nbcr.net/ws_help/AUTOCLICK/sample_inputs/config.in&gt;
+                config.in
+                &lt;/A&gt;
+                ) (-config tag)</textDesc>
+            </param>
+        </taggedParams>
+
+        <groups>
+          <group>
+            <name>input_reactants</name>
+            <elements>reactants1 reactants2</elements>
+            <required>true</required>
+            <textDesc>Input Reactants</textDesc>
+          </group>
+
+          <group>
+            <name>other_input</name>
+            <elements>config</elements>
+            <required>true</required>
+            <textDesc>Other input information</textDesc>
+          </group>
+        </groups>
+
+      </types>
+  </metadata>
+  <binaryLocation>/opt/autoclickchem/autoclickchem_opal_wrapper.sh</binaryLocation>
+  <parallel>false</parallel>
+</appConfig>

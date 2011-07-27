@@ -1,0 +1,314 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="SMAP Pairwise Comparison">
+    <usage><![CDATA[SMAP software package is designed for the comparison and 
+                    the similarity search of protein three-dimensional motifs 
+                    independent on the sequence order. 
+                    This service is for pairwise comparisons.
+                    <BR>
+                    <A HREF=http://funsite.sdsc.edu/scb/smap/smap.html>
+                    SMAP home page http://funsite.sdsc.edu/scb/smap/smap.html
+                    </A><BR>
+                    <A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#SMAP_Pairwise_Comparison>
+                    Web Access Tutorial: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#SMAP_Pairwise_Comparison
+                    </A><BR>
+                    <A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#Programmatic_Access>
+                    Programmatic Access Tutorial: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#Programmatic_Access
+             ]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+SMAP home page http://funsite.sdsc.edu/scb/smap/smap.html
+SMAP Pairwise Comp Web Service Tutorial: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#SMAP_Pairwise_Comparison
+SMAP Programmatic Access Tutoria: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#Programmatic_Access
+    ]]>
+    </info>
+    <types> 
+        <!-- list of flags -->
+        <flags>
+<!--
+            <flag>
+                <id>LOCAL_SCORE</id>
+                <tag>LOCAL_SCORE</tag>
+                <textDesc>Local Score</textDesc>
+                <default>true</default>
+            </flag>
+            <flag>
+                <id>PRINT_PDB</id>
+                <tag>PRINT_PDB</tag>
+                <textDesc>Print PDB</textDesc>
+                <default>true</default>
+            </flag>
+            <flag>
+                <id>MATCH_SECONDARY_STRUCTURE</id>
+                <tag>MATCH_SECONDARY_STRUCTURE</tag>
+                <textDesc>Match Secondary Structure</textDesc>
+                <default>true</default>
+            </flag>
+-->
+        </flags>
+
+        <!-- list of tagged parameters -->
+        <taggedParams>
+            <separator>=</separator>
+            <param>
+                <id>print_query_ligand</id>
+                <tag>print_query_ligand</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <ioType>INPUT</ioType>
+                <value>true</value>
+                <value>false</value>
+                <default>false</default>
+                <textDesc>Output query ligands</textDesc>
+            </param>
+            <param>
+                <id>print_template_ligand</id>
+                <tag>print_template_ligand</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <ioType>INPUT</ioType>
+                <value>true</value>
+                <value>false</value>
+                <default>false</default>
+                <textDesc>Output template ligand</textDesc>
+            </param>
+            <param>
+                <id>template_pdb_file</id>
+                <tag>template_pdb_file</tag>
+                <paramType>FILE</paramType>
+                <required>false</required>
+                <ioType>INPUT</ioType>
+                <textDesc>Upload PDB File</textDesc>
+            </param>
+            <param>
+                <id>query_pdb_file</id>
+                <tag>query_pdb_file</tag>
+                <paramType>FILE</paramType>
+                <required>false</required>
+                <ioType>INPUT</ioType>
+                <textDesc>Upload PDB File</textDesc>
+            </param>
+            <param>
+                <id>template_cif_chain</id>
+                <tag>template_cif_chain</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>Chain ID (For single chain, use one letter chain ID (ex. A).  For multiple chains, use one letter IDs separated with - (ex. A-B).  Or leave this field blank for all chains.  WARNING - visualization for multiple chains in not yet supported</textDesc>
+            </param>
+            <param>
+                <id>template_pdb_id</id>
+                <tag>template_pdb_id</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>Enter PDB ID (ex. 1QKT)</textDesc>
+            </param>
+            <param>
+                <id>query_cif_chain</id>
+                <tag>query_cif_chain</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>Chain ID (For single chain, use one letter chain ID (ex. A).  For multiple chains, use one letter IDs separated with - (ex. A-B).  Or leave this field blank for all chains). WARNING - visualization for multiple chains is not yet supported</textDesc>
+            </param>
+            <param>
+                <id>query_pdb_id</id>
+                <tag>query_pdb_id</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>Enter PDB ID (ex. 1OHP)</textDesc>
+            </param>
+            <param>
+                <id>VIRTUAL_LIGAND_RANGE_CUTOFF</id>
+                <tag>VIRTUAL_LIGAND_RANGE_CUTOFF</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>10.0</default>
+                <textDesc>&lt;a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Definitions"&gt;Virtual Ligand Range Cutoff&lt;/A&gt;</textDesc>
+            </param>
+<!--
+            <param>
+                <id>MAX_PL_ATOM_SPHERE_SIZE</id>
+                <tag>MAX_PL_ATOM_SPHERE_SIZE</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>300</default>
+                <textDesc>Max PL Atom Sphere Size</textDesc>
+            </param>
+            <param>
+                <id>MIN_PL_ATOM_SPHERE_SIZE</id>
+                <tag>MIN_PL_ATOM_SPHERE_SIZE</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>20</default>
+                <textDesc>Min PL Atom Sphere Size</textDesc>
+            </param>
+            <param>
+                <id>MIN_ATOM_SPHERE_DISTANCE</id>
+                <tag>MIN_ATOM_SPHERE_DISTANCE</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>3.0</default>
+                <textDesc>Min Atom Sphere Distance</textDesc>
+            </param>
+            <param>
+                <id>MAX_ATOM_SPHERE_RADIUS</id>
+                <tag>MAX_ATOM_SPHERE_RADIUS</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>5.0</default>
+                <textDesc>Max Atom Sphere Radius</textDesc>
+            </param>
+            <param>
+                <id>MIN_PL_CA_SPHERE_SIZE</id>
+                <tag>MIN_PL_CA_SPHERE_SIZE</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>5</default>
+                <textDesc>Min PL CA Sphere Size</textDesc>
+            </param>
+            <param>
+                <id>MIN_CA_SPHERE_DISTANCE</id>
+                <tag>MIN_CA_SPHERE_DISTANCE</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>5.0</default>
+                <textDesc>Min CA Sphere Distance</textDesc>
+            </param>
+            <param>
+                <id>MAX_CA_SPHERE_RADIUS</id>
+                <tag>MAX_CA_SPHERE_RADIUS</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>7.5</default>
+                <textDesc>Max CA Sphere Radius</textDesc>
+            </param>
+            <param>
+                <id>MAX_NUM_PL</id>
+                <tag>MAX_NUM_PL</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>5</default>
+                <textDesc>Max Num PL</textDesc>
+            </param>
+-->
+            <param>
+                <id>LIGAND_CONTACT_DISTANCE_CUTOFF</id>
+                <tag>LIGAND_CONTACT_DISTANCE_CUTOFF</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>10.0</default>
+                <textDesc>&lt;a href="http://funsite.sdsc.edu/scb/smap/document.html#LIGAND_CONTACT_DISTANCE_CUTOFF"&gt;Ligand Contact Distance Cutoff&lt;/A&gt;</textDesc>
+            </param>
+            <param>
+                <id>SCORE_MATRIX</id>
+                <tag>SCORE_MATRIX</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>McLACHLAN</value>
+                <value>BLOSUM45</value>
+                <default>McLACHLAN</default>
+                <textDesc>&lt;a href="http://funsite.sdsc.edu/scb/smap/document.html#SCORE_MATRIX"&gt;Score Matrix&lt;/A&gt;</textDesc>
+            </param>
+            <param>
+                <id>TEMPLATE_LIGAND_SITE_ONLY</id>
+                <tag>TEMPLATE_LIGAND_SITE_ONLY</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>true</value>
+                <value>false</value>
+                <default>false</default>
+                <textDesc>Search only co-crystal ligand binding site</textDesc>
+            </param>
+            <param>
+                <id>QUERY_LIGAND_SITE_ONLY</id>
+                <tag>QUERY_LIGAND_SITE_ONLY</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>true</value>
+                <value>false</value>
+                <default>false</default>
+                <textDesc>Search only co-crystal ligand binding site</textDesc>
+            </param>
+        </taggedParams>
+    
+        <groups>
+          <group>
+            <name>template_pdb</name>
+            <elements>
+              template_pdb_id template_pdb_file 
+            </elements>
+            <required>true</required>
+            <exclusive>true</exclusive>
+            <textDesc>&lt;B&gt;FIRST STRUCTURE&lt;/B&gt;</textDesc>
+          </group>
+          <group>
+            <name>template_chain</name>
+            <elements>
+              template_cif_chain
+              TEMPLATE_LIGAND_SITE_ONLY print_template_ligand
+            </elements>
+            <required>false</required>
+            <exclusive>false</exclusive>
+            <textDesc></textDesc>
+          </group>
+          <group>
+            <name>query_pdb</name>
+            <elements>
+              query_pdb_id query_pdb_file
+            </elements>
+            <required>true</required>
+            <exclusive>true</exclusive>
+            <textDesc>&lt;B&gt;SECOND STRUCTURE&lt;/B&gt;</textDesc>
+          </group>
+          <group>
+            <name>query_chain</name>
+            <elements>
+              query_cif_chain
+              QUERY_LIGAND_SITE_ONLY print_query_ligand
+            </elements>
+            <required>false</required>
+            <exclusive>false</exclusive>
+            <textDesc></textDesc>
+          </group>
+<!--
+          <group>
+            <name>segment_the_structure</name>
+            <elements>
+              MAX_PL_ATOM_SPHERE_SIZE MIN_PL_ATOM_SPHERE_SIZE MIN_ATOM_SPHERE_DISTANCE
+              MAX_ATOM_SPHERE_RADIUS MIN_PL_CA_SPHERE_SIZE
+              MIN_CA_SPHERE_DISTANCE MAX_CA_SPHERE_RADIUS MAX_NUM_PL
+            </elements>
+            <required>true</required>
+            <exclusive>false</exclusive>
+            <textDesc>PARAMETERS TO SEGMENT THE STRUCTURE</textDesc>
+          </group>
+-->
+          <group>
+            <name>comparison_two_proteins</name>
+            <elements>
+              <!--LOCAL_SCORE PRINT_PDB MATCH_SECONDARY_STRUCTURE-->
+              SCORE_MATRIX 
+              LIGAND_CONTACT_DISTANCE_CUTOFF
+              VIRTUAL_LIGAND_RANGE_CUTOFF
+            </elements>
+            <required>true</required>
+            <exclusive>false</exclusive>
+            <textDesc>PARAMETERS FOR COMPARISON OF TWO PROTEINS
+            </textDesc>
+          </group>
+<!--
+          <group>
+            <name>sort</name>
+            <elements>sort_p sort_r</elements>
+            <required>false</required>
+            <textDesc>Sort SMAP Results</textDesc>
+          </group>
+-->
+        </groups>
+    </types>
+
+  </metadata>
+<!--  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN>-->
+  <binaryLocation>/nas/opaluser/smap/smap_opal/smap_pair_comp.sh</binaryLocation>
+  <defaultArgs></defaultArgs>
+  <parallel>false</parallel>
+</appConfig>

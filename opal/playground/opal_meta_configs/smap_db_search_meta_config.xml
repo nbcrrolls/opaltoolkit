@@ -1,0 +1,243 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="SMAP Database Search vvv">
+    <usage><![CDATA[SMAP software package is designed for the comparison and 
+                    the similarity search of protein three-dimensional motifs 
+                    independent on the sequence order. 
+                    This service allows one structure of interest to be searched
+                    against a database.
+                    <BR>
+                    <A HREF=http://funsite.sdsc.edu/scb/smap/smap.html>
+                    SMAP home page http://funsite.sdsc.edu/scb/smap/smap.html
+                    </A><BR>
+                    <A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#SMAP_Database_Search>
+                    Web Access Tutorial: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#SMAP_Database_Search
+                    </A><BR>
+                    <A HREF=http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#Programmatic_Access>
+                    Programmatic Access Tutorial: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#Programmatic_Access
+                    </A>
+             ]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+SMAP home page http://funsite.sdsc.edu/scb/smap/smap.html
+SMAP Database Search Web Service Tutorial: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#SMAP_Database_Search
+SMAP Programmatic Access Tutoria: http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Opal_Services#Programmatic_Access
+]]>
+    </info>
+    <types> 
+        <!-- list of flags -->
+        <flags>
+<!--
+            <flag>
+                <id>LOCAL_SCORE</id>
+                <tag>LOCAL_SCORE</tag>
+                <textDesc>Local Score</textDesc>
+                <default>true</default>
+            </flag>
+            <flag>
+                <id>PRINT_PDB</id>
+                <tag>PRINT_PDB</tag>
+                <textDesc>Print PDB</textDesc>
+                <default>true</default>
+            </flag>
+            <flag>
+                <id>MATCH_SECONDARY_STRUCTURE</id>
+                <tag>MATCH_SECONDARY_STRUCTURE</tag>
+                <textDesc>Match Secondary Structure</textDesc>
+                <default>true</default>
+            </flag>
+-->
+        </flags>
+        <!-- list of tagged parameters -->
+        <taggedParams>
+            <separator>=</separator>
+            <param>
+                <id>query_db_file_op</id>
+                <tag>query_db_file_op</tag>
+                <paramType>STRING</paramType>
+                <ioType>INPUT</ioType>
+                <value>test</value>
+                <value>human_models_0908_id90</value>
+                <value>pdb_id30_Jan2010</value>
+                <value>pdb_id90_Jan2010</value>
+                <default>test</default>
+                <textDesc>
+                          &lt;a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_DBs"&gt;Use Existing Query Database&lt;/a&gt;
+                </textDesc>
+            </param>
+<!--
+            <param>
+                <id>template_pdbfile_chain</id>
+                <tag>template_pdbfile_chain</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Template Chain (ex. A)</textDesc>
+            </param>
+-->
+            <param>
+                <id>template_pdb_file</id>
+                <tag>template_pdb_file</tag>
+                <paramType>FILE</paramType>
+                <required>false</required>
+                <ioType>INPUT</ioType>
+                <textDesc>Upload Template PDB File</textDesc>
+            </param>
+            <param>
+                <id>template_cif_chain</id>
+                <tag>template_cif_chain</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>Chain ID (ex. A)</textDesc>
+            </param>
+            <param>
+                <id>template_pdb_id</id>
+                <tag>template_pdb_id</tag>
+                <paramType>STRING</paramType>
+                <required>false</required>
+                <textDesc>Enter PDB ID (ex. 2HTY)</textDesc>
+            </param>
+            <param>
+                <id>LIGAND_CONTACT_DISTANCE_CUTOFF</id>
+                <tag>LIGAND_CONTACT_DISTANCE_CUTOFF</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>10.0</default>
+                <textDesc>&lt;a href="http://funsite.sdsc.edu/scb/smap/document.html#LIGAND_CONTACT_DISTANCE_CUTOFF"&gt;Ligand Contact Distance Cutoff&lt;/A&gt;</textDesc>
+            </param>
+            <param>
+                <id>VIRTUAL_LIGAND_RANGE_CUTOFF</id>
+                <tag>VIRTUAL_LIGAND_RANGE_CUTOFF</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>5.0</default>
+                <textDesc>&lt;a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=SMAP_Definitions"&gt;Virtual Ligand Range Cutoff&lt;/A&gt;</textDesc>
+            </param>
+
+<!--
+            <param>
+                <id>ASSOCIATE_GRAPH_NODE_FILTER</id>
+                <tag>ASSOCIATE_GRAPH_NODE_FILTER</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>0.5</default>
+                <textDesc>Associate Graph Node Filter</textDesc>
+            </param>
+            <param>
+                <id>TIMES_RANDOM_SHUFFLE</id>
+                <tag>TIMES_RANDOM_SHUFFLE</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>0</default>
+                <textDesc>Time Random Shuffle</textDesc>
+            </param>
+            <param>
+                <id>PVALUE_CUTOFF</id>
+                <tag>PVALUE_CUTOFF</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <default>1.0</default>
+                <textDesc>P Value Cutoff</textDesc>
+            </param>
+-->
+            <param>
+                <id>SCORE_MATRIX</id>
+                <tag>SCORE_MATRIX</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>McLACHLAN</value>
+                <value>BLOSUM45</value>
+                <default>McLACHLAN</default>
+                <textDesc>&lt;a href="http://funsite.sdsc.edu/scb/smap/document.html#SCORE_MATRIX"&gt;Score Matrix&lt;/A&gt;</textDesc>
+            </param>
+            <param>
+                <id>TEMPLATE_LIGAND_SITE_ONLY</id>
+                <tag>TEMPLATE_LIGAND_SITE_ONLY</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>true</value>
+                <value>false</value>
+                <default>false</default>
+                <textDesc>Search only co-crystal ligand binding site</textDesc>
+            </param>
+            <param>
+                <id>QUERY_LIGAND_SITE_ONLY</id>
+                <tag>QUERY_LIGAND_SITE_ONLY</tag>
+                <paramType>STRING</paramType>
+                <required>true</required>
+                <value>true</value>
+                <value>false</value>
+                <default>false</default>
+                <textDesc>Search only co-crystal ligand binding site</textDesc>
+            </param>
+        </taggedParams>
+    
+        <groups>
+          <group>
+            <name>template_pdb</name>
+            <elements>
+              template_pdb_id template_pdb_file
+              <!--template_cif_chain template_pdbfile_chain-->
+            </elements>
+            <required>true</required>
+            <exclusive>true</exclusive>
+            <textDesc>&lt;B&gt;STRUCTURE OF INTEREST (search with)&lt;/B&gt;</textDesc>
+          </group>
+          <group>
+            <name>template_chain</name>
+            <elements>
+              template_cif_chain 
+              TEMPLATE_LIGAND_SITE_ONLY
+            </elements>
+            <required>false</required>
+            <exclusive>false</exclusive>
+            <textDesc></textDesc>
+          </group>
+          <group>
+            <name>query</name>
+<!--
+            <elements>
+              query_pdb_id query_cif_chain query_db_file query_db_file_op query_pdb_file
+            </elements>
+-->
+            <elements>
+              query_db_file_op
+              QUERY_LIGAND_SITE_ONLY
+            </elements>
+            <required>false</required>
+            <exclusive>false</exclusive>
+            <textDesc>&lt;B&gt;DATABASE TO SEARCH FOR BINDING SITE SIMILARITIES&lt;/B&gt;</textDesc>
+          </group>
+          <group>
+            <name>comparison_two_proteins</name>
+            <elements>
+              <!--LOCAL_SCORE PRINT_PDB MATCH_SECONDARY_STRUCTURE-->
+              <!-- ASSOCIATE_GRAPH_NODE_FILTER TIMES_RANDOM_SHUFFLE PVALUE_CUTOFF  -->
+              SCORE_MATRIX
+              LIGAND_CONTACT_DISTANCE_CUTOFF
+              VIRTUAL_LIGAND_RANGE_CUTOFF
+            </elements>
+            <required>true</required>
+            <exclusive>false</exclusive>
+            <textDesc>PARAMETERS FOR COMPARISON OF PROTEINS
+            </textDesc>
+          </group>
+<!--
+          <group>
+            <name>sort</name>
+            <elements>sort_p sort_r</elements>
+            <required>false</required>
+            <textDesc>Sort SMAP Results</textDesc>
+          </group>
+-->
+        </groups>
+    </types>
+
+  </metadata>
+
+  <metaServiceConfig>/home/jren/opal_configs_new_meta/smap_db_search_meta.txt</metaServiceConfig>
+  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+<!--  <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.ForkJobManager</jobManagerFQCN> -->
+<!--  <binaryLocation>/some/location</binaryLocation> -->
+  <defaultArgs></defaultArgs>
+  <parallel>false</parallel>
+</appConfig>

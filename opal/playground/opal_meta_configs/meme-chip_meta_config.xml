@@ -1,0 +1,115 @@
+<appConfig xmlns="http://nbcr.sdsc.edu/opal/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata appName="MEMECHIP">
+    <usage><![CDATA[meme-chip_webservice [optional arguments ...] <dataset> <motif dbs>]]></usage>
+    <info xsd:type="xsd:string">
+    <![CDATA[
+meme-chip_webservice [options] <sequences> <motif db patterns>
+
+ Options:
+  -bfile            <bf>    : background file
+
+ MEME Specific Options:
+  -meme-mod [oops|zoops|anr]: sites used in a single sequence
+  -meme-minw        <num>   : minimum motif width
+  -meme-maxw        <num>   : maximum motif width
+  -meme-nmotifs     <num>   : maximum number of motifs to find
+  -meme-minsites    <num>   : minimum number of sites per motif
+  -meme-maxsites    <num>   : maximum number of sites per motif
+  -meme-norevcomp           : search given strand only (note meme uses -revcomp so it's the opposite)
+  -meme-pal                 : look for palindromes only (requires DNA - but then MEME-ChIP only works with DNA)
+    ]]>
+    </info>
+    <types>
+      <flags>
+        <flag>
+          <id>meme-norevcom</id>
+          <tag>-meme-norevcomp</tag>
+          <textDesc>Runs MEME on given strand only</textDesc>
+          <default>false</default>
+        </flag>
+        <flag>
+          <id>meme-pal</id>
+          <tag>-meme-pal</tag>
+          <textDesc>MEME only looks for palindromes</textDesc>
+          <default>false</default>
+        </flag>
+      </flags>
+      <taggedParams>
+        <separator> </separator>
+        <param>
+          <id>bfile</id>
+          <tag>-bfile</tag>
+          <paramType>FILE</paramType>
+          <ioType>INPUT</ioType>
+          <required>false</required>
+          <textDesc>Background File</textDesc>
+        </param>
+        <param>
+          <id>meme-mod</id>
+          <tag>-meme-mod</tag>
+          <paramType>STRING</paramType>
+          <value>oops</value>
+          <value>zoops</value>
+          <value>anr</value>
+          <required>false</required>
+          <textDesc>MEME Site Selection Mode</textDesc>
+        </param>
+        <param>
+          <id>meme-minw</id>
+          <tag>-meme-minw</tag>
+          <paramType>INT</paramType>
+          <required>false</required>
+          <textDesc>MEME minimum motif width</textDesc>
+        </param>
+        <param>
+          <id>meme-maxw</id>
+          <tag>-meme-maxw</tag>
+          <paramType>INT</paramType>
+          <required>false</required>
+          <textDesc>MEME maximum motif width</textDesc>
+        </param>
+        <param>
+          <id>meme-nmotifs</id>
+          <tag>-meme-nmotifs</tag>
+          <paramType>INT</paramType>
+          <required>false</required>
+          <textDesc>MEME number of motifs</textDesc>
+        </param>
+        <param>
+          <id>meme-minsites</id>
+          <tag>-meme-minsites</tag>
+          <paramType>INT</paramType>
+          <required>false</required>
+          <textDesc>MEME minimum sites per motif</textDesc>
+        </param>
+        <param>
+          <id>meme-maxsites</id>
+          <tag>-meme-maxsites</tag>
+          <paramType>INT</paramType>
+          <required>false</required>
+          <textDesc>MEME maximum sites per motif</textDesc>
+        </param>
+      </taggedParams>
+      <untaggedParams>
+        <param>
+          <id>sequences</id>
+          <paramType>FILE</paramType>
+          <ioType>INPUT</ioType>
+          <required>true</required>
+          <textDesc>ChIP-seq Site Sequences</textDesc>
+        </param>
+        <param>
+          <id>dbs</id>
+          <paramType>STRING</paramType>
+          <required>true</required>
+          <textDesc>Motif Databases Pattern</textDesc>
+        </param>
+      </untaggedParams>
+    </types>
+  </metadata>
+   <metaServiceConfig>/opt/opal/configs/meme-chip_meta.txt</metaServiceConfig>
+   <jobManagerFQCN>edu.sdsc.nbcr.opal.manager.MetaServiceJobManager</jobManagerFQCN>
+
+  <validateArgs>false</validateArgs>
+  <parallel>false</parallel>
+</appConfig>
