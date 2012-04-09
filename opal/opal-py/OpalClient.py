@@ -16,7 +16,7 @@ from ZSI.TC import String
 
 
 class JobStatus:
-    """ This class represent a Opal job status and can be used 
+    """ This class represents a Opal job status and can be used 
     after launching a job to monitor its execution"""
 
     def __init__(self, opalService, jobID):
@@ -26,27 +26,43 @@ class JobStatus:
         self.jobStatus = self.opalService.appServicePort.queryStatus(queryStatusRequest(jobID))
 
     def updateStatus(self):
-        """ this function retrive a updated version of the jobStatus 
+        """ this function retrives a updated version of the jobStatus 
         from the Opal server """ 
         #import pdb; pdb.set_trace()
         self.jobStatus = self.opalService.appServicePort.queryStatus(queryStatusRequest(self.jobID))
 
 
     def getError(self):
-        """ It return the error message of the job """
+        """ It returns the error message of the job """
         return self.jobStatus._message
 
     def getBaseURL(self):
-        """ it return the URL that contains all the job outputs """
-        return self.jobStatus._baseURL
+        """ it returns the URL that contains all the job outputs """
+    def getURLstdout(self):
+        """ it returns the URL of the stdout"""
+        return self.jobStatus._baseURL + "/stdout.txt"
+
+    def getURLstderr(self):
+        """ it returns the URL of the stderr"""
+        return self.jobStatus._baseURL + "/stderr.txt"
 
     def getStatus(self):
-        """ it return the numeric representation of the status of the job """
+        """ it returns the numeric representation of the status of the job """
         return self.jobStatus._code
 
     def getJobId(self):
-        """ it return the jobid of this job """
+        """ it returns the jobid of this job """
         return self.jobID
+
+    def getOutputFiles(self):
+        """ it returns a list of strings containing the 
+        URLs of the output files produced by the job """
+        resp = self.opalService.appServicePort.getOutputs(getOutputsRequest(self.jobID))
+        outputFile = []
+        for i in resp._outputFile:
+            outputFile.append(i._url)
+        return outputFile
+
 
     def isRunning(self):
         """ this function returns true is the job is still running false if it finished
@@ -98,7 +114,10 @@ class OpalService:
             for i in inFilesPath:
                 inputFile = ns0.InputFileType_Def('inputFile')
                 inputFile._name = os.path.basename(i)
-                if self.isOpal2():
+                if i.startswith("http:") or i.startswith("https:"):
+                    #this is a URL
+                    inputFile._location = i
+                elif self.isOpal2():
                     #use attachment this is opal2 server
                     if os.name == 'dos' or os.name == 'nt':
                         inputFile._attachment = open(i, "rb")
@@ -139,15 +158,6 @@ class OpalService:
 
 
 
-#        # List job outputs, if execution is successful
-#        if resp._status._code == 8: # 8 = GramJob.STATUS_DONE
-#            out = resp._jobOut
-#
-#            print "\tStandard Output:", out._stdOut, "\n", \
-#                  "\tStandard Error:", out._stdErr
-#            if (out._outputFile != None):
-#                for i in range(0, out._outputFile.__len__()):
-#                    print "\t" + out._outputFile[i]._name, ":", out._outputFile[i]._url
 
 
 
