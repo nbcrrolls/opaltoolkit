@@ -1,4 +1,3 @@
-# Only the x, y, z, charge, and radii fields are read.
 <ion-example>
   <residue>
      <resName>ION</resName>
