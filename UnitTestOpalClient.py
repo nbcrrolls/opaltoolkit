@@ -29,6 +29,11 @@ class TestSequenceFunctions(unittest.TestCase):
         outputURL = jobStatus.getBaseURL() + "/stdout.txt"
         output = urllib.urlopen(outputURL).read()
         self.assertTrue( len(output) < 50, "Output of the date is longer than expected: " + output)
+        files = jobStatus.getOutputFiles()
+        self.assertTrue(len(files) == 0, "Date job should not produce any output file")
+        print "Output file:"
+        for i in files:
+            print "\t", i
 		
        
 
