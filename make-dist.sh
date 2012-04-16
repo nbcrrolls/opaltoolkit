@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=2.2
+VERSION=2.4
 
 echo "Creating a temporary directory for the tarball"
 rm -rf opal-py-$VERSION
@@ -8,7 +8,7 @@ mkdir opal-py-$VERSION
 
 # copy dummy client, README, LICENSE, XSD, and WSDL into the temp directory
 echo "Copying sources into temporary directory"
-cp -r GenericServiceClient.py AppService_client.py AppService_types.py LICENSE README CHANGELOG docs etc wsdl prereqs opal-py-$VERSION/
+cp -r UnitTestOpalClient.py OpalClient.py GenericServiceClient.py AppService_client.py AppService_types.py LICENSE README CHANGELOG docs etc wsdl prereqs opal-py-$VERSION/
 rm -rf `find opal-py-$VERSION -name ".svn"`
 
 # create a tarball

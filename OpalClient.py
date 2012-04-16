@@ -4,6 +4,8 @@ import time
 import httplib
 import os
 import getopt
+import urllib
+import tarfile
 
 from AppService_client import \
      AppServiceLocator, getAppMetadataRequest, launchJobRequest, \
@@ -17,20 +19,23 @@ from ZSI.TC import String
 
 class JobStatus:
     """ This class represents a Opal job status and can be used 
-    after launching a job to monitor its execution"""
+    after launching a job to monitor its execution. A Job Status is 
+    returned by a launchJob call, or it can be constructed from a jobID
+    and its corresponding Opal Service"""
 
     def __init__(self, opalService, jobID):
         """ """
         self.opalService = opalService
         self.jobID = jobID
-        self.jobStatus = self.opalService.appServicePort.queryStatus(queryStatusRequest(jobID))
+        self.jobStatus = \
+            self.opalService.appServicePort.queryStatus(queryStatusRequest(jobID))
 
     def updateStatus(self):
         """ this function retrives a updated version of the jobStatus 
         from the Opal server """ 
         #import pdb; pdb.set_trace()
-        self.jobStatus = self.opalService.appServicePort.queryStatus(queryStatusRequest(self.jobID))
-
+        self.jobStatus = \
+            self.opalService.appServicePort.queryStatus(queryStatusRequest(self.jobID))
 
     def getError(self):
         """ It returns the error message of the job """
@@ -38,6 +43,8 @@ class JobStatus:
 
     def getBaseURL(self):
         """ it returns the URL that contains all the job outputs """
+        return self.jobStatus._baseURL
+
     def getURLstdout(self):
         """ it returns the URL of the stdout"""
         return self.jobStatus._baseURL + "/stdout.txt"
@@ -55,14 +62,23 @@ class JobStatus:
         return self.jobID
 
     def getOutputFiles(self):
-        """ it returns a list of strings containing the 
-        URLs of the output files produced by the job """
+        """ it returns a list of strings containing the URLs of the output files 
+        produced by the job """
         resp = self.opalService.appServicePort.getOutputs(getOutputsRequest(self.jobID))
         outputFile = []
         for i in resp._outputFile:
             outputFile.append(i._url)
         return outputFile
 
+    def downloadOutput(self, baseDir):
+        """ download all output files from the job and it places them in the local baseDir 
+        (baseDir must exists) """
+        strURL = self.getBaseURL() + "/results.tar.gz"
+        filehandle = urllib.urlopen(strURL)
+        tar = tarfile.open(fileobj=filehandle, mode='r:gz')
+        tar.extractall(path=baseDir)
+        return 
+        
 
     def isRunning(self):
         """ this function returns true is the job is still running false if it finished
@@ -72,8 +88,7 @@ class JobStatus:
         return False
 
     def isSuccessful(self):
-        """ If the job sucesfully finished its execution,
-        this function returns true """
+        """ If the job sucesfully finished its execution, this function returns true """
         if self.jobStatus._code == 8:
             return True
         return False
@@ -87,6 +102,9 @@ class JobStatus:
 
 
 class OpalService:
+    """ This class wrap a single Opal service. You should have one of this class 
+    for each Opal Service you want to use.
+    """
 
     def __init__(self, url):
         self.url = url
@@ -100,10 +118,13 @@ class OpalService:
         return resp
 
     def getURL(self):
+        """ 
+        @return: a string containing the end point URL used by this services """
         return self.url
 
 
-    def launchJobNB(self, commandline, inFilesPath, numProcs = None):
+    def launchJobNB(self, commandline, inFilesPath, numProcs = None, email = None, \
+                    passwd=None):
         """ invoke the execution of the remote scientific application
         using Opal a return right away
         
@@ -133,6 +154,11 @@ class OpalService:
         req = launchJobRequest()
         req._argList = commandline
         req._inputFile = inputFiles
+        if email:
+            req._sendNotification = True
+            req._userEmail = email
+        if passwd:
+            req._password = passwd
         if numProcs :
             req._numProcs = numProcs
         jobStatus = self.appServicePort.launchJob(req)

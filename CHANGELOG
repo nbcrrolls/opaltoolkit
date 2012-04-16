@@ -1,3 +1,9 @@
+Version 2.4
+* Created a OpalClient class which wrapps python atogenerated code
+* Created a UnitTestOpalClient with UnitTest routines
+* updated ApbsClient with the new OpalClient interfacea
+* _upgraded stubs to the new Opal 2.4 wsdl_
+
 Version 2.2
 * Now has a generic Opal client that supports the same functionality as the
   generic Java client
