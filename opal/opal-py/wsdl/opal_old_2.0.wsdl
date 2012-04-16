@@ -39,7 +39,7 @@
       <xsd:complexType name="FlagsType">
 	<xsd:sequence>
 	  <!-- for referencing this parameter later -->
-	  <xsd:element name="id" type="xsd:ID"/>
+	  <xsd:element name="id" type="xsd:string"/>
 
 	  <!-- name of flag listing one at a time (e.g. -a, -l) -->
 	  <xsd:element name="tag" type="xsd:string"/>
@@ -59,7 +59,7 @@
       <xsd:complexType name="ParamsType">
 	<xsd:sequence>
 	  <!-- for referencing this parameter later -->
-	  <xsd:element name="id" type="xsd:ID"/>
+	  <xsd:element name="id" type="xsd:string"/>
 	  
 	  <!-- tags that refer to the parameter (e.g. -p, -o, etc) -->
 	  <!-- optional for unnamed (non-tagged) parameters -->
@@ -94,15 +94,11 @@
       <!-- these complexType it is used to group paramters -->
       <xsd:complexType name="GroupsType">
 	<xsd:sequence>
-	  <!-- for referencing this parameter later -->
-	  <!-- minOccurs is set to 0 for backwards compatibility -->
-	  <xsd:element name="id" type="xsd:ID" minOccurs="0"/>
-	  
 	  <!-- the name of the group -->
 	  <xsd:element name="name" type="xsd:string"/>
 
 	  <!-- The list of elements belonging to this group -->
-	  <xsd:element name="elements" type="xsd:IDREFS"/>
+	  <xsd:element name="elements" type="xsd:string"/>
 	  
 	  <!-- It means that at least one of the element of this group are reuqired  -->
 	  <xsd:element name="required" type="xsd:boolean" minOccurs="0"/>
@@ -125,7 +121,7 @@
       <xsd:complexType name="ImplicitParamsType">
 	<xsd:sequence>
 	  <!-- for referencing this output later -->
-	  <xsd:element name="id" type="xsd:ID"/>
+	  <xsd:element name="id" type="xsd:string"/>
 
 	  <!-- a string, or an expression (possibly depending on some id) -->
 	  <xsd:element name="name" type="xsd:string" minOccurs="0"/>
@@ -233,32 +229,13 @@
       <xsd:complexType name="AppConfigType">
 	<xsd:sequence>
 	  <xsd:element name="metadata" type="types:AppMetadataType"/>
-	  <xsd:element name="binaryLocation" type="xsd:string" minOccurs="0"/>
+	  <xsd:element name="binaryLocation" type="xsd:string"/>
 	  <xsd:element name="defaultArgs" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="validateArgs" type="xsd:boolean" minOccurs="0"/>
 	  <xsd:element name="jobManagerFQCN" type="xsd:string" minOccurs="0"/>
-	  <xsd:element name="drmaaPE" type="xsd:string" minOccurs="0"/>
-	  <xsd:element name="drmaaQueue" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="globusGatekeeper" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="gridftpBase" type="xsd:anyURI" minOccurs="0"/>
 	  <xsd:element name="parallel" type="xsd:boolean"/>
-	  <xsd:element name="metaServiceConfig" type="xsd:string" minOccurs="0"/>
-	</xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:complexType name="SystemInfoInputType">
-	<xsd:all/>
-      </xsd:complexType>
-
-      <xsd:complexType name="SystemInfoType">
-	<xsd:sequence>
-	  <xsd:element name="jobManagerType" type="xsd:string"/>
-	  <xsd:element name="dataLifetime" type="xsd:string"/>
-	  <xsd:element name="hardLimit" type="xsd:int"/>
-	  <xsd:element name="numCpuTotal" type="xsd:int"/>
-	  <xsd:element name="numCpuFree" type="xsd:int"/>
-	  <xsd:element name="numJobsRunning" type="xsd:int"/>
-	  <xsd:element name="numJobsQueued" type="xsd:int"/>
 	</xsd:sequence>
       </xsd:complexType>
 
@@ -276,13 +253,9 @@
 	<xsd:sequence>
 	  <xsd:element name="argList" type="xsd:string" minOccurs="0"/>
 	  <xsd:element name="numProcs" type="xsd:int" minOccurs="0"/>
-	  <xsd:element name="userEmail" type="xsd:string" minOccurs="0"/>
-	  <xsd:element name="password" type="xsd:string" minOccurs="0"/>
           <xsd:element name="wallClockTime" type="xsd:nonNegativeInteger"  minOccurs="0"/>
 	  <xsd:element name="inputFile" type="types:InputFileType"
 		       minOccurs="0" maxOccurs="unbounded"/>
-	  <xsd:element name="extractInputs" type="xsd:boolean" minOccurs="0"/>
-	  <xsd:element name="sendNotification" type="xsd:boolean" minOccurs="0"/>
 	</xsd:sequence>
       </xsd:complexType>
 
@@ -357,12 +330,6 @@
       <xsd:element name="getAppConfigOutput"
 		   type="types:AppConfigType"/>
 
-      <xsd:element name="getSystemInfoInput"
-		   type="types:SystemInfoInputType"/>
-
-      <xsd:element name="getSystemInfoOutput"
-		   type="types:SystemInfoType"/>
-
       <xsd:element name="launchJobInput" 
 		   type="types:JobInputType"/>
 
@@ -424,14 +391,6 @@
 
   <wsdl:message name="getAppConfigResponse">
     <wsdl:part name="out" element="types:getAppConfigOutput"/>
-  </wsdl:message>
-
-  <wsdl:message name="getSystemInfoRequest">
-    <wsdl:part name="in" element="types:getSystemInfoInput"/>
-  </wsdl:message>
-
-  <wsdl:message name="getSystemInfoResponse">
-    <wsdl:part name="out" element="types:getSystemInfoOutput"/>
   </wsdl:message>
 
   <wsdl:message name="launchJobRequest">
@@ -506,13 +465,6 @@
       <wsdl:input message="as:getAppConfigRequest"/>
       <wsdl:output message="as:getAppConfigResponse"/>
       <wsdl:fault name="getAppConfigFault"
-		  message="as:opalFaultResponse"/>
-    </wsdl:operation>
-
-    <wsdl:operation name="getSystemInfo">
-      <wsdl:input message="as:getSystemInfoRequest"/>
-      <wsdl:output message="as:getSystemInfoResponse"/>
-      <wsdl:fault name="getSystemInfoFault"
 		  message="as:opalFaultResponse"/>
     </wsdl:operation>
 
@@ -592,19 +544,6 @@
       </wsdl:output>
       <wsdl:fault name="getAppConfigFault">
 	<wsdlsoap:fault name="getAppConfigFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-
-    <wsdl:operation name="getSystemInfo">
-      <wsdlsoap:operation soapAction="http://nbcr.sdsc.edu/opal/getSystemInfo"/>
-      <wsdl:input name="getSystemInfoRequest">
-	<wsdlsoap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getSystemInfoResponse">
-	<wsdlsoap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="getSystemInfoFault">
-	<wsdlsoap:fault name="getSystemInfoFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
 
