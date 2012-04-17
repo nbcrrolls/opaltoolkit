@@ -14,7 +14,7 @@ class TestSequenceFunctions(unittest.TestCase):
         self.dateClient = OpalClient.OpalService(dateurl)
         self.email = "clem@sdsc.edu"
 	
-    def dtest_launchJob(self):
+    def test_launchJob(self):
         #construct a opalService
         print "  --  Launch date job  --  "
         jobStatus = self.dateClient.launchJobNB("", [], email = self.email)
@@ -33,14 +33,14 @@ class TestSequenceFunctions(unittest.TestCase):
         for i in files:
             print "\t", i
 		
-    def dtest_destroy(self):
+    def test_destroy(self):
         print "  --  Launch and destroy  --  "
         jobStatus = self.dateClient.launchJobNB("", [], email = self.email)
         jobStatus.destroyJob()
         self.assertFalse(jobStatus.isSuccessful(), "Destroy job should fail the job")
 
 
-    def dtest_apbsClient(self):
+    def test_apbsClient(self):
         print "  --  Apbs client  --  "
         url = "http://kryptonite.nbcr.net/opal2/services/ApbsOpalService"
         self.apbsClient = OpalClient.OpalService(url)
@@ -66,7 +66,7 @@ class TestSequenceFunctions(unittest.TestCase):
         self.vinaClient = OpalClient.OpalService(url)
         argList = "--config test.config --receptor 2HTY_A-2HTY_A.pdbqt --ligand_db sample"
         inputFile = ["etc/test.config", "etc/2HTY_A-2HTY_A.pdbqt"]
-        jobStatus = self.vinaClient.launchJobNB(argList, inputFile)
+        jobStatus = self.vinaClient.launchJobNB(argList, inputFile, email = self.email)
         while jobStatus.isRunning() :
             time.sleep(3)
             jobStatus.updateStatus()

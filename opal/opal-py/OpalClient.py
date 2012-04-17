@@ -72,11 +72,17 @@ class JobStatus:
 
     def downloadOutput(self, baseDir):
         """ download all output files from the job and it places them in the local baseDir 
-        (baseDir must exists) """
-        strURL = self.getBaseURL() + "/results.tar.gz"
-        filehandle = urllib.urlopen(strURL)
-        tar = tarfile.open(fileobj=filehandle, mode='r:gz')
+        (baseDir must exists). This function currently works only with newer opal services,
+
+        @returns: true if the operation was successful false otherwise  """
+        fileName = "results.tar.gz"
+        tarURL = self.getBaseURL() + "/" + fileName
+        outputTar = baseDir + "/" + fileName
+        #TODO add support for services without results.tar.gz
+        urllib.urlretrieve(tarURL, outputTar)
+        tar = tarfile.open(outputTar)
         tar.extractall(path=baseDir)
+        tar.close()
         return 
         
 
