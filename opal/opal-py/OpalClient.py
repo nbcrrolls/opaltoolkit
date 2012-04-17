@@ -4,7 +4,7 @@ import time
 import httplib
 import os
 import getopt
-import urllib
+import urllib2
 import tarfile
 
 from AppService_client import \
@@ -78,12 +78,26 @@ class JobStatus:
         fileName = "results.tar.gz"
         tarURL = self.getBaseURL() + "/" + fileName
         outputTar = baseDir + "/" + fileName
-        #TODO add support for services without results.tar.gz
-        urllib.urlretrieve(tarURL, outputTar)
+        #
+        # download results.tar.gz
+        #
+        try:
+            resp = urllib2.urlopen(tarURL)
+        except urllib2.URLError, e:
+            #print "Exception with: ", e
+            #unable to download outputs
+            return False 
+        fileOut = open(outputTar, 'w')
+        fileOut.write(resp.read())
+        fileOut.close() 
+        resp.close()
+        #
+        # untar
+        #
         tar = tarfile.open(outputTar)
         tar.extractall(path=baseDir)
         tar.close()
-        return 
+        return True
         
 
     def isRunning(self):
