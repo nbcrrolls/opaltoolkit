@@ -58,9 +58,11 @@ class TestSequenceFunctions(unittest.TestCase):
         print "Output file:"
         for i in files:
             print "\t", i
+        tempDir = tempfile.mkdtemp()
+        print "Downloading at output file at: ", tempDir
+        self.assertFalse( jobStatus.downloadOutput(tempDir), "results.tar.gz should not be present for this job")
 
-
-    def test_vinaScreening(self):
+    def dtest_vinaScreening(self):
         print "  --  VinaScreening  --  "
         url = "http://rocce-vm3.ucsd.edu/opal2/services/autodockvina_screening_1.1.2"
         self.vinaClient = OpalClient.OpalService(url)
@@ -80,8 +82,28 @@ class TestSequenceFunctions(unittest.TestCase):
             print "\t", i
         tempDir = tempfile.mkdtemp()
         print "Downloading at output file at: ", tempDir
-        jobStatus.downloadOutput(tempDir) 
+        assertTrue(jobStatus.downloadOutput(tempDir) , "Unable to download results.tar.gz from the server!!")
 
+
+
+    def dtest_vinaScreeningKill(self):
+        print "  --  VinaScreening  --  "
+        url = "http://rocce-vm3.ucsd.edu/opal2/services/autodockvina_screening_1.1.2"
+        self.vinaClient = OpalClient.OpalService(url)
+        argList = "--config test.config --receptor 2HTY_A-2HTY_A.pdbqt --ligand_db sample"
+        inputFile = ["etc/test.config", "etc/2HTY_A-2HTY_A.pdbqt"]
+        jobStatus = self.vinaClient.launchJobNB(argList, inputFile, email = self.email)
+        self.assertTrue( jobStatus.isRunning() )
+        time.sleep(20)
+        killTime = time.time()
+        jobStatus.destroyJob()
+        jobStatus.updateStatus()
+        while jobStatus.isRunning() :
+            time.sleep(3)
+            jobStatus.updateStatus()
+        self.assertFalse(jobStatus.isSuccessful(), "job is supposed to fail but it didn't")
+        print "Killing job required: ", str( time.time() - killTime )
+        print "Killed job base URL: ", jobStatus.getBaseURL()
 
 
 if __name__ == '__main__':
