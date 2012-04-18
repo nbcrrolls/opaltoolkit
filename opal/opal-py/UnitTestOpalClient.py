@@ -59,7 +59,7 @@ class TestSequenceFunctions(unittest.TestCase):
         for i in files:
             print "\t", i
         tempDir = tempfile.mkdtemp()
-        print "Downloading at output file at: ", tempDir
+        #apbs does not create results.tar.gz
         self.assertFalse( jobStatus.downloadOutput(tempDir), "results.tar.gz should not be present for this job")
 
     def dtest_vinaScreening(self):
