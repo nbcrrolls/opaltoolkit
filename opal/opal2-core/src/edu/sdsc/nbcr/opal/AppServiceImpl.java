@@ -1527,7 +1527,9 @@ public class AppServiceImpl
 	    // check whether authentication should be turned on
 	    Authenticator auth = null;
 	    String enableAuth = props.getProperty("mail.smtp.auth");
-	    if (enableAuth != null) {
+            //TODO fix this code
+            //if ((enableAuth != null) && (enableAuth.equals("true"))) {
+	    if ((enableAuth != null) && (enableAuth.equals("true"))) {
 		mailProps.put("mail.smtp.starttls.enable",
 			      enableAuth);
 		mailProps.put("mail.smtp.auth", 
