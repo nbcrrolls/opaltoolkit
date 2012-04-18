@@ -1,0 +1,123 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module OpalClient</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>OpalClient</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="../OpalClient.py">../OpalClient.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top>getopt<br>
+httplib<br>
+</td><td width="25%" valign=top>os<br>
+sys<br>
+</td><td width="25%" valign=top>tarfile<br>
+time<br>
+</td><td width="25%" valign=top>urllib2<br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="OpalClient.html#JobStatus">JobStatus</a>
+</font></dt><dt><font face="helvetica, arial"><a href="OpalClient.html#OpalService">OpalService</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="JobStatus">class <strong>JobStatus</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;represents&nbsp;a&nbsp;Opal&nbsp;job&nbsp;status&nbsp;and&nbsp;can&nbsp;be&nbsp;used&nbsp;after&nbsp;launching&nbsp;a&nbsp;job&nbsp;to&nbsp;<br>
+monitor&nbsp;its&nbsp;execution.&nbsp;A&nbsp;Job&nbsp;Status&nbsp;is&nbsp;returned&nbsp;by&nbsp;a&nbsp;launchJob&nbsp;call,&nbsp;or&nbsp;it&nbsp;can&nbsp;be&nbsp;<br>
+constructed&nbsp;from&nbsp;a&nbsp;jobID&nbsp;and&nbsp;its&nbsp;corresponding&nbsp;Opal&nbsp;Service<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="JobStatus-__init__"><strong>__init__</strong></a>(self, opalService, jobID)</dt><dd><tt>A&nbsp;<a href="#JobStatus">JobStatus</a>&nbsp;can&nbsp;be&nbsp;constructed&nbsp;passing&nbsp;a&nbsp;<a href="#OpalService">OpalService</a>&nbsp;object&nbsp;and&nbsp;string&nbsp;<br>
+containing&nbsp;a&nbsp;valid&nbsp;jobID</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-destroyJob"><strong>destroyJob</strong></a>(self)</dt><dd><tt>request&nbsp;the&nbsp;server&nbsp;to&nbsp;kill&nbsp;this&nbsp;job</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-downloadOutput"><strong>downloadOutput</strong></a>(self, baseDir)</dt><dd><tt>download&nbsp;all&nbsp;output&nbsp;files&nbsp;from&nbsp;the&nbsp;job&nbsp;and&nbsp;it&nbsp;places&nbsp;them&nbsp;in&nbsp;the&nbsp;local&nbsp;baseDir&nbsp;<br>
+(baseDir&nbsp;must&nbsp;exists).&nbsp;This&nbsp;function&nbsp;currently&nbsp;works&nbsp;only&nbsp;with&nbsp;newer&nbsp;opal&nbsp;services,<br>
+&nbsp;<br>
+@return:&nbsp;true&nbsp;if&nbsp;the&nbsp;operation&nbsp;was&nbsp;successful&nbsp;false&nbsp;otherwise</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getBaseURL"><strong>getBaseURL</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;the&nbsp;URL&nbsp;that&nbsp;contains&nbsp;all&nbsp;the&nbsp;job&nbsp;outputs</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getError"><strong>getError</strong></a>(self)</dt><dd><tt>It&nbsp;returns&nbsp;the&nbsp;error&nbsp;message&nbsp;of&nbsp;the&nbsp;job</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getJobId"><strong>getJobId</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;the&nbsp;jobid&nbsp;of&nbsp;this&nbsp;job</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getOutputFiles"><strong>getOutputFiles</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;strings&nbsp;containing&nbsp;the&nbsp;URLs&nbsp;of&nbsp;the&nbsp;output&nbsp;files&nbsp;<br>
+produced&nbsp;by&nbsp;the&nbsp;job</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getStatus"><strong>getStatus</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;the&nbsp;numeric&nbsp;representation&nbsp;of&nbsp;the&nbsp;status&nbsp;of&nbsp;the&nbsp;job</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getURLstderr"><strong>getURLstderr</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;the&nbsp;URL&nbsp;of&nbsp;the&nbsp;stderr</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-getURLstdout"><strong>getURLstdout</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;the&nbsp;URL&nbsp;of&nbsp;the&nbsp;stdout</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-isRunning"><strong>isRunning</strong></a>(self)</dt><dd><tt>this&nbsp;function&nbsp;returns&nbsp;true&nbsp;is&nbsp;the&nbsp;job&nbsp;is&nbsp;still&nbsp;running&nbsp;false&nbsp;if&nbsp;it&nbsp;finished</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-isSuccessful"><strong>isSuccessful</strong></a>(self)</dt><dd><tt>If&nbsp;the&nbsp;job&nbsp;sucesfully&nbsp;finished&nbsp;its&nbsp;execution,&nbsp;this&nbsp;function&nbsp;returns&nbsp;true</tt></dd></dl>
+
+<dl><dt><a name="JobStatus-updateStatus"><strong>updateStatus</strong></a>(self)</dt><dd><tt>this&nbsp;function&nbsp;retrives&nbsp;a&nbsp;updated&nbsp;version&nbsp;of&nbsp;the&nbsp;jobStatus&nbsp;<br>
+from&nbsp;the&nbsp;Opal&nbsp;server</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="OpalService">class <strong>OpalService</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;wrap&nbsp;a&nbsp;single&nbsp;Opal&nbsp;service.&nbsp;You&nbsp;should&nbsp;have&nbsp;one&nbsp;of&nbsp;this&nbsp;class&nbsp;for&nbsp;each&nbsp;<br>
+Opal&nbsp;Service&nbsp;you&nbsp;want&nbsp;to&nbsp;use.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="OpalService-__init__"><strong>__init__</strong></a>(self, url)</dt><dd><tt>A&nbsp;<a href="#OpalService">OpalService</a>&nbsp;can&nbsp;be&nbsp;contructed&nbsp;passing&nbsp;a&nbsp;string&nbsp;containing&nbsp;a&nbsp;valid&nbsp;Opal&nbsp;URL</tt></dd></dl>
+
+<dl><dt><a name="OpalService-getServiceMetadata"><strong>getServiceMetadata</strong></a>(self)</dt><dd><tt>return&nbsp;the&nbsp;XML&nbsp;appConfig&nbsp;used&nbsp;by&nbsp;this&nbsp;application</tt></dd></dl>
+
+<dl><dt><a name="OpalService-getURL"><strong>getURL</strong></a>(self)</dt><dd><tt>@return:&nbsp;a&nbsp;string&nbsp;containing&nbsp;the&nbsp;end&nbsp;point&nbsp;URL&nbsp;used&nbsp;by&nbsp;this&nbsp;services</tt></dd></dl>
+
+<dl><dt><a name="OpalService-isOpal2"><strong>isOpal2</strong></a>(self)</dt><dd><tt>it&nbsp;returns&nbsp;true&nbsp;if&nbsp;this&nbsp;service&nbsp;points&nbsp;to&nbsp;a&nbsp;opal2&nbsp;server<br>
+false&nbsp;in&nbsp;the&nbsp;other&nbsp;cases</tt></dd></dl>
+
+<dl><dt><a name="OpalService-launchJobBlocking"><strong>launchJobBlocking</strong></a>(self, commandline, inFilesPath, numProcs<font color="#909090">=None</font>, email<font color="#909090">=None</font>, passwd<font color="#909090">=None</font>)</dt><dd><tt><a href="#OpalService-launchJobBlocking">launchJobBlocking</a>(commandline,&nbsp;inFilesPath[,&nbsp;numProcs,&nbsp;email,&nbsp;passwd])&nbsp;-&gt;&nbsp;<a href="#JobStatus">JobStatus</a><br>
+&nbsp;<br>
+This&nbsp;method&nbsp;functions&nbsp;like&nbsp;the&nbsp;launchJobNB,&nbsp;but&nbsp;instead&nbsp;of&nbsp;returning&nbsp;it&nbsp;waits<br>
+until&nbsp;the&nbsp;invoked&nbsp;application&nbsp;is&nbsp;finished&nbsp;or&nbsp;failed.</tt></dd></dl>
+
+<dl><dt><a name="OpalService-launchJobNB"><strong>launchJobNB</strong></a>(self, commandline, inFilesPath, numProcs<font color="#909090">=None</font>, email<font color="#909090">=None</font>, passwd<font color="#909090">=None</font>)</dt><dd><tt><a href="#OpalService-launchJobNB">launchJobNB</a>(commandline,&nbsp;inFilesPath[,&nbsp;numProcs,&nbsp;email,&nbsp;passwd])&nbsp;-&gt;&nbsp;<a href="#JobStatus">JobStatus</a><br>
+&nbsp;<br>
+It&nbsp;invokes&nbsp;the&nbsp;execution&nbsp;of&nbsp;the&nbsp;remote&nbsp;application&nbsp;and&nbsp;return.&nbsp;<br>
+&nbsp;<br>
+commandline:&nbsp;is&nbsp;a&nbsp;string&nbsp;containing&nbsp;the&nbsp;command&nbsp;line&nbsp;that&nbsp;should&nbsp;be&nbsp;executed<br>
+inFilesPath:&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;strings&nbsp;containing&nbsp;relative&nbsp;or&nbsp;absolute&nbsp;path&nbsp;to&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;files&nbsp;need&nbsp;to&nbsp;be&nbsp;uploaded&nbsp;for&nbsp;the&nbsp;execution&nbsp;of&nbsp;the&nbsp;application<br>
+numProcs:&nbsp;is&nbsp;the&nbsp;number&nbsp;of&nbsp;processors&nbsp;that&nbsp;should&nbsp;be&nbsp;used&nbsp;to&nbsp;run&nbsp;the&nbsp;parallel&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;application&nbsp;(this&nbsp;option&nbsp;is&nbsp;valid&nbsp;only&nbsp;for&nbsp;parallel&nbsp;applicaiton)<br>
+email:&nbsp;is&nbsp;a&nbsp;string&nbsp;containing&nbsp;the&nbsp;email&nbsp;used&nbsp;to&nbsp;send&nbsp;notification&nbsp;when&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;application&nbsp;execution&nbsp;will&nbsp;finish<br>
+passwd:&nbsp;is&nbsp;a&nbsp;string&nbsp;containing&nbsp;the&nbsp;passwd&nbsp;used&nbsp;to&nbsp;authenticate&nbsp;with&nbsp;the&nbsp;server<br>
+&nbsp;<br>
+@returns:&nbsp;a&nbsp;<a href="#JobStatus">JobStatus</a>&nbsp;Oject&nbsp;which&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;monitor&nbsp;its&nbsp;execution</tt></dd></dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

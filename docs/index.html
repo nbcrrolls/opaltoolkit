@@ -202,18 +202,54 @@ returned as a response to the same invocation.
 <h2>5. Developers Guide</h2>
 
 <p>To use Opal with the python libraries you have to make sure that the ZSI
-is installed properly (as indicated above) and the stubs
+is installed properly (as indicated above) and the stubs and the client
 (AppService_client.py AppService_types.py and OpalClient.py) are in your Python path. In this
-section we provide some code snippets showing the main steps for invoking a
-Opal service. First it is necessary to retrieve a reference to an
-AppServicePort type, as shown below. The <i>url</i> should point to the
-Opal application you want to invoke. If you get an error regarding 
+section we provide some code snippets showing the main steps for invoking an
+Opal service. The <i>url</i> should point to the
+Opal application you want to invoke. argList is the command line as you would like to to invoke 
+your application and inputFile is a list of string containing the relative path to the local file
+you want to upload. If you get an error regarding 
 importing "AppService_client" then it is probably because the Python interpreter 
-can not find the stubs (AppService_client.py and AppService_types.py).</p>
+can not find the stubs and the client (AppService_client.py and AppService_types.py).</p>
 
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000">
+   <pre class="SCREEN">
+import OpalClient
 
+# Service URL
+apbsURL = "http://kryptonite.nbcr.net/opal2/services/apbs_1.3"
+client = OpalClient.OpalService(apbsURL)
 
+# command-line arguments
+argList = "apbs.in"
+inputFile = ["etc/apbs.in", "etc/ion.xml"]
 
+print "Launching remote Apbs job"
+jobStatus = client.launchJobNB(argList, inputFile) </pre>
+   </FONT></TD></TR>
+   </TABLE>
+
+<p>Once you get the pointer to the jobStatus you should pool the server 
+to check the exectution of your job with the following code.</p>
+
+   <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
+   <TR><TD><FONT COLOR="#000000">
+   <pre class="SCREEN">
+while jobStatus.isRunning() :
+    time.sleep(3)
+    print "Polling job status"
+    jobStatus.updateStatus()
+
+if jobStatus.isSuccessful():
+    print "Job execution finished sucessfully."
+else:
+    print "Job execution failed."
+    print "Check the stdout.txt and the stderr.txt for errors...." </pre>
+   </FONT></TD></TR>
+   </TABLE>
+
+<p>Finally you can read the <a href="OpalClient.html">pydoc</a> to see a full description of the APIs.</p>
 
 
 <h3>5.2 Old Opal Python Client</h3>
@@ -222,7 +258,8 @@ can not find the stubs (AppService_client.py and AppService_types.py).</p>
 python classes produced by the stubs you can read this section to see some 
 example of coding.</p>
 
-<p>The <i>url</i> should point to the
+<p>First it is necessary to retrieve a reference to an
+AppServicePort type, as shown below. The <i>url</i> should point to the
 Opal application you want to invoke and you shold make sure you have the 
 stubs in your Python path (AppService_client.py and AppService_types.py).</p>
 

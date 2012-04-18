@@ -15,16 +15,14 @@ from AppService_types import ns0
 from ZSI.TC import String
 
 
-
-
 class JobStatus:
-    """ This class represents a Opal job status and can be used 
-    after launching a job to monitor its execution. A Job Status is 
-    returned by a launchJob call, or it can be constructed from a jobID
-    and its corresponding Opal Service"""
+    """ This class represents a Opal job status and can be used after launching a job to 
+    monitor its execution. A Job Status is returned by a launchJob call, or it can be 
+    constructed from a jobID and its corresponding Opal Service"""
 
     def __init__(self, opalService, jobID):
-        """ """
+        """ A JobStatus can be constructed passing a OpalService object and string 
+        containing a valid jobID """
         self.opalService = opalService
         self.jobID = jobID
         self.jobStatus = \
@@ -74,7 +72,7 @@ class JobStatus:
         """ download all output files from the job and it places them in the local baseDir 
         (baseDir must exists). This function currently works only with newer opal services,
 
-        @returns: true if the operation was successful false otherwise  """
+        @return: true if the operation was successful false otherwise  """
         fileName = "results.tar.gz"
         tarURL = self.getBaseURL() + "/" + fileName
         outputTar = baseDir + "/" + fileName
@@ -114,7 +112,7 @@ class JobStatus:
         return False
 
     def destroyJob(self):
-        """ it destroies the running jobs """
+        """ request the server to kill this job """
         req = destroyRequest(self.jobID)
         self.jobStatus = self.opalService.appServicePort.destroy( req )
 		
@@ -122,33 +120,43 @@ class JobStatus:
 
 
 class OpalService:
-    """ This class wrap a single Opal service. You should have one of this class 
-    for each Opal Service you want to use.
+    """ This class wrap a single Opal service. You should have one of this class for each 
+    Opal Service you want to use.
     """
 
     def __init__(self, url):
+        """ A OpalService can be contructed passing a string containing a valid Opal URL """
         self.url = url
         appLocator = AppServiceLocator()
         self.appServicePort = appLocator.getAppServicePort(self.url)
 
     def getServiceMetadata(self):
-        """ """
+        """ return the XML appConfig used by this application """
         req = getAppMetadataRequest()
         resp = self.appServicePort.getAppMetadata(req)
         return resp
 
     def getURL(self):
-        """ 
-        @return: a string containing the end point URL used by this services """
+        """ @return: a string containing the end point URL used by this services """
         return self.url
 
 
     def launchJobNB(self, commandline, inFilesPath, numProcs = None, email = None, \
                     passwd=None):
-        """ invoke the execution of the remote scientific application
-        using Opal a return right away
+        """ launchJobNB(commandline, inFilesPath[, numProcs, email, passwd]) -> JobStatus
+
+        It invokes the execution of the remote application and return. 
+
+        commandline: is a string containing the command line that should be executed
+        inFilesPath: is a list of strings containing relative or absolute path to the 
+            files need to be uploaded for the execution of the application
+        numProcs: is the number of processors that should be used to run the parallel 
+            application (this option is valid only for parallel applicaiton)
+        email: is a string containing the email used to send notification when the 
+            application execution will finish
+        passwd: is a string containing the passwd used to authenticate with the server
         
-        @returns: a jobStatus Oject which can be used to monitor its execution"""
+        @returns: a JobStatus Oject which can be used to monitor its execution"""
 
         inputFiles = []
         if inFilesPath != None:
@@ -184,6 +192,20 @@ class OpalService:
         jobStatus = self.appServicePort.launchJob(req)
         return JobStatus(self, jobStatus._jobID)
     
+    def launchJobBlocking(self, commandline, inFilesPath, numProcs = None, email = None, \
+                    passwd=None):
+        """ launchJobBlocking(commandline, inFilesPath[, numProcs, email, passwd]) -> JobStatus
+
+        This method functions like the launchJobNB, but instead of returning it waits
+        until the invoked application is finished or failed.
+        """
+        jobStatus = self.launchJobNB(commandline, inFilesPath, numProcs)
+        while jobStatus.isRunning() :
+            time.sleep(30)
+            jobStatus.updateStatus()
+        #ok job is finished
+        return jobStatus
+
     def isOpal2(self):
         """ it returns true if this service points to a opal2 server
             false in the other cases
@@ -192,15 +214,6 @@ class OpalService:
             return True
         else:
             return False
-
-    def launchJobBlocking(self, commandline, inFilesPath, numProcs = None):
-        """     """
-        jobStatus = self.launchJobNB(commandline, inFilesPath, numProcs)
-        while jobStatus.isRunning() :
-            time.sleep(30)
-            jobStatus.updateStatus()
-        #ok job is finished
-        return jobStatus
 
 
 
