@@ -39,7 +39,7 @@
       <xsd:complexType name="FlagsType">
 	<xsd:sequence>
 	  <!-- for referencing this parameter later -->
-	  <xsd:element name="id" type="xsd:ID"/>
+	  <xsd:element name="id" type="xsd:string"/>
 
 	  <!-- name of flag listing one at a time (e.g. -a, -l) -->
 	  <xsd:element name="tag" type="xsd:string"/>
@@ -59,7 +59,7 @@
       <xsd:complexType name="ParamsType">
 	<xsd:sequence>
 	  <!-- for referencing this parameter later -->
-	  <xsd:element name="id" type="xsd:ID"/>
+	  <xsd:element name="id" type="xsd:string"/>
 	  
 	  <!-- tags that refer to the parameter (e.g. -p, -o, etc) -->
 	  <!-- optional for unnamed (non-tagged) parameters -->
@@ -96,13 +96,13 @@
 	<xsd:sequence>
 	  <!-- for referencing this parameter later -->
 	  <!-- minOccurs is set to 0 for backwards compatibility -->
-	  <xsd:element name="id" type="xsd:ID" minOccurs="0"/>
+	  <xsd:element name="id" type="xsd:string" minOccurs="0"/>
 	  
 	  <!-- the name of the group -->
 	  <xsd:element name="name" type="xsd:string"/>
 
 	  <!-- The list of elements belonging to this group -->
-	  <xsd:element name="elements" type="xsd:IDREFS"/>
+	  <xsd:element name="elements" type="xsd:string"/>
 	  
 	  <!-- It means that at least one of the element of this group are reuqired  -->
 	  <xsd:element name="required" type="xsd:boolean" minOccurs="0"/>
@@ -125,7 +125,7 @@
       <xsd:complexType name="ImplicitParamsType">
 	<xsd:sequence>
 	  <!-- for referencing this output later -->
-	  <xsd:element name="id" type="xsd:ID"/>
+	  <xsd:element name="id" type="xsd:string"/>
 
 	  <!-- a string, or an expression (possibly depending on some id) -->
 	  <xsd:element name="name" type="xsd:string" minOccurs="0"/>
