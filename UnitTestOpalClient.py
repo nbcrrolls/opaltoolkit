@@ -12,7 +12,7 @@ class TestSequenceFunctions(unittest.TestCase):
     def setUp(self):
         dateurl = "http://rocce-vm3.ucsd.edu/opal2/services/date"
         self.dateClient = OpalClient.OpalService(dateurl)
-        self.email = "clem@sdsc.edu"
+        self.email = "root@localhost"
 	
     def test_launchJob(self):
         #construct a opalService
