@@ -59,5 +59,6 @@ mkdir -p $DESTDIR
 cp -r $SRCDIR* $DESTDIR
 # opal-py
 cp ../opal-py/docs/index.html $DESTDIR/opal-py-index.html
+cp ../opal-py/docs/OpalClient.html $DESTDIR/
 # opal-perl
 # cp ../opal-perl/docs/index.html $DESTDIR/opal-perl-index.html
