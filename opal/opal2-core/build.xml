@@ -287,7 +287,7 @@ Author:
 
   
     <!-- copy over the jar files required into common/lib -->
-    <copy todir="${catalina.home}/common/lib">
+    <copy todir="${catalina.home}/lib">
       <fileset dir="${lib}">
         <!-- cog jars and helpers -->
         <include name="cog-jglobus.jar" />
@@ -304,8 +304,8 @@ Author:
       </fileset>
     </copy>
 
-    <!-- copy over the jar files required into server/lib -->
-    <copy todir="${catalina.home}/server/lib">
+    <!-- copy over the jar files required into lib -->
+    <copy todir="${catalina.home}/lib">
       <fileset dir="${lib}">
         <!-- cog-tomcat jar -->
         <include name="cog-tomcat.jar" />
@@ -313,7 +313,8 @@ Author:
     </copy>
 
     <!-- copy over the jar files required into common/endorsed -->
-    <copy todir="${catalina.home}/common/endorsed">
+    <!-- <copy todir="${catalina.home}/common/endorsed">  -->
+    <copy todir="${catalina.home}/lib">
       <fileset dir="${lib}">
         <!-- cog-tomcat jar -->
         <include name="xalan-2.7.0.jar" />
@@ -369,9 +370,9 @@ Author:
     <!-- delete the opal webapp -->
     <delete verbose="true" dir="${catalina.home}/webapps/${opal.webapp}"/>
   
-    <!-- delete jars required from common/lib -->
+    <!-- delete jars required from /lib -->
     <delete verbose="true">
-      <fileset dir="${catalina.home}/common/lib">
+      <fileset dir="${catalina.home}/lib">
         <!-- cog jars and helpers -->
         <include name="cog*" />
         <include name="cryptix*" />
@@ -384,7 +385,7 @@ Author:
 
     <!-- delete jars required from server/lconfigurationib -->
     <delete verbose="true">
-      <fileset dir="${catalina.home}/server/lib">
+      <fileset dir="${catalina.home}/lib">
         <!-- cog-tomcat jar -->
         <include name="cog*" />
       </fileset>
