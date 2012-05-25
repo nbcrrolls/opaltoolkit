@@ -21,6 +21,9 @@ import org.apache.axis.client.AdminClient;
 
 import edu.sdsc.nbcr.opal.state.HibernateUtil;
 import edu.sdsc.nbcr.opal.state.ServiceStatus;
+//TODO no good using .gui. package here
+import edu.sdsc.nbcr.opal.gui.common.OPALService;
+import edu.sdsc.nbcr.opal.gui.common.GetServiceListHelper;
 import edu.sdsc.nbcr.common.TypeDeserializer;
 import edu.sdsc.nbcr.opal.AppConfigType;
 
@@ -52,7 +55,6 @@ public class OpalDeployService extends HttpServlet {
         super.init(config);
         logger.info("Loading OpalInfoServlet (init method).");
         
-        
         //-------     initializing the DB connection    -----
         java.util.Properties props = new java.util.Properties();
         String propsFileName = "opal.properties";
@@ -70,36 +72,70 @@ public class OpalDeployService extends HttpServlet {
         }
         axisAdminUrl = opalUrl.replaceAll("services$","servlet/AxisServlet");
 
-        if (props.getProperty("deploy.path") != null ) {
-            deployPath = props.getProperty("deploy.path");
+        if (props.getProperty("opal.deploy.path") != null ) {
+            deployPath = props.getProperty("opal.deploy.path");
         }
+
+        File deployPathFile = new File(deployPath);
+        if (! deployPathFile.exists() ) {
+            //let's create it
+            deployPathFile.mkdir();
+        }
+        //TODO check if it's a file istead of a dir
+
         logger.info("initDeployServlet: axis URL: " + axisAdminUrl );
-        logger.info("initDeployServlet: deploy path: " + deployPath );
+        logger.info("initDeployServlet: deploy path: " + deployPathFile );
         
+        //get list of deploied services and undeploy them
+        GetServiceListHelper helper = new GetServiceListHelper();
+        helper.setBasePrivateURL(opalUrl);
+        helper.setBasePublicURL(opalUrl);
+        OPALService [] servicesList = helper.getOpalServiceList();
+        if ( servicesList == null ) {
+            logger.error("Unable to parse the service list from the server");
+            return;
+        }
+        for(OPALService service : servicesList){
+            logger.info("undeploying service: " + service.getServiceName());
+            undeploy(service.getServiceName());
+        }
+
+        //now deploy new services
+        File [] deployFileList = deployPathFile.listFiles();
+        for (File configFile : deployFileList){
+            logger.info("deploying service: " + configFile);
+            try{deploy(configFile.getCanonicalPath());}
+            catch (Exception e){
+                //this should never happen
+                logger.error("configFile does not exist: " + e);
+            }
+        }
+ 
+
     }
 
-
+    //TODO make this file
     public static void deploy(String appConfig){
 
         // get the location of the application configuration
         logger.info("deploy with appconfig: " + appConfig);
         
-        
         //TODO move this to the init section    
         //reading wsdd template
         String wsddTemplate = "opal_deploy.wsdd";
         // check to make sure that the WSDD template exists
-        File f = new File(wsddTemplate);
-        if (!f.exists()) {
-            logger.error("WSDD template file " + wsddTemplate + " does not exist");
+        String templateData = null;
+        try {
+            File f = new File(wsddTemplate);
+            byte[] data = new byte[(int) f.length()];
+            FileInputStream fIn = new FileInputStream(f);
+            fIn.read(data);
+            fIn.close();
+            templateData = new String(data);
+        } catch (Exception e){
+            logger.error("unable to read wsdd template file: " + e);
             return;
         }
-        byte[] data = new byte[(int) f.length()];
-        FileInputStream fIn = new FileInputStream(f);
-        fIn.read(data);
-        fIn.close();
-        String templateData = new String(data);
-        
         //--end TODO
 
 
@@ -118,8 +154,7 @@ public class OpalDeployService extends HttpServlet {
         					new AppConfigType());;
         } catch (Exception e) {
             logger.error(e);
-            String msg = "Deploy: appConfiguration is invalid: " + appConfig;
-            logger.error(msg);
+            logger.error("appConfiguration is invalid: " + appConfig);
             return;
         }
         
@@ -131,7 +166,7 @@ public class OpalDeployService extends HttpServlet {
             serviceName = config.getMetadata().getAppName();
         }
         if ( serviceName == null ) {
-            logger.error("Deploy: unable to get service name for file " + appConfig );
+            logger.error("Unable to get service name for file " + appConfig );
             return;
         }
         // set the final service name
@@ -150,21 +185,23 @@ public class OpalDeployService extends HttpServlet {
         
         // location of final WSDD - also supplied by build.xml
         try{
-        File wsddFinal = File.createTempFile("wsdd_" + serviceName,".xml");
-        FileOutputStream fOut = new FileOutputStream(wsddFinal);
-        fOut.write(finalData.getBytes());
-        fOut.close();
-        if ( runAxisAdmin(wsddFinal.getCanonicalPath() ) ) {
-            // updating service status in database
-            logger.info("Updating service status in database to ACTIVE");
-            ServiceStatus serviceStatus = new ServiceStatus();
-            serviceStatus.setServiceName(serviceName);
-            serviceStatus.setStatus(ServiceStatus.STATUS_ACTIVE);
-            HibernateUtil.saveServiceStatus(serviceStatus);
-            //TODO delete wsddfinal
-            //wsddFinal.delete();
+            File wsddFinal = File.createTempFile("wsdd_" + serviceName,".xml");
+            FileOutputStream fOut = new FileOutputStream(wsddFinal);
+            fOut.write(finalData.getBytes());
+            fOut.close();
+            if ( runAxisAdmin(wsddFinal.getCanonicalPath() ) ) {
+                // updating service status in database
+                logger.info("Updating service status in database to ACTIVE");
+                ServiceStatus serviceStatus = new ServiceStatus();
+                serviceStatus.setServiceName(serviceName);
+                serviceStatus.setStatus(ServiceStatus.STATUS_ACTIVE);
+                HibernateUtil.saveServiceStatus(serviceStatus);
+                //TODO delete wsddfinal
+                //wsddFinal.delete();
+            }            
+        }catch (Exception e) {
+            logger.error("Deploy: failing while writing wsdd file " + e);
         }
-
     }
 
 
@@ -178,33 +215,37 @@ public class OpalDeployService extends HttpServlet {
         //reading wsdd template
         String wsddTemplate = "opal_undeploy.wsdd";
         // check to make sure that the WSDD template exists
-        File f = new File(wsddTemplate);
-        if (!f.exists()) {
-            logger.error("WSDD template file " + wsddTemplate + " does not exist");
+        String templateData = null;
+        try{
+            File f = new File(wsddTemplate);
+            byte[] data = new byte[(int) f.length()];
+            FileInputStream fIn = new FileInputStream(f);
+            fIn.read(data);
+            fIn.close();
+            templateData = new String(data);
+        }catch (Exception e){
+            logger.error("Unable to read the wsdd undeploy: " + e);
             return;
         }
-        byte[] data = new byte[(int) f.length()];
-        FileInputStream fIn = new FileInputStream(f);
-        fIn.read(data);
-        fIn.close();
-        String templateData = new String(data);
         
         //--end TODO
         String finalData = templateData.replaceAll("@SERVICE_NAME@", serviceName);
-    
-        File wsddFinal = File.createTempFile("wsdd_" + serviceName,".xml");
-        FileOutputStream fOut = new FileOutputStream(wsddFinal);
-        fOut.write(finalData.getBytes());
-        fOut.close();
-        if ( runAxisAdmin(wsddFinal.getCanonicalPath() ) ) {
-        
-            logger.info("Updating service status in database to INACTIVE");
-            ServiceStatus serviceStatus = new ServiceStatus();
-            serviceStatus.setServiceName(serviceName);
-            serviceStatus.setStatus(ServiceStatus.STATUS_INACTIVE);
-            HibernateUtil.saveServiceStatus(serviceStatus);
-            //TODO delete wsddfinal
-            //wsddFinal.delete();
+        try{ 
+            File wsddFinal = File.createTempFile("wsdd_" + serviceName,".xml");
+            FileOutputStream fOut = new FileOutputStream(wsddFinal);
+            fOut.write(finalData.getBytes());
+            fOut.close();
+            if ( runAxisAdmin(wsddFinal.getCanonicalPath() ) ) {
+                logger.info("Updating service status in database to INACTIVE");
+                ServiceStatus serviceStatus = new ServiceStatus();
+                serviceStatus.setServiceName(serviceName);
+                serviceStatus.setStatus(ServiceStatus.STATUS_INACTIVE);
+                HibernateUtil.saveServiceStatus(serviceStatus);
+                //TODO delete wsddfinal
+                //wsddFinal.delete();
+            }
+        }catch (Exception e) {
+            logger.error("Failing while writing wsdd file " + e);
         }
 
     }
