@@ -113,6 +113,14 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     <servlet-name>AxisServlet</servlet-name> 
   </filter-mapping> 
   -->
+  <servlet>
+    <servlet-name>OpalDeployService</servlet-name>
+    <display-name>Opal Deploy Service</display-name>
+    <servlet-class>edu.sdsc.nbcr.opal.util.OpalDeployService</servlet-class>
+    <load-on-startup>250</load-on-startup>
+  </servlet>
+
+
 
   <!-- Axis configuration parameters... do not touch this part!! -->
   <servlet>
