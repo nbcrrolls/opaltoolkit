@@ -3,6 +3,13 @@
 # address if there are multiple network interfaces
 tomcat.url=http://localhost:8080
 
+
+# set this variable to a directory you want to use to 
+# put your appConfig files in order to be deployed
+# if you use a relative path it is relative to your
+# catalina.home
+opal.deploy.path=deploy
+
 # parallel parameters
 num.procs=1
 mpi.run=/path/to/your/mpi
