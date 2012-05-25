@@ -49,6 +49,7 @@ public class OpalDeployService extends HttpServlet {
 
     protected static Log logger = LogFactory.getLog(OpalDeployService.class.getName());
     protected static Deployer deplo = null;
+    protected static String wsddDirectory = null;
     
     
 
@@ -86,6 +87,8 @@ public class OpalDeployService extends HttpServlet {
         if (props.getProperty("opal.deploy.path") != null ) {
             deployPath = props.getProperty("opal.deploy.path");
         }
+
+	wsddDirectory = config.getServletContext().getRealPath("/WEB-INF/wsdd/");
 
         File deployPathFile = new File(deployPath);
         if (! deployPathFile.exists() ) {
@@ -177,7 +180,7 @@ public class OpalDeployService extends HttpServlet {
             
             //TODO move this to the init section    
             //reading wsdd template
-            String wsddTemplate = "webapps/opal2/WEB-INF/classes/opal_deploy.wsdd";
+            String wsddTemplate = wsddDirectory + "/opal_deploy.wsdd";
             // check to make sure that the WSDD template exists
             String templateData = null;
             try {
@@ -268,7 +271,7 @@ public class OpalDeployService extends HttpServlet {
             // get the version number - optional
             //TODO move this to the init section    
             //reading wsdd template
-            String wsddTemplate = "webapps/opal2/WEB-INF/classes/opal_undeploy.wsdd";
+            String wsddTemplate = wsddDirectory + "/opal_undeploy.wsdd";
             // check to make sure that the WSDD template exists
             String templateData = null;
             try{
