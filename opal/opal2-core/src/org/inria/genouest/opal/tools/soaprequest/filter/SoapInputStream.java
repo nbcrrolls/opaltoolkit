@@ -440,7 +440,7 @@ public class SoapInputStream extends ServletInputStream {
         try {
 	    String path = context.getRealPath("/")+"WEB-INF"+File.separator+"server-config.wsdd";
 
-	    // Création de la source DOM
+	    // Creation de la source DOM
 	    DocumentBuilderFactory docBFact = DocumentBuilderFactory.newInstance();
 	    docBFact.setNamespaceAware(true);
 	    DocumentBuilder docBuilder = docBFact.newDocumentBuilder();
