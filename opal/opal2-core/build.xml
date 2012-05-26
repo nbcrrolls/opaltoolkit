@@ -222,6 +222,7 @@ Author:
         <include name="dom4j-1.6.1.jar"/>
         <include name="hsqldb.jar"/>
         <include name="c3p0-0.9.1.2.jar"/>
+        <include name="commons-io-2.2.jar"/>
       </fileset>
     </copy>
 

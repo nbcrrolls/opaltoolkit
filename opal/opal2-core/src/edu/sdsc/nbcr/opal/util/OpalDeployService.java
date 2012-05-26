@@ -14,6 +14,9 @@ import javax.servlet.ServletConfig;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationListener;
 
 import org.apache.axis.utils.StringUtils;
 import org.apache.axis.AxisFault;
@@ -56,13 +59,13 @@ public class OpalDeployService extends HttpServlet {
     public final void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        logger.info("Loading OpalInfoServlet (init method).");
+        logger.info("Loading OpalDeployService (init method).");
         
         //-------     initializing the DB connection    -----
         java.util.Properties props = new java.util.Properties();
         String propsFileName = "opal.properties";
-        String tomcatUrl = null;
-        String deployPath = null;
+        String tomcatUrl = "";
+        String deployPath = "";
         try {
             // load runtime properties from properties file
             props.load(OpalDeployService.class.getClassLoader().getResourceAsStream(propsFileName));
@@ -83,12 +86,13 @@ public class OpalDeployService extends HttpServlet {
         if (props.getProperty("opal.deploy.path") != null ) {
             deployPath = props.getProperty("opal.deploy.path");
         }
-
-        if (props.getProperty("opal.deploy.path") != null ) {
-            deployPath = props.getProperty("opal.deploy.path");
+        if (deployPath.length() == 0) {
+            logger.error("opal.deploy.path is not present! Fix your opal.properties.");
+            return;
         }
 
-	wsddDirectory = config.getServletContext().getRealPath("/WEB-INF/wsdd/");
+
+        wsddDirectory = config.getServletContext().getRealPath("/WEB-INF/wsdd/");
 
         File deployPathFile = new File(deployPath);
         if (! deployPathFile.exists() ) {
@@ -97,14 +101,17 @@ public class OpalDeployService extends HttpServlet {
         }
         //TODO check if it's a file istead of a dir
 
+            logger.error("passing by here");
         deplo = new Deployer();
+            logger.error("passing by here1");
         deplo.setValues(tomcatUrl, deployPathFile);
+            logger.error("passing by here2");
         deplo.setName("OpalDeployer");
+            logger.error("passing by here3");
         deplo.start();
+            logger.error("passing by here4");
  
-    }
-
-
+    }//class init
 
 
 
@@ -169,7 +176,23 @@ public class OpalDeployService extends HttpServlet {
                     logger.error("configFile does not exist: " + e);
                 }
             }
-        }
+
+            FileAlterationObserver observer = new FileAlterationObserver(deployPathFile);
+            observer.addListener(new DeployListener());
+            try{
+                observer.initialize();
+                while ( true ){
+                    observer.checkAndNotify();
+                    this.sleep(1000);
+                }//while
+            }catch(Exception e){
+                logger.error("Deployer failed to monitor the deployment directory: " + e);
+            }
+            //FileAlterationMonitor monitor = new FileAlterationMonitor(1000);
+            //monitor.addObserver(observer);
+            //monitor.start();
+            
+        }//run
     
 
         //TODO make this file
@@ -337,8 +360,35 @@ public class OpalDeployService extends HttpServlet {
                 return false;
             }
         }
+    }//class Deployer
 
-    }
+        /**
+         * this class implements the action that will be taken
+         * when a file is modifed in the deploy directory
+         */
+        public class DeployListener implements FileAlterationListener{
+
+            public void onStart(final FileAlterationObserver observer){}
+            public void onStop(final FileAlterationObserver observer){}
+            public void onDirectoryCreate(final File directory){}
+            public void onDirectoryChange(final File directory){}
+            public void onDirectoryDelete(final File directory){}
+
+            
+            public void onFileCreate(final File file){
+                logger.info("Autodeploy file: " + file);
+            }
+
+            public void onFileChange(final File file){
+                logger.info("AppConfig modified (nothing will be done): " + file);
+            }
+
+            public void onFileDelete(final File file){
+                logger.info("Undeploying file: " + file);
+            }
+
+        }//class DeployListner
+
 
     public void destroy() {
         //To change body of implemented methods use File | Settings | File Templates.
