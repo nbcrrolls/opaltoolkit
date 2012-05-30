@@ -1,6 +1,9 @@
 package edu.sdsc.nbcr.opal.gui.common;
 
 
+import java.io.Serializable;
+
+
 /**
  * This class is used to group more ArgFlag or ArgParam together.
  * 
@@ -19,7 +22,8 @@ package edu.sdsc.nbcr.opal.gui.common;
  * @author clem
  *
  */
-public class Group {
+
+public class Group implements Serializable{
 	
 	private ArgFlag [] argFlags;
 	private ArgParam [] argParams;

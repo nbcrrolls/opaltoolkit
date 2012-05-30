@@ -11,3 +11,7 @@ Hibernate 3.3.1
 
 DRMAA
   - copied from SGE version 6.1
+
+common-io-2.2
+  - upgraded from original struts version for directory monitoring
+    

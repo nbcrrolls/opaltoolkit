@@ -16,7 +16,7 @@ import org.apache.struts.action.ActionForm;
  * @author clem
  *
  */
-public class ArgFlag {
+public class ArgFlag extends ActionForm{
 
 	private String id;
 	private String tag;
