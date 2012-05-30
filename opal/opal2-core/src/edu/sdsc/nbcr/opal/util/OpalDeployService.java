@@ -40,6 +40,7 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.lang.Character;
+import java.util.Hashtable;
 
 /** 
  *
@@ -53,7 +54,6 @@ public class OpalDeployService extends HttpServlet {
     protected static Log logger = LogFactory.getLog(OpalDeployService.class.getName());
     protected static Deployer deplo = null;
     protected static String wsddDirectory = null;
-    
     
 
     public final void init(ServletConfig config) throws ServletException {
@@ -101,20 +101,18 @@ public class OpalDeployService extends HttpServlet {
         }
         //TODO check if it's a file istead of a dir
 
-            logger.error("passing by here");
         deplo = new Deployer();
-            logger.error("passing by here1");
         deplo.setValues(tomcatUrl, deployPathFile);
-            logger.error("passing by here2");
         deplo.setName("OpalDeployer");
-            logger.error("passing by here3");
         deplo.start();
-            logger.error("passing by here4");
  
     }//class init
 
 
-
+    /**
+     * this is how the monitoring thread it takes care of deploying and undeploying 
+     * opal services while tomcat is running
+     */
     public class Deployer extends Thread {
 
         //protected static Log logger = LogFactory.getLog(OpalDeployService.class.getName());
@@ -122,7 +120,20 @@ public class OpalDeployService extends HttpServlet {
         private String axisAdminUrl;
         private String opalUrl;
         private File deployPathFile;
+        private boolean run ;
+        /**
+         * I need this table to keep track of the assiciation between 
+         * file name and its corresponding service name
+         */
+        protected Hashtable<String,String> hTable=new Hashtable<String,String>();
 
+
+        /**
+         * terminates this thread so tomcat can shut down properly
+         */
+        public void stopThread(){
+            run = false;
+        }
 
         public void setValues(String tomcatUrl, File path) {
             opalUrl = tomcatUrl + "/opal2/services";
@@ -170,18 +181,19 @@ public class OpalDeployService extends HttpServlet {
             File [] deployFileList = deployPathFile.listFiles();
             for (File configFile : deployFileList){
                 logger.info("deploying service: " + configFile);
-                try{deploy(configFile.getCanonicalPath());}
+                try{deploy(configFile);}
                 catch (Exception e){
                     //this should never happen
                     logger.error("configFile does not exist: " + e);
                 }
             }
 
+            run = true;
             FileAlterationObserver observer = new FileAlterationObserver(deployPathFile);
             observer.addListener(new DeployListener());
             try{
                 observer.initialize();
-                while ( true ){
+                while ( run ){
                     observer.checkAndNotify();
                     this.sleep(1000);
                 }//while
@@ -196,10 +208,10 @@ public class OpalDeployService extends HttpServlet {
     
 
         //TODO make this file
-        public void deploy(String appConfig){
+        public void deploy(File appConfigFile){
     
             // get the location of the application configuration
-            logger.info("deploy with appconfig: " + appConfig);
+            logger.info("deploy with appconfig: " + appConfigFile);
             
             //TODO move this to the init section    
             //reading wsdd template
@@ -221,21 +233,20 @@ public class OpalDeployService extends HttpServlet {
     
     
             // check to make sure that the application configuration exists
-            File configFile = new File(appConfig);
-            if (!configFile.exists()) {
+            if (!appConfigFile.exists()) {
                 logger.error("Application configuration file " + 
-            		 appConfig + " does not exist");
+            		 appConfigFile + " does not exist");
             }
             
             // check to make sure that the file points to valid application
             // configuration
             AppConfigType config = null;
             try {
-                config = (AppConfigType) TypeDeserializer.getValue(appConfig,
+                config = (AppConfigType) TypeDeserializer.getValue(appConfigFile.toString(),
             					new AppConfigType());;
             } catch (Exception e) {
                 logger.error(e);
-                logger.error("appConfiguration is invalid: " + appConfig);
+                logger.error("appConfiguration is invalid: " + appConfigFile);
                 return;
             }
             
@@ -247,7 +258,7 @@ public class OpalDeployService extends HttpServlet {
                 serviceName = config.getMetadata().getAppName();
             }
             if ( serviceName == null ) {
-                logger.error("Unable to get service name for file " + appConfig );
+                logger.error("Unable to get service name for file " + appConfigFile );
                 return;
             }
             // set the final service name
@@ -260,9 +271,8 @@ public class OpalDeployService extends HttpServlet {
             String finalData = templateData.replaceAll("@SERVICE_NAME@", serviceName);
             
             // set the location of the config file
-            String configLoc = appConfig.replace('\\', '/');
-            finalData = finalData.replaceAll("@CONFIG_LOCATION@", configLoc);
-            logger.info("Using location of config file: " + configLoc);
+            finalData = finalData.replaceAll("@CONFIG_LOCATION@", appConfigFile.toString());
+            logger.info("Using location of config file: " + appConfigFile);
             
             // location of final WSDD - also supplied by build.xml
             try{
@@ -271,6 +281,9 @@ public class OpalDeployService extends HttpServlet {
                 fOut.write(finalData.getBytes());
                 fOut.close();
                 if ( runAxisAdmin(wsddFinal.getCanonicalPath() ) ) {
+                    //update internal hash table
+                    hTable.put(appConfigFile.toString(), serviceName);
+
                     // updating service status in database
                     logger.info("Updating service status in database to ACTIVE");
                     ServiceStatus serviceStatus = new ServiceStatus();
@@ -291,7 +304,6 @@ public class OpalDeployService extends HttpServlet {
             // get the service name
             logger.info("Undeploy called. ServiceName set to: " + serviceName);
         
-            // get the version number - optional
             //TODO move this to the init section    
             //reading wsdd template
             String wsddTemplate = wsddDirectory + "/opal_undeploy.wsdd";
@@ -308,8 +320,8 @@ public class OpalDeployService extends HttpServlet {
                 logger.error("Unable to read the wsdd undeploy: " + e);
                 return;
             }
-            
             //--end TODO
+
             String finalData = templateData.replaceAll("@SERVICE_NAME@", serviceName);
             try{ 
                 File wsddFinal = File.createTempFile("wsdd_" + serviceName,".xml");
@@ -362,37 +374,45 @@ public class OpalDeployService extends HttpServlet {
         }
     }//class Deployer
 
-        /**
-         * this class implements the action that will be taken
-         * when a file is modifed in the deploy directory
-         */
-        public class DeployListener implements FileAlterationListener{
 
-            public void onStart(final FileAlterationObserver observer){}
-            public void onStop(final FileAlterationObserver observer){}
-            public void onDirectoryCreate(final File directory){}
-            public void onDirectoryChange(final File directory){}
-            public void onDirectoryDelete(final File directory){}
+    /**
+     * this class implements the action that will be taken
+     * when a file is modifed in the deploy directory
+     */
+    public class DeployListener implements FileAlterationListener{
 
-            
-            public void onFileCreate(final File file){
-                logger.info("Autodeploy file: " + file);
+        public void onStart(final FileAlterationObserver observer){}
+        public void onStop(final FileAlterationObserver observer){}
+        public void onDirectoryCreate(final File directory){}
+        public void onDirectoryChange(final File directory){}
+        public void onDirectoryDelete(final File directory){}
+        
+        public void onFileCreate(final File file){
+            logger.info("Autodeploy file: " + file);
+            deplo.deploy(file);
+        }
+
+        public void onFileChange(final File file){
+            logger.info("AppConfig modified (nothing will be done): " + file);
+        }
+
+        public void onFileDelete(final File file){
+            logger.info("Undeploying file: " + file);
+            //that is way i need the hTable!!
+            String serviceName = deplo.hTable.get(file.toString());
+            if (serviceName != null){
+                deplo.undeploy(serviceName);
+                deplo.hTable.remove(file.toString());
+                logger.info("Service " + serviceName + " undeployed");
             }
+        }
 
-            public void onFileChange(final File file){
-                logger.info("AppConfig modified (nothing will be done): " + file);
-            }
-
-            public void onFileDelete(final File file){
-                logger.info("Undeploying file: " + file);
-            }
-
-        }//class DeployListner
+    }//class DeployListner
 
 
     public void destroy() {
         //To change body of implemented methods use File | Settings | File Templates.
-        //deplo.destroy();
+        deplo.stopThread();
     }
 
 }
