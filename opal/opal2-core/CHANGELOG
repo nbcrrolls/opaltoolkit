@@ -1,3 +1,12 @@
+TODO 
+- move logging level from info to debug for most of the messages
+- active state for hibernate
+
+Trunk
+- Automatic deployment dropping appConfig files in opal.deploy.path
+- Moved to tomcat 7, java 6 or greater
+
+
 Version 2.4
 - Additional operation added to Opal WSDL and AppService implementation to
   get system information (number of jobs running/queued, job manager type,
