@@ -25,6 +25,7 @@ public class Condor implements Runnable{
   Map map = new HashMap();
   Map monitors = new HashMap();
   String logfile;
+  LogMonitor monitor;
   
   /**********************************************************************
    *                         PUBLIC FUNCTIONS
@@ -95,17 +96,22 @@ public class Condor implements Runnable{
    */
   public void setLogFile(String logfile, int interval){
 	this.logfile = logfile;
-	LogMonitor monitor;
 	if ((monitor = (LogMonitor)monitors.get(logfile)) == null){
 	  monitor = new LogMonitor(this, logfile, interval);
-	  monitor.start();
-	  monitors.put(logfile, monitor);
 	} else {
 	  // already have the monitor, just change the interval
 	  monitor.setInterval(interval);
 	}
   }
 
+  /**
+   * Starts monitor.
+   * Call after the job submission when condor creates log file
+   */ 
+  public void startLogMonitor () {
+    monitor.start();
+    monitors.put(this.logfile, this.monitor);
+  }
 
   /**
    * Submits a job description to the condor and returns a cluster of job 
@@ -197,7 +203,6 @@ public class Condor implements Runnable{
 	  }
 	  String line;
 	  line = lnr.readLine(); // skip 'Submitting job(s).'
-	  line = lnr.readLine(); // skip 'Logging submit event(s).'
 	  line = lnr.readLine(); // read 'X job(s) submitted to cluster XXX'.
 	  Pattern pattern = Pattern.compile(SUBMIT_OUTPUT_PATTERN);
 	  Matcher matcher = pattern.matcher(line);
@@ -267,13 +272,12 @@ public class Condor implements Runnable{
 
 	System.out.println("submitted");
 
-	condor.rm(c);
-	c.waitFor();
 	System.out.println("done");
 
 	JobDescription jd2 = new JobDescription();
 	jd2.addAttribute("executable", "/bin/date");
 	jd2.addAttribute("universe", "vanilla");
+	jd2.addAttribute("initialdir", "/tmp/opal-jobs");
 	jd2.addQueue();
 	jd2.setHandlerOnSuccess(new Handler(){
 	  public void handle(Event e){
@@ -283,10 +287,7 @@ public class Condor implements Runnable{
 
 	Cluster c2 = condor.submit(jd2);
 	System.out.println("submitted");
-	//	c2.waitFor();
 	System.out.println("done");
   }
 }
-
-
 

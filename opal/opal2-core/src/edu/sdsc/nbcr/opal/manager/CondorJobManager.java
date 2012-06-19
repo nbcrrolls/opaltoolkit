@@ -1,7 +1,10 @@
 package edu.sdsc.nbcr.opal.manager;
 
 import java.util.Properties;
+import java.util.Enumeration;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import org.globus.gram.GramJob;
 
@@ -49,7 +52,7 @@ public class CondorJobManager implements OpalJobManager {
 			   AppConfigType config,
 			   String handle)
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	this.props = props;
 	this.config = config;
@@ -69,7 +72,7 @@ public class CondorJobManager implements OpalJobManager {
      */
     public void destroyJobManager()
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// TODO: not sure what needs to be done here
 	throw new JobManagerException("destroyJobManager() method not implemented");
@@ -91,7 +94,7 @@ public class CondorJobManager implements OpalJobManager {
 			    Integer numProcs, 
 			    String workingDir)
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// make sure we have all parameters we need
 	if (config == null) {
@@ -170,7 +173,7 @@ public class CondorJobManager implements OpalJobManager {
 	long hardLimit = 0;
 	if ((props.getProperty("opal.hard_limit") != null)) {
 	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit"));
-	    logger.info("All jobs have a hard limit of "  + hardLimit + " seconds");
+	    logger.debug("All jobs have a hard limit of "  + hardLimit + " seconds");
 	}
 
 	// launch the job using the above information
@@ -180,48 +183,67 @@ public class CondorJobManager implements OpalJobManager {
 	    // create a JobDescription object in the code
 	    JobDescription jd = new JobDescription();
 	    if (config.isParallel()) {
-		jd.addAttribute("universe", "parallel");
-		jd.addAttribute("machine_count", Integer.toString(numProcs));
+			jd.addAttribute("universe", "parallel");
+			jd.addAttribute("machine_count", Integer.toString(numProcs));
 	    } else {
-		jd.addAttribute("universe", "vanilla");
+			jd.addAttribute("universe", "vanilla");
 	    }
 	    jd.addAttribute("getenv", "true");
 	    jd.addAttribute("executable", cmd);
 	    jd.addAttribute("arguments", args);
 	    jd.addAttribute("initialdir", workingDir);
-	    jd.addAttribute("output", workingDir + "/stdout.txt");
-	    jd.addAttribute("error", workingDir + "/stderr.txt");
-	    jd.addAttribute("should_transfer_files", "if_needed");
+	    jd.addAttribute("output", workingDir + "stdout.txt");
+	    jd.addAttribute("error", workingDir + "stderr.txt");
+	    jd.addAttribute("log", workingDir + "condor.log");
+	    jd.addAttribute("log_xml", "true");
+	    jd.addAttribute("should_transfer_files", "yes");
 	    jd.addAttribute("when_to_transfer_output", "on_exit");
-	    condor.setLogFile(workingDir + "/condor.log",
-			      5);
+	    jd.addAttribute("notification", "never");
 
-	    // transfer all input files - this way the compute nodes don't
-	    // have to be on NFS
+	    // transfer all input files - this way the compute nodes don't have to be on NFS
 	    jd.addAttribute("transfer_input_files", config.getBinaryLocation());
 	    File wd = new File(workingDir);
 	    String[] wdFiles = wd.list();
 	    if (wdFiles != null) {
-		for (int i = 0; i < wdFiles.length; i++) {
-		    jd.addAttribute("transfer_input_files", 
+			for (int i = 0; i < wdFiles.length; i++) {
+		    	jd.addAttribute("transfer_input_files", 
 				    workingDir + 
 				    File.separator + 
 				    wdFiles[i]);
-		}
+			}
 	    }
 
+		// add server-specific condor expressions if exist
+		String condorExprFileName = props.getProperty("condor.expr.file");
+		if (condorExprFileName != null) {
+			try {
+				Properties condorProps = new Properties(); 
+				FileInputStream in = new FileInputStream(condorExprFileName);
+				condorProps.load(in);
+				in.close();
+
+				Enumeration keys;
+				keys = condorProps.keys();
+				while (keys.hasMoreElements()) {
+					String condorKey = keys.nextElement().toString();
+					String condorVal = condorProps.getProperty(condorKey);
+					if (condorVal != null) {
+						jd.addAttribute(condorKey,condorVal);
+					}
+				}
+			} catch  (IOException e) {
+				logger.warn("Failed to load " + condorExprFileName + "identified by condor.expr.file: " + e.getMessage());
+			}
+		}
 	    jd.addQueue();
 
-	    if (hardLimit != 0) {
-		String msg = "Condor job manager does not support hard limits";
-		logger.error(msg);
-		// not fatal - continue
-	    }
+		condor.setLogFile(workingDir + "condor.log", 5);
 
 	    Cluster cluster = condor.submit(jd);
+
 	    job = cluster.getJob(0);
 	    handle = job.getJobId().toString();
-	    logger.info("Condor job has been submitted: " + handle);
+	    logger.info("Condor job id=" + handle + " has been submitted");
 	} catch (Exception e) {
 	    String msg = "Error while running executable via Condor - " +
 		e.getMessage();
@@ -244,7 +266,7 @@ public class CondorJobManager implements OpalJobManager {
      */
     public StatusOutputType waitForActivation() 
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// check if this process has been started already
 	if (!started) {
@@ -277,7 +299,7 @@ public class CondorJobManager implements OpalJobManager {
      */
     public StatusOutputType waitForCompletion() 
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// check if this process has been started already
 	if (!started) {
@@ -319,7 +341,7 @@ public class CondorJobManager implements OpalJobManager {
      */
     public StatusOutputType destroyJob()
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// check if this process has been started already
 	if (!started) {

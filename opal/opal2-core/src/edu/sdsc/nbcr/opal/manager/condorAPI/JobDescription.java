@@ -133,26 +133,24 @@ public class JobDescription {
 		is = new ByteArrayInputStream(this.getByteArray());		
 	  else 
 		is = new FileInputStream(filename);
-	  tmpFilename = createTmpSubmit(condor.logfile, is);
+	  tmpFilename = createTmpSubmit(is);
 	}
 	catch (IOException e){
 	  e.printStackTrace();
 	  throw new CondorException(e.toString());
 	}	
 	Cluster cluster = condor.submitFile(tmpFilename);
+	// start log monitoring after submission when the log file becomes available
+	condor.startLogMonitor();
 	cluster.setHandlerSet(handlers);
 	return cluster;
   }
 
-  private String createTmpSubmit(String logfile, InputStream is) throws IOException {
+  private String createTmpSubmit(InputStream is) throws IOException {
 	LineNumberReader lnr = new LineNumberReader(new InputStreamReader(is));
 
-	File tmpFile = File.createTempFile("/tmp", ".submit");
+	File tmpFile = File.createTempFile("/condor", ".submit");
 	PrintWriter pw = new PrintWriter(new FileWriter(tmpFile));
-
-	// override written things 
-	pw.println("log = " + logfile);
-	pw.println("log_xml = True");
 
 	String patternString = "^(\\S+)\\s*=\\s*(\\S+)$";
 	Pattern pattern = Pattern.compile(patternString);
@@ -160,14 +158,11 @@ public class JobDescription {
 	String tmp;
 	while ((tmp = lnr.readLine()) != null){
 	  Matcher matcher = pattern.matcher(tmp);
-	  if (!matcher.matches()){
-		// not match XXX = YYY form; might be comment ignore
+	  if (!matcher.matches()){ // does not match XXX = YYY form; ignore
 		pw.println(tmp);
 		continue;
 	  }
 	  String key = matcher.group(1);
-	  if (key.equalsIgnoreCase("log") || key.equalsIgnoreCase("log_xml"))
-		continue;
 	  pw.println(tmp);
 	}
 	pw.close();

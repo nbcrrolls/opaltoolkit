@@ -36,7 +36,7 @@ class LogMonitor implements Runnable {
 		FileReader reader = new FileReader(filename);
 		lnr = new LineNumberReader(reader);
 	  } catch (IOException e){
-		System.err.println("failed to open, retry.");
+		System.err.println("Failed to open filename " + filename + ", retry.");
 		counter++;
 		return;
 	  }
