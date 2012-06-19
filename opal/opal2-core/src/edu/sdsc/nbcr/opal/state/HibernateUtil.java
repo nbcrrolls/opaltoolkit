@@ -87,7 +87,7 @@ public class HibernateUtil {
      */
     public static boolean saveJobInfoInDatabase(JobInfo info)
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	try {
 	    Session session = getSessionFactory().openSession();
@@ -153,7 +153,7 @@ public class HibernateUtil {
      */
     public static int updateJobInfoInDatabase(String jobID, int code, String message,
 					      String baseURL, String handle) throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 	return updateJobInfoInDatabase(jobID, code, message, baseURL, null, null, handle);
     }
 
@@ -178,7 +178,7 @@ public class HibernateUtil {
 					      Date completionTime,
 					      String handle)
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 	logger.debug("Updating status to: " + message);
 
 	int numRows = 1;
@@ -230,7 +230,7 @@ public class HibernateUtil {
 	}
 
 	if (numRows == 1) {
-	    logger.info("Updated status for job: " + jobID);
+	    logger.debug("Updated status for job: " + jobID);
 	} else {
 	    String msg = "Unable to update status for job: " + jobID;
 	    logger.error(msg);
@@ -251,7 +251,7 @@ public class HibernateUtil {
     public static boolean saveOutputsInDatabase(String jobID,
 						JobOutputType outputs)
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	try {
 	    Session session = getSessionFactory().openSession();
@@ -308,7 +308,7 @@ public class HibernateUtil {
      */
     public static StatusOutputType getStatus(String jobID) 
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	StatusOutputType status = null;
 
