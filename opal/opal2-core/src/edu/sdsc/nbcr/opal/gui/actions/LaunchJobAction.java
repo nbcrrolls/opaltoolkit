@@ -187,7 +187,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         }
         app.setJobId( subOut.getJobID() );
         //Let's do some logging
-        log.info("Job submitted received jobID: " + subOut.getJobID());
+        log.debug("Submitted job received jobID: " + subOut.getJobID());
         StatusOutputType status = subOut.getStatus();
         log.debug("Current Status:\n" +
 		  "\tCode: " + status.getCode() + "\n" +
@@ -265,7 +265,7 @@ public class LaunchJobAction extends MappingDispatchAction{
             errors.add("We could not built the command line from your input parameters");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
         }
-        log.info("the submitted command line is: " + cmd);
+        log.info("Submitted job command line: " + cmd);
         return cmd;
     }
     
@@ -307,7 +307,7 @@ public class LaunchJobAction extends MappingDispatchAction{
         try {
 	    ArrayList al = app.getFormFiles();
             ArrayList filesArrayReturn = new ArrayList();
-            log.info("User uploads " + al.size() + " dynamic input file(s)");
+            log.debug("User uploads " + al.size() + " dynamic input file(s)");
             for (int i = 0; i<al.size(); i++) { // get files from the bean
                 FormFile ff = (FormFile) al.get(i);
                 String fname = ff.getFileName();

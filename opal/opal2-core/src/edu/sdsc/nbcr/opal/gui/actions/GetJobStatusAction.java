@@ -45,7 +45,7 @@ public class GetJobStatusAction extends MappingDispatchAction{
     public ActionForward execute(ActionMapping mapping, ActionForm form, 
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-    	log.info("Action: GetJobStatusAction");
+    	log.debug("Action: GetJobStatusAction");
 
         // session timeout 
         if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {

@@ -59,7 +59,7 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
     public ActionForward execute(ActionMapping mapping, ActionForm form, 
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-        log.info("Action: CreateSubmissionForm");
+        log.debug("Action: CreateSubmissionForm");
         ArrayList errors = new ArrayList();
         DynaActionForm serviceForm = (DynaActionForm)form;
         // get the service url and name  
@@ -87,11 +87,11 @@ public class CreateSubmissionFormAction extends MappingDispatchAction{
         }
         request.getSession(false).setAttribute("appMetadata", app);
         if ( app.isArgMetadataEnable() ) {
-            log.info("Metadata parsed correctly, forwarding to the submission form");
+            log.debug("Metadata parsed correctly, forwarding to the submission form");
             return mapping.findForward("DisplayForm");
         }
         else {
-            log.info("Metadata parsed correctly, forwarding to the simple submission form");
+            log.debug("Metadata parsed correctly, forwarding to the simple submission form");
             return mapping.findForward("DisplaySimpleForm");
         }
     }//execute
