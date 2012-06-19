@@ -14,6 +14,10 @@ import edu.sdsc.nbcr.opal.AppConfigType;
 import edu.sdsc.nbcr.opal.StatusOutputType;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.DataInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -167,7 +171,7 @@ public class PBSJobManager implements OpalJobManager {
 	long hardLimit = 0;
 	if ((props.getProperty("opal.hard_limit") != null)) {
 	    hardLimit = Long.parseLong(props.getProperty("opal.hard_limit"));
-	    logger.warn("Property hard_limit is not supported by this job manager");
+	    logger.debug("Property hard_limit is not supported by this job manager");
 	}
 
 	// launch the job using the above information
@@ -175,10 +179,11 @@ public class PBSJobManager implements OpalJobManager {
 	    logger.debug("Working directory: " + workingDir);
 	    
 	    // create a submission script from the params
-	    String script = createSubmissionScript(cmd,
-						   workingDir);
-	    job = new Job(config.getBinaryLocation(),
-			  script);
+		String jobName = createSubmissionJobName();
+	    String script = createSubmissionScript(cmd, workingDir, jobName);
+
+	    job = new Job(jobName, script);
+
 	    if (config.isParallel()) {
 		job.setNodes(numProcs.toString());
 	    }
@@ -275,7 +280,7 @@ public class PBSJobManager implements OpalJobManager {
                 // print job status
                 jobState = Job.getJobStatus(handle);
                 logger.debug("Received job status: " + jobState);
-		if (jobState.equals("C")) {
+		if (jobState.equals("C") || jobState.equals("E")) {
 		    // execution complete
 		    break;
 		}
@@ -346,17 +351,38 @@ public class PBSJobManager implements OpalJobManager {
     /**
      * Create a job submission script from input arguments
      */
-    private String createSubmissionScript(String cmd,
-					  String workingDir) 
-	throws IOException {
+    private String createSubmissionScript(String cmd, String workingDir, String jobName) 
+		throws IOException {
 
-	File tmpFile = File.createTempFile("/tmp", ".submit");
+	File tmpFile = File.createTempFile("/pbs", ".submit");
 	PrintWriter pw = new PrintWriter(new FileWriter(tmpFile));
 
 	// create the submission script
-	pw.println("#!/bin/sh");
-	pw.println("#PBS -e " + workingDir + File.separator + "stderr.txt");
-	pw.println("#PBS -o " + workingDir + File.separator + "stdout.txt");
+	pw.println("#!/bin/bash");
+	pw.println("#PBS -N " + jobName);
+	pw.println("#PBS -e " + workingDir + "stderr.txt");
+	pw.println("#PBS -o " + workingDir + "stdout.txt");
+
+	// add server-specific PBS expressions if exist
+	String pbsExprFileName = props.getProperty("pbs.expr.file");
+	if (pbsExprFileName != null) {
+		try {
+			Properties condorProps = new Properties();
+			FileInputStream in = new FileInputStream(pbsExprFileName);
+
+			DataInputStream din = new DataInputStream(in);
+			BufferedReader br = new BufferedReader(new InputStreamReader(din));
+			String strLine;
+			// read by line and add to submit file 
+			while ((strLine = br.readLine()) != null)   {
+				pw.println (strLine);
+			}
+			in.close();
+			} catch  (IOException e) {
+				logger.warn("Failed to load " + pbsExprFileName + " identified by pbs.expr.file: " + e.getMessage());
+		}
+	}
+
 	pw.println("cd " + workingDir);
 	pw.println(cmd);
 	pw.close();
@@ -364,4 +390,26 @@ public class PBSJobManager implements OpalJobManager {
 	// return path to submission script
 	return tmpFile.getAbsolutePath();
     }
+
+	/**
+	 * Create a job submission name 
+	 */
+	private String createSubmissionJobName()
+		throws JobManagerException {
+
+	String jobNameLimitString = props.getProperty("pbs.name.limit");
+		// PBS has a default 15 character limit for the job name 
+		int jobNameLimit = 15;
+	if (jobNameLimitString != null) {
+		jobNameLimit = Integer.parseInt(jobNameLimitString);
+	}
+
+		String startstr = config.getBinaryLocation();
+		String jobName = startstr.substring(startstr.lastIndexOf("/")+1);
+		if (jobName.length() > jobNameLimit) {
+			jobName = jobName.substring(0, jobNameLimit);
+		}
+
+		return jobName;
+	}
 }

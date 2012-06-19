@@ -76,7 +76,7 @@ public class Job {
     public String queue() throws IOException,InterruptedException,Exception
     {
 
-	StringBuilder excuter = new StringBuilder("qsub -N " + getName() + " ");
+	StringBuilder excuter = new StringBuilder("qsub ");
             
 	//<editor-fold desc="Nodes and Processors/Node">
 
