@@ -3,6 +3,7 @@ package edu.sdsc.nbcr.opal.util;
 import org.apache.axis.MessageContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.axis.transport.http.HTTPConstants;
+import java.io.FileInputStream;
 
 import org.globus.axis.gsi.GSIConstants;
 
@@ -25,21 +26,20 @@ public class Util {
      * Get IP address of remote Web service client
      */
     public static String getRemoteIP() {
-	// get the current MessageContext
+	// get the current MessageContext and the HttpServletRequest objects
+	String clientIP;
+
 	MessageContext msgContext = MessageContext.getCurrentContext();
-
-	// get the HttpServletRequest object
-        Object tmp = 
-	    msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
-
-        if((tmp == null) || !(tmp instanceof HttpServletRequest)) {
-            return "Unknown";
-        }
-
-        HttpServletRequest req = (HttpServletRequest) tmp;
+	HttpServletRequest request =
+		(HttpServletRequest) msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
 
 	// get the client IP
-	String clientIP = req.getRemoteAddr();
+	if((request == null) || !(request instanceof HttpServletRequest)) {
+		clientIP = "Unknown";
+	} else {
+		clientIP = request.getRemoteAddr();
+	}
+
 	logger.info("Client's IP: " + clientIP);
 	return clientIP;
     }
@@ -48,7 +48,7 @@ public class Util {
      * Get the DN for the remote Web service client
      */
     public static String getRemoteDN() {
-	// get the current MessageContext
+	// get the current MessageContext and the HttpServletRequest objects
         MessageContext mc = MessageContext.getCurrentContext();
         HttpServletRequest req = 
             (HttpServletRequest) mc.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
@@ -59,7 +59,7 @@ public class Util {
 	    clientDN = "Unknown client";
 	}
 
-	logger.info("Client's DN: " + clientDN);
+	logger.debug("Client's DN: " + clientDN);
 	return clientDN;
     }
 }
