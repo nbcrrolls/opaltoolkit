@@ -243,7 +243,7 @@ public class AppServiceImpl
      */
     public AppServiceImpl() 
 	throws FaultType {
-	logger.info("called");
+	logger.debug("called");
 
 	if (tomcatURL == null) {
 	    logger.fatal("Can't find property: tomcatURL");
@@ -268,7 +268,7 @@ public class AppServiceImpl
      */    
     public AppMetadataType getAppMetadata(AppMetadataInputType in) 
 	throws FaultType {
-	logger.info("called");
+	logger.debug("called");
 
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
@@ -286,7 +286,7 @@ public class AppServiceImpl
      */
     public AppConfigType getAppConfig(AppConfigInputType in)
 	throws FaultType {
-	logger.info("called");
+	logger.debug("called");
 
 	// make sure that the config has been retrieved
 	retrieveAppConfig();
@@ -385,7 +385,7 @@ public class AppServiceImpl
     public JobSubOutputType launchJob(JobInputType in)
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
-	logger.info("called");
+	logger.debug("called");
 
 	// check to see if IP is within limits
 	isWithinIPLimits();
@@ -399,6 +399,7 @@ public class AppServiceImpl
 	// create output object
 	JobSubOutputType output = new JobSubOutputType();
 	output.setJobID(jobID);
+	logger.info("Launching job: " + jobID);
 	StatusOutputType status = queryStatus(jobID);
 	output.setStatus(status);
 
@@ -454,7 +455,7 @@ public class AppServiceImpl
     public StatusOutputType queryStatus(String in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
-	logger.info("called for job: " + in);
+	logger.info("Query status for job: " + in);
 	
 	// make sure that the config has been retrieved
 	// retrieveAppConfig();
@@ -647,8 +648,8 @@ public class AppServiceImpl
 	    outputPrefix + File.separator + jobID + File.separator;
 	final File outputDir = new File(outputDirName);
 	if (!outputDir.mkdir()) {
-	    logger.error("Can't create new directory to run application in");
-	    throw new FaultType("Can't create new directory to run application in");
+	    logger.error("Can't create new directory to run application in" + outputDir);
+	    throw new FaultType("Can't create new directory to run application in" + outputDir);
 	}
 
 	// create the application input files there 
@@ -768,7 +769,7 @@ public class AppServiceImpl
 	    // if the app config has a job manager FQCN, use that
 	    jobManagerFQCNLocal = config.getJobManagerFQCN();
 	} 
-	logger.info("Using job manager class: " + jobManagerFQCNLocal);
+	logger.debug("Using job manager class: " + jobManagerFQCNLocal);
 
 	final OpalJobManager jobManager;
 	try {
@@ -994,7 +995,7 @@ public class AppServiceImpl
 	// make sure the stdout and stderr exist
 	File stdOutFile = new File(workingDir + File.separator + "stdout.txt");
 	if (!stdOutFile.exists()) {
-	    String msg = "Standard output missing for execution";
+	    String msg = "Standard output file " + stdOutFile + " is missing";
 	    logger.error(msg);
 	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage(msg);
@@ -1016,7 +1017,7 @@ public class AppServiceImpl
 	}
 	File stdErrFile = new File(workingDir + File.separator + "stderr.txt");
 	if (!stdErrFile.exists()) {
-	    String msg = "Standard error missing for execution";
+	    String msg = "Standard error file " + stdErrFile + " is missing";
 	    logger.error(msg);
 	    status.setCode(GramJob.STATUS_FAILED);
 	    status.setMessage(msg);
@@ -1203,7 +1204,7 @@ public class AppServiceImpl
     private void writeAppInput(JobInputType in,
 			       String outputDirName) 
 	throws FaultType {
-	logger.info("called");
+	logger.debug("called");
 
 	// retrieve the list of files
 	InputFileType[] inputFiles = in.getInputFile();
@@ -1332,7 +1333,7 @@ public class AppServiceImpl
 
     private void retrieveAppConfig()
 	throws FaultType {
-	logger.info("called");
+	logger.debug("called");
 
 	// read location of config file
 	MessageContext mc = MessageContext.getCurrentContext();
@@ -1362,7 +1363,7 @@ public class AppServiceImpl
 	}
 	if (config == null) {
 	    reconfigure = true;
-	    logger.info("Configuring service for the first time");
+	    logger.debug("Configuring service for the first time");
 	}
 
 	if (reconfigure) {
