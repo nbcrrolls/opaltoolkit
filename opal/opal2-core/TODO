@@ -1,4 +1,6 @@
 
+* fix the statistic page (it does not work with service name containing a _)
+
 * Addition of system statistics to Opal Dashboard
 
 * Bug fix for destroy() operation using the DRMAA job manager
