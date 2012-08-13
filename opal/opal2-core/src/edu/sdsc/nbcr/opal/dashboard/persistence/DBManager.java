@@ -268,7 +268,7 @@ public class DBManager {
         String query = null;
         if ( type.equals("hits") ) {
             query = "select jobInfo.startTimeDate, count(*)  " +            
-                " from JobInfo jobInfo where jobInfo.serviceName = :service" +
+                " from JobInfo jobInfo where jobInfo.serviceName like :service" +
                 " and jobInfo.startTimeDate >= :startDate " +
                 " and jobInfo.startTimeDate <= :endDate " +
                 " and jobInfo.code=8 " +
@@ -290,7 +290,7 @@ public class DBManager {
         } else if (type.equals("error") ){
             query  = "select jobInfo.startTimeDate, count(*) " +
                 "from JobInfo jobInfo " +
-            	"where jobInfo.serviceName = :service " +
+            	"where jobInfo.serviceName like :service " +
             	"and jobInfo.startTimeDate >= :startDate " +
             	"and jobInfo.startTimeDate <= :endDate " +
             	"and jobInfo.code=4 " +
@@ -302,7 +302,7 @@ public class DBManager {
         
         //going to execute the query
         try {
-            queryStat.setString("service", service)
+            queryStat.setString("service", service + "%")
                 .setDate("startDate", startDateSQL)
                 .setDate("endDate", endDateSQL);
             List result = queryStat.list();
@@ -385,7 +385,7 @@ public class DBManager {
         String query = " select count(jobID) from JobInfo where " +
             "(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
             "code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
-            "serviceName='" + service + "'";
+            "serviceName='" + service + "%' ";
 
         Session session = sessionFactory.openSession();
         Long ret = (Long) session.createQuery(query).uniqueResult();
@@ -421,7 +421,7 @@ public class DBManager {
     private String getQueryExectime(){
         String query = null;
         String queryTail = " from job_info jobInfo " +
-                " where jobInfo.service_name = :service " +
+                " where jobInfo.service_name like :service " +
                 " and jobInfo.start_time_date >= :startDate " +
                 " and jobInfo.start_time_date <= :endDate " +
                 " and jobInfo.code=8 " +
