@@ -207,7 +207,7 @@ public class GetServiceListHelper {
                 appServicePort = asl.getAppServicePort(new URL(url));
                 amt = appServicePort.getAppMetadata(new AppMetadataInputType());
             }catch (Exception e){
-                log.error("Error retrieving the Service name", e);
+                log.error("Error retrieving the Service name for URL: " +  url, e);
                 return false;
             }
             //setting general info
