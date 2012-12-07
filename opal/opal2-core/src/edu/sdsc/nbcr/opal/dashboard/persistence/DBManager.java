@@ -160,20 +160,11 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         List serviceList = null;
 
-        if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
-	    // HSQL doesn't support ACTIVE and INACTIVE services
-	    // so select every service that has been in the DB
-	    serviceList = 
-		session.createQuery("select serviceName from JobInfo " + 
-				    "group by serviceName ").list();
-
-	} else {
 	    // select only ACTIVE services
 	    serviceList = 
 		session.createQuery("select serviceName from ServiceStatus " +
 				    "where status='ACTIVE' group by serviceName ").
 		list();
-	}
         session.close();
         Iterator itera = serviceList.iterator();
         HashSet returnList = new HashSet();
