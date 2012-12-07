@@ -60,11 +60,11 @@ public class LaunchJobAction extends MappingDispatchAction{
     	
 	request = request;
 	mapping = mapping;
-        log.info("Action: LaunchJob");
+        log.debug("Action: LaunchJob");
 
 	// session timeout 
 	if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {
-            log.info("*** Session has timed out ***");
+            log.error("*** Session has timed out ***");
             errors = new ArrayList();
             errors.add("Session timed out");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
@@ -122,7 +122,7 @@ public class LaunchJobAction extends MappingDispatchAction{
                 if ( numCpu <= 0 ) throw new NumberFormatException();
             }
             catch (NumberFormatException e) {
-                log.info("the user has entered wrong number of cpu");
+                log.error("the user has entered wrong number of cpu");
                 errors.add("the number of cpu is worng.");
                 errors.add("Number of cpu should be a positive integer number and not a \"" + app.getNumCpu() + "\"");
                 request.setAttribute(Constants.ERROR_MESSAGES, errors);
@@ -167,11 +167,11 @@ public class LaunchJobAction extends MappingDispatchAction{
             return mapping.findForward("Error");
         }catch (Exception e){
 	    if ( e == null) {
-                log.info("*** Session has timed out 2 ***");
+                log.error("*** Session has timed out 2 ***");
                 return mapping.findForward("Timeout");
 	    };
             if ( e.getMessage() == null ) {
-                log.info("*** Session has timed out 3 ***");
+                log.error("*** Session has timed out 3 ***");
                 errors.add("Session timed out");
                 request.setAttribute(Constants.ERROR_MESSAGES, errors);
                 return mapping.findForward("Timeout");
@@ -293,7 +293,7 @@ public class LaunchJobAction extends MappingDispatchAction{
 	    fileInfo += " size: " + ff.getFileSize();
 	}
 
-        log.info(fileInfo);
+        log.debug(fileInfo);
     }
 
     /**

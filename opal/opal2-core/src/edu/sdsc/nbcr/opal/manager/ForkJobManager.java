@@ -52,7 +52,7 @@ public class ForkJobManager implements OpalJobManager {
 			   AppConfigType config,
 			   String handle)
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	this.props = props;
 	this.config = config;
@@ -69,7 +69,7 @@ public class ForkJobManager implements OpalJobManager {
      */
     public void destroyJobManager()
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// TODO: not sure what needs to be done here
 	throw new JobManagerException("destroyJobManager() method not implemented");
@@ -199,7 +199,7 @@ public class ForkJobManager implements OpalJobManager {
      */
     public StatusOutputType waitForActivation() 
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// poll till status is ACTIVE or ERROR
 	while (!started) {
@@ -230,7 +230,7 @@ public class ForkJobManager implements OpalJobManager {
      */
     public StatusOutputType waitForCompletion() 
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// check if this process has been started already
 	if (proc == null) {
@@ -280,7 +280,7 @@ public class ForkJobManager implements OpalJobManager {
      */
     public StatusOutputType destroyJob()
 	throws JobManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// check if this process has been started already
 	if (proc == null) {

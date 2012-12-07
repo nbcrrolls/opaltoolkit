@@ -109,7 +109,7 @@ public class HibernateUtil {
      */
     public static int markZombieJobs() 
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	try {
 	    Session session = getSessionFactory().openSession();
@@ -355,7 +355,7 @@ public class HibernateUtil {
      */
     public static JobStatisticsType getStatistics(String jobID) 
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	JobStatisticsType stats = null;
 
@@ -419,7 +419,7 @@ public class HibernateUtil {
      */
     public static JobOutputType getOutputs(String jobID) 
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	JobOutputType outputs = new JobOutputType();
 
@@ -490,7 +490,7 @@ public class HibernateUtil {
      */
     public static long getNumJobsThisHour(String remoteIP) 
 	throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	Long numJobs = new Long(0);
 
@@ -564,7 +564,7 @@ public class HibernateUtil {
     public static long getNumExecutingJobs() 
 	throws StateManagerException {
 
-	logger.info("called");
+	logger.debug("called");
 
 	Long numJobs = new Long(0);
 
@@ -607,7 +607,7 @@ public class HibernateUtil {
     public static long getNumPendingJobs() 
 	throws StateManagerException {
 
-	logger.info("called");
+	logger.debug("called");
 
 	Long numJobs = new Long(0);
 
@@ -654,7 +654,7 @@ public class HibernateUtil {
      */
     public static boolean saveServiceStatus(ServiceStatus status)
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	// return false if HSQL DB is being used
 	Configuration conf = new Configuration();
@@ -692,7 +692,7 @@ public class HibernateUtil {
      */
     public static ServiceStatus getServiceStatus(String serviceName) 
         throws StateManagerException {
-	logger.info("called");
+	logger.debug("called");
 
 	ServiceStatus status = null;
 

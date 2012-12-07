@@ -268,7 +268,7 @@ public class OpalInfoServlet extends HttpServlet {
             e.printStackTrace();
             r = new String(error);
         }
-        log.info("Exec: command = " + command + " result = " + r);
+        log.debug("Exec: command = " + command + " result = " + r);
         return r;
     }
 	

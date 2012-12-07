@@ -49,7 +49,7 @@ public class GetJobStatusAction extends MappingDispatchAction{
 
         // session timeout 
         if(request.getSession(false) == null || request.getSession(false).getAttribute("appMetadata") == null) {
-            log.info("*** Session has timed out ***");
+            log.error("*** Session has timed out ***");
             ArrayList errors = new ArrayList();
             errors.add("Session timed out");
             request.setAttribute(Constants.ERROR_MESSAGES, errors);
