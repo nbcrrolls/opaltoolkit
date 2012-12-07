@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationListener;
+import org.apache.commons.io.FilenameUtils;
 
 import org.apache.axis.utils.StringUtils;
 import org.apache.axis.AxisFault;
@@ -121,12 +122,6 @@ public class OpalDeployService extends HttpServlet {
         private String opalUrl;
         private File deployPathFile;
         private boolean run ;
-        /**
-         * I need this table to keep track of the assiciation between 
-         * file name and its corresponding service name
-         */
-        protected Hashtable<String,String> hTable=new Hashtable<String,String>();
-
 
         /**
          * terminates this thread so tomcat can shut down properly
@@ -250,21 +245,8 @@ public class OpalDeployService extends HttpServlet {
                 return;
             }
             
-            // get the service name and the version number from the app config
-            String serviceName = null;
-            String configVersion = null;
-            if (config.getMetadata() != null) {
-                configVersion = config.getMetadata().getVersion();
-                serviceName = config.getMetadata().getAppName();
-            }
-            if ( serviceName == null ) {
-                logger.error("Unable to get service name for file " + appConfigFile );
-                return;
-            }
-            // set the final service name
-            if (configVersion != null) {
-                serviceName += "_" + configVersion;
-            }
+            // service name is now filename - .xml
+            String serviceName = FilenameUtils.getBaseName(appConfigFile.toString());
             logger.info("Service name used for deployment: " + serviceName);
             
             // replace SERVICE_NAME with actual service name
@@ -281,8 +263,6 @@ public class OpalDeployService extends HttpServlet {
                 fOut.write(finalData.getBytes());
                 fOut.close();
                 if ( runAxisAdmin(wsddFinal.getCanonicalPath() ) ) {
-                    //update internal hash table
-                    hTable.put(appConfigFile.toString(), serviceName);
 
                     // updating service status in database
                     logger.info("Updating service status in database to ACTIVE");
@@ -393,16 +373,14 @@ public class OpalDeployService extends HttpServlet {
         }
 
         public void onFileChange(final File file){
-            logger.info("AppConfig modified (nothing will be done): " + file);
+            logger.debug("AppConfig modified (nothing will be done): " + file);
         }
 
         public void onFileDelete(final File file){
             logger.info("Undeploying file: " + file);
-            //that is way i need the hTable!!
-            String serviceName = deplo.hTable.get(file.toString());
+            String serviceName = FilenameUtils.getBaseName(file.toString());
             if (serviceName != null){
                 deplo.undeploy(serviceName);
-                deplo.hTable.remove(file.toString());
                 logger.info("Service " + serviceName + " undeployed");
             }
         }
