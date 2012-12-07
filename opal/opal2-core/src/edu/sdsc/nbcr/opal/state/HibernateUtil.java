@@ -659,15 +659,14 @@ public class HibernateUtil {
 	// return false if HSQL DB is being used
 	Configuration conf = new Configuration();
 	conf = conf.configure(confFile);
-	String dialect = 
-	    conf.getProperty("dialect");
-	if (dialect == null) {
-	    logger.error("Can't figure out the type of database being used");
-	    return false;
-	} else if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
-	    logger.error("Update of service status not supported for HSQL DB");
-	    return false;
-	}
+	String dialect = conf.getProperty("dialect");
+	//if (dialect == null) {
+	//    logger.error("Can't figure out the type of database being used");
+	//    return false;
+	//} else if (dialect.equals("org.hibernate.dialect.HSQLDialect")){
+	//    logger.error("Update of service status not supported for HSQL DB");
+	//    return false;
+	//}
 
 	try {
 	    Session session = getSessionFactory().openSession();
