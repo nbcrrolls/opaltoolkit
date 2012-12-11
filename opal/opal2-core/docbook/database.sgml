@@ -72,7 +72,7 @@ this property.
 <title>Using MySQL</title>
 
 <orderedlist>
-<listitem><para>Install a MySQL database (tested with version 5.1.38).</para></listitem>
+<listitem><para>Install a MySQL database (tested with version 5.1.66).</para></listitem>
 
 <listitem><para>Create a database called <emphasis role="italics">opal2_db</emphasis>, and a user called
 <emphasis role="italics">opal_user</emphasis> with a password. Grant all permissions on opal2_db to the

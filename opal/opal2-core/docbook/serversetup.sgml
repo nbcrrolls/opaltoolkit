@@ -41,9 +41,11 @@ packages:</para>
 <orderedlist>
    <listitem><para>Tomcat: Tomcat is a servlet container than can be used
    to host Opal Web services. Opal can be installed inside Tomcat versions
-   7.0. You can download the binary version of Tomcat 7.X from 
+   7.0 or 6.0. You can download the binary version of Tomcat 7.0 from 
    <ulink type="http" url="http://tomcat.apache.org/download-70.cgi">
-   http://tomcat.apache.org/download-70.cgi</ulink>. Henceforth, for the purposes
+   http://tomcat.apache.org/download-70.cgi</ulink> or Tomcat 6.0 from 
+   <ulink type="http" url="http://tomcat.apache.org/download-60.cgi">
+   http://tomcat.apache.org/download-60.cgi</ulink>. Henceforth, for the purposes
    of this reference guide, we will refer to the location of the Tomcat
    installation as <emphasis role="italics">CATALINA_HOME</emphasis>.
    </para></listitem>
@@ -63,7 +65,7 @@ packages:</para>
    url="http://www.postgresql.org/">Postgres</ulink> (version 8.2.4 or
    higher 8.2 flavors), <ulink type="http"
    url="http://dev.mysql.com/downloads/">MySQL</ulink> (tested with version
-   5.1.38). or <ulink type="http"
+   5.1.66). or <ulink type="http"
    url="http://www-01.ibm.com/software/data/db2/">DB2</ulink> (tested with
    version 8.2).</para></listitem>
 
