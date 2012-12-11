@@ -25,8 +25,11 @@ The Opal dashboard provides the following tabs:</para>
         <listitem><para><command>Server Info</command>: This
         provides general information about the Opal installation, such as
         server configuration, versions, etc.</para>
-
-	<graphic fileref="images/server_info.png" scale=50></graphic>
+	<mediaobject>
+        <imageobject>
+                <imagedata fileref="images/server_info.png" scale=50>
+        </imageobject>
+        </mediaobject>
 	</listitem>
 
         <listitem><para><command>Usage Statistics</command>: This provides
@@ -42,8 +45,11 @@ The Opal dashboard provides the following tabs:</para>
 	jobs executed per day over a specified timeframe. Users can select
 	a time window, as well the services that they would like to be
 	plotted.</para>
-
-	<graphic fileref="images/plotchart.jpg" scale=50></graphic>
+        <mediaobject>
+        <imageobject>
+                <imagedata fileref="images/plotchart.jpg" scale=50>
+        </imageobject>
+        </mediaobject>
 
 	</listitem>
 
@@ -89,8 +95,11 @@ The application configuration file described at the
 present any metadata describing the format of the input arguments of the
 application. Therefore the Opal dashboard can display to the user only the
 simple submission form.</para>
-
-<graphic fileref="images/simple_sub.png" scale=50></graphic>
+        <mediaobject>
+        <imageobject>
+                <imagedata fileref="images/simple_sub.png" scale=50>
+        </imageobject>
+        </mediaobject>
 
 </section>
 
@@ -292,7 +301,11 @@ For the Opal configuration described in <xref linkend="sample-appconfig">,
 the following advanced submission form is generated:
 </para>
 
-<graphic fileref="images/advanced_sub.png" scale=40></graphic>
+        <mediaobject>
+        <imageobject>
+                <imagedata fileref="images/advanced_sub.png" scale=40>
+        </imageobject>
+        </mediaobject>
 </section>
 </section>
 

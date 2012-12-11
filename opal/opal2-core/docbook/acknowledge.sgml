@@ -11,7 +11,11 @@ The organizations involvement in the development of Opal:
   National Biomedical Computation Resource (NBCR)
   </ulink>
   <screenshot>
-      <graphic fileref="images/nbcr_logo.png" scale=50></graphic>
+<mediaobject>
+        <imageobject>
+        <imagedata fileref="images/nbcr_logo.png" scale=50>
+        </imageobject>
+</mediaobject>
   </screenshot>
 </para></listitem>
 <listitem><para>
@@ -19,7 +23,11 @@ The organizations involvement in the development of Opal:
   SDSC Logo San Diego Supercomputer Center (SDSC)
   </ulink>
   <screenshot>
-      <graphic fileref="images/sdsc_logo.png" scale=50></graphic>
+<mediaobject>
+        <imageobject>
+        <imagedata fileref="images/sdsc_logo.png" scale=50>
+        </imageobject>
+</mediaobject>
   </screenshot>
 </para></listitem>
 <listitem><para>
@@ -27,7 +35,11 @@ The organizations involvement in the development of Opal:
   California Institute for Telecommunications and Information Technology (Calit2)
   </ulink>
   <screenshot>
-      <graphic fileref="images/logo_calit.png" scale=50></graphic>
+<mediaobject>
+        <imageobject>
+        <imagedata fileref="images/logo_calit.png" scale=50>
+        </imageobject>
+</mediaobject>
   </screenshot>
 </para></listitem>
 </itemizedlist>
