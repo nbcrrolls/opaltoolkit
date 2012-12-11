@@ -8,13 +8,11 @@ manager, if need be.</para>
 
 <para>The prerequisite to this section is that you have a scheduler such as
 Condor or SGE installed on your compute cluster. Access to schedulers is
-provided in a number of ways - in particular, via the DRMAA API and the
-Globus Toolkit. Starting with release 2.1, we support Condor natively
-without using DRMAA or Globus, and also the Community Scheduler Framework
-(CSF4) for scheduling jobs across multiple clusters. In release 2.3, we
-introduced direct support for TORQUE/PBS without having to use DRMAA or
-Globus. Please consult the appropriate documentation for the installation
-of these scheduler tools.</para>
+provided in a number of ways - in particular, via the DRMAA API, and via 
+the various scheduler plugins. Starting with release 2.1, we support Condor 
+natively without using DRMAA or Globus. In release 2.3, we introduced 
+direct support for TORQUE/PBS. Please consult the appropriate documentation 
+for the installation of these scheduler tools.</para>
 
 <section id="drmaa-scheduler" xreflabel="DRMAA Setup">
 <title>Using DRMAA</title>
@@ -60,99 +58,6 @@ another version of the drmaa.jar inside Tomcat's common/lib or server/lib
 directories, since that will be loaded first by Tomcat's class
 loader.</para></listitem>
 </orderedlist>
-</section>
-
-<section id="globus-scheduler" xreflabel="Globus Setup">
-<title>Using Globus</title>
-
-<orderedlist>
-<listitem><para>Install Globus (especially the Globus gatekeeper) on the head node of
-the cluster. We use Globus GRAM to communicate programmatically with
-Condor/SGE. To enable this, make sure that you have also installed the
-Condor/SGE job-manager. Follow the documentation for this on the Globus web
-site. You may install any version of Globus as long as you can submit jobs
-to Condor/SGE via GRAM (and the Java CoG Kit). We use Globus version 3.2.0
-on our cluster.</para>
-
-<para>Ensure that you can submit jobs to Condor/SGE via Globus, especially
-using the certificate/key-pair of the Tomcat server (described in  <xref linkend="security">
-). You can do this by following these
-steps:</para>
-
-<orderedlist>
-  <listitem><para>Copy app_service.cert.pem (the certificate file) to
-  app_service.all.pem.</para></listitem>
-
-  <listitem><para>Edit app_service.all.pem, and strip out everything excluding the
-  region between the lines <filename>-----BEGIN CERTIFICATE-----</filename> and
-  <filename>-----END CERTIFICATE-----</filename>. Leave those two lines in.</para></listitem>
-
-  <listitem><para>Append the app_service.privkey (the unencrypted private key) to the
-  contents of app_service.all.pem.</para></listitem>
-
-  <listitem><para>Set the X509_USER_PROXY environment variable to the location of
-  app_service.all.pem.</para></listitem>
-
-  <listitem><para>Submit a test job using the above proxy to the Condor job-manager as
-  follows: <filename>globus-job-run "hostname:2119/jobmanager-condor"
-  "/bin/ls"</filename>. If you are using SGE, use
-  <filename>"hostname:2119/jobmanager-sge"</filename>.</para>
-
-  <para>If this above job succeeds, then Globus/Condor(SGE) can be used for
-  scheduling purposes. You will have to add an entry into the grid-mapfile
-  of the Globus installation (usually inside the /etc/grid-security
-  directory) to authorize the service to launch jobs as follows:
-  <filename>"/C=US/O=grid-devel/OU=sdsc/CN=app_service"
-  app_user</filename>. Replace the value within quotes with the DN for the
-  app_service.cert.pem. You can get the DN by running:
-  <filename>grid-cert-info -subject -file app_service.cert.pem</filename>.
-  The app_user is the Unix user running the Tomcat server hosting Opal.</para>
-
-  <para>You may also have to add the CA cert and signing policy of the above
-  certificate into the list of trusted certificates for the Globus
-  installation (usually inside the /etc/grid-security/certificates
-  directory).</para>
-
-  <para>You may also want to check if you can submit parallel jobs via
-  Globus. You can do so by running something like this: <filename>globusrun -o -r
-  hostname:2119/jobmanager-sge
-  "&amp;(executable=&lt;my_mpi_exec&gt;)(count=n)(jobtype=mpi)"</filename>. Replace
-  <filename>&lt;my_mpi_exec&gt;</filename> with some valid MPI executable, and replace
-  count with a valid number of processes for your executable</para></listitem>
-</orderedlist>
-</listitem>
-
-<listitem><para>Set the following properties inside the opal.properties
-file: <filename>globus.gatekeeper</filename> to the URL for the Globus
-gatekeeper, <filename>globus.service_cert</filename> to the location of the
-server certificate, and <filename>globus.service_privkey</filename> to the
-location of the server's unencrypted private key.</para></listitem>
-
-<listitem><para>If you would like to submit Globus jobs to a local cluster,
-then set the property <filename>opal.jobmanager</filename> to
-<filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>, and if it
-is to a remote cluster, then set it to
-<filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename>. If
-you are using the remote Globus job manager, set the
-<filename>globus.gridftp_base</filename> to the base URL of the location to
-stage files to. Make sure that this is a valid directory, and that the
-app_user can write files can create directories in this location. It is
-important to notice that if you specify a path with
-gsiftp://myhost.mydomain.com:2812/data/foo.dat, the location 'data/foo.dat'
-will be relative to the remote home directory. To point to absolute paths,
-you have to use double slashes (//), e.g.
-gsiftp://myhost.mydomain.com:2812//data/foo.dat.</para></listitem>
-
-<listitem><para>Reinstall Opal by running the following command:
-<screen>
-    ant install
-</screen>
-</para>
-</listitem>
-
-<listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
-</orderedlist>
-
 </section>
 
 <section id="condor-scheduler" xreflabel="Condor Setup">
@@ -215,88 +120,6 @@ PATH.</para></listitem>
 <listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
 
 </orderedlist>
-
-</section>
-
-<section id="csf4-scheduler" xreflabel="CSF Setup">
-<title>Using CSF4</title>
-
-<para>
-The <ulink url="http://sourceforge.net/projects/gcsf/"> 
-Community Scheduler Framework (CSF)</ulink> is a set of Grid Services, 
-implemented using the Globus Toolkit, which provides an environment 
-for the development of metaschedulers that can dispatch jobs to 
-resource managers such as LSF, SGE, PBS and Condor.
-</para>
-
-<para>
-The Opal CSF plugin has been tested with CSF 4.0.5.1.
-You can download CSF 4.0.5.1 as well as its documentation from
-<ulink url="http://sourceforge.net/projects/gcsf/files/">
-the CSF Source Forge download page</ulink>. 
-</para>
-
-<orderedlist>
-<listitem><para>
-The CSF plugin requires a valid proxy from the user who starts Tomcat.
-Please see <link linkend='proxy-script'>Appendix on proxy scripts</link> 
-for a sample script to generate proxy.
-</para></listitem>
-<listitem><para>In the opal.properties
-file, set <filename>opal.jobmanager</filename> to
-<filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename>.
-</para></listitem>
-<listitem><para>
-Create an Opal directory on all machines that CSF4 will be scheduling
-jobs to. The Opal job manager requires these directories to have the 
-same name on all resources.
-In <filename>opal.properties</filename>, set 
-<filename>csf4.workingDir</filename> to the relative path of this 
-working directory with respect to the home directory of the CSF4 user.
-</para></listitem>
-<listitem><para>
-If you have already sourced 
-<filename>$GLOBUS_LOCATION/etc/globus-user-env.sh</filename> and
-<filename>$GLOBUS_LOCATION/etc/globus-devel-env.sh</filename>,
-then you need to unset the CLASSPATH.  This is because there are 
-jar conflicts between the library files used by gt4 and the library
-files used by Opal.  The command below unsets the CLASSPATH.
-<screen>
-export CLASSPATH=""
-</screen>
-</para></listitem>
-<listitem><para>
-Reinstall Opal by running the following command:
-<screen>
-ant install
-</screen>
-</para></listitem>
-<listitem><para>
-Before restarting Tomcat, ensure that the environment for Globus and CSF4 is set up correctly by execute the following command:
-<screen>
-source $GLOBUS_LOCATION/etc/globus-user-env.sh
-source $GLOBUS_LOCATION/etc/globus-devel-env.sh
-export CSF_CLASSPATH=$CLASSPATH
-</screen>
-</para></listitem>
-<listitem><para>
-Restart Tomcat for changes to take effect.
-</para></listitem>
-</orderedlist>
-
-<para>
-In your application configuration files, the <filename>binaryLocation</filename>
-element needs to be of the form <filename>$APPNAME:$BINARY</filename>.
-For example,
-<screen>
-&lt;binaryLocation&gt;PDB2PQR:pdb2pqr.py&lt;/binaryLocation&gt;
-</screen>
-</para>
-
-<para>
-This is because CSF4 can figure out the exact path of the application
-on a particular resource using the <filename>$APPNAME</filename>.
-</para>
 
 </section>
 
