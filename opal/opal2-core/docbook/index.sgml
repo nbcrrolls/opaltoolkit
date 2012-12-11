@@ -1,7 +1,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
 
-<!ENTITY thisyear "2010">
-<!ENTITY version "2.4">
+<!ENTITY thisyear "2012">
+<!ENTITY version "2.5">
 
 <!ENTITY overview SYSTEM "overview.sgml">
 <!ENTITY serversetup SYSTEM "serversetup.sgml">
@@ -104,7 +104,7 @@ to install and configure it.
 &feedback;<!-- 
 &faq; -->
 &acknowledge;
-&appendix
+&appendix;
 
 </book>
 

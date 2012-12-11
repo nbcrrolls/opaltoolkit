@@ -16,14 +16,15 @@ prerequisites for the installation are as follows.</para>
 <title>Common Prerequisites for Server and Client</title>
 
 <orderedlist> 
-   <listitem><para>Java 1.5.x or higher: Download and install J2SE from <ulink type="http"
-   url="http://java.sun.com/j2se/downloads">http://java.sun.com/j2se/downloads</ulink>,
+   <listitem><para>Java 1.6.x or higher: Download and install J2SE from <ulink type="http"
+   url="http://www.oracle.com/technetwork/java/javase/downloads/index.html">
+   http://www.oracle.com/technetwork/java/javase/downloads/index.html</ulink>,
    if you don't have it installed already. Add the Java bin directory to
    the environment variable PATH. Also set the environment variable
    JAVA_HOME to point to the top level directory of the JDK
    installation.</para></listitem>
 
-   <listitem><para>Ant 1.6.1 or higher: Ant is a make-like utility for compiling Java
+   <listitem><para>Ant 1.7.1 or higher: Ant is a make-like utility for compiling Java
    programs. Install Ant from <ulink type="http" url="http://ant.apache.org/">
    http://ant.apache.org</ulink>. Set the environment variable <emphasis role="italics">ANT_HOME</emphasis>
    to point to your Ant installation.</para></listitem>
@@ -40,15 +41,12 @@ packages:</para>
 <orderedlist>
    <listitem><para>Tomcat: Tomcat is a servlet container than can be used
    to host Opal Web services. Opal can be installed inside Tomcat versions
-   5.0.30 and 5.5.X. A <ulink type="http"
-   url="http://nbcr.net/services/downloads/jakarta-tomcat-5.0.30.tar.gz">cached
-   version</ulink> of 5.0.30 may be used, or you may install the binary
-   version of Tomcat 5.5.X from <ulink type="http" url=
-   "http://jakarta.apache.org/tomcat/">
-   http://jakarta.apache.org/tomcat/</ulink>. Henceforth, for the purposes
+   7.0. You can download the binary version of Tomcat 7.X from 
+   <ulink type="http" url="http://tomcat.apache.org/download-70.cgi">
+   http://tomcat.apache.org/download-70.cgi</ulink>. Henceforth, for the purposes
    of this reference guide, we will refer to the location of the Tomcat
-   installation as <emphasis
-   role="italics">CATALINA_HOME</emphasis>.</para></listitem>
+   installation as <emphasis role="italics">CATALINA_HOME</emphasis>.
+   </para></listitem>
 </orderedlist>
 
 <para>The following packages are optional:</para>
@@ -69,33 +67,22 @@ packages:</para>
    url="http://www-01.ibm.com/software/data/db2/">DB2</ulink> (tested with
    version 8.2).</para></listitem>
 
-   <listitem><para>Scheduler Tools: One way to enable access to schedulers
-   is via the <ulink type="http" url="http://www.globus.org">Globus
-   Toolkit</ulink>. The primary requirement is the Opal user must be able
-   to launch jobs on your resources using GRAM via the Globus gatekeeper.
-   In addition, Globus jobmanagers must be available for the particular
-   scheduler that you have installed. We are using Globus version 4.0.X for
-   our development and testing, but you may use any other version as long
-   as the above requirements are met. We have tested <ulink type="http"
+   <listitem><para>Scheduler Tools: We have tested <ulink type="http"
    url="http://www.cs.wisc.edu/condor">Condor</ulink> for serial jobs only,
    and <ulink type="http"
    url="http://gridengine.sunsource.net/">SGE</ulink> for serial as well as
-   parallel jobs. Globus jobmanager plugins are available for both of the
-   above, and must be installed if you plan to use either of them.</para>
+   parallel jobs.</para>
 
    <para>Another alternative to access schedulers is via the <ulink
    type="http" url="http://drmaa.org/">DRMAA</ulink> API. The Opal services
    can submit jobs to schedulers as long as they support the DRMAA API. We
    have only tested job submits to SGE via DRMAA.</para>
 
-   <para>If neither Globus or DRMAA are installed, Opal can be set up to
-   submit jobs directly to schedulers such as Condor or <ulink type="http"
-   url="http://www.clusterresources.com/products/torque-resource-manager.php">TORQUE</ulink>.</para>
+   <para>Opal can be set up to submit jobs directly to schedulers such as 
+   Condor or <ulink type="http" 
+   url="http://www.clusterresources.com/products/torque-resource-manager.php">
+   TORQUE</ulink> simply by writing a shell script.</para>
 
-   <para>Finally, from the version 2.1 release of the Opal toolkit, we are
-   supporting the Community Scheduler Framework (<ulink type="http"
-   url="http://www.globus.org/toolkit/docs/4.0/contributions/csf/">CSF4</ulink>)
-   for scheduling jobs across multiple clusters.</para>
 </listitem>
 </orderedlist>
 </section>
@@ -131,6 +118,11 @@ properties correctly. It should look something like the following:</para>
     # this is required since Java can't figure out the IP 
     # address if there are multiple network interfaces
     tomcat.url=http://localhost:8080
+
+    # the path relative to $CATALINA_HOME (or absolute) 
+    # where opal will look for the xml file to authomatically 
+    # deploy 
+    opal.deploy.path=deploy
 
     # parallel parameters
     num.procs=1
@@ -281,7 +273,7 @@ services.</para></listitem>
 For every application that needs to be deployed as an Opal service, you
 will need to create an Opal configuration file. A sample configuration file
 for the command <command>/bin/date</command>, located in
-<filename>$OPAL_HOME/configs/date_config.xml</filename>, is shown below.
+<filename>$OPAL_HOME/configs/date.xml</filename>, is shown below.
 </para>
 
 <para>
@@ -351,18 +343,11 @@ the command-line arguments, please see <xref linkend="sample-appconfig">.
 
 <listitem>
 
-<para>Deploy the services inside Tomcat, by changing to the $OPAL_HOME
-directory, and running the following command:
+<para>Deploy the services inside Tomcat, by copying the date.xml file inside the 
+directory specified in opal.properties with the keyword opal.deploy.path. 
+If you have not changed that property the default directory is $CATALINA_HOME/deploy.
 <screen>
-    $ANT_HOME/bin/ant deploy -DserviceName=&lt;serviceName&gt; -DappConfig=&lt;appConfig&gt;
-</screen>
-</para>
-
-<para>For example, to deploy the Date service, you would type the following
-command:
-<screen>
-    $ANT_HOME/bin/ant deploy -DserviceName=DateService \
-                 -DappConfig=$PWD/configs/date_config.xml
+    cp configs/date.xml $CATALINA_HOME/deploy
 </screen>
 </para>
 
@@ -374,17 +359,12 @@ the Web-based Opal Dashboard at URL:
 <emphasis>http://host:port/opal2/dashboard</emphasis>.
 </para>
 
-<para>You can undeploy your service at any time by running the 
-following command:
+<para>You can undeploy your service at any time simply by deleting the file:
 <screen>
-    $ANT_HOME/bin/ant undeploy -DserviceName=&lt;serviceName&gt;
+    rm $CATALINA_HOME/deploy/date.xml
 </screen>
 </para>
 
-<para>Both the deploy and undeploy targets accept a
-<filename>-DappVersion</filename> parameter. If this is used, the service
-URL deployed is of the form
-<filename>serviceName_appVersion</filename>.</para>
 
 <para>If you plan on using the service with large inputs and outputs, it is a
 good idea to increase the heap size being used by the JVM. This can be done
