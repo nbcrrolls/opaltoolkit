@@ -113,6 +113,10 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     <servlet-name>AxisServlet</servlet-name> 
   </filter-mapping> 
   -->
+
+  <!-- Opal automatic deployment serlet. This servelet monitor the 
+  opal.deploy.path and automatically deploy every xml file which finds 
+  in it -->
   <servlet>
     <servlet-name>OpalDeployService</servlet-name>
     <display-name>Opal Deploy Service</display-name>
