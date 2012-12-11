@@ -455,7 +455,7 @@ public class AppServiceImpl
     public StatusOutputType queryStatus(String in) 
 	throws FaultType {
 	long t0 = System.currentTimeMillis();
-	logger.info("Query status for job: " + in);
+	logger.debug("Query status for job: " + in);
 	
 	// make sure that the config has been retrieved
 	// retrieveAppConfig();
