@@ -65,21 +65,30 @@ loader.</para></listitem>
 
 <orderedlist>
 <listitem><para>Ensure that you have a working Condor pool by following the
-Condor <ulink type="http"
-url="http://www.cs.wisc.edu/condor/manual/v7.0.5/">manual</ulink>. We have
-tested with version 7.0.5, but we expect that it will work with most recent
+Condor <ulink type="http" url="http://www.cs.wisc.edu/condor/manual/v7.6.2/">manual</ulink>. 
+We have tested with version 7.6.2, but we expect that it will work with most recent
 Condor versions. In particular, verify that you can submit and monitor jobs
-from the command-line with commands such as
-<filename>condor_submit</filename>, <filename>condor_status</filename>,
-etc., and that these commands are in the Opal user's
-PATH.</para></listitem>
+from the command-line with commands such as <filename>condor_submit</filename>, 
+<filename>condor_status</filename>, etc., and that these commands are in the Opal user's PATH.
+</para></listitem>
 
-<listitem><para>Set the following properties inside the opal.properties
-file: <filename>opal.jobmanager</filename> to
-<filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename>, and
-<filename>mpi.script</filename> to the script used by Condor to submit
-parallel jobs. You can ignore mpi.script if you do not plan on supporting
-parallel jobs. </para></listitem>
+<listitem><para>Set the following properties inside the opal.properties file: </para>
+  <itemizedlist>
+    <listitem><para>
+       <filename>opal.jobmanager = edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> Set Condor job manager.
+     </para></listitem>
+
+     <listitem><para>
+       <filename>mpi.script = /opt/condor/etc/examples/mp1script</filename> to the script used 
+       by Condor to submit parallel jobs. You can ignore mpi.script if you do not plan to support parallel jobs. 
+     </para></listitem>
+
+     <listitem><para>
+       <filename>condor.expr.file=/opt/opal/etc/condor.expr</filename> To enable server-specific condor 
+       expressions put them in a file. Use a regular condor submit file syntax: <filename>key = value</filename>
+     </para></listitem>
+
+  </itemizedlist>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>
@@ -100,11 +109,32 @@ as flocking and Condor-G.</para></listitem>
 <title>Using TORQUE/PBS</title>
 
 <orderedlist>
-<listitem><para>Ensure that you have a working TORQUE/PBS installation, by following the instructions on the TORQUE <ulink type="http" url="http://www.clusterresources.com/products/torque-resource-manager.php">website</ulink>. In particular, verify that you can submit and monitor jobs from the command-line with commands such as <filename>qsub</filename> and <filename>qstat</filename>. Note that we have only tested with version 2.3.0 of TORQUE.</para></listitem>
+<listitem><para>Ensure that you have a working TORQUE/PBS installation, by following the instructions on the 
+TORQUE <ulink type="http" url="http://www.clusterresources.com/products/torque-resource-manager.php">website</ulink>. 
+In particular, verify that you can submit and monitor jobs from the command-line with commands such as 
+<filename>qsub</filename> and <filename>qstat</filename>. Note that we have only tested with version 2.3.0 of 
+TORQUE and PBSPro_11.3.0.121723 of PBS.
+</para></listitem>
 
-<listitem><para>Inside the opal.properties, set the
-<filename>opal.jobmanager</filename> to
-<filename>edu.sdsc.nbcr.opal.manager.PBSJobManager</filename>.</para></listitem>
+<listitem><para>Set the following properties inside the opal.properties file:</para>
+
+  <itemizedlist>
+    <listitem><para>
+       <filename>opal.jobmanager = edu.sdsc.nbcr.opal.manager.PBSJobManager</filename> Set PBS job manager.
+     </para></listitem>
+
+     <listitem><para>
+       <filename>pbs.expr.file=/opt/opal/etc/pbs.expr</filename> To enable server-specific PBS 
+       expressions put them in a file. Use a regular PBS submit file syntax.
+     </para></listitem>
+
+     <listitem><para>
+       <filename>pbs.name.limit=15</filename> Set default job name limit per your server configuration.
+       Job submit files will have <filename>#PBS -N jobName</filename> line and the jobName will be specified limit length. 
+     </para></listitem>
+
+  </itemizedlist>
+
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>
