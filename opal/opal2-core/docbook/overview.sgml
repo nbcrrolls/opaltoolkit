@@ -1,20 +1,19 @@
 <chapter id="overview" xreflabel="Overview">
 <title>Overview</title>
 
-<para>The Opal toolkit provides a mechanism to wrap up existing scientific
-applications rapidly as Web services, and expose them to various clients.
-The implementation provides features such as scheduling (e.g. using Condor
-and SGE via Globus or DRMAA) and security (using GSI-based certificates),
+<para>The Opal toolkit provides a mechanism to rapidly wrap up existing scientific
+applications as Web services, and expose them to various clients.
+The implementation provides features such as scheduling (e.g. using Condor, PBS
+and SGE via DRMAA) and security (using GSI-based certificates).
 Furthermore, the service provides job and data management (by executing
 every job in a separate working directory), and state management (by
 storing the service state via Hibernate into a database such as HSQL,
 PostgreSQL, MySQL or DB2). The application developer specifies a
 configuration for a scientific application and deploys the application as a
-service following a small sequence of steps. End-users can now access this
-application remotely using the WSDL of the service.</para>
+service. End-users can now access this application remotely using the service WSDL.</para>
 
 <para>The WSDL for the service is defined inside <emphasis role="italics">wsdl/opal.wsdl</emphasis>. Stub
-generators provided by Web service toolkits are then used to generate the
+generators provided by Web service toolkits are used to generate the
 client and server-side bindings for the services. In our case, the services
 are implemented in Java using the Apache Axis toolkit, while the clients
 can be in any language.</para>
@@ -28,10 +27,10 @@ can be in any language.</para>
    options that are passed to the application binary. Ideally, these
    elements should be arbitrary XML's (specified by <filename>xsd:any</filename> tags).
    However, due to the limitations of certains toolkits in other languages
-   (e.g. ZSI in Python), we specify them as Strings for now. You may embed
-   XML tags inside them using CDATA sections. The metadata also
+   (e.g. ZSI in Python), we specify them as Strings. You may embed
+   XML tags inside them using CDATA sections. The metadata 
    (optionally) includes the <filename>types</filename> element, which
-   describes the command-line arguments for the application, described in
+   describes the command-line arguments for the application, detailed in
    the <xref linkend="opalGUI-advancedsub"> section</para></listitem>
 
    <listitem><para>Launch job (<filename>launchJob</filename>): This
@@ -50,7 +49,7 @@ can be in any language.</para>
 
    <listitem><para>Get job outputs (<filename>getOutputs</filename>): This operation returns the
    outputs from a job that is identified by a Job ID. The output consists
-   of the urls for the standard output and error, and an array of
+   of the URLs for the stdout and stderr, and an array of
    structures representing the output files. The structure contains the
    <emphasis role="italics">name</emphasis> of the output file and the <emphasis role="italics">url</emphasis> from where it can be
    downloaded.</para></listitem>
@@ -84,7 +83,7 @@ can be in any language.</para>
 </orderedlist>
 
 <para>
-Please see <ulink url="http://www.nbcr.net/software/opal/deployment.html">here</ulink>
+Please see <ulink url="http://www.nbcr.net/software/opal/deployment.html">this info</ulink>
 for some Opal use cases.
 </para>
 

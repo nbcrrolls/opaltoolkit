@@ -3,7 +3,7 @@
 
 <para>Version: &version;</para>
 
-<para>In this chapter we present how to install Opal command-line
+<para>In this chapter we explain how to install Opal command-line
 client.</para>
 
 <section id="clientprerequisites" xreflabel="Client Prerequisites">
@@ -11,8 +11,8 @@ client.</para>
 
 <para>
 The source distribution can be used to install both the server and the
-client sides on Unix and Windows platforms. The client prerequisites is a
-sub-set of the server prerequisites. See <xref
+client sides on Unix and Windows platforms. The client prerequisites form a
+subset of the server prerequisites. See <xref
 linkend="server-client-pre">.
 </para>
 
@@ -21,14 +21,13 @@ linkend="server-client-pre">.
 <section id="clientinstall"  xreflabel="Client Installation">
 <title>Installation Instructions</title>
 
-<para>Download the source distribution of Opal2 for installation from
+<para>Download the Opal2 source distribution from
 <ulink type="http"
 url="http://sourceforge.net/project/showfiles.php?group_id=211778&amp;package_id=297015">
-here</ulink>, if you don't have the appropriate version already.</para>
+source forge</ulink>.</para>
 
 <para>Extract the downloaded tarball using the GNU tar utility (or other
 similar utilities for Windows), as follows:
-
 <screen>
     tar zxvf opal-ws-$VERSION.tar.gz
 </screen>
@@ -42,14 +41,11 @@ all the sources are expanded. Henceforth, we refer to this directory as
 GenericServiceClient class located in $OPAL_HOME/src/edu/sdsc/nbcr/opal. It
 lets you run any application exposed as an Opal service, and retrieve its
 status and outputs.</para>
-
-<para>To compile the client, perform the following step from inside
-the $OPAL_HOME directory.
+<para>To compile the client, run the following command from inside the $OPAL_HOME directory:
 <screen>
     $ANT_HOME/bin/ant jar
 </screen>
 </para>
-
 </section>
 
 <section id="usingclient"  xreflabel="Using Opal Client Programmatically">
@@ -64,7 +60,7 @@ use tcsh on Unix, set your classpath by typing the following command:
 </para>
 
 <para>To launch a job using the Date service mentioned in
-<xref linkend="deploy">, you could use the
+<xref linkend="deploy">, execute the
 following command, which displays the resulting job id, along with the preliminary status.
 <screen>
     java edu.sdsc.nbcr.opal.GenericServiceClient \
@@ -73,14 +69,11 @@ following command, which displays the resulting job id, along with the prelimina
                  -a \""-v1d -v3m -v0y -v-1d -u"\"
 </screen>
 </para>
-
 <para>
 If your arguments contain characters like "-", you will have to put your
 whole set of arguments within quotes that are escaped (\"..\"). If your
-arguments don't have special characters like the above, you can simply use
-regular quotes ("..").
+arguments don't have special characters you can use regular quotes ("..").
 </para>
-
 <para>You can retrieve job status by running the following command:
 <screen>
     java edu.sdsc.nbcr.opal.GenericServiceClient \

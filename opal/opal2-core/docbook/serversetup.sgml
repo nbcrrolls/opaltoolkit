@@ -9,7 +9,7 @@
 <title>Prerequisites</title>
 
 <para>The source distribution can be used to install both the server and
-the command-line client sides on Unix and Windows platforms. The
+the command-line client on Unix and Windows platforms. The
 prerequisites for the installation are as follows.</para>
 
 <section id="server-client-pre" xreflabel="Common Prerequisites for Server and Client">
@@ -17,10 +17,10 @@ prerequisites for the installation are as follows.</para>
 
 <orderedlist> 
    <listitem><para>Java 1.6.x or higher: Download and install J2SE from <ulink type="http"
-   url="http://www.oracle.com/technetwork/java/javase/downloads/index.html">
-   http://www.oracle.com/technetwork/java/javase/downloads/index.html</ulink>,
+   url="http://www.oracle.com/technetwork/java/javase/downloads">
+   http://www.oracle.com/technetwork/java/javase/downloads</ulink>,
    if you don't have it installed already. Add the Java bin directory to
-   the environment variable PATH. Also set the environment variable
+   the environment variable PATH. Set the environment variable
    JAVA_HOME to point to the top level directory of the JDK
    installation.</para></listitem>
 
@@ -54,7 +54,7 @@ packages:</para>
 <para>The following packages are optional:</para>
 <orderedlist>
    <listitem><para>MPI: If you plan to run your application in parallel, you will need
-   a version of MPI. You will also need to make sure that your SSH keys are
+   a version of MPI. You will also need to make sure that your SSH keys (for the account that runs tomcat) are
    set up to be able to run MPI jobs without prompting for a password.</para></listitem>
 
    <listitem><para>RDBMS: By
@@ -70,10 +70,9 @@ packages:</para>
    version 8.2).</para></listitem>
 
    <listitem><para>Scheduler Tools: We have tested <ulink type="http"
-   url="http://www.cs.wisc.edu/condor">Condor</ulink> for serial jobs only,
-   and <ulink type="http"
-   url="http://gridengine.sunsource.net/">SGE</ulink> for serial as well as
-   parallel jobs.</para>
+   url="http://research.cs.wisc.edu/htcondor">Condor</ulink> for only serial jobs,
+   and <ulink type="http" url="http://www.oracle.com/us/products/tools/oracle-grid-engine-075549.html">SGE</ulink> 
+   for serial and parallel jobs.</para>
 
    <para>Another alternative to access schedulers is via the <ulink
    type="http" url="http://drmaa.org/">DRMAA</ulink> API. The Opal services
@@ -97,10 +96,10 @@ packages:</para>
 <para>Download the source distribution of Opal2 for installation from
 <ulink type="http"
 url="http://sourceforge.net/project/showfiles.php?group_id=211778&amp;package_id=297015">
-here</ulink>, if you don't have the appropriate version already.</para>
+source forge</ulink>.</para>
 
 <para>Extract the downloaded tarball using the GNU tar utility (or other
-similar utilities for Windows), as follows:
+similar utilities for Windows):
 
 <screen>
     tar zxvf opal-ws-$VERSION.tar.gz
@@ -113,12 +112,12 @@ all the sources are expanded. Henceforth, we refer to this directory as
 
 <orderedlist>
 <listitem><para>Edit $OPAL_HOME/etc/opal.properties to configure the static container
-properties correctly. It should look something like the following:</para>
+properties correctly. It should look similar to the following:</para>
 
 <screen>
     # the base URL for the tomcat installation 
     # this is required since Java can't figure out the IP 
-    # address if there are multiple network interfaces
+    # address if there are multiple network interfaces.
     tomcat.url=http://localhost:8080
 
     # the path relative to $CATALINA_HOME (or absolute) 
@@ -150,10 +149,9 @@ properties correctly. It should look something like the following:</para>
 
     # specify in seconds the hard limit for how long a job can run
     # only applicable if either DRMAA or Globus is being used, and if
-    # the scheduler supports it (some old version of SGE ignore the 
-    # parameter)
+    # the scheduler supports it (some SGE versions ignore this parameter)
     # Please be aware that your application will be killed by the scheduler 
-    # once it reaches the specified limit (in same case without any log)
+    # once it reaches the specified limit (in same cases without any log)
     opal.hard_limit=3600
 
     # full qualified class name (FQCN) of the job manager being used
@@ -191,11 +189,11 @@ commands:
 <para>Note that the above use of symbolic links will only work on Unix
 systems. </para>
 
-<para>If you wish to install a database to persist service state, please refer
-to <xref linkend="database">. If you would like to set up
-scheduler support, refer to <xref linkend="scheduler">.
+<para>If you wish to install a database for persistent service state, please refer
+to <xref linkend="database"> chapter. If you would like to set up
+scheduler support, refer to <xref linkend="scheduler"> chapter.
 You can also optionally set up secure access to your services by consulting
-<xref linkend="security">.</para> </listitem>
+<xref linkend="security"> section.</para> </listitem>
 
 <listitem><para>Edit the $OPAL_HOME/build.properties file to ensure that the build
 properties are set correctly. Set <filename>catalina.home</filename> to point to the
@@ -242,10 +240,10 @@ And make sure that the "param-name" is set to true as follows:
 
 <listitem><para>Set your JAVA_OPTS to "-Djava.awt.headless=true" to enable
 Tomcat to run in headless mode. Run the Tomcat server by changing to the
-$CATALINA_HOME/bin directory, and running the appropriate command (bat on
-Windows, sh on Unix):
+$CATALINA_HOME/bin directory, and running the appropriate command:
 <screen>
-    ./startup.bat|sh
+    ./startup.sh (on Unix)
+    ./startup.bat (on Windows)
 </screen>
 </para>
 </listitem>
@@ -282,7 +280,7 @@ for the command <command>/bin/date</command>, located in
 <screen>
 &lt;appConfig xmlns="http://nbcr.sdsc.edu/opal/types"
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;metadata&gt;
+  &lt;metadata appName=date&gt;
     &lt;usage&gt;&lt;![CDATA[date [-u] mmddhhmm[[cc]yy]]]&gt;&lt;/usage&gt;
   &lt;/metadata&gt;
   &lt;binaryLocation&gt;/bin/date&lt;/binaryLocation&gt;
@@ -295,50 +293,48 @@ for the command <command>/bin/date</command>, located in
 </para>
 
 <para>The configuration consists of a top level element <emphasis
-role="italics">appConfig</emphasis>, which contains <emphasis
-role="italics">metadata</emphasis>, <emphasis
-role="italics">binaryLocation</emphasis>, <emphasis
-role="italics">defaultArgs</emphasis>, <emphasis
-role="italics">parallel</emphasis>, <emphasis
-role="italics">validateArgs</emphasis>, and <emphasis
-role="italics">jobManagerFQCN</emphasis> elements. The metadata consists of
+role="italics">appConfig</emphasis> which contains elements 
+<emphasis role="italics">metadata</emphasis>, 
+<emphasis role="italics">binaryLocation</emphasis>, 
+<emphasis role="italics">defaultArgs</emphasis>, 
+<emphasis role="italics">parallel</emphasis>, 
+<emphasis role="italics">validateArgs</emphasis>, and 
+<emphasis role="italics">jobManagerFQCN</emphasis>. The metadata consists of
 <emphasis role="italics">usage</emphasis>, which is a string specifying how
 the application is to be invoked, and an array of optional application
 information specified as <emphasis role="italics">info</emphasis> elements.
 It also contains an optional <emphasis role="italics">types</emphasis>
 element, which we can ignore for now (more information about the types
-element can be found from our <xref linkend="opalgui-advancedsub"> page).
+element can be found from our <xref linkend="opalgui-advancedsub"> section).
 In the above file, the various options that can be used with the
 application are specified within the metadata.</para>
 
-<para>The binaryLocation specifies the location of the application binary -
-note that this has to be the location of a <emphasis
-role="italics">single</emphasis> executable. No arguments may be specified
-here. However, default arguments that need to be used for every run can be
-specified inside the defaultArgs element. The parallel element specifies if
-an application is parallel or not. The validateArgs and jobManagerFQCN
-elements are optional. If set to true, the validateArgs element instructs
+<para>The <emphasis role="italics">binaryLocation</emphasis> specifies the location of the 
+application binary - note that this has to be the full path of an executable. No arguments 
+can be specified here. The default arguments that need to be used for every run can be
+specified inside the defaultArgs element. The <emphasis role="italics">parallel</emphasis> 
+element specifies if an application is parallel or not. The 
+<emphasis role="italics">validateArgs</emphasis> and  <emphasis role="italics">jobManagerFQCN</emphasis>
+elements are optional. If set to true, the <emphasis role="italics">validateArgs</emphasis> element instructs
 Opal to use the optional command-line specification (within types) to
-validate arguments prior to execution. The jobManagerFQCN element
-over-rides the default job manager, and can be set to the fully qualified
-classname of an Opal job manager. By default, the FQCNs for job managers
-provided by Opal are
-<filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename> (for basic
-fork/system exec),
-<filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> (for
-DRMAA), <filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename>
-(for Globus on a local cluster),
-<filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename> (for
-Globus job submissions to a remote cluster),
-<filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> (for
-submitting jobs directly to Condor) and
-<filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename> (for using
-the Community Scheduler Framework). Use the pdb2pqr_config.xml as a
-guideline to write configurations for your particular applications.</para>
+validate arguments prior to execution. The <emphasis role="italics">jobManagerFQCN</emphasis> element
+overwrites the default job manager, and can be set to the fully qualified
+classname of an Opal job manager. The default FQCNs for job managers provided by Opal are:
+<screen>
+edu.sdsc.nbcr.opal.manager.ForkJobManager (fork/system exec job)
+edu.sdsc.nbcr.opal.manager.DRMAAJobManager (SGE job)
+edu.sdsc.nbcr.opal.manager.GlobusJobManager (Globus job on a local cluster)
+edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager (Globus job on a remote cluster)
+edu.sdsc.nbcr.opal.manager.CondorJobManager (Condor jobs ) 
+edu.sdsc.nbcr.opal.manager.CSFJobManager (Community Scheduler Framework job)
+</screen>
+
+</para>
 
 <para>
+Use the pdb2pqr_config.xml as a guideline to write configurations for your particular applications.
 For a more detailed application configuration, including specification of
-the command-line arguments, please see <xref linkend="sample-appconfig">.
+the command-line arguments, please see <xref linkend="sample-appconfig"> section.
 </para>
 
 </listitem>
@@ -376,12 +372,12 @@ and restarting Tomcat. This increases the heap size to 1GB. If all went
 well until this step, the services are running and ready to be used. Test
 them by running the client, described in the following section.</para>
 
-<para>The service creates new working directories for every execution. These
+<para>The service creates a new working directory for every execution. These
 working directories are not deleted automatically, so they must be
-periodically cleaned up. You may use the script
-$OPAL_HOME/etc/cleanup.sh to do so - you will have to modify it to point
-to your Tomcat installation (and optionally modify the number of days to
-retain scratch directories).</para>
+periodically removed. You may use the script
+$OPAL_HOME/etc/cleanup.sh as a template. You will have to modify it to point
+to your Tomcat installation and (optionally) modify the number of days to
+retain working directories.</para>
 
 </listitem>
 </orderedlist>
