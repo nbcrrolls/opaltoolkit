@@ -9,8 +9,8 @@
 <title>Prerequisites</title>
 
 <para>The source distribution can be used to install both the server and
-the command-line client on Unix and Windows platforms. The
-prerequisites for the installation are as follows.</para>
+the command-line client on Unix and Windows platforms. 
+</para>
 
 <section id="server-client-pre" xreflabel="Common Prerequisites for Server and Client">
 <title>Common Prerequisites for Server and Client</title>
@@ -25,7 +25,7 @@ prerequisites for the installation are as follows.</para>
    installation.</para></listitem>
 
    <listitem><para>Ant 1.7.1 or higher: Ant is a make-like utility for compiling Java
-   programs. Install Ant from <ulink type="http" url="http://ant.apache.org/">
+   programs. Install ant from <ulink type="http" url="http://ant.apache.org/">
    http://ant.apache.org</ulink>. Set the environment variable <emphasis role="italics">ANT_HOME</emphasis>
    to point to your Ant installation.</para></listitem>
 
@@ -50,8 +50,11 @@ packages:</para>
    installation as <emphasis role="italics">CATALINA_HOME</emphasis>.
    </para></listitem>
 </orderedlist>
+</section>
 
-<para>The following packages are optional:</para>
+<section id="optional-pre" xreflabel="Optional Prerequisites for Server">
+<title>Optional Prerequisites for Server</title>
+
 <orderedlist>
    <listitem><para>MPI: If you plan to run your application in parallel, you will need
    a version of MPI. You will also need to make sure that your SSH keys (for the account that runs tomcat) are
@@ -112,8 +115,7 @@ all the sources are expanded. Henceforth, we refer to this directory as
 
 <orderedlist>
 <listitem><para>Edit $OPAL_HOME/etc/opal.properties to configure the static container
-properties correctly. It should look similar to the following:</para>
-
+properties correctly. The template file looks similar to the following:</para>
 <screen>
     # the base URL for the tomcat installation 
     # this is required since Java can't figure out the IP 
@@ -157,28 +159,33 @@ properties correctly. It should look similar to the following:</para>
     # full qualified class name (FQCN) of the job manager being used
     opal.jobmanager=edu.sdsc.nbcr.opal.manager.ForkJobManager
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.DRMAAJobManager
-    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.GlobusJobManager
-    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager
     # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CondorJobManager
-    # opal.jobmanager=edu.sdsc.nbcr.opal.manager.CSFJobManager
-
     ...
 </screen>
 
+<itemizedlist>
+  <listitem><para>
+    Set the <filename>tomcat.url</filename> to the correct
+    <filename>http://ip-address:port</filename> of your server. 
+  </para></listitem>
 
-<para>Set the <filename>tomcat.url</filename> to the correct
-<filename>http://ip-address:port</filename> of the server. If the Opal
-installation will support parallel applications, set the
-<filename>num.procs</filename> to the number of processors available, and
-the <filename>mpi.run</filename> to the location of the mpirun on your
-host. </para>
+  <listitem><para>
+    If the Opal installation will support parallel applications, set the
+    <filename>num.procs</filename> to the number of processors available, and
+    the <filename>mpi.run</filename> to the location of the mpirun on your host. 
+  </para></listitem>
 
-<para>By default, all new working directories for job executions are created
-inside the $CATALINA_HOME/webapps/ROOT directory. You may wish to change
-this to another location on your system (which should be NFS mounted, if
-you are installing on a cluster). If you would like to do so for any
-reason, uncomment the property <filename>working.dir</filename>. Then run the following
-commands:
+  <listitem><para>
+    By default, all new working directories for job executions are created
+    inside the $CATALINA_HOME/webapps/ROOT directory. You may wish to change
+    this to another location on your system (which should be NFS mounted, if
+    you are installing on a cluster). If you would like to do so for any
+    reason, uncomment the property <filename>working.dir</filename>. 
+  </para></listitem>
+</itemizedlist>
+
+<para>
+Once ddone with customizing, run the following commands:
 <screen>
     cp $OPAL_HOME/etc/opal.xml $CATALINA_HOME/conf/Catalina/localhost/ 
     cd $CATALINA_HOME/webapps 
@@ -201,8 +208,7 @@ location of your Tomcat installation (i.e. $CATALINA_HOME), and
 <filename>tomcat.port</filename> to the port number that the Tomcat server is running
 on.</para> </listitem>
 
-<listitem><para>Install the Opal toolkit into the Tomcat installation, by executing
-the following command:
+<listitem><para>Install the Opal toolkit into the Tomcat installation, by executing:
 <screen>
     ant install
 </screen>
@@ -248,9 +254,9 @@ $CATALINA_HOME/bin directory, and running the appropriate command:
 </para>
 </listitem>
 
-<listitem><para>Validate that Opal has been installed correctly by clicking
-on <ulink type="http" url="http://localhost:8080/opal2/happyaxis.jsp">
-http://localhost:8080/opal2/happyaxis.jsp</ulink>. If you have deployed
+<listitem><para>Validate that Opal has been installed correctly by following
+ <ulink type="http" url="http://yourhost:8080/opal2/happyaxis.jsp">
+http://yourhost:8080/opal2/happyaxis.jsp</ulink>. If you have deployed
 Tomcat on another port, you will have to change the port number above. If
 all the <emphasis role="bold">Needed Components</emphasis> are found, Axis
 has been deployed fine. You can ignore the warnings about the <emphasis
@@ -320,16 +326,27 @@ Opal to use the optional command-line specification (within types) to
 validate arguments prior to execution. The <emphasis role="italics">jobManagerFQCN</emphasis> element
 overwrites the default job manager, and can be set to the fully qualified
 classname of an Opal job manager. The default FQCNs for job managers provided by Opal are:
-<screen>
-edu.sdsc.nbcr.opal.manager.ForkJobManager (fork/system exec job)
-edu.sdsc.nbcr.opal.manager.DRMAAJobManager (SGE job)
-edu.sdsc.nbcr.opal.manager.GlobusJobManager (Globus job on a local cluster)
-edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager (Globus job on a remote cluster)
-edu.sdsc.nbcr.opal.manager.CondorJobManager (Condor jobs ) 
-edu.sdsc.nbcr.opal.manager.CSFJobManager (Community Scheduler Framework job)
-</screen>
-
 </para>
+  <itemizedlist>
+    <listitem><para>
+      <filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename>  - for fork  job
+    </para></listitem>
+    <listitem><para>
+      <filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename> - SGE job
+    </para></listitem>
+    <listitem><para>
+      <filename>edu.sdsc.nbcr.opal.manager.GlobusJobManager</filename> - Globus job on a local cluster
+    </para></listitem>
+    <listitem><para>
+      <filename>edu.sdsc.nbcr.opal.manager.RemoteGlobusJobManager</filename> - Globus job on a remote cluster
+    </para></listitem>
+    <listitem><para>
+      <filename>edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> - Condor job
+    </para></listitem>
+    <listitem><para>
+      <filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename> - Community Scheduler Framework job
+    </para></listitem>
+  </itemizedlist>
 
 <para>
 Use the pdb2pqr_config.xml as a guideline to write configurations for your particular applications.
@@ -350,12 +367,17 @@ If you have not changed that property the default directory is $CATALINA_HOME/de
 </para>
 
 <para>
-If the service is deployed successfully, it can be accessed
-programmatically at URL:
-<emphasis>http://host:port/opal2/services/serviceName</emphasis>, or via
-the Web-based Opal Dashboard at URL:
-<emphasis>http://host:port/opal2/dashboard</emphasis>.
+If the service is deployed successfully, it can be accessed by the following methods:
 </para>
+
+<itemizedlist>
+  <listitem><para>
+    programmatically at URL <emphasis>http://host:port/opal2/services/serviceName</emphasis>
+  </para></listitem>
+  <listitem><para>
+    via the Opal Dashboard at URL: <emphasis>http://host:port/opal2/dashboard</emphasis>
+  </para></listitem>
+</itemizedlist>
 
 <para>You can undeploy your service at any time simply by deleting the file:
 <screen>
