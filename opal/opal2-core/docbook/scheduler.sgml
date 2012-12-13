@@ -2,12 +2,12 @@
 <title>Scheduler Support Using Job Managers</title>
 
 <para>In this chapter, we describe how to configure Opal so that it can
-submit jobs to an external scheduler, using the various job managers
-provided. We also provide a brief introduction on how to write your own job
-manager, if need be.</para>
+submit jobs to a batch job scheduler using the provided job managers. 
+We also give a brief introduction how to write your own job
+manager.</para>
 
-<para>The prerequisite to this section is that you have a scheduler such as
-Condor or SGE installed on your compute cluster. Access to schedulers is
+<para>Prerequisite: a scheduler such as Condor, PBS or SGE installed on 
+your compute cluster. Access to schedulers is
 provided in a number of ways - in particular, via the DRMAA API, and via 
 the various scheduler plugins. Starting with release 2.1, we support Condor 
 natively without using DRMAA or Globus. In release 2.3, we introduced 
@@ -21,20 +21,31 @@ for the installation of these scheduler tools.</para>
 <listitem><para>Ensure that your scheduler supports job submission via the DRMAA API.
 Also ensure that <emphasis role="italics">libdrmaa.so</emphasis> is in your library path (by setting
  the LD_LIBRARY_PATH environment variable). We have only tested job
- submissions to SGE 6.x.</para></listitem>
+ submissions for SGE 6.x.</para></listitem>
 
-<listitem><para>Set the following properties inside the opal.properties
-file: <filename>opal.jobmanager</filename> to
-<filename>edu.sdsc.nbcr.opal.manager.DRMAAJobManager</filename>, and
-<filename>drmaa.pe</filename> to the name of the parallel environment (PE)
-to be used to submit parallel jobs. You can ignore drmaa.pe if you do not
-plan on supporting parallel jobs. You can optionally set a DRMAA queue for
-job submission by setting the <filename>drmaa.queue</filename> property.
-</para>
+<listitem><para>Set the following properties inside the opal.properties file:</para>
+  <itemizedlist>
+    <listitem><para>
+      Set job manager to SGE
+      <screen>opal.jobmanager=edu.sdsc.nbcr.opal.manager.DRMAAJobManager</screen>
+    </para></listitem>
 
-<para>Note that the <filename>drmaa.pe</filename> and the
-<filename>drmaa.queue</filename> can also be overridden on a
-per-application basis within the application configuration file.</para>
+    <listitem><para>
+      Optional: set the  name of the parallel environment (PE) to be used for parallel jobs. 
+      You can ignore drmaa.pe if you do not plan on supporting parallel jobs. 
+      <screen>drmaa.pe=mpich</screen>
+    </para></listitem>
+
+    <listitem><para>
+      Optional: set an SGE queue for job submission.
+      <screen>drmaa.queue=all.q</screen>
+    </para></listitem>
+
+  </itemizedlist>
+
+  <para>Note that the <filename>drmaa.pe</filename> and the
+  <filename>drmaa.queue</filename> can be overridden on a per-application basis within 
+  the application configuration file.</para>
 
 </listitem>
 
@@ -48,15 +59,20 @@ per-application basis within the application configuration file.</para>
 
 <listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
 
-<listitem><para>Note that we do not stage input and output files from the
-Opal server to the submit host if DRMAA is being used; hence, the machines
-should be on a shared file system for the DRMAA job manager to work
-correctly.</para> 
+<listitem><para>Notes:</para>
+  <itemizedlist>
+    <listitem><para>
+      We do not stage input and output files from the Opal server to the submit host if DRMAA is being used; 
+      hence, the machines should use a shared file system for the DRMAA job manager to work correctly.
+    </para></listitem>
 
-<para>Also note that DRMAA support will not work correctly if you have
-another version of the drmaa.jar inside Tomcat's common/lib or server/lib
-directories, since that will be loaded first by Tomcat's class
-loader.</para></listitem>
+    <listitem><para>
+      DRMAA support will not work correctly if you have another version of the drmaa.jar inside 
+      Tomcat's common/lib or server/lib directories, since that will be loaded first by Tomcat's class loader.
+    </para></listitem>
+  </itemizedlist>
+
+</listitem>
 </orderedlist>
 </section>
 
@@ -65,7 +81,7 @@ loader.</para></listitem>
 
 <orderedlist>
 <listitem><para>Ensure that you have a working Condor pool by following the
-Condor <ulink type="http" url="http://www.cs.wisc.edu/condor/manual/v7.6.2/">manual</ulink>. 
+Condor <ulink type="http" url="http://research.cs.wisc.edu/htcondor/manual/v7.6.2/">manual</ulink>. 
 We have tested with version 7.6.2, but we expect that it will work with most recent
 Condor versions. In particular, verify that you can submit and monitor jobs
 from the command-line with commands such as <filename>condor_submit</filename>, 
@@ -75,32 +91,45 @@ from the command-line with commands such as <filename>condor_submit</filename>,
 <listitem><para>Set the following properties inside the opal.properties file: </para>
   <itemizedlist>
     <listitem><para>
-       <filename>opal.jobmanager = edu.sdsc.nbcr.opal.manager.CondorJobManager</filename> Set Condor job manager.
+       Set job manager to Condor
+       <screen>opal.jobmanager=edu.sdsc.nbcr.opal.manager.CondorJobManager</screen> 
      </para></listitem>
 
      <listitem><para>
-       <filename>mpi.script = /opt/condor/etc/examples/mp1script</filename> to the script used 
-       by Condor to submit parallel jobs. You can ignore mpi.script if you do not plan to support parallel jobs. 
+       Set the script used by Condor to submit parallel jobs. 
+       You can ignore <filename>mpi.script</filename> if you do not plan to support parallel jobs. 
+       <screen>mpi.script=/opt/condor/etc/examples/mp1script</screen> 
      </para></listitem>
 
      <listitem><para>
-       <filename>condor.expr.file=/opt/opal/etc/condor.expr</filename> To enable server-specific condor 
-       expressions put them in a file. Use a regular condor submit file syntax: <filename>key = value</filename>
+       To enable server-specific condor expressions put them in a file. 
+       Use a regular condor submit file syntax (key = value).
+       <screen>condor.expr.file=/opt/opal/etc/condor.expr</screen> 
      </para></listitem>
 
   </itemizedlist>
+</listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
-<screen>
+  <screen>
     ant install
-</screen>
+  </screen>
 </para>
 </listitem>
 
 <listitem><para>Restart Tomcat for the changes to take effect.</para></listitem>
 
-<listitem><para>Note that we have not tested advanced Condor features such
-as flocking and Condor-G.</para></listitem>
+<listitem><para>Notes:</para>
+  <itemizedlist>
+     <listitem><para>
+       We have not tested advanced Condor features such as flocking and Condor-G.
+     </para></listitem>
+     <listitem><para>
+       Job directory does not have to be on NFS-mounted filesystem.
+     </para></listitem>
+  </itemizedlist>
+
+</listitem>
 </orderedlist>
 
 </section>
@@ -109,32 +138,38 @@ as flocking and Condor-G.</para></listitem>
 <title>Using TORQUE/PBS</title>
 
 <orderedlist>
-<listitem><para>Ensure that you have a working TORQUE/PBS installation, by following the instructions on the 
-TORQUE <ulink type="http" url="http://www.clusterresources.com/products/torque-resource-manager.php">website</ulink>. 
-In particular, verify that you can submit and monitor jobs from the command-line with commands such as 
-<filename>qsub</filename> and <filename>qstat</filename>. Note that we have only tested with version 2.3.0 of 
-TORQUE and PBSPro_11.3.0.121723 of PBS.
+<listitem><para>Ensure that you have a working TORQUE/PBS installation, 
+    by following the instructions on the TORQUE 
+    <ulink type="http" url="http://www.clusterresources.com/products/torque-resource-manager.php">website</ulink>. 
+    In particular, verify that you can submit and monitor jobs from the command-line with commands such as 
+    <filename>qsub</filename> and <filename>qstat</filename>. Note that we have only tested with TORQUE v.2.3.0 
+    and PBS v.PBSPro_11.3.0.121723.
 </para></listitem>
 
 <listitem><para>Set the following properties inside the opal.properties file:</para>
 
   <itemizedlist>
     <listitem><para>
-       <filename>opal.jobmanager = edu.sdsc.nbcr.opal.manager.PBSJobManager</filename> Set PBS job manager.
-     </para></listitem>
+      Set job manager to PBS.
+      <screen>opal.jobmanager=edu.sdsc.nbcr.opal.manager.PBSJobManager</screen> 
+    </para></listitem>
 
-     <listitem><para>
-       <filename>pbs.expr.file=/opt/opal/etc/pbs.expr</filename> To enable server-specific PBS 
-       expressions put them in a file. Use a regular PBS submit file syntax.
-     </para></listitem>
+    <listitem><para>
+      To enable server-specific PBS 
+      expressions put them in a file. Use a regular PBS submit file syntax.
+      <screen>pbs.expr.file=/opt/opal/etc/pbs.expr</screen> 
+    </para></listitem>
 
-     <listitem><para>
-       <filename>pbs.name.limit=15</filename> Set default job name limit per your server configuration.
-       Job submit files will have <filename>#PBS -N jobName</filename> line and the jobName will be specified limit length. 
-     </para></listitem>
+    <listitem><para>
+      Opal creates long names for the jobs (longer than 15 characters).
+      As a result, need to set default job name limit per your server configuration.
+      Job submit files will have <filename>#PBS -N jobName</filename> line and the 
+      jobName will have a specified by limit length. 
+      <screen>pbs.name.limit=15</screen> 
+    </para></listitem>
 
   </itemizedlist>
-
+</listitem>
 
 <listitem><para>Reinstall Opal by running the following command:
 <screen>
@@ -166,25 +201,24 @@ meta scheduling algorithm.
 </para>
 
 <para>
-The &lt;metaServiceConfig&gt; tag in the application configuration file
+The <filename>&lt;metaServiceConfig&gt;</filename> tag in the application configuration file
 is used to define the location of the meta service configuration file
 for the particular service.  For example, 
+</para>
 <screen>
 &lt;metaServiceConfig&gt;/home/opaluser/meta/pdb2pqr.txt&lt;/metaServiceConfig&gt;
 </screen>
-</para>
-
 <para>
 The meta service configuration file contains one or more lines, where each
-line contains a remote Opal service URL followed by a space and then the 
-number of processors on that remote Opal service.  Please use 1 as the 
+line lists a remote Opal service URL followed by the number of processors on 
+that remote Opal service (separated by a space).  Please use 1 as the 
 number of processors for serial services.  The sample file below defines
 the remote hosts for the Pdb2pqr meta service.
+</para>
 <screen>
 http://kryptonite.nbcr.net/opal2/services/pdb2pqr_1.7 1
 http://ws.nbcr.net/opal2/services/Pdb2pqrOpalService 1
 </screen>
-</para>
 
 </section>
 
