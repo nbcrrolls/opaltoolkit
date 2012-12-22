@@ -14,77 +14,93 @@ service. End-users can now access this application remotely using the service WS
 
 <para>The WSDL for the service is defined inside <emphasis role="italics">wsdl/opal.wsdl</emphasis>. Stub
 generators provided by Web service toolkits are used to generate the
-client and server-side bindings for the services. In our case, the services
+client and server-side bindings for the services. The services
 are implemented in Java using the Apache Axis toolkit, while the clients
-can be in any language.</para>
+can be written in any language.</para>
 
-<para>The WSDL defines operations to do the following:</para>
-<orderedlist>
-   <listitem><para>Get application metadata (<filename>getAppMetadata</filename>): This returns
-   metadata about the application. This includes usage information, along
-   with any number of arbitrary application-specific metadata specified as
-   an array of <filename>info</filename> elements, e.g. description of the various
-   options that are passed to the application binary. Ideally, these
-   elements should be arbitrary XML's (specified by <filename>xsd:any</filename> tags).
-   However, due to the limitations of certains toolkits in other languages
-   (e.g. ZSI in Python), we specify them as Strings. You may embed
-   XML tags inside them using CDATA sections. The metadata 
-   (optionally) includes the <filename>types</filename> element, which
-   describes the command-line arguments for the application, detailed in
-   the <xref linkend="opalGUI-advancedsub"> section</para></listitem>
-
-   <listitem><para>Launch job (<filename>launchJob</filename>): This
-   operation requires the list of arguments as a string, and an array of
-   structures representing the input files. The structure contains the
-   <emphasis role="italics">name</emphasis> of the input file and either
-   the <emphasis role="italics">contents</emphasis> in Base64 encoded
-   binary form or a MIME <emphasis role="italics">attachment</emphasis>, or
-   simply a <emphasis role="italics">location</emphasis> (URL) to the
-   associated file. The operation returns a Job ID that can be used to
-   retrieve job status and outputs.</para></listitem>
-
-   <listitem><para>Query job status (<filename>queryStatus</filename>): This operation expects a
-   Job ID to query the status of a running job. A status code, message, and
-   URL of the working directory for the job are returned.</para></listitem>
-
-   <listitem><para>Get job outputs (<filename>getOutputs</filename>): This operation returns the
-   outputs from a job that is identified by a Job ID. The output consists
-   of the URLs for the stdout and stderr, and an array of
-   structures representing the output files. The structure contains the
-   <emphasis role="italics">name</emphasis> of the output file and the <emphasis role="italics">url</emphasis> from where it can be
-   downloaded.</para></listitem>
-
-   <listitem><para>Get output file by name (<filename>getOutputAsBase64ByName</filename>): This
-   operation returns the contents of an output file as Base64 binary. The
-   input is a data structure that contains the Job ID for a particular job,
-   and the name of the file to be retrieved.</para></listitem>
-
-   <listitem><para>Destroy job (<filename>destroy</filename>): This operation destroys a running
-   job identified by a Job ID.</para></listitem>
-
-   <listitem><para>Get job statistics
-   (<filename>getJobStatistics</filename>): This operation returns basic
-   job statistics including start time, activation time and completion time
-   for a given Job ID.</para></listitem>
-
-   <listitem><para>Launch blocking job (<filename>launchJobBlocking</filename>): This operation
-   requires the list of arguments as a string, and an array of structures
-   representing the input files. The structure contains the <emphasis role="italics">name</emphasis> of
-   the input file and the <emphasis role="italics">contents</emphasis> in Base64 encoded binary form.
-   The operation blocks until the remote execution is complete, and returns
-   job outputs (as described above) as the response. This operation may
-   only be appropriate for jobs that are not long running.</para></listitem>
-
-   <listitem><para>Get system information
-   (<filename>getSystemInfo</filename>): This operation returns basic
+<para>The WSDL defines the following operations: </para>
+<itemizedlist spacing="compact">
+   <listitem><para>
+   <emphasis role="strong">getSystemInfo</emphasis> - get system information. This operation returns basic
    system information for the Opal server, including the number of total
    and free CPUs, number of jobs running, number of jobs queued, the job
-   manager being used, etc.</para></listitem>
-</orderedlist>
+   manager type, etc.</para></listitem>
+
+   <listitem><para>
+     <emphasis role="strong">getAppMetadata</emphasis> - get application metadata. Returns
+     metadata about the application. This includes usage information, along
+     with any number of arbitrary application-specific metadata specified as
+     an array of <filename>info</filename> elements, e.g. description of the various
+     options that are passed to the application binary. Ideally, these
+     elements should be arbitrary XML's (specified by <filename>xsd:any</filename> tags).
+     However, due to the limitations of certains toolkits in other languages
+     (e.g. ZSI in Python), we specify them as Strings. You may embed
+     XML tags inside them using CDATA sections. The metadata 
+     (optionally) includes the <filename>types</filename> element, which
+     describes the command-line arguments for the application, detailed in
+     the <xref linkend="opalGUI-advancedsub"> section.
+   </para></listitem>
+
+   <listitem><para>
+     <emphasis role="strong">launchJob</emphasis> - launch job. This
+     operation requires a list of arguments as a string, and an array of
+     structures representing the input files. The structure contains the
+     <emphasis role="italics">name</emphasis> of the input file and either
+     the <emphasis role="italics">contents</emphasis> in Base64 encoded
+     binary form or a MIME <emphasis role="italics">attachment</emphasis>, or
+     simply a <emphasis role="italics">location</emphasis> (URL) to the
+     associated file. The operation returns a Job ID that can be used to
+     retrieve jobs' status and outputs.
+   </para></listitem>
+  
+   <listitem><para>
+     <emphasis role="strong">launchJobBlocking</emphasis> - launch blocking job. This operation
+     requires the list of arguments as a string, and an array of structures
+     representing the input files. The structure contains the <emphasis role="italics">name</emphasis> of
+     the input file and the <emphasis role="italics">contents</emphasis> in Base64 encoded binary form.
+     The operation blocks until the remote execution is complete, and returns
+     job outputs (as described above) as the response. This operation is
+     appropriate only for jobs that are short running.
+   </para></listitem>
+
+   <listitem><para>
+     <emphasis role="strong">queryStatus</emphasis> - query job status. This operation expects a
+     Job ID to query the status of a running job. A status code, message, and
+     URL of the working directory for the job are returned.
+   </para></listitem>
+
+   <listitem><para>
+     <emphasis role="strong">getJobStatistics</emphasis> - get job statistics. This operation returns basic
+     job statistics including start time, activation time and completion time
+     for a given Job ID.
+   </para></listitem>
+
+   <listitem><para>
+     <emphasis role="strong">getOutputs</emphasis> - get job outputs. This operation returns the
+     outputs from a job that is identified by a Job ID. The output consists
+     of the URLs for the stdout and stderr, and an array of
+     structures representing the output files. The structure contains the
+     <emphasis role="italics">name</emphasis> of the output file and the <emphasis role="italics">url</emphasis> from where it can be
+     downloaded.
+   </para></listitem>
+
+   <listitem><para>
+     <emphasis role="strong">getOutputAsBase64ByName</emphasis> - get output file by name. This
+     operation returns the contents of an output file as Base64 binary. The
+     input is a data structure that contains the Job ID for a particular job,
+     and the name of the file to be retrieved.
+   </para></listitem>
+  
+   <listitem><para>
+     <emphasis role="strong">destroy</emphasis> - destroy job. This operation destroys a running
+     job identified by a Job ID.
+   </para></listitem>
+
+</itemizedlist>
 
 <para>
-Please see <ulink url="http://www.nbcr.net/software/opal/deployment.html">this info</ulink>
-for some Opal use cases.
+Please see <ulink url="http://www.nbcr.net/data/docs/opal/deployment.html">this info</ulink>
+for Opal use cases examples.
 </para>
 
 </chapter>

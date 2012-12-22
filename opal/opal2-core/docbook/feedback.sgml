@@ -1,11 +1,97 @@
-<chapter id="Feedback" xreflabel="Feedback">
-<title>Feedback</title>
+<chapter id="feedbackack" xreflabel="Feedback and Acknowledgements">
+<title>Feedback and Acknowledgements</title>
 
-<para>Please use the Opal Toolkit <ulink type="http"
-url="http://sourceforge.net/tracker/?group_id=211778">Tracker</ulink> on
-Sourceforge to report bugs and feature requests, or write an email on 
-opaltoolkit-users at lists.sourceforge.net .</para>
+<para>
+<emphasis role="strong">Feedback</emphasis>
+</para>
 
+<itemizedlist>
+  <listitem><para>
+  To report  bugs and feature requests, please use <ulink type="http"
+  url="http://sourceforge.net/tracker/?group_id=211778">Sourceforge Opal Toolkit Tracker</ulink> 
+  </para></listitem>
+
+  <listitem><para>
+  Email opaltoolkit-users @ lists.sourceforge.net 
+  </para></listitem>
+</itemizedlist>
+
+<para>
+<emphasis role="strong">Acknowledgements</emphasis>
+</para>
+<para> </para>
+
+<para>
+The organizations involvement in the development of Opal: 
+</para>
+
+<itemizedlist>
+  <listitem><para>
+    <inlinemediaobject><imageobject>
+      <imagedata fileref="images/nbcr_logo.png" width=50>
+    </imageobject></inlinemediaobject>
+    <ulink url="http://www.nbcr.net">
+    National Biomedical Computation Resource 
+    </ulink>
+  </para></listitem>
+
+  <listitem><para>
+    <inlinemediaobject><imageobject>
+      <imagedata fileref="images/sdsc_logo.png" width=50>
+    </imageobject></inlinemediaobject>
+    <ulink url="http://www.sdsc.edu">
+    San Diego Supercomputer Center 
+    </ulink>
+  </para></listitem>
+
+  <listitem><para>
+    <inlinemediaobject><imageobject>
+      <imagedata fileref="images/logo_calit.png" width=50>
+    </imageobject></inlinemediaobject>
+    <ulink url="http://www.calit2.net/">
+    California Institute for Telecommunications and Information Technology (Calit2)
+    </ulink>
+  </para></listitem>
+  </itemizedlist>
+
+<para>
+Opal development has been supported by the following funding agencies:
+</para>
+
+<itemizedlist>
+  <listitem><para>
+  <ulink url="http://www.nih.gov/">National Institutes of Health</ulink>
+  </para></listitem>
+
+  <listitem><para>
+  <ulink url="http://www.nsf.gov/">National Science Foundation</ulink>
+  </para></listitem>
+
+  <listitem><para>
+  <ulink url="http://www.moore.org/">Gordon and Betty Moore Foundation</ulink>
+  </para></listitem>
+</itemizedlist>
+
+
+<!--
+I decided not to use a table because it requires a title and 
+outputs necessary things, like Table 8-1. Mouse Mileage
+<table>
+<title>Mouse Mileage</title>
+<tgroup cols="2">
+<tbody>
+<row>
+<entry>row1A</entry>
+<entry>row2A</entry>
+</row>
+<row>
+<entry>row1B</entry>
+<entry>row2B</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+-->
 </chapter>
 
 

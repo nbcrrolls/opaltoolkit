@@ -2,6 +2,12 @@
 
 <!ENTITY thisyear "2012">
 <!ENTITY version "2.5">
+<!ENTITY mysql "5.1.61">
+<!ENTITY postgres "8.2.4">
+<!ENTITY db2 "8.2">
+<!ENTITY condor "7.6.2">
+<!ENTITY torque "2.3.0">
+<!ENTITY pbs "PBSPro_11.3.0.121723">
 
 <!ENTITY overview SYSTEM "overview.sgml">
 <!ENTITY serversetup SYSTEM "serversetup.sgml">
@@ -11,7 +17,6 @@
 <!ENTITY opalGUI SYSTEM "opalGUI.sgml">
 <!ENTITY feedback SYSTEM "feedback.sgml">
 <!ENTITY faq SYSTEM "faq.sgml">
-<!ENTITY acknowledge SYSTEM "acknowledge.sgml">
 <!ENTITY appendix SYSTEM "appendix.sgml">
 ]>
 
@@ -103,7 +108,6 @@ to install and configure it.
 &opalGUI;
 &feedback;<!-- 
 &faq; -->
-&acknowledge;
 &appendix;
 
 </book>

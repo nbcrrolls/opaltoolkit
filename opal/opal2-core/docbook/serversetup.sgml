@@ -8,26 +8,45 @@
 <section id="serverprerequisites" xreflabel="Sever Prerequisites">
 <title>Prerequisites</title>
 
-<para>The source distribution can be used to install both the server and
-the command-line client on Unix and Windows platforms. 
-</para>
-
 <section id="server-client-pre" xreflabel="Common Prerequisites for Server and Client">
 <title>Common Prerequisites for Server and Client</title>
 
 <orderedlist> 
-   <listitem><para>Java 1.6.x or higher: Download and install J2SE from <ulink type="http"
-   url="http://www.oracle.com/technetwork/java/javase/downloads">
-   http://www.oracle.com/technetwork/java/javase/downloads</ulink>,
-   if you don't have it installed already. Add the Java bin directory to
-   the environment variable PATH. Set the environment variable
-   JAVA_HOME to point to the top level directory of the JDK
-   installation.</para></listitem>
+  <listitem><para>
+    <emphasis role="strong">Java 1.6.x or higher</emphasis> 
+    <itemizedlist  spacing="compact"> 
+      <listitem><para> 
+        Download and install J2SE from <ulink type="http"
+        url="http://www.oracle.com/technetwork/java/javase/downloads">
+        http://www.oracle.com/technetwork/java/javase/downloads</ulink>
+      </para></listitem>
+      <listitem><para> 
+        Add the Java bin directory to
+        the environment variable PATH. 
+      </para></listitem>
+      <listitem><para> 
+        Set the environment variable
+        JAVA_HOME to point to the top level directory of the JDK
+        installation.
+      </para></listitem>
+    </itemizedlist> 
 
-   <listitem><para>Ant 1.7.1 or higher: Ant is a make-like utility for compiling Java
-   programs. Install ant from <ulink type="http" url="http://ant.apache.org/">
-   http://ant.apache.org</ulink>. Set the environment variable <emphasis role="italics">ANT_HOME</emphasis>
-   to point to your Ant installation.</para></listitem>
+  </para></listitem>
+
+  <listitem><para>
+    <emphasis role="strong">Ant 1.7.1 or higher</emphasis>
+    <itemizedlist  spacing="compact"> 
+      <listitem><para> 
+        Download and install ant from <ulink type="http" url="http://ant.apache.org/">
+        http://ant.apache.org</ulink>
+      </para></listitem>
+      <listitem><para> 
+        Set the environment variable <emphasis role="italics">ANT_HOME</emphasis>
+        to point to your Ant installation.
+      </para></listitem>
+    </itemizedlist> 
+
+  </para></listitem>
 
 </orderedlist>
 </section>
@@ -35,18 +54,11 @@ the command-line client on Unix and Windows platforms.
 <section id="server-pre" xreflabel="Additional Prerequisites for Server">
 <title>Additional Prerequisites for Server</title>
 
-<para>Apart from the above packages, the server also requires the following
-packages:</para>
-
 <orderedlist>
-   <listitem><para>Tomcat: Tomcat is a servlet container than can be used
-   to host Opal Web services. Opal can be installed inside Tomcat versions
-   7.0 or 6.0. You can download the binary version of Tomcat 7.0 from 
-   <ulink type="http" url="http://tomcat.apache.org/download-70.cgi">
-   http://tomcat.apache.org/download-70.cgi</ulink> or Tomcat 6.0 from 
-   <ulink type="http" url="http://tomcat.apache.org/download-60.cgi">
-   http://tomcat.apache.org/download-60.cgi</ulink>. Henceforth, for the purposes
-   of this reference guide, we will refer to the location of the Tomcat
+   <listitem><para><emphasis role="strong">Tomcat 6.0 or 7.0</emphasis>. Tomcat is a servlet container that 
+   hosts Opal Web services. You can download the source distribution or the binary version of 
+   Tomcat 7.0 or 6.0 from <ulink type="http" url="http://tomcat.apache.org/">http://tomcat.apache.org/</ulink>.
+   In this reference guide we will refer to the location of the Tomcat
    installation as <emphasis role="italics">CATALINA_HOME</emphasis>.
    </para></listitem>
 </orderedlist>
@@ -56,36 +68,53 @@ packages:</para>
 <title>Optional Prerequisites for Server</title>
 
 <orderedlist>
-   <listitem><para>MPI: If you plan to run your application in parallel, you will need
-   a version of MPI. You will also need to make sure that your SSH keys (for the account that runs tomcat) are
-   set up to be able to run MPI jobs without prompting for a password.</para></listitem>
+   <listitem><para>
+   <emphasis role="strong">MPI</emphasis>: If you plan to run your application in parallel, you will need
+   a version of MPI. We have run  parallale applications using <ulink type="http" url="http://www.open-mpi.org">
+   OpenMPI</ulink>. You will also need to make sure that your SSH keys (for the account that runs tomcat) are
+   set up to be able to run MPI jobs without prompting for a password.
+   </para></listitem>
 
-   <listitem><para>RDBMS: By
-   default, we use a Java-based in-memory and disk-based database (<ulink
-   url="http://hsqldb.org/">HSQLDB</ulink>) to persist the state of the
-   services. For production use, we recommend using a real database such as
-   <ulink type="http"
-   url="http://www.postgresql.org/">Postgres</ulink> (version 8.2.4 or
-   higher 8.2 flavors), <ulink type="http"
-   url="http://dev.mysql.com/downloads/">MySQL</ulink> (tested with version
-   5.1.66). or <ulink type="http"
-   url="http://www-01.ibm.com/software/data/db2/">DB2</ulink> (tested with
-   version 8.2).</para></listitem>
+   <listitem><para>
+   <emphasis role="strong">Relational Database</emphasis>: By
+   default, we use a Java-based in-memory and disk-based <ulink
+   url="http://hsqldb.org/">HSQLDB</ulink> database for persistent services states. 
+   For production use, we recommend using a real database such as
+   <itemizedlist>
+     <listitem><para>
+       <ulink type="http" url="http://www.postgresql.org/">Postgres</ulink> (v.&postgres; or higher), 
+     </para></listitem>
+     <listitem><para>
+       <ulink type="http" url="http://dev.mysql.com/downloads/">MySQL</ulink> (tested with v.&mysql;)
+     </para></listitem>
+     <listitem><para>
+       <ulink type="http" url="http://www-01.ibm.com/software/data/db2/">DB2</ulink> (tested with v.&db2;)
+     </para></listitem>
+   </itemizedlist>
+   </para></listitem>
 
-   <listitem><para>Scheduler Tools: We have tested <ulink type="http"
-   url="http://research.cs.wisc.edu/htcondor">Condor</ulink> for only serial jobs,
-   and <ulink type="http" url="http://www.oracle.com/us/products/tools/oracle-grid-engine-075549.html">SGE</ulink> 
-   for serial and parallel jobs.</para>
-
-   <para>Another alternative to access schedulers is via the <ulink
+   <listitem><para>
+   <emphasis role="strong">Batch Job Scheduler Tools</emphasis>. 
+   Opal can be set up to submit jobs directly to schedulers such as 
+   Condor or TORQUE/PBS simply by writing a shell script.
+   Another alternative is to access schedulers via the <ulink
    type="http" url="http://drmaa.org/">DRMAA</ulink> API. The Opal services
    can submit jobs to schedulers as long as they support the DRMAA API. We
-   have only tested job submits to SGE via DRMAA.</para>
-
-   <para>Opal can be set up to submit jobs directly to schedulers such as 
-   Condor or <ulink type="http" 
-   url="http://www.clusterresources.com/products/torque-resource-manager.php">
-   TORQUE</ulink> simply by writing a shell script.</para>
+   have only tested job submits via DRMAA with SGE.</para>
+   <para>We have tested:
+     <itemizedlist>
+       <listitem><para>
+         <ulink type="http" url="http://research.cs.wisc.edu/htcondor">Condor</ulink> (serial jobs)
+       </para></listitem>
+       <listitem><para>
+         <ulink type="http" url="http://www.oracle.com/us/products/tools/oracle-grid-engine-075549.html">
+         SGE via DRMAA API</ulink> (serial and parallel jobs)
+       </para></listitem>
+       <listitem><para>
+         <ulink type="http"  url="http://www.clusterresources.com/products/torque-resource-manager.php">TORQUE/PBS</ulink> (serial jobs)
+       </para></listitem>
+     </itemizedlist>
+    </para>
 
 </listitem>
 </orderedlist>
@@ -100,6 +129,9 @@ packages:</para>
 <ulink type="http"
 url="http://sourceforge.net/project/showfiles.php?group_id=211778&amp;package_id=297015">
 source forge</ulink>.</para>
+<para>The source distribution can be used to install a server and a
+command-line client on Unix and Windows platforms. 
+</para>
 
 <para>Extract the downloaded tarball using the GNU tar utility (or other
 similar utilities for Windows):
@@ -114,7 +146,7 @@ all the sources are expanded. Henceforth, we refer to this directory as
 <emphasis role="italics">OPAL_HOME</emphasis>.</para>
 
 <orderedlist>
-<listitem><para>Edit $OPAL_HOME/etc/opal.properties to configure the static container
+<listitem><para>Edit <emphasis role="strong">$OPAL_HOME/etc/opal.properties</emphasis> to configure the static container
 properties correctly. The template file looks similar to the following:</para>
 <screen>
     # the base URL for the tomcat installation 
@@ -165,14 +197,14 @@ properties correctly. The template file looks similar to the following:</para>
 
 <itemizedlist>
   <listitem><para>
-    Set the <filename>tomcat.url</filename> to the correct
+    Set the <emphasis role="strong">tomcat.url</emphasis> to the correct
     <filename>http://ip-address:port</filename> of your server. 
   </para></listitem>
 
   <listitem><para>
     If the Opal installation will support parallel applications, set the
-    <filename>num.procs</filename> to the number of processors available, and
-    the <filename>mpi.run</filename> to the location of the mpirun on your host. 
+    <emphasis role="strong">num.procs</emphasis> to the number of processors available, and
+    the <emphasis role="strong">mpi.run</emphasis> to the location of the mpirun on your host. 
   </para></listitem>
 
   <listitem><para>
@@ -180,12 +212,12 @@ properties correctly. The template file looks similar to the following:</para>
     inside the $CATALINA_HOME/webapps/ROOT directory. You may wish to change
     this to another location on your system (which should be NFS mounted, if
     you are installing on a cluster). If you would like to do so for any
-    reason, uncomment the property <filename>working.dir</filename>. 
+    reason, uncomment the property <emphasis role="strong">working.dir</emphasis>. 
   </para></listitem>
 </itemizedlist>
 
 <para>
-Once ddone with customizing, run the following commands:
+Once done with customizing, run the following commands:
 <screen>
     cp $OPAL_HOME/etc/opal.xml $CATALINA_HOME/conf/Catalina/localhost/ 
     cd $CATALINA_HOME/webapps 
@@ -199,14 +231,23 @@ systems. </para>
 <para>If you wish to install a database for persistent service state, please refer
 to <xref linkend="database"> chapter. If you would like to set up
 scheduler support, refer to <xref linkend="scheduler"> chapter.
-You can also optionally set up secure access to your services by consulting
+You can optionally set up secure access to your services by consulting
 <xref linkend="security"> section.</para> </listitem>
 
-<listitem><para>Edit the $OPAL_HOME/build.properties file to ensure that the build
-properties are set correctly. Set <filename>catalina.home</filename> to point to the
-location of your Tomcat installation (i.e. $CATALINA_HOME), and
-<filename>tomcat.port</filename> to the port number that the Tomcat server is running
-on.</para> </listitem>
+<listitem><para>
+Edit the <emphasis role="strong">$OPAL_HOME/build.properties</emphasis> file to ensure that the build
+properties are set correctly.
+<itemizedlist>
+<listitem><para>
+Set <filename>catalina.home</filename> to point to the
+location of your Tomcat installation (i.e. $CATALINA_HOME)
+</para></listitem>
+<listitem><para>
+Set <emphasis role="strong">tomcat.port</emphasis> to the port number that the Tomcat server is running on.
+</para></listitem>
+</itemizedlist>
+
+</para> </listitem>
 
 <listitem><para>Install the Opal toolkit into the Tomcat installation, by executing:
 <screen>
@@ -258,9 +299,9 @@ $CATALINA_HOME/bin directory, and running the appropriate command:
  <ulink type="http" url="http://yourhost:8080/opal2/happyaxis.jsp">
 http://yourhost:8080/opal2/happyaxis.jsp</ulink>. If you have deployed
 Tomcat on another port, you will have to change the port number above. If
-all the <emphasis role="bold">Needed Components</emphasis> are found, Axis
+all the <emphasis role="strong">Needed Components</emphasis> are found, Axis
 has been deployed fine. You can ignore the warnings about the <emphasis
-role="bold">Optional Components</emphasis>.</para> </listitem>
+role="strong">Optional Components</emphasis>.</para> </listitem>
 
 <listitem><para>If the above steps have been executed successfully, the
 Opal server is ready for deployment of applications as Web
@@ -278,7 +319,7 @@ services.</para></listitem>
 <para>
 For every application that needs to be deployed as an Opal service, you
 will need to create an Opal configuration file. A sample configuration file
-for the command <command>/bin/date</command>, located in
+for the command <emphasis>/bin/date</emphasis>, located in
 <filename>$OPAL_HOME/configs/date.xml</filename>, is shown below.
 </para>
 
@@ -288,6 +329,18 @@ for the command <command>/bin/date</command>, located in
            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;metadata appName=date&gt;
     &lt;usage&gt;&lt;![CDATA[date [-u] mmddhhmm[[cc]yy]]]&gt;&lt;/usage&gt;
+    &lt;info xsd:type="xsd:string"&gt;
+        &lt;CDATA[
+             NAME
+                date - print or set the system date and time
+             SYNOPSIS
+                date [OPTION]... [+FORMAT]
+                date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+             DESCRIPTION
+                Display the current time in the given FORMAT, or set the system date.
+           ]]&gt;
+    &lt;/info&gt;
+    &lt;types&gt; &lt;/types&gt;
   &lt;/metadata&gt;
   &lt;binaryLocation&gt;/bin/date&lt;/binaryLocation&gt;
   &lt;defaultArgs&gt;&lt;/defaultArgs&gt;
@@ -298,35 +351,59 @@ for the command <command>/bin/date</command>, located in
 </screen>
 </para>
 
-<para>The configuration consists of a top level element <emphasis
-role="italics">appConfig</emphasis> which contains elements 
-<emphasis role="italics">metadata</emphasis>, 
-<emphasis role="italics">binaryLocation</emphasis>, 
-<emphasis role="italics">defaultArgs</emphasis>, 
-<emphasis role="italics">parallel</emphasis>, 
-<emphasis role="italics">validateArgs</emphasis>, and 
-<emphasis role="italics">jobManagerFQCN</emphasis>. The metadata consists of
-<emphasis role="italics">usage</emphasis>, which is a string specifying how
-the application is to be invoked, and an array of optional application
-information specified as <emphasis role="italics">info</emphasis> elements.
-It also contains an optional <emphasis role="italics">types</emphasis>
-element, which we can ignore for now (more information about the types
-element can be found from our <xref linkend="opalgui-advancedsub"> section).
-In the above file, the various options that can be used with the
-application are specified within the metadata.</para>
+<para>The configuration consists of:
+<itemizedlist>
+  <listitem><para>
+    <emphasis role="italics">appConfig</emphasis>, a top level elements  which contains all other elements .
+  </para></listitem>
 
-<para>The <emphasis role="italics">binaryLocation</emphasis> specifies the location of the 
-application binary - note that this has to be the full path of an executable. No arguments 
-can be specified here. The default arguments that need to be used for every run can be
-specified inside the defaultArgs element. The <emphasis role="italics">parallel</emphasis> 
-element specifies if an application is parallel or not. The 
-<emphasis role="italics">validateArgs</emphasis> and  <emphasis role="italics">jobManagerFQCN</emphasis>
-elements are optional. If set to true, the <emphasis role="italics">validateArgs</emphasis> element instructs
-Opal to use the optional command-line specification (within types) to
-validate arguments prior to execution. The <emphasis role="italics">jobManagerFQCN</emphasis> element
-overwrites the default job manager, and can be set to the fully qualified
-classname of an Opal job manager. The default FQCNs for job managers provided by Opal are:
-</para>
+  <listitem><para>
+    <emphasis role="italics">metadata</emphasis>, consists of:
+      <itemizedlist>
+        <listitem><para>
+          <emphasis role="italics">usage</emphasis>, a string specifying how
+          the application is to be invoked.
+        </para></listitem>
+
+        <listitem><para>
+          <emphasis role="italics">info</emphasis>, a string specifying 
+          an array of optional application information .
+        </para></listitem>
+
+        <listitem><para>
+          <emphasis role="italics">types</emphasis>, an optional  element, which 
+          we can ignore for now (more information about the types element can be 
+          found from our <xref linkend="opalgui-advancedsub"> section).  In the above 
+          file, the various options that can be used with the application are specified 
+          within the metadata.
+        </para></listitem>
+      </itemizedlist>
+  </para></listitem>
+
+  <listitem><para>
+    <emphasis role="italics">binaryLocation</emphasis>,  specifies the location of the 
+    application binary - note that this has to be the full path of an executable and no arguments 
+    can be specified here. 
+  </para></listitem>
+
+  <listitem><para>
+    <emphasis role="italics">defaultArgs</emphasis>, specifies the default arguments that need to be used for every run.
+  </para></listitem>
+
+  <listitem><para>
+    <emphasis role="italics">parallel</emphasis>, specifies if an application is parallel or not.
+  </para></listitem>
+
+  <listitem><para>
+    <emphasis role="italics">validateArgs</emphasis> is optional. If set to true, it instructs
+    Opal to use the optional command-line specification (within types) to validate arguments prior to execution. 
+  </para></listitem>
+
+  <listitem><para>
+    <emphasis role="italics">jobManagerFQCN</emphasis> is optional.  It overwrites the default 
+    job manager, and can be set to the fully qualified classname of an Opal job manager. 
+    The default FQCNs for job managers provided by Opal are:
+
   <itemizedlist>
     <listitem><para>
       <filename>edu.sdsc.nbcr.opal.manager.ForkJobManager</filename>  - for fork  job
@@ -347,6 +424,10 @@ classname of an Opal job manager. The default FQCNs for job managers provided by
       <filename>edu.sdsc.nbcr.opal.manager.CSFJobManager</filename> - Community Scheduler Framework job
     </para></listitem>
   </itemizedlist>
+  </para></listitem>
+</itemizedlist>
+
+</para>
 
 <para>
 Use the pdb2pqr_config.xml as a guideline to write configurations for your particular applications.
@@ -360,7 +441,7 @@ the command-line arguments, please see <xref linkend="sample-appconfig"> section
 
 <para>Deploy the services inside Tomcat, by copying the date.xml file inside the 
 directory specified in opal.properties with the keyword opal.deploy.path. 
-If you have not changed that property the default directory is $CATALINA_HOME/deploy.
+If you have not changed that property the default directory is <emphasis>$CATALINA_HOME/deploy</emphasis>.
 <screen>
     cp configs/date.xml $CATALINA_HOME/deploy
 </screen>
