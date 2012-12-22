@@ -84,10 +84,16 @@
 		<td width=25% class="boxBodyRight colColor infoTitle">Hostname:</td>
 		<td class="boxBody colColor">&nbsp;<%= systemServerHostname %></td>
 	</tr>
+<%
+if ( (systemIPAddress != null) && (! systemIPAddress.equals("null")) ) {
+%>
 	<tr>
 		<td class="boxBodyRight colColor infoTitle">IP Address:</td>
 		<td class="boxBody colColor"><%= systemIPAddress %></td>
 	</tr>
+<% 
+}
+%>
 	<tr>
 		<td class="boxBodyRight colColor infoTitle">Build Date:</td>
 		<td class="boxBody colColor"><%= systemBuildDate %></td>
