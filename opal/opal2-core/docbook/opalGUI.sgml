@@ -1,18 +1,14 @@
 <chapter id="opalGUI" xreflabel="Opal Dynamic Interface Generation"> 
 <title>Opal Dashboard</title>
 
-<para>This chapter presents the Opal Dashboard, a Web interface that allows
-a user to monitor the status of an Opal Server, to check its usage, and to
-dynamically create customized Web forms for job submission.</para>
-
 <section id="opalGUI-overview" xreflabel="Overview">
 <title>Overview</title>
 
 <para>The Opal Dashboard is a Web-based graphical user interface that
-allows to monitor an Opal service, to view statistics regarding its usage
+allows a user to monitor an Opal service, to view statistics regarding its usage
 and to execute deployed applications from within a standard Web browser.
-The dashboard is automatically deployed in the same Web application along
-with Opal, and it can be accessed at <ulink type="http"
+It provides for dynamic creation of customized applications forms for job submission.
+The dashboard is automatically deployed along with Opal, and it can be accessed at <ulink type="http"
 url="http://localhost:8080/opal2/dashboard">http://servername:8080/opal2/dashboard</ulink>.</para>
 
 <para>
@@ -108,8 +104,8 @@ the files should be uncompressed on the server.
 <title>Advanced Submission Form</title>
 
 <para>
-One can add an optional element <emphasis>types</emphasis>in the 
-application configuration file described at <xref linkend="serverinstall">, 
+One can add an optional element <emphasis>types</emphasis> in the 
+application configuration file described at <xref linkend="deploy">.
 This element contains a description of the command line input arguments 
 accepted by the application.  The Opal dashboard will render an advanced 
 submission form with the customized inputs arguments.</para>

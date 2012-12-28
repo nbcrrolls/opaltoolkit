@@ -100,8 +100,8 @@ Ensure that <emphasis role="italics">libdrmaa.so</emphasis> is in your library p
 <ulink type="http" url="http://research.cs.wisc.edu/htcondor/manual/v7.6.2/">Condor manual</ulink>. 
 We have tested with version &condor;, but we expect that it will work with most recent
 Condor versions. In particular, verify that you can submit and monitor jobs
-from the command-line with commands such as <filename>condor_submit</filename>, 
-<filename>condor_status</filename>, etc., and that these commands are in the Opal user's PATH.
+from the command-line with commands such as <emphasis>condor_submit</emphasis>, 
+<emphasis>condor_status</emphasis>, etc., and that these commands are in the Opal user's PATH.
 </para></listitem>
 
 <listitem><para>Set the following properties inside the opal.properties file: </para>

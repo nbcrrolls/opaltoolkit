@@ -8,6 +8,9 @@
 <!ENTITY condor "7.6.2">
 <!ENTITY torque "2.3.0">
 <!ENTITY pbs "PBSPro_11.3.0.121723">
+<!ENTITY tomcat "6.0 or 7.0">
+<!ENTITY java "1.6.x">
+<!ENTITY ant "1.7.1">
 
 <!ENTITY overview SYSTEM "overview.sgml">
 <!ENTITY serversetup SYSTEM "serversetup.sgml">
