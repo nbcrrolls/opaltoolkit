@@ -105,8 +105,10 @@ public class LaunchJobAction extends MappingDispatchAction{
         log.debug("the following parameters has been posted:\n" + debug);
         // build the command line
         String cmd = makeCmdLine(app);
-	if ( cmd == null)
+	if ( cmd == null){
+            request.setAttribute(Constants.ERROR_MESSAGES, errors);
             return mapping.findForward("Error");
+        }
 
         //now we could validate the cmd line
         //let's invoke the remote opal service
@@ -263,7 +265,6 @@ public class LaunchJobAction extends MappingDispatchAction{
         if (cmd == null) {
             log.error("The command line is null!");
             errors.add("We could not built the command line from your input parameters");
-            request.setAttribute(Constants.ERROR_MESSAGES, errors);
         }
         log.info("Submitted job command line: " + cmd);
         return cmd;
