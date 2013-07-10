@@ -70,7 +70,7 @@
       <tr>
         <td width=20% class="boxBodyRight colColor infoTitle">Opal Contributors: </td>
        <td class="boxBody colColor">Sriram Krishnan, Luca Clementi, Wes Goodman, 
-       Jane Ren, Nadya Williams, Anthony Bretaudeau, Yuan Luo, Karan Bhatia, Wilfred Li, and Peter Arzberger </td>
+       Jane Ren, Nadya Williams,<br> Anthony Bretaudeau, Yuan Luo, Karan Bhatia, Wilfred Li, Peter Arzberger </td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Websites: </td>
@@ -82,33 +82,23 @@
 
       <tr>
         <td class="boxBodyRight colColor infoTitle">Documentation:</td>
-        <td class="boxBody colColor"><a href="<%= opalDocumentation %>">
-		          <span class="PubTitle">Opal Documentation</span></a>
-		</td> 
-      </tr>
-
-      <tr>
-        <td class="boxBodyRight colColor infoTitle">Tutorials:</td>
-        <td class="boxBody colColor">
-		          <a href="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">
-		          <span class="PubTitle">Tutorials and Sample Programs</span></a>
-		</td> 
+        <td class="boxBody colColor"><a href="<%= opalDocumentation %>/documentation.html">
+		          <span class="PubTitle">Opal Documentation and Tutorials</span></a>
+	</td> 
       </tr>
 
       <tr>
         <td class="boxBodyRight colColor infoTitle">Support: </td>
-        <td class="boxBody colColor"><a href="mailto:support@nbcr.net">
-       <span class="PubTitle">NBCR Support Mailing List</span></a>
-                  <a href="http://sourceforge.net/mail/?group_id=211778">
-       <span class="PubTitle">Opal Mailing List</span></a>
-                  <a href="https://www.nbcr.net/forum/">
-				  <span class="PubTitle">NBCR Forum</span></a></td>
+        <td class="boxBody colColor">
+            <a href="mailto:support@nbcr.net"> <span class="PubTitle">NBCR Support Mailing List</span></a>
+            <a href="http://sourceforge.net/mail/?group_id=211778"> <span class="PubTitle">Opal Mailing List</span></a>
+        </td>
       </tr>
       <tr>
         <td class="boxBodyRight colColor infoTitle">Opal Use Cases:</td>
         <td class="boxBody colColor"><a href="http://meme.nbcr.net/">
-		          <span class="PubTitle">MEME Website</span></a>
-                  <a href="http://nbcr.net/pdb2pqr"><span class="PubTitle">NBCR PDB2PQR Website</span></a>
+		          <span class="PubTitle">MEME</span></a>
+                  <a href="http://www.nbcr.net/pdb2pqr"><span class="PubTitle">PDB2PQR</span></a>
        <a href="http://www.opentopography.org/"><span class="PubTitle">OpenTopography</span></a>
       </tr>
       <tr>
@@ -116,7 +106,7 @@
         <td class="boxBody colColor"> 
           <ul>
 		    <li>
-                <a href="http://www.nbcr.net/software/opal//publications/opal2_icws.pdf">
+                <a href="<%= opalDocumentation %>/publications/opal2_icws.pdf">
 			    <span class="PubTitle">Design and Evaluation of Opal2: A Toolkit for Scientific 
 			    Software as a Service.</span></a><br>
 			    <span class="PubAuth">Sriram Krishnan, Luca Clementi, Jingyuan Ren, 
@@ -133,7 +123,7 @@
 				Workshop (Supercomputing 2007), November 2007 </span>
             </li>
             <li>
-                <a href="http://nbcr.net/software/opal/publications/SDSC-TR-2006-5-opal.pdf">
+                <a href="<%= opalDocumentation %>/publications/SDSC-TR-2006-5-opal.pdf">
 			    <span class="PubTitle">Opal: Simple Web Services Wrappers for Scientific 
 				Applications.</span></a><br>
                 <span class="PubAuth">Sriram Krishnan, Brent Stearn, Karan Bhatia, Kim K. Baldridge, 
@@ -142,7 +132,7 @@
 				on Web Services, September 2006 </span>
             </li>
             <li>
-                <a href="http://nbcr.net/software/opal/publications/grid2005.pdf">
+                <a href="<%= opalDocumentation %>/publications/grid2005.pdf">
   		        <span class="PubTitle">An End-to-end Web Services-based Infrastructure for 
 				Biomedical Applications.</span></a><br>
                 <span class="PubAuth">Sriram Krishnan, Kim Baldridge, Jerry Greenberg, 

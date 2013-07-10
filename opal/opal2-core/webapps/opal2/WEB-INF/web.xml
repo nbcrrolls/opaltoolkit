@@ -63,11 +63,11 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     </context-param>
     <context-param>
        <param-name>OPAL_WEB_SITE</param-name>
-       <param-value>http://nbcr.net/software/opal/</param-value>
+       <param-value>http://www2.nbcr.net/wordpress2/?page_id=909</param-value>
     </context-param>
     <context-param>
        <param-name>OPAL_DOC</param-name>
-       <param-value>http://nbcr.net/software/opal/documentation.html</param-value>
+       <param-value>http://www.nbcr.net/data/docs/opal</param-value>
     </context-param>
   <!-- Dashboard configuaration parameters...  -->
 
