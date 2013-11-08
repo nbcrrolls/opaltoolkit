@@ -376,7 +376,7 @@ public class DBManager {
         String query = " select count(jobID) from JobInfo where " +
             "(code=" + GramJob.STATUS_PENDING + " or code=" + GramJob.STATUS_ACTIVE + " or " +
             "code=" + GramJob.STATUS_STAGE_IN + " or code=" + GramJob.STATUS_STAGE_OUT + ") and " +
-            "serviceName='" + service + "%' ";
+            "serviceName like '" + service + "%' ";
 
         Session session = sessionFactory.openSession();
         Long ret = (Long) session.createQuery(query).uniqueResult();
