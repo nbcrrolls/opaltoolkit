@@ -96,31 +96,33 @@
 <td class="boxLeft colColor"><br /></td>
 <td colspan="3" class="colColor">
 
-<h2>Usage statistics for Opal Server</h2>
+<h2><center>Server usage statistics</center></h2>
 <form action="dashboard" method="get">
-<table width="700">
+
+<table width="100%" border="0">
     <input type="hidden" name="command" value="statistics"/>
     <tr>
-        <td >Start Date:</td>
-        <td ><input type="text" name="startDate" value="<%= startDate %>"/></td>
+        <td width="25%"> </td>
+        <td width="25%"> </td>
+        <td width="25%"> </td>
+        <td width="25%"> </td>
     </tr>
     <tr>
-        <td >End Date:</td>
-        <td ><input type="text" name="endDate" value="<%= endDate %>"/></td>
+        <td colspan="2" ><b>Select services to display:</b>
+           <input type=button name="CheckAll" value="Check All" onClick="checkAll()"/> 
+            &nbsp;
+           <input type=button name="UnCheckAll" value="Uncheck All" onClick="uncheckAll()"> 
+        </td>
+        <td width="25%"><b>Start date:</b> <input type="text" name="startDate" value="<%= startDate %>"/></td>
+        <td width="25%"><b>End date:</b> <input type="text" name="endDate" value="<%= endDate %>"/></td>
     </tr>
-    <tr>
-        <td colspan="2" >
-        Select the service you want to display:</td>
-    </tr>
-    <tr>
-        <td colspan="2" ><input type=button name="CheckAll" value="Check All" onClick="checkAll()"/> <input type=button name="UnCheckAll" value="Uncheck All" onClick="uncheckAll()"> </td>
-    </tr>
+
 <%
    for ( int i = 0; i < servicesName.length; i++ ) {
 %>
-    <tr>
-        <td colspan="2" >
-        
+        <%if ( i % 4  == 0 ) { %> <tr> <%}%>
+
+        <td>
         <% if ( DateHelper.containsString(servicesNameSelected, servicesName[i]) ) {%>
         <input checked="checked"  type="checkbox" name="servicesName" value="<%= servicesName[i] %>"  />
         <%} else {%>
@@ -128,78 +130,74 @@
         <%}%>
         <%= servicesName[i] %>
         </td>
-    </tr>
+
+        <%if ( i % 4  == 3 ) { %> </tr> <%}%>
 <% 
    }
 %>
     <tr>
-        <td ><br/><input type="submit" value="Update Charts"/></td>
+        <td colspan="4"><input type="submit"  value="Update Charts"/></td>
+        <br>
     </tr>
+    <tr> </tr>
     
 </table>
 </form>
 </td>
 
-<td class="boxRight colColor"><br /></td>
+<td class="boxRight colColor"></td>
+</tr>
+
+<!-- running jobs  -->
+<tr>
+<td class="boxLeft colColor"></td>
+<td colspan="3" class="colColor">
+   <% String href = "plotchart?type=runningjobs&width=800&height=400" + serviceNameURL; %>
+   <center><a href="<%= href %>"><img src="<%= href %>"/></a></center>
+   <br/> 
+</td>
+<td class="boxRight colColor"></></td>
 </tr>
 
 <!-- hits chart -->
 <tr>
-<td class="boxLeft colColor"><br /></td>
+<td class="boxLeft colColor"></td>
 <td colspan="3" class="colColor">
-<h2>Number of invocations per day:</h2>
-<% String href = "plotchart?type=hits&width=800&height=400&startDate=" + URLEncoder.encode(startDate, "UTF-8") + "&endDate=" + URLEncoder.encode(endDate, "UTF-8") +  serviceNameURL; %>
-<a href="<%= href %>"> 
-  <img src="<%= href %>"/>
-</a>
-<br/>
+   <% href = "plotchart?type=hits&width=800&height=400&startDate=" + 
+             URLEncoder.encode(startDate, "UTF-8") + "&endDate=" + 
+             URLEncoder.encode(endDate, "UTF-8") +  serviceNameURL; %>
+   <center><a href="<%= href %>"><img src="<%= href %>"/></a></center>
+   <br/>
 </td>
-<td class="boxRight colColor"><br /></td>
+<td class="boxRight colColor"></td>
 </tr>
 
 <!-- average execution time chart -->
 <tr>
-<td class="boxLeft colColor"><br /></td>
+<td class="boxLeft colColor"></td>
 <td colspan="3" class="colColor">
-<h2>Daily average execution time:</h2>
-<% href = "plotchart?type=exectime&width=800&height=400&startDate=" + URLEncoder.encode(startDate, "UTF-8") + "&endDate=" + URLEncoder.encode(endDate, "UTF-8") +  serviceNameURL; %>
-<a href="<%= href %>"> 
-  <img src="<%= href %>"/>
-</a>
-<br/>
+   <% href = "plotchart?type=exectime&width=800&height=400&startDate=" + 
+             URLEncoder.encode(startDate, "UTF-8") + "&endDate=" + 
+             URLEncoder.encode(endDate, "UTF-8") +  serviceNameURL; %>
+   <center><a href="<%= href %>"><img src="<%= href %>"/></a></center>
+   <br/>
 </td>
-<td class="boxRight colColor"><br /></td>
+<td class="boxRight colColor"></td>
 </tr>
-
 
 <!-- number of errors  -->
 <tr>
-<td class="boxLeft colColor"><br /></td>
+<td class="boxLeft colColor"></td>
 <td colspan="3" class="colColor">
-<h2>Number of errors per day:</h2>
-<% href = "plotchart?type=error&width=800&height=400&startDate=" + URLEncoder.encode(startDate, "UTF-8") + "&endDate=" + URLEncoder.encode(endDate, "UTF-8") +  serviceNameURL; %>
-<a href="<%= href %>"> 
-  <img src="<%= href %>"/>
-</a>
-<br/>
+   <% href = "plotchart?type=error&width=800&height=400&startDate=" + 
+             URLEncoder.encode(startDate, "UTF-8") + "&endDate=" + 
+             URLEncoder.encode(endDate, "UTF-8") +  serviceNameURL; %>
+   <center><a href="<%= href %>"><img src="<%= href %>"/></a></center>
+   <br/>
 </td>
-<td class="boxRight colColor"><br /></td>
+<td class="boxRight colColor"></td>
 </tr>
 
-
-<!-- running jobs  -->
-<tr>
-<td class="boxLeft colColor"><br /></td>
-<td colspan="3" class="colColor">
-<h2>Number of jobs currently in execution:</h2>
-<% href = "plotchart?type=runningjobs&width=800&height=400" + serviceNameURL; %>
-<a href="<%= href %>"> 
-  <img src="<%= href %>"/>
-</a>
-<br/>
-</td>
-<td class="boxRight colColor"><br /></td>
-</tr>
 <%@ include file="footer.jsp" %>
 </table> <!-- END Body -->
 <%@ include file="copyright.jsp" %>
