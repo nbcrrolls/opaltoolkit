@@ -11,7 +11,6 @@
 
 package edu.sdsc.nbcr.opal.dashboard.servlet;
 
-
 import edu.sdsc.nbcr.opal.dashboard.persistence.DBManager;
 import edu.sdsc.nbcr.opal.dashboard.util.DateHelper;
 
@@ -33,6 +32,8 @@ import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.encoders.EncoderUtil;
 import org.jfree.chart.encoders.ImageFormat;
 import org.jfree.chart.plot.CategoryPlot;
@@ -40,6 +41,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Day;
@@ -47,6 +52,8 @@ import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.TextAnchor;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -61,11 +68,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
 
 import java.io.*;
-
-//import java.sql;
 import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.util.regex.*;
-
+//import java.sql;
 
 /** 
  * This Servlet is in charge of plotting the chart.</br>
@@ -240,7 +246,9 @@ public class PlotterServlet extends HttpServlet
                 if (running == -1 ){
                     doError("impossible to retrive the data from the Data Base", request, response);
                 }
-                barDataset.addValue(running, servicesName[i], "");                
+                if (running == 0 ){ continue; }
+                barDataset.addValue(running, servicesName[i], servicesName[i]);                
+                //barDataset.addValue(running, servicesName[i], "");                
             }
         } else {
             //all the other chart are created here
@@ -288,13 +296,47 @@ public class PlotterServlet extends HttpServlet
         //drawing the image and returning
         JFreeChart chart = null;
         if (type.equals(runningjobs)){
-            chart = ChartFactory.createBarChart3D(title, xAxisTitle, yAxisTitle, barDataset, PlotOrientation.VERTICAL,
-                 // include legend, tooltips, urls
-                    true, true, true);
+            chart = ChartFactory.createBarChart3D(
+			title, 
+			xAxisTitle,  // domain axis
+			yAxisTitle,  // range axis
+			barDataset, 
+			PlotOrientation.VERTICAL,
+                    	true, // legend 
+			false, // tooltips
+			false  // urls
+	    );
             //http://www.google.com/codesearch?hl=en&q=+BarChart3DDemo4.java+show:P7RwiKyu_fE:jBqt4P62SWA:MPRcQZS7yqc&sa=N&cd=1&ct=rc&cs_p=http://feathers.dlib.vt.edu/~etana/VisualViews/JFreechart/jfreechart-1.0.1-demo.zip&cs_f=jfreechart-1.0.1-demo/source/demo/BarChart3DDemo4.java#first
+            chart.getLegend().setFrame(BlockBorder.NONE);
+            chart.getLegend().setMargin(0, 0, 10, 0);
+            chart.getLegend().setPosition(RectangleEdge.BOTTOM);
+
             CategoryPlot plot = chart.getCategoryPlot();
+            plot.setBackgroundPaint(Color.white);
+            plot.setOutlineVisible(false);
+
+            // Y axis
             NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
             rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+            BarRenderer3D  renderer = (BarRenderer3D) plot.getRenderer();
+            renderer.setBaseItemLabelGenerator(
+		new StandardCategoryItemLabelGenerator(
+			"{1}", NumberFormat.getInstance()
+		)
+		
+	    );
+            renderer.setDrawBarOutline(false);
+            renderer.setBaseItemLabelsVisible(true);
+            renderer.setMaximumBarWidth(0.2);
+            renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.CENTER_LEFT,
+                                                      TextAnchor.CENTER_LEFT, -Math.PI / 8));
+	    renderer.setBaseNegativeItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.CENTER_LEFT,
+                                                      TextAnchor.CENTER_LEFT, -Math.PI / 8));
+            // X axis, turn off category labels
+            CategoryAxis axis = plot.getDomainAxis();
+            axis.setTickLabelsVisible(false);
+            
         }else{
             chart = ChartFactory.createTimeSeriesChart( title, xAxisTitle, yAxisTitle, dataset,
                 true, true, false);
