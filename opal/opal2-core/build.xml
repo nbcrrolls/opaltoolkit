@@ -424,89 +424,14 @@ Author:
 
   <!-- Deploy an opal service -->
   <target name="deploy" depends="install">
-    <fail message="System property &lt;serviceName&gt; not set" unless="serviceName"/>
-
-    <available file="${appConfig}"
-               type="file" 
-               property="appConfig.present" />
-    <fail message="System property &lt;appConfig&gt; does not point to a valid file" unless="appConfig.present"/>
-
-    <condition property="appVersion"
-	       value="">
-      <not>
-        <isset property="appVersion" />
-      </not>
-    </condition>
-
-    <echo message="Deploying service: ${serviceName}"/>
-
-    <!-- generate WSDD for deploying -->
-    <delete file="${build.generated}/${serviceName}_deploy.wsdd"/>
-    <java classname="edu.sdsc.nbcr.opal.util.Deploy">
-      <sysproperty key="appConfig" value="${appConfig}"/>
-      <sysproperty key="serviceName" value="${serviceName}"/>
-      <sysproperty key="appVersion" value="${appVersion}"/>
-      <sysproperty key="wsddTemplate" value="${project.home}/wsdd/opal_deploy.wsdd" />
-      <sysproperty key="wsddFinal" value="${build.generated}/${serviceName}_deploy.wsdd" />
-      <classpath refid="classpath" />
-    </java>
-
-    <!-- use the admin client to deploy the service -->
-    <java classname="org.apache.axis.client.AdminClient">
-      <arg value="-lhttp://localhost:${tomcat.port}/${opal.webapp}/servlet/AxisServlet"/>
-      <arg value="${build.generated}/${serviceName}_deploy.wsdd" />
-      <classpath refid="classpath" />
-    </java>
-
-    <!-- generate typed WSDL -->
-    <antcall target="generateTypedWSDL"/>
-
-    <!-- delete WSDD after deploying -->
-    <delete file="${build.generated}/${serviceName}_deploy.wsdd"/>
+	  <echo message="Dployment of services is now done simply copying config file in a floder."/>
+	  <echo message="Please read the documentation."/>
   </target>
 
-    <!-- generate typed WSDL, if need be -->
-  <target name="generateTypedWSDL" if="typedservices.present">
-    <java classname="org.inria.genouest.opal.tools.typedwsdl.generator.OpalTypedWSDLGenerator" fork="true">
-      <arg value="-s${serviceName}" />
-      <arg value="-c${appConfig}"/>
-      <classpath refid="classpath" />
-    </java>
-  </target>
 
   <!-- Undeploy an opal service -->
   <target name="undeploy" depends="jar">
-    <echo message="Undeploying service: ${serviceName}"/>
-
-    <condition property="appVersion"
-	       value="">
-      <not>
-        <isset property="appVersion" />
-      </not>
-    </condition>
-
-    <!-- generate WSDD for undeploying -->
-    <delete file="${build.generated}/${serviceName}_undeploy.wsdd"/>
-    <java classname="edu.sdsc.nbcr.opal.util.Undeploy">
-      <sysproperty key="serviceName" value="${serviceName}"/>
-      <sysproperty key="appVersion" value="${appVersion}"/>
-      <sysproperty key="wsddTemplate" value="${project.home}/wsdd/opal_undeploy.wsdd" />
-      <sysproperty key="wsddFinal" value="${build.generated}/${serviceName}_undeploy.wsdd" />
-      <classpath refid="classpath" />
-    </java>
-
-    <!-- use the admin client to undeploy the service -->
-    <java classname="org.apache.axis.client.AdminClient">
-      <arg value="-lhttp://localhost:${tomcat.port}/${opal.webapp}/servlet/AxisServlet"/>
-      <arg value="${build.generated}/${serviceName}_undeploy.wsdd" />
-      <classpath refid="classpath" />
-    </java>
-
-    <!-- delete typed WSDL, if it exists --> 
-    <delete file="${catalina.home}/webapps/${typedservices.dir}/${serviceName}.wsdl"
-	    quiet = "true"/>
-    
-    <!-- delete WSDD after undeploying -->
-    <delete file="${build.generated}/${serviceName}_undeploy.wsdd"/>
+	  <echo message="Undeployment of services is now done simply copying file in a floder."/>
+          <echo message="Please read the documentation."/>
   </target>
 </project>
