@@ -50,7 +50,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 
     <context-param>
        <param-name>OPAL_VERSION</param-name>
-       <param-value>2.4</param-value>
+       <param-value>2.5</param-value>
     </context-param>
     <!-- the next two paramters are to get os version and loadaverage... leave it empty if you don't have any command-->
     <context-param>
@@ -63,11 +63,11 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     </context-param>
     <context-param>
        <param-name>OPAL_WEB_SITE</param-name>
-       <param-value>http://www2.nbcr.net/wordpress2/?page_id=909</param-value>
+       <param-value>http://nbcr.ucsd.edu/wordpress2/?page_id=909</param-value>
     </context-param>
     <context-param>
        <param-name>OPAL_DOC</param-name>
-       <param-value>http://www.nbcr.net/data/docs/opal</param-value>
+       <param-value>http://nbcr.ucsd.edu/data/docs/opal</param-value>
     </context-param>
   <!-- Dashboard configuaration parameters...  -->
 
