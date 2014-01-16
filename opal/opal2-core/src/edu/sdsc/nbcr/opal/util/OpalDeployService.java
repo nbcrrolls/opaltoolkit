@@ -66,7 +66,7 @@ public class OpalDeployService extends HttpServlet {
         //-------     initializing the DB connection    -----
         java.util.Properties props = new java.util.Properties();
         String propsFileName = "opal.properties";
-        String tomcatUrl = "";
+        String axisServicesUrl;
         String deployPath = "";
         try {
             // load runtime properties from properties file
@@ -78,11 +78,10 @@ public class OpalDeployService extends HttpServlet {
             return;
         }
 
-        if (props.getProperty("tomcat.url") != null ) {
-            tomcatUrl = props.getProperty("tomcat.url");
-        }else{
-            logger.error("unable to get tomcat.url");
-            return;
+        axisServicesUrl = getServletContext().getInitParameter("OPAL_URL");
+        if ( axisServicesUrl == null ) {
+            logger.warn("OPAL_URL not found in web.xml. Using default.");
+            axisServicesUrl = Constants.OPALDEFAULT_URL;
         }
 
         if (props.getProperty("opal.deploy.path") != null ) {
@@ -104,7 +103,7 @@ public class OpalDeployService extends HttpServlet {
         //TODO check if it's a file istead of a dir
 
         deplo = new Deployer();
-        deplo.setValues(tomcatUrl, deployPathFile);
+        deplo.setValues(axisServicesUrl, deployPathFile);
         deplo.setName("OpalDeployer");
         deplo.start();
  
@@ -120,7 +119,7 @@ public class OpalDeployService extends HttpServlet {
         //protected static Log logger = LogFactory.getLog(OpalDeployService.class.getName());
  
         private String axisAdminUrl;
-        private String opalUrl;
+        private String axisServicesUrl;
         private File deployPathFile;
         private boolean run ;
 
@@ -131,9 +130,10 @@ public class OpalDeployService extends HttpServlet {
             run = false;
         }
 
-        public void setValues(String tomcatUrl, File path) {
-            opalUrl = tomcatUrl + "/opal2/services";
-            axisAdminUrl = tomcatUrl + "/opal2/servlet/AxisServlet";
+        public void setValues(String axisServicesUrl, File path) {
+            this.axisServicesUrl = axisServicesUrl;
+            axisAdminUrl = axisServicesUrl.substring(0, axisServicesUrl.lastIndexOf('/'));
+            axisAdminUrl += "/servlet/AxisServlet";
             deployPathFile = path;
         }
 
@@ -161,8 +161,8 @@ public class OpalDeployService extends HttpServlet {
             logger.info("initDeployServlet: axis URL: " + axisAdminUrl );
             logger.info("initDeployServlet: deploy path: " + deployPathFile.getAbsolutePath());
             GetServiceListHelper helper = new GetServiceListHelper();
-            helper.setBasePrivateURL(Constants.OPALDEFAULT_URL);
-            helper.setBasePublicURL(opalUrl);
+            helper.setBasePrivateURL(axisServicesUrl);
+            helper.setBasePublicURL(axisServicesUrl);
             OPALService [] servicesList = helper.getOpalServiceList();
             if ( servicesList == null ) {
                 logger.error("Unable to parse the service list from the server");
