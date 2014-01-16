@@ -159,7 +159,7 @@ public class OpalServices extends HttpServlet {
     private OPALService [] getServiceList(HttpServletResponse res){
         String url = getServletContext().getInitParameter("OPAL_URL");
         if ( url == null ) {
-            log.warn("the OPAL_URL was not found in the WEB-INF/web.xml file.\nUsing the default...");
+            log.warn("OPAL_URL not found in web.xml. Using default.");
             url = Constants.OPALDEFAULT_URL;
         }
         GetServiceListHelper helper = new GetServiceListHelper();
