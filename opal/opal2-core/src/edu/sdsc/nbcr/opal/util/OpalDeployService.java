@@ -28,6 +28,7 @@ import edu.sdsc.nbcr.opal.state.ServiceStatus;
 //TODO no good using .gui. package here
 import edu.sdsc.nbcr.opal.gui.common.OPALService;
 import edu.sdsc.nbcr.opal.gui.common.GetServiceListHelper;
+import edu.sdsc.nbcr.opal.gui.common.Constants;
 import edu.sdsc.nbcr.common.TypeDeserializer;
 import edu.sdsc.nbcr.opal.AppConfigType;
 
@@ -160,7 +161,7 @@ public class OpalDeployService extends HttpServlet {
             logger.info("initDeployServlet: axis URL: " + axisAdminUrl );
             logger.info("initDeployServlet: deploy path: " + deployPathFile.getAbsolutePath());
             GetServiceListHelper helper = new GetServiceListHelper();
-            helper.setBasePrivateURL(opalUrl);
+            helper.setBasePrivateURL(Constants.OPALDEFAULT_URL);
             helper.setBasePublicURL(opalUrl);
             OPALService [] servicesList = helper.getOpalServiceList();
             if ( servicesList == null ) {
