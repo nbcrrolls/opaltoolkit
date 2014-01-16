@@ -158,7 +158,7 @@ public class OpalDeployService extends HttpServlet {
             }
 
             logger.info("initDeployServlet: axis URL: " + axisAdminUrl );
-            logger.info("initDeployServlet: deploy path: " + deployPathFile );
+            logger.info("initDeployServlet: deploy path: " + deployPathFile.getAbsolutePath());
             GetServiceListHelper helper = new GetServiceListHelper();
             helper.setBasePrivateURL(opalUrl);
             helper.setBasePublicURL(opalUrl);
