@@ -139,9 +139,9 @@
   </mailingLists>
 
   <scm>
-    <connection>scm:svn:https://opaltoolkit.svn.sourceforge.net/svnroot/opaltoolkit</connection>
+    <connection>scm:git:https://github.com/nbcrrolls/opaltoolkit</connection>
     <tag>HEAD</tag>
-    <url>http://opaltoolkit.svn.sourceforge.net/viewvc/opaltoolkit/</url>
+    <url>https://github.com/nbcrrolls/opaltoolkit</url>
   </scm>
 
 <!-- no local repository
