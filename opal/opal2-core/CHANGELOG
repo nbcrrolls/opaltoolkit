@@ -1,11 +1,13 @@
-TODO 
-- move logging level from info to debug for most of the messages
-- active state for hibernate
-
-Trunk
-- Automatic deployment dropping appConfig files in opal.deploy.path
-- Moved to tomcat 7, java 6 or greater
-
+Version 2.5
+- Automatic service deployment done dropping appConfig files in
+  opal.deploy.path
+- Support for tomcat 7.X, and tomcat 6.X
+- Cleaner logging with few messages to the default level
+- Improved Usage Statistics page layout
+- Improvements to Condor job manager
+- Extra config parameters for PBS job manager
+- Removed support for globus GRAM
+- Several fix to the userdocs
 
 Version 2.4
 - Additional operation added to Opal WSDL and AppService implementation to
