@@ -255,7 +255,7 @@ Set <emphasis role="strong">tomcat.port</emphasis> to the port number that the T
 </screen>
 </para> </listitem>
 
-<listitem><para>If you are using Tomcat 5.5.X, you have to enable directory listing to 
+<listitem><para>You have to enable directory listing to 
 display jobs outputs properly. Find the definition of the main servlet
 in the file <emphasis>$CATALINA_HOME/conf/web.xml</emphasis>:
 <screen>
