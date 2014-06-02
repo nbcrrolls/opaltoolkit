@@ -7,12 +7,9 @@
 
 <itemizedlist>
   <listitem><para>
-  To report  bugs and feature requests, please use <ulink type="http"
-  url="http://sourceforge.net/tracker/?group_id=211778">Sourceforge Opal Toolkit Tracker</ulink> 
-  </para></listitem>
-
-  <listitem><para>
-  Email opaltoolkit-users @ lists.sourceforge.net 
+  If you need help with Opal or you want to report bugs please Email 
+  <ulink url="https://lists.sourceforge.net/lists/listinfo/opaltoolkit-users">
+  opaltoolkit-users @ lists.sourceforge.net</ulink>
   </para></listitem>
 </itemizedlist>
 
@@ -30,7 +27,7 @@ The organizations involvement in the development of Opal:
     <inlinemediaobject><imageobject>
       <imagedata fileref="images/nbcr_logo.png" width=50>
     </imageobject></inlinemediaobject>
-    <ulink url="http://www.nbcr.net">
+    <ulink url="http://nbcr.ucsd.edu">
     National Biomedical Computation Resource 
     </ulink>
   </para></listitem>

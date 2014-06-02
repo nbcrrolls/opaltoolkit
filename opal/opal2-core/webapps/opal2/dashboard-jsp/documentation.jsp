@@ -90,8 +90,8 @@
       <tr>
         <td class="boxBodyRight colColor infoTitle">Support: </td>
         <td class="boxBody colColor">
-            <a href="mailto:support@nbcr.net"> <span class="PubTitle">NBCR Support Mailing List</span></a>
-            <a href="http://sourceforge.net/mail/?group_id=211778"> <span class="PubTitle">Opal Mailing List</span></a>
+	  <a href="https://lists.sourceforge.net/lists/listinfo/opaltoolkit-users"> 
+	    <span class="PubTitle">Opal Mailing List</span></a>
         </td>
       </tr>
       <tr>

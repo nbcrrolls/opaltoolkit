@@ -16,7 +16,7 @@
 and a generic Python client that can call any Opal2 service that is already
 deployed. If you would like to install your own Opal services, you should
 follow the documentation for the server-side installation of Opal <a
-href="http://nbcr.net/software/opal/documentation.html">here</a>.
+href="http://nbcr.ucsd.edu/data/docs/opal/documentation.html">here</a>.
 
 <h2>2. Prerequisites</h2>
 
@@ -178,9 +178,9 @@ To get the complete usage of the generic Opal client, you can execute:
 
 <P>
 For example, to launch the remote PDB2PQR Opal Serivce on 
-<A HREF="http://ws.nbcr.net">http://ws.nbcr.net</A>, you may use the 
+<A HREF="http://nbcr-222.ucsd.edu">http://nbcr-222.ucsd.net</A>, you may use the 
 following command (assuming you have the input file
-<A HREF="http://www.nbcr.net/ws_help/PDB2PQR/sample_inputs/1hpx.pdb"><tt>1hpx.pdb</tt></A> in your directory):<P>
+<A HREF="http://nbcr.ucsd.edu/data/docs/wshelp/PDB2PQR/sample_inputs/1hpx.pdb"><tt>1hpx.pdb</tt></A> in your directory):<P>
    <TABLE BORDER="0" BGCOLOR="#E0E0E0" WIDTH="100%">
    <TR><TD><FONT COLOR="#000000">
    <pre class="SCREEN">
@@ -218,7 +218,7 @@ can not find the stubs and the client (AppService_client.py and AppService_types
 import OpalClient
 
 # Service URL
-apbsURL = "http://kryptonite.nbcr.net/opal2/services/apbs_1.3"
+apbsURL = "http://nbcr-222.ucsd.edu/opal2/services/apbs_1.3"
 client = OpalClient.OpalService(apbsURL)
 
 # command-line arguments
@@ -362,17 +362,11 @@ compliant. This can be done by creating a Grid proxy using
 has only been tested with OpenSSL version 0.9.7g, and may not work with
 older versions.
 
-<h2>6. Related Links</h2>
-
-<UL>
-<LI><P>More examples of client usage can be found at: <A HREF="http://nbcr.sdsc.edu/pub/wiki/index.php?title=Opal_Client">NBCR Opal Client Wiki</A>
-</UL>
-
-<h2>7. Feedback</h2>
+<h2>6. Feedback</h2>
 
 <p>Please use the Opal Toolkit <a
-href="http://sourceforge.net/tracker/?group_id=211778">Tracker</a> on
-Sourceforge to report bugs and feature requests.
+href="https://lists.sourceforge.net/lists/listinfo/opaltoolkit-users">
+Mailing list</a> on Sourceforge to report bugs and feature requests.
 <hr/>
 </body>
 </html>
