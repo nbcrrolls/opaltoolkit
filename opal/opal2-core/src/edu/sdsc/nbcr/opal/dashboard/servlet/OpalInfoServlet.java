@@ -285,7 +285,7 @@ public class OpalInfoServlet extends HttpServlet {
     }
 	
     public void destroy() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        dbManager.close();
     }
 
 }

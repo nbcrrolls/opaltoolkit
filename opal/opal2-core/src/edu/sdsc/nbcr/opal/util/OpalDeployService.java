@@ -200,15 +200,20 @@ public class OpalDeployService extends HttpServlet {
                 observer.initialize();
                 while ( run ){
                     observer.checkAndNotify();
-                    this.sleep(1000);
+                    try{ this.sleep(1000); }
+                    catch (InterruptedException e) {
+                        /* so we can terminate this thread without waiting the
+                         * 1000 ms of the sleep (TODO possible race condition)
+                         */
+                    }
                 }//while
             }catch(Exception e){
                 logger.error("Deployer failed to monitor the deployment directory: " + e);
             }
-            //FileAlterationMonitor monitor = new FileAlterationMonitor(1000);
-            //monitor.addObserver(observer);
-            //monitor.start();
-            
+            // destroy all resources
+            try { observer.destroy(); }
+            catch (Exception e) { logger.error("Problem while destroying Opal Deployer"); }
+            logger.info("Opal Deployer thread terminated");
         }//run
     
 
@@ -399,8 +404,8 @@ public class OpalDeployService extends HttpServlet {
 
 
     public void destroy() {
-        //To change body of implemented methods use File | Settings | File Templates.
         deplo.stopThread();
+        deplo.interrupt();
     }
 
 }

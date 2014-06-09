@@ -92,6 +92,15 @@ public class DBManager {
     }
 
     /**
+     * close and deallocate all resoureces
+     */
+    public void close(){
+        if (isConnected)
+		sessionFactory.close();
+    }
+
+
+    /**
      * 
      * @return the string representing the driver
      */
