@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.Hashtable;
 import java.util.Random;
 
+import javax.activation.FileDataSource;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.Message;
@@ -1240,8 +1241,7 @@ public class AppServiceImpl
 	logger.debug("called for file: " + inputFile.getName());
 
 	try {
-	    File f = new File(outputDirName + File.separator + 
-			      inputFile.getName());
+	    File f = new File(outputDirName, inputFile.getName());
 	    BufferedOutputStream out = null;
 	    if (inputFile.getContents() != null) {
 		//it is a 'normal' file
@@ -1287,25 +1287,44 @@ public class AppServiceImpl
 	    } else { 
 		// it is an attachment
 		DataHandler dh = inputFile.getAttachment();
-		logger.debug("Received attachment: " + dh.getName());
-		File attachFile = new File(dh.getName());
-		logger.debug("Source is " + attachFile.toString() + 
-			     " and dest is " + f.toString());
-
-// 		if (attachFile.renameTo(f) == false) {
-// 		    String msg = "Unable to copy attachment correctly: " +
-// 			dh.getName();
-// 		    logger.error(msg);
-// 		    throw new FaultType(msg);
-// 		}
-
-		try {
-		    attachFile.renameTo(f);
-		} catch (Exception e) {
-		    String msg = "Unable to copy attachment correctly: " +dh.getName();
-		    logger.error(msg);
-		    throw new FaultType(msg);
-		}
+                logger.debug("Received attachment: " + dh.getName());
+                // first check to see if the DataHandler wraps a FileDataSource
+                // as we can use OS operations to move the file
+                if (dh.getDataSource() instanceof FileDataSource) {
+                    File attachFile = ((FileDataSource)dh.getDataSource()).getFile();
+                    logger.debug("Source is " + attachFile.toString() +
+                            " and dest is " + f.toString());
+                    try {
+                        // Note that you can not use a try/catch for renaming problems
+                        // as exceptions are only thrown when the SecurityManager
+                        // denies access or when the destination file is null (which is isn't).
+                        if (!attachFile.renameTo(f)) {
+ 		            String msg = "Unable to copy attachment correctly: " +
+ 			            dh.getName();
+ 		            logger.error(msg);
+ 		            throw new FaultType(msg);
+                        }
+                    } catch (SecurityException se) {
+                        String msg = "SecurityException while trying to rename input file: " +
+                                se.getMessage();
+                        logger.error(msg);
+                        throw new FaultType(msg);
+                    }
+                } else {
+                    // treat as an unknown DataSource
+                    logger.debug("Source is " + dh.getName() +
+                            " and dest is " + f.toString() + " (unknow data source)");
+                    try {
+                        out = new BufferedOutputStream(new FileOutputStream(f));
+                        dh.writeTo(out);
+                        out.close(); out = null;
+                    } finally {
+                        if (out != null) {
+                            try { out.close(); }
+                            catch (IOException e) { /* ignore */ }
+                        }
+                    }
+                }
 	    }
 
 	    // extract files if need be
@@ -1320,9 +1339,6 @@ public class AppServiceImpl
 		    f.delete();
 		}
 	    }
-	} catch (FaultType f) {
-	    // pass the exception along
-	    throw f;
 	} catch (IOException ioe) {
 	    logger.error("IOException while trying to write input file: " + 
 			 ioe.getMessage());
