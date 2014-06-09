@@ -96,11 +96,20 @@ public class OpalDeployService extends HttpServlet {
         wsddDirectory = config.getServletContext().getRealPath("/WEB-INF/wsdd/");
 
         File deployPathFile = new File(deployPath);
+        if (!deployPathFile.isAbsolute()) {
+            // make deploy path relative to CATALINA_HOME as specified in the documentation
+            deployPathFile = new File(System.getProperty("catalina.home"), deployPath);
+        }
         if (! deployPathFile.exists() ) {
             //let's create it
-            deployPathFile.mkdir();
+            if (!deployPathFile.mkdirs()) {
+                logger.error("Could not make directory specified by opal.deploy.path \"" + deployPathFile + "\"!");
+                return;
+            }
+        } else if (!deployPathFile.isDirectory()) {
+            logger.error("opal.deploy.path \"" + deployPathFile + "\" does not point at a directory! Fix your opal.properties.");
+            return;
         }
-        //TODO check if it's a file istead of a dir
 
         deplo = new Deployer();
         deplo.setValues(axisServicesUrl, deployPathFile);
