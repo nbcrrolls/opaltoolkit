@@ -1,10 +1,5 @@
-// OpalInfoServlet.java
+// OpalDeploySerivcey
 //
-// Servlet that implements the opal dashboard
-//
-// 11/28/07   - created, Luca Clementi
-//
-
 
 package edu.sdsc.nbcr.opal.util;
 
@@ -46,9 +41,15 @@ import java.util.Hashtable;
 
 /** 
  *
- * This class implements all the business logic behind the Opal dashboard.
+ * This class is a Tomcat Servlet which automatically deploys Opal
+ * service descriptors when they are copyed inside the folder pointed
+ * by opal.deploy.path.
+ *
+ * This class uses apache commons to get notified of changes inside the
+ * folder pointed by opal.deploy.path and it deply or undeploy AXIS services
+ * as the files appear or disappear
  * 
- * @author clem
+ * @author luca.clementi@gmail.com
  *
  */
 public class OpalDeployService extends HttpServlet {
