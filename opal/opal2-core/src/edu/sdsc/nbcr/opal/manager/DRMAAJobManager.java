@@ -350,7 +350,7 @@ public class DRMAAJobManager implements OpalJobManager {
 	try {
 	    exitValue = jobInfo.getExitStatus();
 	}
-	catch (DrmaaException e) {
+	catch (Exception e) {
 	    logger.error("Can't get exit value from DRMAA - setting it to 100");
 	    exitValue = 100;
 	}
