@@ -241,6 +241,7 @@ public class DRMAAJobManager implements OpalJobManager {
 	    if (config.isParallel()) {
 		nativeSpec += "-pe " + drmaaPE + " " + numProcs;
 	    }
+	    nativeSpec += "-shell yes ";
 	    jt.setNativeSpecification(nativeSpec);
 	    jt.setRemoteCommand(cmd);
 	    jt.setArgs(Arrays.asList(argsArray));
